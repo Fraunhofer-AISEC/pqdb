@@ -1,0 +1,8 @@
+description: AVX2
+platform: c
+type: optimized
+side channel guarding:
+  branching: yes
+  timing: no # just assumed
+hardware features:
+  - avx2
