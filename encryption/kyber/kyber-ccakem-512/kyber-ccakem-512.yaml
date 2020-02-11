@@ -1,0 +1,14 @@
+name: Kyber.CCAKEM512
+type: KEM
+security notion: IND-CCA
+security level:
+    classical: 112
+    quantum: 102
+    nist category: 1
+failure probability: -145
+sizes:
+    sk: 1632
+    pk: 736
+    ct: 800
+    msg: 32
+number of operations: inf

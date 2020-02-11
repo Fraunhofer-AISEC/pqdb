@@ -1,0 +1,8 @@
+description: Reference
+platform: c
+type: reference
+side channel guarding:
+  branching: yes
+  timing: unknown
+  timing_comment: Assumed, but not verified
+hardware features: []
