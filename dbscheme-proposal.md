@@ -4,13 +4,16 @@
 * type (enc/sig)
 * name
 * category (lattice etc)
-* exact problems plus type of reduction (list of tuples?)
-* year (what date to use?)
-* inventors ?
-* trust in scheme (how to formalize this?)
+* exact problems plus type of reduction (free text)
+* year
+  * paper (first original scientific paper)
+  * candidate (standardization proposal
+  * standardization (final standard, rfc or similar)
+* inventors
+* trust in scheme (free text for now)
   * attacks
   * cryptanalysis
-* statefulness (what options are there?)
+* statefulness (boolean, although there might be nuances like "a few repetitions are secure")
 
 ## parameter set (better name?)
 * -> scheme
@@ -25,14 +28,11 @@
 * sizes (bytes)
   * public key
   * secret key (using nist api? (decaps is not given pub key))
-    * also store "real" secret key size?
+    * optimized secret key (smallest key possible, even if expensive to use)
   * ciphertext
   * message (for KEMs, shared secret)
 * failure probability (log2, or 0)
-* diffie-hellman-ness??
-  * symmetry
-  * contributory
-  * static keys
+* dh-ness (symmetry, contributory-ness etc) (free text)
 
 ## implementation
 * -> parameter set
@@ -43,7 +43,7 @@
   * side-channel attacks guarded against
     * timing
     * power consumption
-    * ??
+    * ...??
 * hardware features used (with respect to timings) (move some of this to timing?)
   * parallelity
   * aes hw instructions
