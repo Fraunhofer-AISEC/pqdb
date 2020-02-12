@@ -1,0 +1,11 @@
+name: FrodoKEM-AES-640
+security level:
+    classical: 144
+    quantum: 103
+    nist category: 1
+failure probability: -138.7
+sizes:
+    sk: 19888
+    pk: 9616
+    ct: 9720
+    msg: 16

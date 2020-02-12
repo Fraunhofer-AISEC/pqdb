@@ -1,0 +1,21 @@
+name: Frodo
+category: lattice
+year:
+    paper: 2016
+    candidate: 2017
+problems: |
+    LWE (details tbd)
+state: null
+nist round: 2
+inventors:
+  - Erdem Alkim
+  - Joppe W. Bos
+  - Léo Ducas
+  - Patrick Longa
+  - Ilya Mironov
+  - Michael Naehrig
+  - Valeria Nikolaenko
+  - Chris Peikert
+  - Ananth Raghunathan
+sources:
+  - NIST Submission Paper

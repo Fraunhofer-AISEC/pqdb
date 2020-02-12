@@ -1,0 +1,10 @@
+name: Optimized plus AVX2
+type: optimized
+platform: c
+dependencies:
+  - OpenSSL
+side channel guarding:
+  branching: yes
+hardware features:
+  - aes-ni
+  - avx2

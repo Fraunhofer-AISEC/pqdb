@@ -1,0 +1,10 @@
+name: Optimized, using AES from OpenSSL
+type: optimized
+platform: c
+dependencies:
+  - OpenSSL
+side channel guarding:
+  branching: yes
+hardware features: #TODO how do we encode "or"?
+  - aes-ni
+  - neon
