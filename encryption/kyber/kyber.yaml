@@ -1,5 +1,6 @@
 name: CRYSTALS Kyber
-year: 2017
+year:
+    candidate: 2017
 category: lattice
 authors:
   - Roberto Avanzi
@@ -12,9 +13,9 @@ authors:
   - Peter Schwabe
   - Gregor Seiler
   - Damien Stehlé
-reductions: |
-    M-LWE (tight ROM reduction, no-tight QROM reduction)
-state: none
+problems: |
+    M-LWE (tight ROM reduction, non-tight QROM reduction)
+state: null
 nist round: 2
 sources:
   - NIST Submission Paper

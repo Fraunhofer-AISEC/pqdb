@@ -1,0 +1,11 @@
+name: FrodoKEM-AES-976
+security level:
+    classical: 209
+    quantum: 150
+    nist category: 3
+failure probability: -199.6
+sizes:
+    sk: 31296
+    pk: 15632
+    ct: 15744
+    msg: 24

@@ -1,0 +1,4 @@
+name: Kyber.CCAKEM
+type: KEM
+security notion: IND-CCA
+number of operations: .inf
