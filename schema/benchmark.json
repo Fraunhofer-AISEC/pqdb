@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "benchmark.json#",
+    "type": "object",
+    "properties": {
+        "impl": {
+            "type": "string"
+        },
+        "param": {
+            "type": "string"
+        },
+        "platform": {
+            "type": "string"
+        },
+        "timings": {
+            "type": "object",
+            "properties": {
+                "unit": {
+                    "type": "string",
+                    "enum": [
+                        "cycles",
+                        "ms",
+                        "ns"
+                    ]
+                },
+                "gen": {
+                    "type": "number"
+                },
+                "enc/sign": {
+                    "type": "number"
+                },
+                "dec/val": {
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "memory requirements": {
+            "type": "object",
+            "properties": {
+                "gen": {
+                    "type": "integer"
+                },
+                "enc/sign": {
+                    "type": "integer"
+                },
+                "dec/val": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "impl",
+        "param"
+    ]
+}

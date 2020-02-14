@@ -2,4 +2,4 @@ name: Optimized, using plain C AES
 type: optimized
 platform: c
 side channel guarding:
-  branching: yes
+  branching: true

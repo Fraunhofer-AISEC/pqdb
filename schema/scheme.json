@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "scheme.json#",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "enc",
+                "sig"
+            ]
+        },
+        "name": {
+            "type": "string"
+        },
+        "category": {
+            "type": "string",
+            "enum": [
+                "lattice",
+                "code",
+                "multivariate",
+                "isogeny",
+                "hash"
+            ]
+        },
+        "year": {
+            "type": "object",
+            "properties": {
+                "paper": {
+                    "type": "integer"
+                },
+                "candidate": {
+                    "type": "integer"
+                },
+                "standardization": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+        },
+        "authors": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "stateful": {
+            "type": "boolean"
+        },
+        "nist round": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "problems": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "assumption": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "assumption"
+                ]
+            }
+        },
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "type",
+        "name",
+        "category",
+        "year",
+        "authors",
+        "stateful"
+    ]
+}

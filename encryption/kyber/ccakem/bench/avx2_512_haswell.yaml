@@ -1,8 +1,8 @@
 impl: avx2
-param: 512
+param: "512"
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
   gen: 55160
-  enc: 75680
-  dec: 74428
+  enc/sign: 75680
+  dec/val: 74428

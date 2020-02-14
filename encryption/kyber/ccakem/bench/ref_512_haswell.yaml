@@ -1,8 +1,8 @@
 impl: ref
-param: 512
+param: "512"
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
   gen: 141872
-  enc: 205468
-  dec: 246040
+  enc/sign: 205468
+  dec/val: 246040
