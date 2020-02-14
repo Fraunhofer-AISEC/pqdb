@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "flavor.json#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string",
+            "enum": [
+                "KEM",
+                "PKE",
+                "KTM",
+                "SIG"
+            ]
+        },
+        "security notion": {
+            "type": "string",
+            "enum": [
+                "IND-CPA",
+                "IND-CCA"
+            ]
+        },
+        "number of operations": {
+            "type": "integer",
+            "minimum": 1
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "name",
+        "type",
+        "security notion",
+        "number of operations"
+    ]
+}

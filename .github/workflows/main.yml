@@ -1,0 +1,21 @@
+name: JSON Schema Validation
+
+on: [push, pull_request]
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install dependencies
+      run: |
+        cd tools/validation
+        npm install
+    - name: Run validation
+      run: node tools/validation/validate.js
+      env:
+        CI: true

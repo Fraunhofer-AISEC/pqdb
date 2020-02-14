@@ -13,9 +13,10 @@ authors:
   - Peter Schwabe
   - Gregor Seiler
   - Damien Stehlé
-problems: |
-    M-LWE (tight ROM reduction, non-tight QROM reduction)
-state: null
+problems:
+    - assumption: M-LWE
+      comment: tight ROM reduction, no-tight QROM reduction
+stateful: false
 nist round: 2
 sources:
   - NIST Submission Paper

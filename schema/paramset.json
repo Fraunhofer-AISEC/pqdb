@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "paramset.json#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "security level": {
+            "type": "object",
+            "properties": {
+                "classical": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "quantum": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "nist category": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                }
+            },
+            "required": [
+                "classical",
+                "quantum"
+            ]
+        },
+        "failure probability": {
+            "type": "number",
+            "maximum": 0
+        },
+        "sizes": {
+            "type": "object",
+            "properties": {
+                "sk": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pk": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "msg": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "ct/sig": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "name",
+        "security level",
+        "failure probability",
+        "sizes"
+    ]
+}

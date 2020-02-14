@@ -3,11 +3,11 @@ category: lattice
 year:
     paper: 2016
     candidate: 2017
-problems: |
-    LWE (details tbd)
-state: null
+problems:
+    - assumption: LWE
+stateful: false
 nist round: 2
-inventors:
+authors:
   - Erdem Alkim
   - Joppe W. Bos
   - Léo Ducas
