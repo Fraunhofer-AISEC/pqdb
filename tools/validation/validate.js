@@ -98,3 +98,4 @@ function validate() {
 }
 
 if (!validate()) process.exit(1);
+console.log("Validation successfully completed. All files are valid.")
