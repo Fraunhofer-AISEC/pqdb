@@ -1,0 +1,8 @@
+impl: avx2-openssl
+param: "640"
+platform: Intel Core i7-6700 (Skylake) 3.4GHZ
+timings:
+  unit: cycles
+  gen: 1388000
+  enc: 1879000
+  dec: 1768000
