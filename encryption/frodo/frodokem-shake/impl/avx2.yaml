@@ -1,0 +1,7 @@
+name: Optimized, using AVX2 for SHAKE
+type: optimized
+platform: c
+side channel guarding:
+  branching: true
+hardware features:
+  - avx2

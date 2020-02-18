@@ -1,0 +1,11 @@
+name: FrodoKEM-SHAKE-1344
+security level:
+    classical: 274
+    quantum: 196
+    nist category: 5
+failure probability: -252.5
+sizes:
+    sk: 43088
+    pk: 21520
+    ct: 21632
+    msg: 32
