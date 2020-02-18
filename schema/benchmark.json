@@ -9,8 +9,12 @@
         "param": {
             "type": "string"
         },
-        "platform": {
+        "comment": {
             "type": "string"
+        },
+        "platform": {
+            "type": "string",
+            "$comment": "#TODO make this reference to platform object. Add OS and Compiler info"
         },
         "timings": {
             "type": "object",
@@ -19,8 +23,7 @@
                     "type": "string",
                     "enum": [
                         "cycles",
-                        "ms",
-                        "ns"
+                        "ms"
                     ]
                 },
                 "gen": {
@@ -31,6 +34,9 @@
                 },
                 "dec/vrfy": {
                     "type": "number"
+                },
+                "comment": {
+                    "type": "string"
                 }
             },
             "additionalProperties": false
@@ -46,6 +52,9 @@
                 },
                 "dec/vrfy": {
                     "type": "integer"
+                },
+                "comment": {
+                    "type": "string"
                 }
             },
             "additionalProperties": false

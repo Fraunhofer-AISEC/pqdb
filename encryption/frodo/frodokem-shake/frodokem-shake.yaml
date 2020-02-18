@@ -1,4 +1,4 @@
 name: FrodoKEM-SHAKE
 type: KEM
 security notion: IND-CCA
-number of operations: .inf
+number of operations: inf
