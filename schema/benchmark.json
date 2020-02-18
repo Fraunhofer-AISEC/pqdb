@@ -29,7 +29,7 @@
                 "enc/sign": {
                     "type": "number"
                 },
-                "dec/val": {
+                "dec/vrfy": {
                     "type": "number"
                 }
             },
@@ -44,7 +44,7 @@
                 "enc/sign": {
                     "type": "integer"
                 },
-                "dec/val": {
+                "dec/vrfy": {
                     "type": "integer"
                 }
             },

@@ -4,5 +4,5 @@ platform: Intel Core i7-6700 (Skylake) 3.4GHZ
 timings:
   unit: cycles
   gen: 1388000
-  enc: 1879000
-  dec: 1768000
+  enc/sign: 1879000
+  dec/vrfy: 1768000

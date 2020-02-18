@@ -5,4 +5,4 @@ timings:
   unit: cycles
   gen: 141872
   enc/sign: 205468
-  dec/val: 246040
+  dec/vrfy: 246040
