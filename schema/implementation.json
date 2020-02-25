@@ -6,6 +6,9 @@
         "name": {
             "type": "string"
         },
+        "comment": {
+            "type": "string"
+        },
         "platform": {
             "type": "string"
         },
@@ -20,26 +23,76 @@
             "type": "object",
             "properties": {
                 "branching": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "$comment": "This is a special case of timing. It means there is no secret-dependent branching on the C level."
                 },
                 "timing": {
+                    "type": "boolean",
+                    "$comment": "This refers to any kind of timing, not just branching-related. See also `branching`."
+                },
+                "branching comment": {
                     "type": "string"
                 },
-                "timing_comment": {
+                "timing comment": {
                     "type": "string"
                 }
-            }
+            },
+            "$comment": "Note to contributors: Feel free to add more here."
         },
         "hardware features": {
             "type": "array",
             "items": {
                 "type": "string"
-            }
+            },
+            "$comment": "#TODO Convert to enum once we know typical values."
         },
         "dependencies": {
             "type": "array",
             "items": {
                 "type": "string"
+            },
+            "$comment": "#TODO Convert to enum once we know typical values."
+        },
+        "code size": {
+            "type": "object",
+            "$comment": "in bytes",
+            "items": {
+                "overall": {
+                    "type": "number",
+                    "$comment": "If there is only one implementation for all operations"
+                },
+                "gen": {
+                    "type": "number"
+                },
+                "enc/sign": {
+                    "type": "number"
+                },
+                "dec/vrfy": {
+                    "type": "number"
+                },
+                "comment": {
+                    "type": "string"
+                }
+            }
+        },
+        "code size comment": {
+            "type": "string"
+        },
+        "randomness required": {
+            "type": "object",
+            "items": {
+                "gen": {
+                    "type": "number"
+                },
+                "enc/sign": {
+                    "type": "number"
+                },
+                "dec/vrfy": {
+                    "type": "number"
+                },
+                "comment": {
+                    "type": "string"
+                }
             }
         }
     },

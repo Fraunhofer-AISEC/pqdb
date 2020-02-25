@@ -8,9 +8,13 @@
             "enum": [
                 "enc",
                 "sig"
-            ]
+            ],
+            "$comment": "`enc` stands for all types of key exchange (KEMs etc)"
         },
         "name": {
+            "type": "string"
+        },
+        "comment": {
             "type": "string"
         },
         "category": {
@@ -22,6 +26,9 @@
                 "isogeny",
                 "hash"
             ]
+                },
+                "category comment": {
+                    "type": "string"
         },
         "year": {
             "type": "object",
@@ -34,6 +41,9 @@
                 },
                 "standardization": {
                     "type": "integer"
+                },
+                "comment": {
+                    "type": "string"
                 }
             },
             "additionalProperties": false,
@@ -48,9 +58,13 @@
         "stateful": {
             "type": "boolean"
         },
+        "stateful comment": {
+            "type": "string"
+        },
         "nist round": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "$comment": "0 for schemes that were not submitted to the NIST PQC Standardization Process."
         },
         "problems": {
             "type": "array",
@@ -58,7 +72,8 @@
                 "type": "object",
                 "properties": {
                     "assumption": {
-                        "type": "string"
+                        "type": "string",
+                        "$comment": "#TODO Convert to enum once we know typical values."
                     },
                     "comment": {
                         "type": "string"
@@ -75,6 +90,10 @@
             "items": {
                 "type": "string"
             }
+        },
+        "trust comment": {
+            "type": "string",
+            "$comment": "Notes about trustworthyness (existing attacks, cryptanalysis). Just add free text for now."
         }
     },
     "additionalProperties": false,

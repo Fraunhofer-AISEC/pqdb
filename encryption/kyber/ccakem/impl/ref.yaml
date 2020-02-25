@@ -3,6 +3,5 @@ platform: c
 type: reference
 side channel guarding:
   branching: true
-  timing: unknown
-  timing_comment: Assumed, but not verified
+  timing comment: Assumed, but not verified
 hardware features: []

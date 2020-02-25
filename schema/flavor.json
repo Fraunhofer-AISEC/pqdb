@@ -6,25 +6,38 @@
         "name": {
             "type": "string"
         },
+        "comment": {
+            "type": "string"
+        },
         "type": {
             "type": "string",
             "enum": [
                 "KEM",
-                "PKE",
                 "KTM",
                 "SIG"
             ]
+        },
+        "type comment": {
+            "type": "string"
         },
         "security notion": {
             "type": "string",
             "enum": [
                 "IND-CPA",
                 "IND-CCA"
-            ]
+            ],
+            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2."
+        },
+        "security notion comment": {
+            "type": "string"
+        },
+        "dh-ness": {
+            "type": "string",
+            "$comment": "Refers to properties such as contributiveness. Just add relevant information as free text for now. #TODO"
         },
         "number of operations": {
-            "type": "integer",
-            "minimum": 1
+            "type": "string",
+            "$comment": "Use the literal string `inf` if there's no limitation. #TODO We'll allow strings for now and think of a good representation once we know more about the typical values for this."
         }
     },
     "additionalProperties": false,

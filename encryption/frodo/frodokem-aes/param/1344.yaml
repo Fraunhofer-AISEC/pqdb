@@ -7,5 +7,5 @@ failure probability: -252.5
 sizes:
     sk: 43088
     pk: 21520
-    ct: 21632
+    ct/sig: 21632
     msg: 32
