@@ -1,4 +1,4 @@
-name: NTRU-Prime.CCAKEM
+name: NTRU-LPrime
 type: KEM
 security notion: IND-CCA
 security notion comment: Based on Dent's KEM construction
