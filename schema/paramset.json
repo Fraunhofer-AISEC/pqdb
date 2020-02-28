@@ -67,7 +67,7 @@
                     "minimum": 1
                 },
                 "comment": {
-                    "type": "integer"
+                    "type": "string"
                 }
             },
             "additionalProperties": false,
