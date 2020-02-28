@@ -1,12 +1,12 @@
-name: Streamlined NTRU-Prime 857
+name: NTRU-LPrime 761
 security level:
-    classical: 175
-    quantum: 159
-    nist category: 4
+    classical: 155
+    quantum: 140
+    nist category: 3
     comment: "The security estimates here are the lowest given and (as always) have to be taken with a grain of salt."
 failure probability: 0
 sizes:
-    sk: 1999
-    pk: 1322
-    ct/sig: 1184
+    sk: 1294
+    pk: 1039
+    ct/sig: 1167
     msg: 32 # XXX: I'm not sure this is useful
