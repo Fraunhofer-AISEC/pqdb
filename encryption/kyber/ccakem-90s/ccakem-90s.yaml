@@ -1,0 +1,5 @@
+name: Kyber.CCAKEM90s
+comment: Variant that uses AES and SHA2 instead of Keccak
+type: KEM
+security notion: IND-CCA
+number of operations: inf
