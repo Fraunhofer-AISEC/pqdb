@@ -1,0 +1,8 @@
+name: Reference
+platform: c
+type: reference
+comment: "https://ntruprime.cr.yp.to/software.html"
+side channel guarding:
+  branching: true
+  timing comment: Assumed, but not verified
+hardware features: []

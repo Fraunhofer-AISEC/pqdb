@@ -1,0 +1,16 @@
+name: NTRU Prime
+year:
+    candidate: 2017
+    paper: 2016
+category: lattice
+authors:
+  - Daniel J. Bernstein
+  - Chitchanok Chuengsatiansu
+  - Tanja Lange
+  - Christine van Vredendaal
+problems:
+    - assumption: NTRU prime
+stateful: false
+nist round: 2
+sources:
+  - NIST Submission Paper

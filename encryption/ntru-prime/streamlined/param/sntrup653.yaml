@@ -1,0 +1,12 @@
+name: Streamlined NTRU-Prime 653
+security level:
+    classical: 129
+    quantum: 117
+    nist category: 2
+    comment: "The security estimates here are the lowest given and (as always) have to be taken with a grain of salt."
+failure probability: 0
+sizes:
+    sk: 1518
+    pk: 994
+    ct/sig: 897
+    msg: 32 # XXX: I'm not sure this is useful

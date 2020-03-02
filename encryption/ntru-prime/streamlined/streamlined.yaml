@@ -1,0 +1,5 @@
+name: Streamlined NTRU-Prime
+type: KEM
+security notion: IND-CCA
+security notion comment: Based on Dent's KEM construction
+number of operations: inf

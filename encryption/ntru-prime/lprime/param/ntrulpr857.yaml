@@ -1,0 +1,12 @@
+name: NTRU-LPrime 857
+security level:
+    classical: 176
+    quantum: 160
+    nist category: 4
+    comment: "The security estimates here are the lowest given and (as always) have to be taken with a grain of salt."
+failure probability: 0
+sizes:
+    sk: 1463
+    pk: 1184
+    ct/sig: 1312
+    msg: 32 # XXX: I'm not sure this is useful
