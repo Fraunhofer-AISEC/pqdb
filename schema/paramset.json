@@ -71,7 +71,7 @@
                 }
             },
             "additionalProperties": false,
-            "required": ["sk", "pk", "msg", "ct/sig"]
+            "required": ["sk", "pk", "ct/sig"]
         }
     },
     "additionalProperties": false,
