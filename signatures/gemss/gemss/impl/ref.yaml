@@ -1,0 +1,7 @@
+name: Reference
+type: reference
+platform: c
+dependencies:
+  - Keccak
+  - NTL
+side channel guarding:

@@ -1,0 +1,8 @@
+name: Optimized
+type: optimized
+platform: c
+dependencies:
+  - Keccak
+  - NTL
+  - gf2x
+side channel guarding:
