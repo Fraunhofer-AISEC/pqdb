@@ -8,4 +8,4 @@ sizes:
     sk: 1888
     pk: 928
     ct/sig: 1120
-    msg: 32 ## could not find size of shared secret
+    msg: 256
