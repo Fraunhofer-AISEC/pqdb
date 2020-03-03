@@ -3,5 +3,5 @@ platform: c
 type: reference
 side channel guarding:
   branching: false
-  timing comment:
+  timing comment: ''
 hardware features: []
