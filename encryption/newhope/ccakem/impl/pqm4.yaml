@@ -1,6 +1,6 @@
-name: Reference
-platform: c
-type: reference
+name: PQM4
+platform: assembly
+type: optimized
 side channel guarding:
   branching: false
 hardware features: []

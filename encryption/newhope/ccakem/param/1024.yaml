@@ -8,3 +8,4 @@ sizes:
     sk: 3680
     pk: 1824
     ct/sig: 2208
+    msg: 256
