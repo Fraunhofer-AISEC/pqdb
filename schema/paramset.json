@@ -71,7 +71,11 @@
                 }
             },
             "additionalProperties": false,
-            "required": ["sk", "pk", "msg", "ct/sig"]
+            "required": ["sk", "pk", "ct/sig"]
+        },
+        "number of operations": {
+            "type": "string",
+            "$comment": "Use the literal string `inf` if there's no limitation. #TODO We'll allow strings for now and think of a good representation once we know more about the typical values for this."
         }
     },
     "additionalProperties": false,
@@ -79,6 +83,7 @@
         "name",
         "security level",
         "failure probability",
+        "number of operations",
         "sizes"
     ]
 }
