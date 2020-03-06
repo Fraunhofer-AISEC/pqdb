@@ -43,7 +43,7 @@
             "$comment": "0 for 0, log_2 else"
         },
         "failure probability comment": {
-            "type": "integer"
+            "type": "string"
         },
         "sizes": {
             "type": "object",
@@ -67,7 +67,7 @@
                     "minimum": 1
                 },
                 "comment": {
-                    "type": "integer"
+                    "type": "string"
                 }
             },
             "additionalProperties": false,
