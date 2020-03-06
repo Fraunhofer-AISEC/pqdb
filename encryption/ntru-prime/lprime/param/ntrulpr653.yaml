@@ -5,6 +5,7 @@ security level:
     nist category: 2
     comment: "The security estimates here are the lowest given and (as always) have to be taken with a grain of salt."
 failure probability: 0
+number of operations: inf
 sizes:
     sk: 1125
     pk: 897

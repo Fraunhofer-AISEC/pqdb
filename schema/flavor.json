@@ -34,17 +34,12 @@
         "dh-ness": {
             "type": "string",
             "$comment": "Refers to properties such as contributiveness. Just add relevant information as free text for now. #TODO"
-        },
-        "number of operations": {
-            "type": "string",
-            "$comment": "Use the literal string `inf` if there's no limitation. #TODO We'll allow strings for now and think of a good representation once we know more about the typical values for this."
         }
     },
     "additionalProperties": false,
     "required": [
         "name",
         "type",
-        "security notion",
-        "number of operations"
+        "security notion"
     ]
 }
