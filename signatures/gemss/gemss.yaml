@@ -1,0 +1,19 @@
+name: 
+category: multivariate
+year:
+	paper: 2017
+	candidate: 2017
+problems:
+	- assumption: HFE
+stateful: 
+nist round: 2
+authors:
+  - A. Casanova
+  - J.-C. Faugère
+  - G. Macario-Rat
+  - J. Patarin
+  - L. Perret
+  - J. Ryckeghem
+sources:
+  - NIST Submission Paper
+
