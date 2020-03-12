@@ -1,9 +1,39 @@
 import React from 'react';
-import { JsonForms } from '@jsonforms/react';
-import { Generate } from '@jsonforms/core';
+import { JsonForms, JsonFormsDispatch } from '@jsonforms/react';
+import { Generate, schemaMatches, rankWith, resolveSchema } from '@jsonforms/core';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
-import { Link } from 'react-router-dom';
+import { Tooltip, Grid, Button, AppBar, Toolbar, IconButton, Link, Breadcrumbs, Typography } from '@material-ui/core';
+import { Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon } from '@material-ui/icons';
+import { Link as RouterLink } from 'react-router-dom';
 
+class TooltipWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.subSchema = resolveSchema(props.schema, props.id);
+    }
+
+    render() {
+        return (
+            <Grid container direction="row" alignItems="center" spacing={1}>
+                <Grid item xs>
+                    <JsonFormsDispatch
+                        uischema={this.props.uischema}
+                        schema={this.props.schema}
+                        path={this.props.path}
+                        renderers={materialRenderers} /*need to use renderers in which this wrapper is not included*/
+                    />
+                </Grid>
+                <Grid item>
+                    <Tooltip arrow placement="left" title={this.subSchema["$comment"]}>
+                        <InfoIcon />
+                    </Tooltip>
+                </Grid>
+            </Grid>
+        );
+    }
+};
+
+const LinkRouter = props => <Link color="inherit" {...props} component={RouterLink} />;
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -24,34 +54,45 @@ class NavBar extends React.Component {
     render() {
         var s = window.location.pathname;
         var path = s.substring(1, s.length - 1).split('/');
-        var pathLinks = [<td key='/'><Link to='/'>/</Link></td>];
+        var pathLinks = [['/', "Home"]];
         if (path.length >= 2 && path[0] !== '') {
-            var text1 = path.slice(0, 2).join("/") + '/';
-            var link1 = '/' + text1;
-            pathLinks.push(<td key={link1}><Link to={link1}>{text1}</Link></td>)
+            var text1 = path.slice(0, 2).join("/");
+            var link1 = '/' + text1 + '/';
+            pathLinks.push([link1, text1]);
         }
         if (path.length >= 3) {
-            var text2 = path[2] + '/';
+            var text2 = path[2];
             var link2 = '/' + path.slice(0, 3).join("/") + '/';
-            pathLinks.push(<td key={link2}><Link to={link2}>{text2}</Link></td>)
+            pathLinks.push([link2, text2]);
         }
         if (path.length === 5) {
-            var text3 = path.slice(3, 5).join("/") + '/';
+            var text3 = path.slice(3, 5).join("/");
             var link3 = '/' + path.join('/') + '/';
-            pathLinks.push(<td key={link3}><Link to={link3}>{text3}</Link></td>)
+            pathLinks.push([link3, text3]);
         }
 
+        var last = pathLinks.length - 1;
+
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <table style={{ padding: '0.5em' }}>
-                    <tbody>
-                        <tr key={this.state.location}>
-                            <td><button onClick={(evt) => this.history.goBack()}>Go back</button></td>
-                            {pathLinks}
-                        </tr>
-                    </tbody>
-                </table>
-            </nav>
+            <AppBar position="sticky">
+                <Toolbar>
+                    {
+                        (pathLinks.length > 1) ?
+                            <IconButton edge="start" color="inherit" onClick={(evt) => this.history.goBack()}>
+                                <BackIcon />
+                            </IconButton>
+                            :
+                            <IconButton edge="start" color="inherit">
+                                <HomeIcon />
+                            </IconButton>
+                    }
+
+                    <Breadcrumbs>
+                        {pathLinks.slice(0, last).map(x => <LinkRouter key={x[0]} to={x[0]}>{x[1]}</LinkRouter>)}
+                        {<Typography color="textPrimary">{pathLinks[last][1]}</Typography>}
+                    </Breadcrumbs>
+                </Toolbar>
+            </AppBar>
         );
     }
 }
@@ -68,7 +109,13 @@ class JsonFormsContainer extends React.Component {
             <JsonForms
                 schema={this.state.schema}
                 uischema={this.state.uiSchema}
-                renderers={materialRenderers}
+                renderers={[
+                    ...materialRenderers,
+                    {
+                        tester: rankWith(3, schemaMatches((schema) => "$comment" in schema)),
+                        renderer: TooltipWrapper
+                    }
+                ]}
                 cells={materialCells}
                 data={this.dataStore}
                 onChange={this.onChange.bind(this)}
@@ -127,16 +174,17 @@ class SelectOrCreate extends JsonFormsContainer {
             return null;
 
         return (
-            <div style={{ marginBottom: "1em" }}>
-                <div style={{ display: "inline-block", width: "80%", verticalAlign: "middle" }}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+                <Grid item xs>
                     {this.buildJSONForm()}
-                </div>
-                <div style={{ display: "inline-block", width: "3%" }} />
-                <button style={{ display: "inline-block", width: "17%", verticalAlign: "middle" }}
-                    type="button" disabled={!this.state.validState} onClick={(evt) => this.action(this.state.data)}>
-                    {this.buttonText}
-                </button>
-            </div>
+                </Grid>
+                <Grid item>
+                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
+                        onClick={(evt) => this.action(this.state.data)}>
+                        {this.buttonText}
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 }

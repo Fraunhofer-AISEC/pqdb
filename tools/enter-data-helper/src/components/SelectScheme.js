@@ -1,6 +1,7 @@
 import React from 'react';
 import { SelectOrCreate } from './BaseComponents';
 import { listDirs, ROOT_DIR } from './Tools';
+import { Box, Grid, Paper } from '@material-ui/core';
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
@@ -47,15 +48,26 @@ class SelectScheme extends React.Component {
 
     render() {
         return (
-            <div className="App">
-                <h2>Encryption Schemes</h2>
-                <SelectOrCreate schemes={this.state.enc} addNew={false} action={(data) => this.submitForm("enc", data.name, false)} />
-                <SelectOrCreate schemes={this.state.enc} addNew={true} action={(data) => this.submitForm("enc", data.name, true)} />
-                <hr style={{ marginLeft: '-1em', marginRight: '-1em' }} />
-                <h2>Signature Schemes</h2>
-                <SelectOrCreate schemes={this.state.sig} addNew={false} action={(data) => this.submitForm("sig", data.name, false)} />
-                <SelectOrCreate schemes={this.state.sig} addNew={true} action={(data) => this.submitForm("sig", data.name, true)} />
-            </div>
+            <Grid container direction="column" spacing={3}>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Encryption Schemes</h2>
+                            <SelectOrCreate schemes={this.state.enc} addNew={false} action={(data) => this.submitForm("enc", data.name, false)} />
+                            <SelectOrCreate schemes={this.state.enc} addNew={true} action={(data) => this.submitForm("enc", data.name, true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper >
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Signature Schemes</h2>
+                            <SelectOrCreate schemes={this.state.sig} addNew={false} action={(data) => this.submitForm("sig", data.name, false)} />
+                            <SelectOrCreate schemes={this.state.sig} addNew={true} action={(data) => this.submitForm("sig", data.name, true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+            </Grid >
         );
     }
 

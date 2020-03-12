@@ -1,6 +1,7 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
+import { Grid, Button, Paper, Box } from '@material-ui/core';
 import { listFiles, ROOT_DIR } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
@@ -22,14 +23,17 @@ class EditFlavor extends JsonFormsContainer {
 
     render() {
         return (
-            <div>
-                {this.buildJSONForm()}
-                <div style={{ height: "1em" }} />
-                <button type="button" disabled={!this.state.validState} onClick={(evt) => this.saveFlavor()}>
-                    Save
-                </button>
-                <div style={{ height: "0.5em" }} />
-            </div>
+            <Grid container direction="column" spacing={1}>
+                <Grid item>
+                    {this.buildJSONForm()}
+                </Grid>
+                <Grid item>
+                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
+                        onClick={(evt) => this.saveFlavor()}>
+                        Save
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 
@@ -73,14 +77,18 @@ class SubtypeOverview extends JsonFormsContainer {
 
     render() {
         return (
-            <div className="App" style={{ marginTop: "1em" }}>
-                <h2>{{ 'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation' }[this.subType] + " Properties"}</h2>
-                {this.buildJSONForm()}
-                <div style={{ height: "1em" }} />
-                <button type="button" disabled={!this.state.validState} onClick={(evt) => this.saveFile()}>
-                    Save
-                </button>
-            </div>
+            <Grid container direction="column" spacing={1}>
+                <Grid item>
+                    <h2>{{ 'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation' }[this.subType] + " Properties"}</h2>
+                    {this.buildJSONForm()}
+                </Grid>
+                <Grid item>
+                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
+                        onClick={(evt) => this.saveFile()}>
+                        Save
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 }
@@ -137,28 +145,49 @@ class FlavorOverview extends React.Component {
 
     render() {
         return (
-            <div className="App" style={{ marginTop: "1em" }}>
-                <h2>Flavor Properties</h2>
-                <EditFlavor type={this.type} schemeName={this.schemeName} name={this.name} />
-                <hr style={{ marginLeft: '-1em', marginRight: '-1em' }} />
-                <h2>Parameter Sets</h2>
-                <SelectOrCreate schemes={this.state.param} addNew={false}
-                    action={(data) => this.submitForm(data.name, "param", false)} />
-                <SelectOrCreate schemes={this.state.param} addNew={true}
-                    action={(data) => this.submitForm(data.name, "param", true)} />
-                <hr style={{ marginLeft: '-1em', marginRight: '-1em' }} />
-                <h2>Implementations</h2>
-                <SelectOrCreate schemes={this.state.impl} addNew={false}
-                    action={(data) => this.submitForm(data.name, "impl", false)} />
-                <SelectOrCreate schemes={this.state.impl} addNew={true}
-                    action={(data) => this.submitForm(data.name, "impl", true)} />
-                <hr style={{ marginLeft: '-1em', marginRight: '-1em' }} />
-                <h2>Benchmarks</h2>
-                <SelectOrCreate schemes={this.state.bench} regex={this.benchRegex} addNew={false}
-                    action={(data) => this.submitForm(data.name, "bench", false)} />
-                <SelectOrCreate schemes={this.state.bench} regex={this.benchRegex} addNew={true}
-                    action={(data) => this.submitForm(data.name, "bench", true)} />
-            </div>
+            <Grid container direction="column" spacing={3}>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Flavor Properties</h2>
+                            <EditFlavor type={this.type} schemeName={this.schemeName} name={this.name} />
+                        </Box>
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Parameter Sets</h2>
+                            <SelectOrCreate schemes={this.state.param} addNew={false}
+                                action={(data) => this.submitForm(data.name, "param", false)} />
+                            <SelectOrCreate schemes={this.state.param} addNew={true}
+                                action={(data) => this.submitForm(data.name, "param", true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Implementations</h2>
+                            <SelectOrCreate schemes={this.state.impl} addNew={false}
+                                action={(data) => this.submitForm(data.name, "impl", false)} />
+                            <SelectOrCreate schemes={this.state.impl} addNew={true}
+                                action={(data) => this.submitForm(data.name, "impl", true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Benchmarks</h2>
+                            <SelectOrCreate schemes={this.state.bench} regex={this.benchRegex} addNew={false}
+                                action={(data) => this.submitForm(data.name, "bench", false)} />
+                            <SelectOrCreate schemes={this.state.bench} regex={this.benchRegex} addNew={true}
+                                action={(data) => this.submitForm(data.name, "bench", true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+            </Grid>
         );
     }
 }

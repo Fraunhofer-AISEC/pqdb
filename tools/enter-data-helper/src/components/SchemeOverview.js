@@ -1,6 +1,7 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
+import { Grid, Button, Paper, Box } from '@material-ui/core';
 import { listDirs, ROOT_DIR } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
@@ -32,14 +33,17 @@ class EditScheme extends JsonFormsContainer {
 
     render() {
         return (
-            <div>
-                {this.buildJSONForm()}
-                <div style={{ height: "1em" }} />
-                <button type="button" disabled={!this.state.validState} onClick={(evt) => this.saveScheme()}>
-                    Save
-                </button>
-                <div style={{ height: "0.5em" }} />
-            </div>
+            <Grid container direction="column" spacing={1}>
+                <Grid item>
+                    {this.buildJSONForm()}
+                </Grid>
+                <Grid item>
+                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
+                        onClick={(evt) => this.saveScheme()}>
+                        Save
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 
@@ -95,14 +99,25 @@ class SchemeOverview extends React.Component {
 
     render() {
         return (
-            <div className="App" style={{ marginTop: "1em" }}>
-                <h2>Scheme Properties</h2>
-                <EditScheme type={this.type} name={this.name} />
-                <hr style={{ marginLeft: '-1em', marginRight: '-1em' }} />
-                <h2>Flavours</h2>
-                <SelectOrCreate schemes={this.state.flavors} addNew={false} action={(data) => this.submitForm(data.name, false)} />
-                <SelectOrCreate schemes={this.state.flavors} addNew={true} action={(data) => this.submitForm(data.name, true)} />
-            </div>
+            <Grid container direction="column" spacing={3}>
+                <Grid item>
+                    <Paper >
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Scheme Properties</h2>
+                            <EditScheme type={this.type} name={this.name} />
+                        </Box>
+                    </Paper>
+                </Grid>
+                <Grid item>
+                    <Paper>
+                        <Box px={2} pt={1} pb={2}>
+                            <h2>Flavours</h2>
+                            <SelectOrCreate schemes={this.state.flavors} addNew={false} action={(data) => this.submitForm(data.name, false)} />
+                            <SelectOrCreate schemes={this.state.flavors} addNew={true} action={(data) => this.submitForm(data.name, true)} />
+                        </Box>
+                    </Paper>
+                </Grid>
+            </Grid>
         );
     }
 }
