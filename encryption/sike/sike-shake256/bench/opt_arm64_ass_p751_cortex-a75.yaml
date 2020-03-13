@@ -1,0 +1,9 @@
+impl: opt_arm64_ass
+param: "p751"
+platform: Google Pixel 3 with ARM Cortex-A75 64-bit 2.45GHz
+comment: OS is Android 9. Compiler is clang 8.0.0. 
+timings:
+  unit: cycles
+  gen: 90012000
+  enc/sign: 147589000
+  dec/vrfy: 159517000

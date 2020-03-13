@@ -1,0 +1,14 @@
+impl: opt_p751
+param: "p751"
+platform: Intel Core i7-6700 (Skylake) 3.4GHz
+comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
+timings:
+  unit: cycles
+  gen: 288827000
+  enc/sign: 468175000
+  dec/vrfy: 502983000
+memory requirements:
+  gen: 13912
+  enc/sign: 14040
+  dec/vrfy: 14696
+  comment: Numbers are referring to peak memory usage.

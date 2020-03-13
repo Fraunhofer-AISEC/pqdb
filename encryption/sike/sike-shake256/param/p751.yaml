@@ -1,0 +1,13 @@
+name: SIKEp751
+security level:
+    classical: 272
+    quantum: 205
+    nist category: 5
+    comment: Quantum security uses a depth of 194 and width of 27.
+failure probability: 0
+number of operations: inf
+sizes:
+    sk: 644
+    pk: 564
+    ct/sig: 596
+    msg: 32
