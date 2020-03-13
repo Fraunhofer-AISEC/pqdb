@@ -39,9 +39,7 @@ class EditFlavor extends JsonFormsContainer {
 
     saveFlavor() {
         try {
-            var data = Object.assign({}, this.state.data);
-            delete data.type;
-            data = yaml.dump(data);
+            var data = yaml.dump(this.state.data);
             fs.writeFileSync(this.flavorFile, data);
             alert("Saved to " + this.flavorFile);
         } catch {
@@ -68,7 +66,7 @@ class SubtypeOverview extends JsonFormsContainer {
 
     saveFile() {
         try {
-            fs.writeFileSync(this.flavorFile, yaml.dump(this.state.data));
+            fs.writeFileSync(this.targetFile, yaml.dump(this.state.data));
             alert("Saved to " + this.targetFile);
         } catch {
             alert("Error while saving file.");
