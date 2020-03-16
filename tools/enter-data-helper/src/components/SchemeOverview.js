@@ -17,6 +17,8 @@ class EditScheme extends JsonFormsContainer {
         this.schemeFile = path.join(typeDirs[this.type], this.name, this.name + '.yaml');
         this.dataStore = yaml.load(fs.readFileSync(this.schemeFile, 'utf-8'));
         this.dataStore.type = this.type;
+        if (!('stateful' in this.dataStore))
+            this.dataStore.stateful = false;
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'scheme.json'), 'utf-8'));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
         for (var prop of this.state.uiSchema.elements) {
