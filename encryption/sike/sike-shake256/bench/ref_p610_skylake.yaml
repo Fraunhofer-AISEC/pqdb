@@ -5,10 +5,10 @@ comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0. Implementation is li
 timings:
   unit: cycles
   gen: 2661251000
-  enc/sign: 3882513000
-  dec/vrfy: 4595856000
+  enc|sign: 3882513000
+  dec|vrfy: 4595856000
 memory requirements:
   gen: 640
-  enc/sign: 640
-  dec/vrfy: 640
+  enc|sign: 640
+  dec|vrfy: 640
   comment: Numbers are referring to peak memory usage.

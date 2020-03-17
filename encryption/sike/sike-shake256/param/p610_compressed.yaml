@@ -9,5 +9,5 @@ number of operations: inf
 sizes:
     sk: 336
     pk: 273
-    ct/sig: 297
+    ct|sig: 297
     msg: 24

@@ -5,5 +5,5 @@ comment: OS is Android 9. Compiler is clang 8.0.0.
 timings:
   unit: cycles
   gen: 217710000
-  enc/sign: 271493000
-  dec/vrfy: 252955000
+  enc|sign: 271493000
+  dec|vrfy: 252955000
