@@ -3,6 +3,7 @@ param: "1024"
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
-  gen: 129670
-  enc|sign: 210092
-  dec|vrfy: 220864
+  measurements:
+    gen: 129670
+    enc|sign: 210092
+    dec|vrfy: 220864
