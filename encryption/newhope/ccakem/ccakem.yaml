@@ -1,0 +1,5 @@
+name: NewHope.CCAKEM
+type: KEM
+security notion: IND-CCA
+security notion comment: Security proof uses questionable oracle cloning as per https://eprint.iacr.org/2020/241.pdf
+number of operations: inf
