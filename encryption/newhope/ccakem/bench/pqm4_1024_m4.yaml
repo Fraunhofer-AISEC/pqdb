@@ -1,5 +1,3 @@
-impl: pqm4
-param: "1024"
 platform: Cortex-M4 (ARM)
 timings:
   unit: cycles

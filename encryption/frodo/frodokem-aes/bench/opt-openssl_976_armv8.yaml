@@ -1,5 +1,3 @@
-impl: opt-openssl
-param: "976"
 platform: ARM Cortex-A72 (1.992GHz 64-bit)
 timings:
   unit: cycles

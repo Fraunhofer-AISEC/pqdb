@@ -1,5 +1,3 @@
-impl: opt-plaincshake
-param: "640"
 platform: Intel Core i7-6700 (Skylake) 3.4GHZ
 timings:
   unit: cycles

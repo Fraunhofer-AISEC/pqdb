@@ -1,5 +1,3 @@
-impl: ref
-param: "1024"
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
