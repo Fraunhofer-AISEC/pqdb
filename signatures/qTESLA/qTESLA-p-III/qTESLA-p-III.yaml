@@ -1,3 +1,3 @@
-name: qTESLA.qTESLA-p-I
+name: qTESLA.qTESLA-p-III
 type: SIG
-security notion: EUF-CMA
+security notion: IND-CCA
