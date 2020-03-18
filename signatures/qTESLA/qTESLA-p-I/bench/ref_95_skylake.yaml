@@ -1,8 +1,0 @@
-impl: ref
-param: "95"
-platform: Intel Core i7-6700 (Skylake)
-timings:
-  unit: cycles
-  gen: 2358
-  enc|sign: 2299
-  dec|vrfy: 814
