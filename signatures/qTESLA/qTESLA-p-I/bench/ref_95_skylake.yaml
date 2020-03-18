@@ -1,8 +1,8 @@
 impl: ref
 param: "95"
-platform: Intel Core i7-6700 (Skylake) 3.4GHZ
+platform: Intel Core i7-6700 (Skylake)
 timings:
   unit: cycles
-  gen: 2358.6
-  enc|sign: 2299.0
-  dec|vrfy: 814.3
+  gen: 2358
+  enc|sign: 2299
+  dec|vrfy: 814
