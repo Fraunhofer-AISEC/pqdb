@@ -1,0 +1,10 @@
+platform: xeon-e3-1220-skylake
+impl: factored
+param: '857'
+timings:
+  unit: cycles
+  gen: 51518
+  enc|sign: 86060
+  dec|vrfy: 105443
+  comment: median
+comment: 'https://bench.cr.yp.to/results-kem.html'
