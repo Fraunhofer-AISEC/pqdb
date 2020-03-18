@@ -1,4 +1,4 @@
-﻿name: qTESLA
+name: qTESLA
 year:
     candidate: 2017
     paper: 2017
@@ -22,3 +22,4 @@ stateful: false
 nist round: 2
 sources:
   - NIST Submission Paper
+name: qTESLA
