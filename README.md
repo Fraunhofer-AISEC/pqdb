@@ -21,3 +21,7 @@ npm install
 To run the validation, execute the following command from the project root:
 
 `node tools/validation/validate.js`
+
+
+## Contribute
+If you want to contribute data, you can either create the required yaml files manually or use our helper tool which is located under [tools/enter-data-helper](tools/enter-data-helper).
