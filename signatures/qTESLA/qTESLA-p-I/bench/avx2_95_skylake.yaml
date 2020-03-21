@@ -3,6 +3,6 @@ param: "95"
 platform: Intel Core i7-6700 (Skylake) 3.4GHZ
 timings:
   unit: cycles
-  gen: 2212.4
-  enc|sign: 1370.4
-  dec|vrfy: 678.4
+  gen: 2212400
+  enc|sign: 1370400
+  dec|vrfy: 678400
