@@ -2,6 +2,6 @@ name: AVX2
 platform: c
 type: optimized
 side channel guarding:
-  branching: false
+  branching: true
 hardware features:
   - avx2
