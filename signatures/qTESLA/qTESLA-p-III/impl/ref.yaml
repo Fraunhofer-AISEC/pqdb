@@ -2,5 +2,5 @@ name: Reference
 platform: c
 type: reference
 side channel guarding:
-  branching: false
+  branching: true
 hardware features: []
