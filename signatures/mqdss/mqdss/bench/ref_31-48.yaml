@@ -1,0 +1,8 @@
+impl: ref
+param: "31-48"
+platform: Intel Core i7-4770K (Haswell) 3.5GHz
+timings:
+  unit: cycles
+  gen: 1192984
+  enc/sign: 26630590
+  dec/vrfy: 19840136

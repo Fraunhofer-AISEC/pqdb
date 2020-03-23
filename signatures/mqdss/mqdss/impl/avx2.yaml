@@ -4,3 +4,5 @@ platform: c
 side channel guarding:
   branching: true
   timing: true
+hardware features:
+- avx2
