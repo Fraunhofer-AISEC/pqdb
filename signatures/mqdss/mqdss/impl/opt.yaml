@@ -1,0 +1,6 @@
+name: Optimized
+type: optimized
+platform: c
+side channel guarding:
+  branching: true
+  timing: true

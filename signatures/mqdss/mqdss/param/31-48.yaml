@@ -1,0 +1,10 @@
+name: MQDSS-31-48
+security level:
+    classical: 160
+    quantum: 90
+    nist category: 1
+failure probability: 0
+sizes:
+    sk: 16
+    pk: 46
+    ct/sig: 20854
