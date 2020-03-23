@@ -1,0 +1,10 @@
+name: Rainbow-Vc
+security level:
+    classical: 272
+    quantum: 202
+    nist category: 5
+failure probability: 0
+sizes:
+    sk: 1227100
+    pk: 1705500
+    ct/sig: 1632

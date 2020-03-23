@@ -1,0 +1,10 @@
+name: Rainbow-Ia
+security level:
+    classical: 143
+    quantum: 74
+    nist category: 1
+failure probability: 0
+sizes:
+    sk: 393000
+    pk: 149000
+    ct/sig: 512

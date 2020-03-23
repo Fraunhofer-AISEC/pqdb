@@ -1,0 +1,10 @@
+name: Rainbow-IIIc
+security level:
+    classical: 207
+    quantum: 137
+    nist category: 3
+failure probability: 0
+sizes:
+    sk: 511400
+    pk: 710600
+    ct/sig: 1248
