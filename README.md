@@ -1,6 +1,17 @@
 # pqdb
 A comprehensive list of post-quantum crypto schemes and their properties
 
+## List of primitives
+
+### KEM
+* [Frodo](encryption/frodo) ([Website](https://frodokem.org/))
+* [Kyber](encryption/kyber) ([Website](https://pq-crystals.org/kyber/))
+* [NewHope](encryption/newhope) ([Website](https://www.newhopecrypto.org/))
+* [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
+
+### Signature
+* [qTESLA](signatures/qTESLA) ([Website](https://www.isara.com/resource-center/qtesla.html))
+
 ## Schema Validation
 All data is stored in .yaml files which are validated using JSON Schema. The following steps describe how to the validation script can be executed locally.
 

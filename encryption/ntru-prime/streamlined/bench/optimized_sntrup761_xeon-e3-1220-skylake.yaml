@@ -1,0 +1,10 @@
+platform: xeon-e3-1220-skylake
+impl: optimized
+param: '761'
+comment: 'https://bench.cr.yp.to/results-kem.html'
+timings:
+  unit: cycles
+  enc|sign: 46097
+  gen: 830510
+  dec|vrfy: 59007
+  comment: median
