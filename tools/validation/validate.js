@@ -86,8 +86,10 @@ function isValidFlavorDir(rootDirectory, directory) {
 }
 
 function isValidBenchmarkFile(fullPath, file) {
+    var filePath = path.join(fullPath, "bench", file);
+    console.log(filePath);
     var parts = file.split('_');
-    var data = yaml.load(fs.readFileSync(path.join(fullPath, "bench", file)));
+    var data = yaml.load(fs.readFileSync(filePath));
     if ('impl' in data || 'param' in data) {
         console.log("'impl' and 'param' should not be explicity set in benchmark files but are inferred from the filename.");
         return false;
