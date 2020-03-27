@@ -2,7 +2,7 @@ import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
 import { Grid, Button, Paper, Box } from '@material-ui/core';
-import { listFiles, ROOT_DIR } from './Tools';
+import { listFiles, ROOT_DIR, disableUIElements } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
@@ -62,11 +62,22 @@ class SubtypeOverview extends JsonFormsContainer {
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
             { 'bench': 'benchmark', 'param': 'paramset', 'impl': 'implementation' }[this.subType] + '.json')));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
+        if (this.subType === 'bench') {
+            var parts = this.subName.split('_');
+            this.dataStore.impl = parts[0];
+            this.dataStore.param = parts[1];
+            disableUIElements(this.state.uiSchema, ['#/properties/impl', '#/properties/param']);
+        }
     }
 
     saveFile() {
+        var data = Object.assign({}, this.state.data);
+        if (this.subType === 'bench') {
+            delete data.param;
+            delete data.impl;
+        }
         try {
-            fs.writeFileSync(this.targetFile, yaml.dump(this.state.data));
+            fs.writeFileSync(this.targetFile, yaml.dump(data));
             alert("Saved to " + this.targetFile);
         } catch {
             alert("Error while saving file.");
