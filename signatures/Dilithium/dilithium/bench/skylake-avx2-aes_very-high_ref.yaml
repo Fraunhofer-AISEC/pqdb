@@ -1,6 +1,6 @@
 platform: ref
 comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
-param: weak
+param: very-high
 impl: skylake-avx2-aes
 timings:
   unit: cycles
