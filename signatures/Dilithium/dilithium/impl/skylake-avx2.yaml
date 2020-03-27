@@ -1,0 +1,10 @@
+name: skylake-avx2
+platform: x86_64
+type: reference
+side channel guarding:
+  branching: true
+  timing: true
+dependencies:
+  - openssl
+hardware features:
+  - avx2

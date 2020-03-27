@@ -1,0 +1,8 @@
+name: skylake
+side channel guarding:
+  timing: true
+  branching: true
+type: reference
+platform: x86_64
+dependencies:
+  - openssl

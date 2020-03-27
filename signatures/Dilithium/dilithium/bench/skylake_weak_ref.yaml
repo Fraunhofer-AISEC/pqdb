@@ -1,0 +1,10 @@
+platform: ref
+comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
+param: weak
+impl: skylake
+timings:
+  unit: cycles
+  gen: 142596
+  enc|sign: 602170
+  comment: median timings (the signing algorithm varies in time)
+  dec|vrfy: 172697

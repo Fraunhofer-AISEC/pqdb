@@ -1,0 +1,26 @@
+name: Dilithium
+stateful: false
+category: lattice
+nist round: 2
+year:
+  paper: 2018
+  candidate: 2017
+  standardization: 1
+authors:
+  - Léo Ducas
+  - Eike Kiltz
+  - Tancrède Lepoint
+  - Vadim Lyubashevsky
+  - Peter Schwabe
+  - Gregor Seiler
+  - Damien Stehlé
+problems:
+  - assumption: MLWE
+  - assumption: MSIS
+  - assumption: SelfTargetMSIS
+    comment: >-
+      The security reductions uses this custom assumption, which is a
+      combination of MSIS and the hash function H.
+sources:
+  - 'https://eprint.iacr.org/2017/633'
+  - 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'

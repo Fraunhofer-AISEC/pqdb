@@ -1,0 +1,12 @@
+name: recommended
+security level:
+  comment: Best known LWE attack
+  classical: 141
+  quantum: 128
+  nist category: 2
+failure probability: 0
+sizes:
+  pk: 1472
+  ct|sig: 2701
+  sk: 3504
+number of operations: inf
