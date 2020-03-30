@@ -1,12 +1,12 @@
-name: qTESLA.qTESLA-p-III
+name: qTESLA.qTESLA-p-I
 security level:
-    classical: 304
-    quantum: 279
-    nist category: 3
+    classical: 150
+    quantum: 139
+    nist category: 1
 failure probability: 0000
 number of operations: inf
 sizes:
-    sk: 12392
-    pk: 38432
-    ct|sig: 5664
+    sk: 5224
+    pk: 14880
+    ct|sig: 2592
     msg: 256
