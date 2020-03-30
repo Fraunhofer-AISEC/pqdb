@@ -3,7 +3,7 @@ security level:
     classical: 111
     quantum: 100
     nist category: 1
-failure probability: -145
+failure probability: -178
 number of operations: inf
 sizes:
     sk: 1632

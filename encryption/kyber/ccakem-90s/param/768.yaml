@@ -1,12 +1,13 @@
-name: Kyber.CCAKEM768
+name: Kyber-90s.CCAKEM768
 security level:
     classical: 181
     quantum: 164
     nist category: 3
 failure probability: -164
+number of operations: inf
 sizes:
     sk: 2400
     pk: 1184
-    ct/sig: 1088
+    ct|sig: 1088
     msg: 32
     comment: "`sk` can be expanded from 32 byte seed"
