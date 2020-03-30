@@ -7,5 +7,5 @@ security level:
 failure probability: 0
 sizes:
     sk: 1227100
-    pk: 1705500
+    pk: 491900
     ct/sig: 204

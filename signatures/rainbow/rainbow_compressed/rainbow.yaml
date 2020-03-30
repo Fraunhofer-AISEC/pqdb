@@ -1,0 +1,3 @@
+name: Rainbow Compressed
+type: Signature
+security notion: EUF-CMA

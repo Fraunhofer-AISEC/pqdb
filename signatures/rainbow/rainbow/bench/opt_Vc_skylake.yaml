@@ -1,0 +1,12 @@
+impl: opt
+param: Ia
+platform: Intel iXEON E3-1275 (Skylake) 3.6GHZ
+timings:
+  unit: cycles
+  gen: 126000000
+  enc/sign: 755000
+  dec/vrfy: 197000
+memory requirement:
+  gen: 7000000
+  enc/sign: 4200000
+  dec/vrfy: 4500000
