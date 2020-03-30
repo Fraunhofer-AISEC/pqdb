@@ -1,10 +1,10 @@
 name: 
 category: multivariate
 year:
-	paper: 2017
-	candidate: 2017
+  paper: 2017
+  candidate: 2017
 problems:
-	- assumption: HFE
+  - assumption: HFE
 stateful: 
 nist round: 2
 authors:
