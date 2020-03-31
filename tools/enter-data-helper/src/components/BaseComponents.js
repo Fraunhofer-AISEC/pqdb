@@ -39,12 +39,13 @@ class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.history = props.history;
-        this.state = { location: '/' };
+        this.location = '/';
     }
 
     componentDidMount() {
         this.unlisten = this.history.listen((location, action) => {
-            this.setState({ location: window.location.pathname });
+            this.location = location.pathname;
+            this.forceUpdate();
         });
     }
     componentWillUnmount() {
@@ -52,8 +53,7 @@ class NavBar extends React.Component {
     }
 
     render() {
-        var s = window.location.pathname;
-        var path = s.substring(1, s.length - 1).split('/');
+        var path = this.location.substring(1, this.location.length - 1).split('/');
         var pathLinks = [['/', "Home"]];
         if (path.length >= 2 && path[0] !== '') {
             var text1 = path.slice(0, 2).join("/");

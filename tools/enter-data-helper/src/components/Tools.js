@@ -1,7 +1,17 @@
 const fs = window.require('fs');
 const path = require('path');
 
-const ROOT_DIR = require('path').join('..', '..');
+var argv = window.require('electron').remote.process.argv;
+
+var ROOT_DIR = path.join('..', '..');
+if (argv.length === 2 || argv.length === 3) {
+    ROOT_DIR = argv[argv.length - 1];
+}
+
+function checkRootDir() {
+    return fs.existsSync(ROOT_DIR) && fs.existsSync(path.join(ROOT_DIR, "encryption")) &&
+        fs.existsSync(path.join(ROOT_DIR, "signatures")) && fs.existsSync(path.join(ROOT_DIR, "schema"));
+}
 
 function listDirs(dir) {
     return fs.readdirSync(dir).filter(x => fs.statSync(path.join(dir, x)).isDirectory());
@@ -24,4 +34,4 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
-export { disableUIElements, listDirs, listFiles, ROOT_DIR }
+export { disableUIElements, listDirs, listFiles, checkRootDir, ROOT_DIR }
