@@ -43,7 +43,7 @@
     "eject": "react-scripts eject",
     "electron": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron . ../..\"",
     "package-linux": "electron-builder -l AppImage",
-    "package-mac": "electron-builder -m dmg"
+    "package-mac": "electron-builder -m tar.gz"
   },
   "eslintConfig": {
     "extends": "react-app"
