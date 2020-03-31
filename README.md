@@ -37,7 +37,7 @@ To run the validation, execute the following command from the project root:
 ## Contribute
 If you want to contribute data, you can either create the required yaml files manually (use the schema files located in [schema/](schema/) as a reference) or use our helper tool which is located under [tools/enter-data-helper](tools/enter-data-helper).
 
-If you think a change to the schema is necessary (for example to add further APIs or security notions), please do so in a seperate commit and justify the change.
+If you think a change to the schema is necessary (for example to add further APIs or security notions), please do so in a separate commit and justify the change.
 
 When you are done, please [create a pull request](https://github.com/cryptoeng/pqdb/compare).
 
