@@ -1,14 +1,13 @@
-impl: opt_p434
-param: "p434"
 platform: Intel Core i7-6700 (Skylake) 3.4GHz
 comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
 timings:
   unit: cycles
-  gen: 56265000
-  enc|sign: 92180000
-  dec|vrfy: 98335000
+  measurements:
+    gen: 86067000
+    enc|sign: 141891000
+    dec|vrfy: 150879000
 memory requirements:
-  gen: 8040
-  enc|sign: 8360
-  dec|vrfy: 8744
+  gen: 8072
+  enc|sign: 8456
+  dec|vrfy: 8904
   comment: Numbers are referring to peak memory usage.

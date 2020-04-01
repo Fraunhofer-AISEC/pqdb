@@ -1,12 +1,11 @@
-impl: ref
-param: "p751"
 platform: Intel Core i7-6700 (Skylake) 3.4GHz
 comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0. Implementation is linked against GMP 6.1.1
 timings:
   unit: cycles
-  gen: 4743861000
-  enc|sign: 6534356000
-  dec|vrfy: 8016158000
+  measurements:
+    gen: 4743861000
+    enc|sign: 6534356000
+    dec|vrfy: 8016158000
 memory requirements:
   gen: 768
   enc|sign: 768

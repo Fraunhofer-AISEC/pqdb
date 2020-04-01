@@ -1,12 +1,11 @@
-impl: ref
-param: "p434"
 platform: Intel Core i7-6700 (Skylake) 3.4GHz
 comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0. Implementation is linked against GMP 6.1.1
 timings:
   unit: cycles
-  gen: 1047991000
-  enc|sign: 1482681000
-  dec|vrfy: 1790304000
+  measurements:
+    gen: 1047991000
+    enc|sign: 1482681000
+    dec|vrfy: 1790304000
 memory requirements:
   gen: 448
   enc|sign: 448

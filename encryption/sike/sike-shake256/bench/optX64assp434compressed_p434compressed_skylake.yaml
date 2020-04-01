@@ -1,14 +1,13 @@
-impl: opt_x64_ass_compr_p503
-param: "p503"
 platform: Intel Core i7-6700 (Skylake) 3.4GHz
 comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
 timings:
   unit: cycles
-  gen: 23395000
-  enc|sign: 27543000
-  dec|vrfy: 25534000
+  measurements:
+    gen: 16542000
+    enc|sign: 20045000
+    dec|vrfy: 18930000
 memory requirements:
-  gen: 18872
-  enc|sign: 17560
-  dec|vrfy: 19128
+  gen: 16920
+  enc|sign: 15640
+  dec|vrfy: 17000
   comment: Numbers are referring to peak memory usage.

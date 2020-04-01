@@ -1,14 +1,13 @@
-impl: opt_p610
-param: "p610"
 platform: Intel Core i7-6700 (Skylake) 3.4GHz
 comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
 timings:
   unit: cycles
-  gen: 160401000
-  enc|sign: 294628000
-  dec|vrfy: 296577000
+  measurements:
+    gen: 15511000
+    enc|sign: 28422000
+    dec|vrfy: 28639000
 memory requirements:
-  gen: 12008
-  enc|sign: 12408
-  dec|vrfy: 12936
+  gen: 13536
+  enc|sign: 12512
+  dec|vrfy: 12112
   comment: Numbers are referring to peak memory usage.
