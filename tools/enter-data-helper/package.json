@@ -12,6 +12,13 @@
     ],
     "directories": {
       "buildResources": "assets"
+    },
+    "linux": {
+      "target": "AppImage",
+      "artifactName": "enter-data-helper-linux.${ext}"
+    },
+    "mac": {
+      "target": "dir"
     }
   },
   "dependencies": {
@@ -42,8 +49,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron . ../..\"",
-    "package-linux": "electron-builder -l AppImage",
-    "package-mac": "electron-builder -m tar.gz"
+    "package-linux": "electron-builder -l",
+    "package-mac": "electron-builder -m && tar -czf dist/enter-data-helper-mac.tar.gz -C dist/mac enter-data-helper.app"
   },
   "eslintConfig": {
     "extends": "react-app"
