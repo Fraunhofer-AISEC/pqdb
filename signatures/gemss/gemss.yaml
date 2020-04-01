@@ -5,7 +5,7 @@ year:
   candidate: 2017
 problems:
   - assumption: HFE
-stateful: 
+stateful: false
 nist round: 2
 authors:
   - A. Casanova
