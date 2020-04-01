@@ -2,7 +2,7 @@ import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
 import { Grid, Button, Paper, Box } from '@material-ui/core';
-import { listDirs, ROOT_DIR } from './Tools';
+import { listDirs, ROOT_DIR, disableUIElements } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
@@ -21,16 +21,7 @@ class EditScheme extends JsonFormsContainer {
             this.dataStore.stateful = false;
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'scheme.json'), 'utf-8'));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
-        for (var prop of this.state.uiSchema.elements) {
-            if ('#/properties/type' === prop.scope)
-                prop.rule = {
-                    effect: "DISABLE",
-                    condition: {
-                        scope: prop.scope,
-                        schema: {}
-                    }
-                }
-        }
+        disableUIElements(this.state.uiSchema, ['#/properties/type']);
     }
 
     render() {
