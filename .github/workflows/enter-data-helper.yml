@@ -6,7 +6,7 @@ jobs:
   build-and-package:
     runs-on: ubuntu-latest
     env:
-      helper-dir: pqdb/tools/enter-data-helper
+      helper-dir: tools/enter-data-helper
 
     steps:
     - uses: actions/checkout@v2
