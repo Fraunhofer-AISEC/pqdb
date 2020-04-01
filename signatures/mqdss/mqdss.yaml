@@ -5,7 +5,7 @@ year:
 	candidate: 2019
 problems:
 	- assumption: MQ
-stateful: 
+stateful: false
 nist round: 2
 authors:
   - Ming-Shing Chen
