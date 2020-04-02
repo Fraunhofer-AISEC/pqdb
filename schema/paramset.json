@@ -34,8 +34,7 @@
             "required": [
                 "classical",
                 "quantum"
-            ],
-            "$comment": "#XXX Do we really always have a quantum estimation?"
+            ]
         },
         "failure probability": {
             "type": "number",
@@ -62,7 +61,7 @@
                     "minimum": 1,
                     "$comment": "For KEMs, size of the shared secret. #TODO signatures?"
                 },
-                "ct/sig": {
+                "ct|sig": {
                     "type": "integer",
                     "minimum": 1
                 },
@@ -71,7 +70,7 @@
                 }
             },
             "additionalProperties": false,
-            "required": ["sk", "pk", "ct/sig"]
+            "required": ["sk", "pk", "ct|sig"]
         },
         "number of operations": {
             "type": "string",

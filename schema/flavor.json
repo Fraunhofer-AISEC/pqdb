@@ -25,7 +25,8 @@
             "enum": [
                 "IND-CPA",
                 "IND-CCA",
-                "EUF-CMA"
+                "EUF-CMA",
+                "SUF-CMA"
             ],
             "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2."
         },

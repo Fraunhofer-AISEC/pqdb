@@ -64,11 +64,10 @@ function isValidFlavorDir(rootDirectory, directory) {
 
     var schemaForDir = {
         "param": schemaForParam,
-        "impl": schemaForImpl,
-        "bench": schemaForBench
+        "impl": schemaForImpl
     };
 
-    return Object.keys(schemaForDir).every(
+    var valid = Object.keys(schemaForDir).every(
         directory => !exists(path.join(fullPath, directory))
             || fs.readdirSync(path.join(fullPath, directory)).every(
                 file => !fs.statSync(path.join(fullPath, directory, file)).isFile()
@@ -76,12 +75,46 @@ function isValidFlavorDir(rootDirectory, directory) {
                     || isValidFile(path.join(fullPath, directory, file), schemaForDir[directory])
             )
     );
+    if (!valid) return false;
+
+
+    return !exists(path.join(fullPath, "bench")) || fs.readdirSync(path.join(fullPath, "bench")).every(
+        file => !fs.statSync(path.join(fullPath, "bench", file)).isFile()
+            || !file.endsWith(".yaml")
+            || isValidBenchmarkFile(fullPath, file)
+    );
+}
+
+function isValidBenchmarkFile(fullPath, file) {
+    var filePath = path.join(fullPath, "bench", file);
+    console.log(filePath);
+    var parts = file.split('_');
+    var data = yaml.load(fs.readFileSync(filePath));
+    if ('impl' in data || 'param' in data) {
+        console.log("'impl' and 'param' should not be explicity set in benchmark files but are inferred from the filename.");
+        return false;
+    }
+    data.impl = parts[0];
+    if (!exists(path.join(fullPath, 'impl', data.impl + '.yaml'))) {
+        console.log("Referenced implementation '" + data.impl + "' does not exist.");
+        return false;
+    }
+    data.param = parts[1];
+    if (!exists(path.join(fullPath, 'param', data.param + '.yaml'))) {
+        console.log("Referenced parameter set '" + data.param + "' does not exist.");
+        return false;
+    }
+    return isValidData(data, schemaForBench);
 }
 
 function isValidFile(file, schema) {
     console.log(file);
+    return isValidData(yaml.load(fs.readFileSync(file)), schema);
+}
+
+function isValidData(data, schema) {
     var isValid = ajv.compile(schema);
-    if (!isValid(yaml.load(fs.readFileSync(file)))) {
+    if (!isValid(data)) {
         console.error(isValid.errors);
         return false;
     }
