@@ -85,7 +85,7 @@ class SchemeOverview extends React.Component {
             this.setState({ flavors: listDirs(this.baseDir) });
             return;
         }
-        var link = window.location.pathname + name + "/";
+        var link = this.history.location.pathname + name + "/";
         this.history.push(link);
         window.scrollTo(0, 0);
     }

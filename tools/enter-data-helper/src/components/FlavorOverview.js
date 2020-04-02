@@ -148,7 +148,7 @@ class FlavorOverview extends React.Component {
             return;
         }
 
-        this.history.push(window.location.pathname + type + '/' + name + '/');
+        this.history.push(this.history.location.pathname + type + '/' + name + '/');
         window.scrollTo(0, 0);
     }
 
