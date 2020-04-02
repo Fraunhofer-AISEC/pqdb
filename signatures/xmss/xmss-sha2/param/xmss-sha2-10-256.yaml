@@ -7,6 +7,6 @@ failure probability: 0
 sizes:
     sk: 3116
     pk: 68
-    ct/sig: 2500
+    ct|sig: 2500
     msg: 256
     comment: "value for `sk` depends vastly on the implementation, and can be balanced against signing time. The given value is when using `treehash` from BDS08, estimated. Source: https://crypto.stackexchange.com/a/77292 . Absolute minimum is 132 bytes."
