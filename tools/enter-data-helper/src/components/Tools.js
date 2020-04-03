@@ -1,27 +1,7 @@
 const fs = window.require('fs');
 const path = require('path');
 
-var argv = window.require('electron').remote.process.argv;
-
-var ROOT_DIR = path.join('..', '..');
-if (argv.length === 2 || argv.length === 3) {
-    ROOT_DIR = argv[argv.length - 1];
-}
-Object.freeze(ROOT_DIR);
-
-var application = null;
-function registerApp(app) {
-    application = app;
-}
-
-function showAlert(msg, severity) {
-    application.openAlert(msg, severity);
-}
-
-function checkRootDir() {
-    return fs.existsSync(ROOT_DIR) && fs.existsSync(path.join(ROOT_DIR, "encryption")) &&
-        fs.existsSync(path.join(ROOT_DIR, "signatures")) && fs.existsSync(path.join(ROOT_DIR, "schema"));
-}
+const ROOT_DIR = require('path').join('..', '..');
 
 function listDirs(dir) {
     return fs.readdirSync(dir).filter(x => fs.statSync(path.join(dir, x)).isDirectory());
@@ -31,6 +11,9 @@ function listFiles(dir) {
     return fs.readdirSync(dir).filter(x => fs.statSync(path.join(dir, x)).isFile());
 }
 
+<<<<<<< HEAD
+export { listDirs, listFiles, ROOT_DIR }
+=======
 function disableUIElements(uiSchema, scopes) {
     for (var prop of uiSchema.elements) {
         if (scopes.includes(prop.scope))
@@ -63,3 +46,4 @@ export {
 >>>>>>> Stashed changes
 =======
 >>>>>>> master
+>>>>>>> FALCON
