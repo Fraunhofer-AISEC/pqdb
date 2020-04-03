@@ -2,7 +2,19 @@ import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
 import { Grid, Button, Paper, Box } from '@material-ui/core';
+<<<<<<< HEAD
 import { listDirs, ROOT_DIR } from './Tools';
+=======
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+import { listDirs, ROOT_DIR, disableUIElements } from './Tools';
+=======
+import { listDirs, ROOT_DIR, disableUIElements, showAlert } from './Tools';
+>>>>>>> Stashed changes
+=======
+import { listDirs, ROOT_DIR, disableUIElements, showAlert } from './Tools';
+>>>>>>> master
+>>>>>>> FALCON
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')

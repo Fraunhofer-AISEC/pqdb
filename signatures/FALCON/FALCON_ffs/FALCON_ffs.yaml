@@ -1,0 +1,4 @@
+name: FALCON_ffs
+type: SIG
+security notion: IND-CPA
+security notion comment:  inherited from the instantiation of GPV IBE
