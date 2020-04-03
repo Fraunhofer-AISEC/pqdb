@@ -1,7 +1,27 @@
 const fs = window.require('fs');
 const path = require('path');
 
-const ROOT_DIR = require('path').join('..', '..');
+var argv = window.require('electron').remote.process.argv;
+
+var ROOT_DIR = path.join('..', '..');
+if (argv.length === 2 || argv.length === 3) {
+    ROOT_DIR = argv[argv.length - 1];
+}
+Object.freeze(ROOT_DIR);
+
+var application = null;
+function registerApp(app) {
+    application = app;
+}
+
+function showAlert(msg, severity) {
+    application.openAlert(msg, severity);
+}
+
+function checkRootDir() {
+    return fs.existsSync(ROOT_DIR) && fs.existsSync(path.join(ROOT_DIR, "encryption")) &&
+        fs.existsSync(path.join(ROOT_DIR, "signatures")) && fs.existsSync(path.join(ROOT_DIR, "schema"));
+}
 
 function listDirs(dir) {
     return fs.readdirSync(dir).filter(x => fs.statSync(path.join(dir, x)).isDirectory());
@@ -24,4 +44,16 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
+<<<<<<< Updated upstream
 export { disableUIElements, listDirs, listFiles, ROOT_DIR }
+=======
+export {
+    checkRootDir,
+    disableUIElements,
+    listDirs,
+    listFiles,
+    registerApp,
+    showAlert,
+    ROOT_DIR
+}
+>>>>>>> Stashed changes
