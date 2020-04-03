@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-name: qTESLA.qTESLA-p-I
-security level:
-    classical: 150
-    quantum: 139
-    nist category: 1
-failure probability: 0000
-number of operations: inf
-sizes:
-    sk: 5224
-    pk: 14880
-    ct|sig: 2592
-=======
 name: qTESLA.qTESLA-p-III
 security level:
     classical: 304
@@ -21,6 +8,5 @@ number of operations: inf
 sizes:
     sk: 12392
     pk: 38432
-    ct|sig: 5664
->>>>>>> master
+    ct|sig: 5664 
     msg: 256
