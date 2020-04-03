@@ -2,11 +2,15 @@ import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { JsonFormsContainer, SelectOrCreate, SelectList } from './BaseComponents';
 import { Grid, Button, Paper, Box } from '@material-ui/core';
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import { listFiles, ROOT_DIR, disableUIElements } from './Tools';
 =======
 import { listFiles, ROOT_DIR, disableUIElements, showAlert } from './Tools';
 >>>>>>> Stashed changes
+=======
+import { listFiles, ROOT_DIR, disableUIElements, showAlert } from './Tools';
+>>>>>>> master
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
@@ -82,11 +86,15 @@ class SubtypeOverview extends JsonFormsContainer {
         }
         try {
             fs.writeFileSync(this.targetFile, yaml.dump(data));
+<<<<<<< HEAD
 <<<<<<< Updated upstream
             alert("Saved to " + this.targetFile);
 =======
             showAlert("Saved to " + this.targetFile, "success");
 >>>>>>> Stashed changes
+=======
+            showAlert("Saved to " + this.targetFile, "success");
+>>>>>>> master
         } catch {
             showAlert("Error while saving file.", "error");
         }

@@ -44,9 +44,12 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 export { disableUIElements, listDirs, listFiles, ROOT_DIR }
 =======
+=======
+>>>>>>> master
 export {
     checkRootDir,
     disableUIElements,
@@ -56,4 +59,7 @@ export {
     showAlert,
     ROOT_DIR
 }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
