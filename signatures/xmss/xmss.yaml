@@ -16,5 +16,6 @@ problems comment: "Only properties of hash functions assumed. This is implicitly
 trust comment: "Very high because of minimal assumptions: Only relies on some rather weak properties of the hash function used (collision resistance is only required for the hash function used on the message itself)"
 sources:
   - RFC8391 https://tools.ietf.org/html/rfc8391
+  - https://doi.org/10.6028/NIST.SP.800-208-draft
   - https://eprint.iacr.org/2011/484
   - https://eprint.iacr.org/2017/349 (for public key size)

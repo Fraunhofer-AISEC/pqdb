@@ -1,7 +1,7 @@
 name: XMSS-SHA2_10_256
 security level:
     classical: 256
-    quantum: 256
+    quantum: 128
 number of operations: 2^10
 failure probability: 0
 sizes:
