@@ -1,8 +1,20 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
-import { JsonFormsContainer, SelectOrCreate, SelectList } from './BaseComponents';
+import { JsonFormsContainer, SelectOrCreate } from './BaseComponents';
 import { Grid, Button, Paper, Box } from '@material-ui/core';
+<<<<<<< HEAD
+import { listDirs, ROOT_DIR } from './Tools';
+=======
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+import { listDirs, ROOT_DIR, disableUIElements } from './Tools';
+=======
 import { listDirs, ROOT_DIR, disableUIElements, showAlert } from './Tools';
+>>>>>>> Stashed changes
+=======
+import { listDirs, ROOT_DIR, disableUIElements, showAlert } from './Tools';
+>>>>>>> master
+>>>>>>> FALCON
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
@@ -21,7 +33,16 @@ class EditScheme extends JsonFormsContainer {
             this.dataStore.stateful = false;
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'scheme.json'), 'utf-8'));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
-        disableUIElements(this.state.uiSchema, ['#/properties/type']);
+        for (var prop of this.state.uiSchema.elements) {
+            if ('#/properties/type' === prop.scope)
+                prop.rule = {
+                    effect: "DISABLE",
+                    condition: {
+                        scope: prop.scope,
+                        schema: {}
+                    }
+                }
+        }
     }
 
     render() {
@@ -46,9 +67,9 @@ class EditScheme extends JsonFormsContainer {
             delete data.type;
             data = yaml.dump(data);
             fs.writeFileSync(this.schemeFile, data);
-            showAlert("Saved to " + this.schemeFile, "success");
+            alert("Saved to " + this.schemeFile);
         } catch {
-            showAlert("Error while saving file.", "error");
+            alert("Error while saving file.");
         }
     }
 }
@@ -65,7 +86,7 @@ class SchemeOverview extends React.Component {
 
     submitForm(name, create) {
         if (create === fs.existsSync(path.join(this.baseDir, name, name + ".yaml"))) {
-            showAlert("Error. Unexpected existance or non-existance of flavor file.", "error");
+            alert("Error. Unexpected existance or non-existance of flavor file.");
             return;
         }
 
@@ -77,15 +98,15 @@ class SchemeOverview extends React.Component {
                     .filter(x => !fs.existsSync(x)).forEach(x => fs.mkdirSync(x));
                 var data = { name: name };
                 fs.writeFileSync(path.join(dir, name + ".yaml"), yaml.dump(data));
-                showAlert('Flavor "' + name + '" was successfully created.', 'success');
+                alert('Flavor "' + name + '" was successfully created.');
             } catch {
-                showAlert('Flavor "' + name + '" could not be created.', 'error');
+                alert('Flavor "' + name + '" could not be created.');
             }
 
             this.setState({ flavors: listDirs(this.baseDir) });
             return;
         }
-        var link = this.history.location.pathname + name + "/";
+        var link = window.location.pathname + name + "/";
         this.history.push(link);
         window.scrollTo(0, 0);
     }
@@ -105,10 +126,8 @@ class SchemeOverview extends React.Component {
                     <Paper>
                         <Box px={2} pt={1} pb={2}>
                             <h2>Flavours</h2>
-                            <SelectList entries={this.state.flavors}
-                                action={(identifier) => this.submitForm(identifier, false)} />
-                            <SelectOrCreate schemes={this.state.flavors} addNew={true}
-                                action={(data) => this.submitForm(data.identifier, true)} />
+                            <SelectOrCreate schemes={this.state.flavors} addNew={false} action={(data) => this.submitForm(data.name, false)} />
+                            <SelectOrCreate schemes={this.state.flavors} addNew={true} action={(data) => this.submitForm(data.name, true)} />
                         </Box>
                     </Paper>
                 </Grid>

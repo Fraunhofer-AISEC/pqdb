@@ -2,13 +2,8 @@ import React from 'react';
 import { JsonForms, JsonFormsDispatch } from '@jsonforms/react';
 import { Generate, schemaMatches, rankWith, resolveSchema } from '@jsonforms/core';
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
-import {
-    Tooltip, Grid, Button, AppBar, Toolbar, IconButton, Link, Breadcrumbs, Typography, ButtonGroup, Box,
-    List, ListItem, ListItemIcon, ListItemText, Paper
-} from '@material-ui/core';
-import {
-    Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon, ArrowForward as ForwardIcon
-} from '@material-ui/icons';
+import { Tooltip, Grid, Button, AppBar, Toolbar, IconButton, Link, Breadcrumbs, Typography } from '@material-ui/core';
+import { Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
 
 class TooltipWrapper extends React.Component {
@@ -44,17 +39,12 @@ class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.history = props.history;
-        this.location = this.history.location.pathname;
-    }
-
-    selectTheme(theme) {
-        this.props.setTheme(theme);
+        this.state = { location: '/' };
     }
 
     componentDidMount() {
         this.unlisten = this.history.listen((location, action) => {
-            this.location = location.pathname;
-            this.forceUpdate();
+            this.setState({ location: window.location.pathname });
         });
     }
     componentWillUnmount() {
@@ -62,7 +52,8 @@ class NavBar extends React.Component {
     }
 
     render() {
-        var path = this.location.substring(1, this.location.length - 1).split('/');
+        var s = window.location.pathname;
+        var path = s.substring(1, s.length - 1).split('/');
         var pathLinks = [['/', "Home"]];
         if (path.length >= 2 && path[0] !== '') {
             var text1 = path.slice(0, 2).join("/");
@@ -100,15 +91,6 @@ class NavBar extends React.Component {
                         {pathLinks.slice(0, last).map(x => <LinkRouter key={x[0]} to={x[0]}>{x[1]}</LinkRouter>)}
                         {<Typography color="textPrimary">{pathLinks[last][1]}</Typography>}
                     </Breadcrumbs>
-                    <Box flex={1} />
-                    <ButtonGroup>
-                        <Button
-                            variant={this.props.theme === 'light' ? "contained" : "outlined"}
-                            onClick={() => this.selectTheme('light')}>Light</Button>
-                        <Button
-                            variant={this.props.theme === 'dark' ? "contained" : "outlined"}
-                            onClick={() => this.selectTheme('dark')}>Dark</Button>
-                    </ButtonGroup>
                 </Toolbar>
             </AppBar>
         );
@@ -146,32 +128,6 @@ class JsonFormsContainer extends React.Component {
     }
 }
 
-class SelectList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.entries = props.entries;
-    }
-
-    render() {
-        return (
-            <Paper>
-                <List component="ul">
-                    {
-                        this.entries.map(entry => (
-                            <ListItem button key={"item-" + entry} onClick={() => this.props.action(entry)}>
-                                <ListItemText primary={entry} />
-                                <ListItemIcon>
-                                    <ForwardIcon />
-                                </ListItemIcon>
-                            </ListItem>
-                        ))
-                    }
-                </List>
-            </Paper>
-        );
-    }
-}
-
 class SelectOrCreate extends JsonFormsContainer {
     constructor(props) {
         super(props);
@@ -199,16 +155,16 @@ class SelectOrCreate extends JsonFormsContainer {
     generateSchema() {
         var schema = {
             type: "object", properties: {
-                identifier: {
+                name: {
                     type: "string",
                     pattern: this.regex
                 }
-            }, required: ["identifier"]
+            }, required: ["name"]
         };
         if (this.addNew && this.props.schemes.length > 0)
-            schema.properties.identifier.not = { type: "string", enum: this.props.schemes };
+            schema.properties.name.not = { type: "string", enum: this.props.schemes };
         else if (!this.addNew)
-            schema.properties.identifier.enum = this.props.schemes;
+            schema.properties.name.enum = this.props.schemes;
 
         return schema;
     }
@@ -234,4 +190,4 @@ class SelectOrCreate extends JsonFormsContainer {
 }
 
 export default JsonFormsContainer;
-export { JsonFormsContainer, SelectOrCreate, SelectList, NavBar };
+export { JsonFormsContainer, SelectOrCreate, NavBar };
