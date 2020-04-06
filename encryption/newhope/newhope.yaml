@@ -13,8 +13,7 @@ authors:
   - Douglas Stebila
 problems:
     - assumption: R-LWE
-      comment:
-stateful:
+stateful: false
 nist round: 2
 sources:
   - NIST Submission Paper

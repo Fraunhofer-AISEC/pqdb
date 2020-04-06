@@ -64,10 +64,10 @@
                 "gen": {
                     "type": "number"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "number"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "number"
                 },
                 "comment": {
@@ -84,10 +84,10 @@
                 "gen": {
                     "type": "number"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "number"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "number"
                 },
                 "comment": {
