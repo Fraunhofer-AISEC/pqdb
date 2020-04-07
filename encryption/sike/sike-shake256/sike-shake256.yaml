@@ -1,3 +1,9 @@
 name: SIKE-SHAKE256
 type: KEM
 security notion: IND-CCA
+dh-ness: Due to the fact that SIKE is based on the Supersingular Isogeny
+  Diffie-Hellman (SIDH) problem, the resulting PKE and KEM schemes are modified
+  versions of the classical ElGamal scheme and the transformation of Hofheinz, 
+  Hövelmanns and Kiltz. The security proofs follow immediately by replacing
+  the group-based computational Diffie-Hellman problem by its analogue SIDH 
+  problem.
