@@ -1,8 +1,0 @@
-impl: avx2
-param: "160"
-platform: Intel Core i7-6700 (Skylake) 3.4GHZ
-timings:
-  unit: cycles 
-  gen: 12791000
-  enc|sign: 3081900
-  dec|vrfy: 1745300
