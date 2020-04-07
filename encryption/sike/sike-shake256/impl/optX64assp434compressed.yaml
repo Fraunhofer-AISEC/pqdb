@@ -1,6 +1,6 @@
 name: Optimized implementation using x64 assembly for p434 with compressed keys
 type: optimized
-platform: c, assembly
+platform: c, x64assembly
 side channel guarding:
   branching: true
   timing: true
