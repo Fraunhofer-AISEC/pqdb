@@ -1,4 +1,4 @@
-# pqdb
+# ![PQDB Logo](images/pqdb.png)  
 A comprehensive list of post-quantum crypto schemes and their properties
 
 ## Schema Validation
