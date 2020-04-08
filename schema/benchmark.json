@@ -29,10 +29,10 @@
                 "gen": {
                     "type": "number"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "number"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "number"
                 },
                 "comment": {
@@ -47,10 +47,10 @@
                 "gen": {
                     "type": "integer"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "integer"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "integer"
                 },
                 "comment": {
