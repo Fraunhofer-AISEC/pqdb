@@ -1,4 +1,4 @@
-# ![PQDB Logo](images/pqdb.png)  
+# ![PQDB Logo](misc/logo/pqdb.png)  
 A comprehensive list of post-quantum crypto schemes and their properties
 
 ## List of primitives
