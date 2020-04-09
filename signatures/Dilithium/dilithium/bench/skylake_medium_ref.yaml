@@ -1,10 +1,9 @@
-platform: ref
+platform: Intel Core i7-6600U Skylake (Mhz 2600) | GCC 7.3.0
 comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
-param: medium
-impl: skylake
 timings:
   unit: cycles
-  gen: 242532
-  enc|sign: 1058483
+  measurements:
+    gen: 242532
+    enc|sign: 1058483
+    dec|vrfy: 272800
   comment: median timings (the signing algorithm varies in time)
-  dec|vrfy: 272800

@@ -1,10 +1,9 @@
-platform: ref
+platform: Intel Core i7-6600U Skylake (Mhz 2600) | GCC 7.3.0
 comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
-param: weak
-impl: skylake-avx2-aes
 timings:
   unit: cycles
-  gen: 44734
-  enc|sign: 147145
+  measurements:
+    gen: 44734
+    enc|sign: 147145
+    dec|vrfy: 55896
   comment: median timings (the signing algorithm varies in time)
-  dec|vrfy: 55896
