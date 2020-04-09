@@ -34,8 +34,7 @@
             "required": [
                 "classical",
                 "quantum"
-            ],
-            "$comment": "#XXX Do we really always have a quantum estimation?"
+            ]
         },
         "failure probability": {
             "type": "number",
@@ -43,7 +42,7 @@
             "$comment": "0 for 0, log_2 else"
         },
         "failure probability comment": {
-            "type": "integer"
+            "type": "string"
         },
         "sizes": {
             "type": "object",
