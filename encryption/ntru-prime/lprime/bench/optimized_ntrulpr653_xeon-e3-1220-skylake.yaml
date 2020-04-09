@@ -1,10 +1,9 @@
 platform: xeon-e3-1220-skylake
-impl: factored
-param: '653'
 comment: 'https://bench.cr.yp.to/results-kem.html'
 timings:
   unit: cycles
-  gen: 38361
   comment: median
-  enc|sign: 63575
-  dec|vrfy: 77099
+  measurements:
+    gen: 38361
+    enc|sign: 63575
+    dec|vrfy: 77099

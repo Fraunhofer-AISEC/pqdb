@@ -1,6 +1,6 @@
 import React from 'react';
-import { SelectOrCreate } from './BaseComponents';
-import { listDirs, ROOT_DIR } from './Tools';
+import { SelectOrCreate, SelectList } from './BaseComponents';
+import { listDirs, ROOT_DIR, showAlert } from './Tools';
 import { Box, Grid, Paper } from '@material-ui/core';
 const fs = window.require('fs');
 const path = require('path');
@@ -20,7 +20,7 @@ class SelectScheme extends React.Component {
 
     submitForm(type, name, create) {
         if (create === fs.existsSync(path.join(this.typeDirs[type], name, name + ".yaml"))) {
-            alert("Error. Unexpected existance or non-existance of scheme file.");
+            showAlert("Error. Unexpected existance or non-existance of scheme file.", "error");
             return;
         }
 
@@ -30,9 +30,9 @@ class SelectScheme extends React.Component {
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
                 var data = { name: name };
                 fs.writeFileSync(path.join(dir, name + ".yaml"), yaml.dump(data));
-                alert('Scheme "' + name + '" was successfully created.');
+                showAlert('Scheme "' + name + '" was successfully created.', 'success');
             } catch {
-                alert('Scheme "' + name + '" could not be created.');
+                showAlert('Scheme "' + name + '" could not be created.', 'error');
             }
 
             var newState = {};
@@ -53,17 +53,21 @@ class SelectScheme extends React.Component {
                     <Paper>
                         <Box px={2} pt={1} pb={2}>
                             <h2>Encryption Schemes</h2>
-                            <SelectOrCreate schemes={this.state.enc} addNew={false} action={(data) => this.submitForm("enc", data.name, false)} />
-                            <SelectOrCreate schemes={this.state.enc} addNew={true} action={(data) => this.submitForm("enc", data.name, true)} />
+                            <SelectList entries={this.state.enc}
+                                action={(identifier) => this.submitForm("enc", identifier, false)} />
+                            <SelectOrCreate schemes={this.state.enc} addNew={true}
+                                action={(data) => this.submitForm("enc", data.identifier, true)} />
                         </Box>
                     </Paper>
                 </Grid>
                 <Grid item>
-                    <Paper >
+                    <Paper>
                         <Box px={2} pt={1} pb={2}>
                             <h2>Signature Schemes</h2>
-                            <SelectOrCreate schemes={this.state.sig} addNew={false} action={(data) => this.submitForm("sig", data.name, false)} />
-                            <SelectOrCreate schemes={this.state.sig} addNew={true} action={(data) => this.submitForm("sig", data.name, true)} />
+                            <SelectList entries={this.state.sig}
+                                action={(identifier) => this.submitForm("sig", identifier, false)} />
+                            <SelectOrCreate schemes={this.state.sig} addNew={true}
+                                action={(data) => this.submitForm("sig", data.identifier, true)} />
                         </Box>
                     </Paper>
                 </Grid>
