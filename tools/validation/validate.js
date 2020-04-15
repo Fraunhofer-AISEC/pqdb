@@ -95,7 +95,6 @@ function isValidBenchmarkFile(fullPath, file) {
         console.log("'impl' and 'param' should not be explicity set in benchmark files but are inferred from the filename.");
         return false;
     }
-    console.log(parts);
     if (parts.length != 3 || !parts.every(p => _validIdentifier.test(p))) {
         console.log("Filename must be impl_param_arch.yaml and each segment must match A-Za-z0-9-.");
         return false;
