@@ -28,7 +28,7 @@
                 "EUF-CMA",
                 "SUF-CMA"
             ],
-            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2."
+            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2; SUF == strong unforgeability"
         },
         "security notion comment": {
             "type": "string"

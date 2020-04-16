@@ -7,6 +7,16 @@ var ROOT_DIR = path.join('..', '..');
 if (argv.length === 2 || argv.length === 3) {
     ROOT_DIR = argv[argv.length - 1];
 }
+Object.freeze(ROOT_DIR);
+
+var application = null;
+function registerApp(app) {
+    application = app;
+}
+
+function showAlert(msg, severity) {
+    application.openAlert(msg, severity);
+}
 
 function checkRootDir() {
     return fs.existsSync(ROOT_DIR) && fs.existsSync(path.join(ROOT_DIR, "encryption")) &&
@@ -34,4 +44,12 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
-export { disableUIElements, listDirs, listFiles, checkRootDir, ROOT_DIR }
+export {
+    checkRootDir,
+    disableUIElements,
+    listDirs,
+    listFiles,
+    registerApp,
+    showAlert,
+    ROOT_DIR
+}
