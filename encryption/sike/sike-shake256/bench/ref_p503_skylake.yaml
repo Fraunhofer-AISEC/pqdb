@@ -5,7 +5,7 @@ timings:
   measurements:
     gen: 1567725000
     enc|sign: 2237865000
-    dec|vrfy: 1790304000
+    dec|vrfy: 2752500000
 memory requirements:
   gen: 512
   enc|sign: 512

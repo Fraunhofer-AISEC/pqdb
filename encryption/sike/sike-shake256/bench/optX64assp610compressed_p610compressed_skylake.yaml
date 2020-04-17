@@ -3,9 +3,9 @@ comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
 timings:
   unit: cycles
   measurements:
-    gen: 40386000
-    enc|sign: 47099000
-    dec|vrfy: 45449000
+    gen: 26360000
+    enc|sign: 37470000
+    dec|vrfy: 29216000
 memory requirements:
   gen: 23824
   enc|sign: 22048
