@@ -149,7 +149,13 @@ class JsonFormsContainer extends React.Component {
 class SelectList extends React.Component {
     constructor(props) {
         super(props);
-        this.entries = props.entries;
+        this.state = {entries: props.entries};
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.entries !== this.props.entries) {
+            this.setState({ entries: this.props.entries });
+        }
     }
 
     render() {
@@ -157,7 +163,7 @@ class SelectList extends React.Component {
             <Paper>
                 <List component="ul">
                     {
-                        this.entries.map(entry => (
+                        this.state.entries.map(entry => (
                             <ListItem button key={"item-" + entry} onClick={() => this.props.action(entry)}>
                                 <ListItemText primary={entry} />
                                 <ListItemIcon>
