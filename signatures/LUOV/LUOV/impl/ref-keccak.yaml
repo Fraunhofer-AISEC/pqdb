@@ -1,0 +1,4 @@
+name: ref-keccak
+comment: Reference implemetation using Keccak as PRNG
+platform: C
+type: reference

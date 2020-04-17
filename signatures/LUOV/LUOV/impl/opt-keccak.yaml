@@ -1,0 +1,4 @@
+name: opt-keccak
+comment: Generic optimized implemetation using Keccak as PRNG
+platform: C
+type: optimized

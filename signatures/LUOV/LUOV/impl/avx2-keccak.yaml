@@ -1,0 +1,4 @@
+name: avx2-keccak
+comment: AVX2 optimized implemetation using Keccak as PRNG
+platform: C
+type: optimized

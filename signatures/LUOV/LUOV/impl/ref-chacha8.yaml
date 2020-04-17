@@ -1,0 +1,4 @@
+name: ref-chacha8
+comment: Reference implemetation using Chacha8 as PRNG
+platform: C
+type: reference

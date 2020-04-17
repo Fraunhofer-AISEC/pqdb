@@ -1,0 +1,4 @@
+name: avx2-chacha8
+comment: AVX2 optimized implemetation using Chacha8 as PRNG
+platform: C
+type: optimized
