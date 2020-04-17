@@ -87,6 +87,9 @@
                 ]
             }
         },
+        "problems comment": {
+            "type": "string"
+        },
         "sources": {
             "type": "array",
             "items": {
