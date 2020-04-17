@@ -13,8 +13,8 @@ class EditScheme extends JsonFormsContainer {
     constructor(props) {
         super(props)
         this.type = props.type;
-        this.name = props.name;
-        this.schemeFile = path.join(typeDirs[this.type], this.name, this.name + '.yaml');
+        this.identifier = props.identifier;
+        this.schemeFile = path.join(typeDirs[this.type], this.identifier, this.identifier + '.yaml');
         this.dataStore = yaml.load(fs.readFileSync(this.schemeFile, 'utf-8'));
         this.dataStore.type = this.type;
         if (!('stateful' in this.dataStore))
@@ -56,36 +56,36 @@ class EditScheme extends JsonFormsContainer {
 class SchemeOverview extends React.Component {
     constructor(props) {
         super(props)
-        this.name = props.match.params.name;
+        this.identifier = props.match.params.schemeIdentifier;
         this.type = props.match.params.type;
-        this.baseDir = path.join(typeDirs[this.type], this.name);
+        this.baseDir = path.join(typeDirs[this.type], this.identifier);
         this.state = { flavors: listDirs(this.baseDir) };
         this.history = props.history;
     }
 
-    submitForm(name, create) {
-        if (create === fs.existsSync(path.join(this.baseDir, name, name + ".yaml"))) {
+    submitForm(identifier, create) {
+        if (create === fs.existsSync(path.join(this.baseDir, identifier, identifier + ".yaml"))) {
             showAlert("Error. Unexpected existance or non-existance of flavor file.", "error");
             return;
         }
 
         if (create) {
             try {
-                var dir = path.join(this.baseDir, name);
+                var dir = path.join(this.baseDir, identifier);
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
                 ['', 'bench', 'impl', 'param'].map(x => path.join(dir, x))
                     .filter(x => !fs.existsSync(x)).forEach(x => fs.mkdirSync(x));
-                var data = { name: name };
-                fs.writeFileSync(path.join(dir, name + ".yaml"), yaml.dump(data));
-                showAlert('Flavor "' + name + '" was successfully created.', 'success');
+                var data = {};
+                fs.writeFileSync(path.join(dir, identifier + ".yaml"), yaml.dump(data));
+                showAlert('Flavor "' + identifier + '" was successfully created.', 'success');
             } catch {
-                showAlert('Flavor "' + name + '" could not be created.', 'error');
+                showAlert('Flavor "' + identifier + '" could not be created.', 'error');
             }
 
             this.setState({ flavors: listDirs(this.baseDir) });
             return;
         }
-        var link = this.history.location.pathname + name + "/";
+        var link = this.history.location.pathname + identifier + "/";
         this.history.push(link);
         window.scrollTo(0, 0);
     }
@@ -97,7 +97,7 @@ class SchemeOverview extends React.Component {
                     <Paper >
                         <Box px={2} pt={1} pb={2}>
                             <h2>Scheme Properties</h2>
-                            <EditScheme type={this.type} name={this.name} />
+                            <EditScheme type={this.type} identifier={this.identifier} />
                         </Box>
                     </Paper>
                 </Grid>
