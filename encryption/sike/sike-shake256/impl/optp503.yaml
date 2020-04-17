@@ -4,5 +4,6 @@ platform: c
 side channel guarding:
   branching: true
   timing: true
+  timing comment: Also guarded against cache attacks.
 code size:
   overall: 58714
