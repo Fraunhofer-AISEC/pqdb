@@ -207,6 +207,7 @@ class SelectOrCreate extends JsonFormsContainer {
             type: "object", properties: {
                 identifier: {
                     type: "string",
+                    title: "Identifier (short name used as file name)",
                     pattern: this.regex
                 }
             }, required: ["identifier"]

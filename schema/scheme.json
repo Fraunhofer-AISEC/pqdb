@@ -12,7 +12,8 @@
             "$comment": "`enc` stands for all types of key exchange (KEMs etc)"
         },
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name"
         },
         "comment": {
             "type": "string"

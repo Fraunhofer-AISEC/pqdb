@@ -4,7 +4,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name"
         },
         "comment": {
             "type": "string"
