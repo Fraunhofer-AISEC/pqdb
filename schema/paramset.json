@@ -5,7 +5,7 @@
     "properties": {
         "name": {
             "type": "string",
-            "$comment": "Human readable name"
+            "$comment": "Human readable name (full, including scheme and flavor name)"
         },
         "comment": {
             "type": "string"
