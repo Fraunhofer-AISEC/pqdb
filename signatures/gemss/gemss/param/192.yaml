@@ -4,7 +4,8 @@ security level:
   quantum: 112
   nist category: 3
 failure probability: -6345039891167
+number of operations: TODO
 sizes:
   sk: 34070
   pk: 1237964
-  ct/sig: 52
+  ct|sig: 52
