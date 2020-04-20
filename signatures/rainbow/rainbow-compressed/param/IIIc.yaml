@@ -8,5 +8,5 @@ failure probability: 0
 number of operations: TODO
 sizes:
   sk: 511400
-  pk: 710600
+  pk: 206700
   ct|sig: 156

@@ -1,10 +1,10 @@
 name: Rainbow
 category: multivariate
 year:
-	paper: 2005
-	candidate: 2017
+  paper: 2005
+  candidate: 2017
 problems:
-	- assumption: MQ
+  - assumption: MQ
 stateful: false
 nist round: 2
 authors:

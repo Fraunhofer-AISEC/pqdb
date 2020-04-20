@@ -1,12 +1,12 @@
-name: Rainbow-IIIc
+name: Rainbow-Ia
 security level:
-  classical: 217
-  quantum: 167
-  nist category: 3
+  classical: 145
+  quantum: 86
+  nist category: 1
   comment: classical RBS, quantum HighRank, both recover key
 failure probability: 0
 number of operations: TODO
 sizes:
-  sk: 511400
-  pk: 710600
-  ct|sig: 156
+  sk: 93000
+  pk: 58100
+  ct|sig: 64
