@@ -6,4 +6,4 @@ side channel guarding:
   timing: true
   timing comment: Also guarded against cache attacks.
 code size:
-  overall: 4191974
+  overall: 1369050
