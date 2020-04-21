@@ -7,19 +7,22 @@ year:
 authors:
   - David Jao
   - Reza Azarderakhsh
+  - Matthew Campagna
   - Craig Costello
   - Luca De Feo
   - Basil Hess
   - Amir Jalali
   - Brian Koziel
   - Brian LaMacchia
+  - Patrick Longa
   - Michael Naehrig
   - Geovandro Pereira
+  - Joost Renes
   - Vladimir Soukharev
   - David Urbanik
 stateful: false
 nist round: 2
 problems:
-    - assumption: hardness of isogeny computation
+    - assumption: hardness of isogeny computation on supersingular elliptic curves
 sources:
-  - NIST submission paper (https://sike.org/files/SIDH-spec.pdf) updated version from 2019
+  - 'NIST submission paper, round 2 version from 2020-04-16 (https://sike.org/files/SIDH-spec.pdf)'
