@@ -18,21 +18,21 @@ class SelectScheme extends React.Component {
         };
     }
 
-    submitForm(type, name, create) {
-        if (create === fs.existsSync(path.join(this.typeDirs[type], name, name + ".yaml"))) {
+    submitForm(type, identifier, create) {
+        if (create === fs.existsSync(path.join(this.typeDirs[type], identifier, identifier + ".yaml"))) {
             showAlert("Error. Unexpected existance or non-existance of scheme file.", "error");
             return;
         }
 
         if (create) {
             try {
-                var dir = path.join(this.typeDirs[type], name);
+                var dir = path.join(this.typeDirs[type], identifier);
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-                var data = { name: name };
-                fs.writeFileSync(path.join(dir, name + ".yaml"), yaml.dump(data));
-                showAlert('Scheme "' + name + '" was successfully created.', 'success');
+                var data = {};
+                fs.writeFileSync(path.join(dir, identifier + ".yaml"), yaml.dump(data));
+                showAlert('Scheme "' + identifier + '" was successfully created.', 'success');
             } catch {
-                showAlert('Scheme "' + name + '" could not be created.', 'error');
+                showAlert('Scheme "' + identifier + '" could not be created.', 'error');
             }
 
             var newState = {};
@@ -42,7 +42,7 @@ class SelectScheme extends React.Component {
             return;
         }
 
-        this.history.push('/' + type + '/' + name + '/');
+        this.history.push('/' + type + '/' + identifier + '/');
         window.scrollTo(0, 0);
     }
 
