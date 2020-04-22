@@ -1,8 +1,0 @@
-platform: Google Pixel 3 with ARM Cortex-A75 64-bit 2.45GHz
-comment: OS is Android 9. Compiler is clang 8.0.0. 
-timings:
-  unit: cycles
-  measurements:
-    gen: 26928000
-    enc|sign: 44388000
-    dec|vrfy: 47377000
