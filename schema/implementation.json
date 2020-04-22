@@ -4,7 +4,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name (don't include scheme/flavor name, but do include the parameter set if the implementation is specific to it)"
         },
         "comment": {
             "type": "string"

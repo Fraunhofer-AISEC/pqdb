@@ -13,9 +13,9 @@ class EditFlavor extends JsonFormsContainer {
     constructor(props) {
         super(props)
         this.type = props.type;
-        this.schemeName = props.schemeName;
-        this.name = props.name;
-        this.flavorFile = path.join(typeDirs[this.type], this.schemeName, this.name, this.name + '.yaml');
+        this.schemeIdentifier = props.schemeIdentifier;
+        this.flavorIdentifier = props.flavorIdentifier;
+        this.flavorFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier, this.flavorIdentifier + '.yaml');
         this.dataStore = yaml.load(fs.readFileSync(this.flavorFile, 'utf-8'));
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'flavor.json'), 'utf-8'));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
@@ -52,18 +52,18 @@ class SubtypeOverview extends JsonFormsContainer {
     constructor(props) {
         super(props)
         this.type = props.match.params.type;
-        this.schemeName = props.match.params.schemeName;
-        this.name = props.match.params.name;
+        this.schemeIdentifier = props.match.params.schemeIdentifier;
+        this.flavorIdentifier = props.match.params.flavorIdentifier;
         this.subType = props.match.params.subType;
-        this.subName = props.match.params.subName;
+        this.subIdentifier = props.match.params.subIdentifier;
 
-        this.targetFile = path.join(typeDirs[this.type], this.schemeName, this.name, this.subType, this.subName + '.yaml');
+        this.targetFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier, this.subType, this.subIdentifier + '.yaml');
         this.dataStore = yaml.load(fs.readFileSync(this.targetFile, 'utf-8'));
         this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
             { 'bench': 'benchmark', 'param': 'paramset', 'impl': 'implementation' }[this.subType] + '.json')));
         this.state.uiSchema = Generate.uiSchema(this.state.schema);
         if (this.subType === 'bench') {
-            var parts = this.subName.split('_');
+            var parts = this.subIdentifier.split('_');
             this.dataStore.impl = parts[0];
             this.dataStore.param = parts[1];
             disableUIElements(this.state.uiSchema, ['#/properties/impl', '#/properties/param']);
@@ -105,10 +105,10 @@ class SubtypeOverview extends JsonFormsContainer {
 class FlavorOverview extends React.Component {
     constructor(props) {
         super(props)
-        this.schemeName = props.match.params.schemeName;
-        this.name = props.match.params.name;
+        this.schemeIdentifier = props.match.params.schemeIdentifier;
+        this.identifier = props.match.params.flavorIdentifier;
         this.type = props.match.params.type;
-        this.baseDir = path.join(typeDirs[this.type], this.schemeName, this.name);
+        this.baseDir = path.join(typeDirs[this.type], this.schemeIdentifier, this.identifier);
         this.state = {
             param: this.generateChoices('param'),
             impl: this.generateChoices('impl'),
@@ -124,8 +124,8 @@ class FlavorOverview extends React.Component {
             .filter(x => x.endsWith('.yaml')).map(x => x.substring(0, x.length - 5));
     }
 
-    submitForm(name, type, create) {
-        if (create === fs.existsSync(path.join(this.baseDir, type, name + ".yaml"))) {
+    submitForm(identifier, type, create) {
+        if (create === fs.existsSync(path.join(this.baseDir, type, identifier + ".yaml"))) {
             showAlert('Error. Unexpected existance or non-existance of flavor file.', 'error');
             return;
         }
@@ -134,11 +134,11 @@ class FlavorOverview extends React.Component {
             try {
                 var dir = path.join(this.baseDir, type);
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-                var data = (type === 'bench') ? { platform: name.split('_')[2] } : { name: name };
-                fs.writeFileSync(path.join(dir, name + ".yaml"), yaml.dump(data));
-                showAlert('"' + name + '" was successfully created.', 'success');
+                var data = {};
+                fs.writeFileSync(path.join(dir, identifier + ".yaml"), yaml.dump(data));
+                showAlert('"' + identifier + '" was successfully created.', 'success');
             } catch {
-                showAlert('"' + name + '" could not be created.', 'error');
+                showAlert('"' + identifier + '" could not be created.', 'error');
             }
 
             var newState = {};
@@ -148,7 +148,7 @@ class FlavorOverview extends React.Component {
             return;
         }
 
-        this.history.push(this.history.location.pathname + type + '/' + name + '/');
+        this.history.push(this.history.location.pathname + type + '/' + identifier + '/');
         window.scrollTo(0, 0);
     }
 
@@ -159,7 +159,7 @@ class FlavorOverview extends React.Component {
                     <Paper>
                         <Box px={2} pt={1} pb={2}>
                             <h2>Flavor Properties</h2>
-                            <EditFlavor type={this.type} schemeName={this.schemeName} name={this.name} />
+                            <EditFlavor type={this.type} schemeIdentifier={this.schemeIdentifier} flavorIdentifier={this.identifier} />
                         </Box>
                     </Paper>
                 </Grid>
