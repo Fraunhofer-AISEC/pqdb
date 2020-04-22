@@ -6,3 +6,4 @@ timings:
     gen: 229000000
     enc|sign: 371000000
     dec|vrfy: 399000000
+# also available: average power and energy measurements
