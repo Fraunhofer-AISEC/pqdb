@@ -7,3 +7,4 @@ side channel guarding:
   timing comment: Also guarded against cache attacks.
 code size:
   overall: 58714
+  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"
