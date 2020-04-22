@@ -8,5 +8,5 @@ failure probability: 0
 sizes:
   pk: 1760
   ct|sig: 3366
-  sk: 4208
+  sk: 3856
 number of operations: inf
