@@ -3,7 +3,7 @@ comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round
 timings:
   unit: cycles
   measurements:
-    gen: 69893
-    enc|sign: 238113
-    dec|vrfy: 81459
+    gen: 130802
+    enc|sign: 359186
+    dec|vrfy: 143106
   comment: median timings (the signing algorithm varies in time)
