@@ -1,12 +1,10 @@
-impl: ref
-param: Ia
 platform: Intel iXEON E3-1225 (Skylake) 3.3GHZ
 timings:
   unit: cycles
   gen: 40200000
-  enc/sign: 20200000
-  dec/vrfy: 3440000
+  enc|sign: 20200000
+  dec|vrfy: 3440000
 memory requirement:
   gen: 3500000
-  enc/sign: 3000000
-  dec/vrfy: 2600000
+  enc|sign: 3000000
+  dec|vrfy: 2600000

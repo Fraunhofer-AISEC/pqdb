@@ -4,9 +4,9 @@ platform: Intel iXEON E7-8860 v3 (Haswell) 2.2GHZ
 timings:
   unit: cycles
   gen: 9740000
-  enc/sign: 5940000
-  dec/vrfy: 3060000
+  enc|sign: 5940000
+  dec|vrfy: 3060000
 memory requirement:
   gen: 3500000
-  enc/sign: 2900000
-  dec/vrfy: 2700000
+  enc|sign: 2900000
+  dec|vrfy: 2700000

@@ -4,9 +4,9 @@ platform: Intel iXEON E3-1225 (Skylake) 3.3GHZ
 timings:
   unit: cycles
   gen: 757000000
-  enc/sign: 3640000
-  dec/vrfy: 2390000
+  enc|sign: 3640000
+  dec|vrfy: 2390000
 memory requirement:
   gen: 7000000
-  enc/sign: 3700000
-  dec/vrfy: 3900000
+  enc|sign: 3700000
+  dec|vrfy: 3900000
