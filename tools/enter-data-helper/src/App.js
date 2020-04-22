@@ -66,9 +66,9 @@ class App extends React.Component {
             <NavBarRouter setTheme={this.setTheme.bind(this)} theme={this.state.themeId} />
             <Container>
               <Switch>
-                <Route path='/:type/:schemeName/:name/:subType/:subName' component={SubtypeOverview} />
-                <Route path='/:type/:schemeName/:name/' component={FlavorOverview} />
-                <Route path='/:type/:name/' component={SchemeOverview} />
+                <Route path='/:type/:schemeIdentifier/:flavorIdentifier/:subType/:subIdentifier' component={SubtypeOverview} />
+                <Route path='/:type/:schemeIdentifier/:flavorIdentifier/' component={FlavorOverview} />
+                <Route path='/:type/:schemeIdentifier/' component={SchemeOverview} />
                 <Route exact path='/' component={SelectScheme} />
               </Switch>
               <Snackbar key={this.state.alertMsg} autoHideDuration={6000}

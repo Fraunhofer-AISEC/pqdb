@@ -4,7 +4,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name (full, including the scheme name)"
         },
         "comment": {
             "type": "string"
@@ -26,9 +27,9 @@
                 "IND-CPA",
                 "IND-CCA",
                 "EUF-CMA",
-		"SUF-CMA"
+                "SUF-CMA"
             ],
-            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2."
+            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2; SUF == strong unforgeability"
         },
         "security notion comment": {
             "type": "string"

@@ -12,7 +12,8 @@
             "$comment": "`enc` stands for all types of key exchange (KEMs etc)"
         },
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name"
         },
         "comment": {
             "type": "string"
@@ -87,6 +88,9 @@
                 ]
             }
         },
+        "problems comment": {
+            "type": "string"
+        },
         "sources": {
             "type": "array",
             "items": {
@@ -96,6 +100,14 @@
         "trust comment": {
             "type": "string",
             "$comment": "Notes about trustworthyness (existing attacks, cryptanalysis). Just add free text for now."
+        },
+        "last_updated": {
+            "type": "string",
+            "format": "date",
+            "$comment": "Date when the data was updated last"
+        },
+        "last_updated comment": {
+            "type": "string"
         }
     },
     "additionalProperties": false,
