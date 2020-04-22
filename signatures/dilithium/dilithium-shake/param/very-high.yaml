@@ -1,0 +1,12 @@
+name: very-high
+security level:
+  comment: Best known LWE attack
+  classical: 174
+  quantum: 158
+  nist category: 3
+failure probability: 0
+sizes:
+  pk: 1760
+  ct|sig: 3366
+  sk: 4208
+number of operations: inf

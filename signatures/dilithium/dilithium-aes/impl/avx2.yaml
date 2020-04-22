@@ -1,6 +1,6 @@
-name: skylake-avx2-aes
-platform: x86_64
-type: reference
+name: AVX2, using AES from OpenSSL
+platform: c
+type: optimized
 side channel guarding:
   branching: true
   timing: true
@@ -8,4 +8,4 @@ hardware features:
   - avx2
   - aes-ni
 dependencies:
-  - openssl
+  - OpenSSL

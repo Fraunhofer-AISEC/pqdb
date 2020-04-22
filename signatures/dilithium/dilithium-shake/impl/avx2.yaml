@@ -1,10 +1,10 @@
-name: skylake-avx2
-platform: x86_64
-type: reference
+name: AVX2, vectorized SHAKE
+platform: c
+type: optimized
 side channel guarding:
   branching: true
   timing: true
 dependencies:
-  - openssl
+  - OpenSSL
 hardware features:
   - avx2

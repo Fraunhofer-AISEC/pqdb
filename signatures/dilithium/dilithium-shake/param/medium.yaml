@@ -1,0 +1,12 @@
+name: medium
+security level:
+  classical: 91
+  quantum: 100
+  nist category: 1
+  comment: Best known LWE attack
+failure probability: 0
+sizes:
+  pk: 1184
+  ct|sig: 2044
+  sk: 2800
+number of operations: inf

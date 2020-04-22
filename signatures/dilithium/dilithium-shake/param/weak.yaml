@@ -1,0 +1,11 @@
+name: weak
+security level:
+  classical: 58
+  quantum: 53
+  comment: Best known attack on LWE
+failure probability: 0
+sizes:
+  pk: 896
+  ct|sig: 1387
+  sk: 2096
+number of operations: inf
