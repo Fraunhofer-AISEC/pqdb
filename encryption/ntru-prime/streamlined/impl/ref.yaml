@@ -1,6 +1,6 @@
 name: ref
-comment: >-
-  https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html
+links:
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html
 platform: x64
 side channel guarding:
   branching comment: ToDo

@@ -1,8 +1,8 @@
 name: optimized
 platform: c
 type: optimized
-comment: >-
-  https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
+links:
+    - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
 side channel guarding:
   branching: false
   timing comment: ToDo
