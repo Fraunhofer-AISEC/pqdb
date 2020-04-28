@@ -5,10 +5,10 @@ nist round: 2
 problems:
   - assumption: MQ
 sources:
-  - 'Original paper https://eprint.iacr.org/2017/776.pdf'
   - >-
     NIST submission paper round 2
-    https://github.com/WardBeullens/LUOV/blob/master/Supporting_Documentation/luov.pdf
+    https://github.com/WardBeullens/LUOV/blob/bbe080f/Supporting_Documentation/luov.pdf
+  - 'Original paper https://eprint.iacr.org/2017/776.pdf'
   - 'Github repository https://github.com/WardBeullens/LUOV'
 comment: Based on the Unbalanced Oil and Vinegar scheme but with field lifting
 year:
