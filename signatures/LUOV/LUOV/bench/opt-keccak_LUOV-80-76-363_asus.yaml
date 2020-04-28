@@ -1,8 +1,0 @@
-platform: ASUS S410 Notebook PC with an Intel Core i5-8250U CPU @ 1.60 GHz
-timings:
-  measurements:
-    gen: 75000000
-    enc|sign: 199000000
-    dec|vrfy: 103000000
-  unit: cycles
-  comment: average of 1000 executions compiled with ”gcc − O3” with gcc version 7.3.0

@@ -1,0 +1,8 @@
+platform: Intel Core i5-8250U CPU @ 1.60 GHz
+timings:
+  measurements:
+    gen: 7000000
+    enc|sign: 3600000
+    dec|vrfy: 2800000
+  unit: cycles
+  comment: average of 1000 executions compiled with ”gcc - O3” with gcc version 7.3.0
