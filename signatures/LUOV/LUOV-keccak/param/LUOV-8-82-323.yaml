@@ -1,0 +1,12 @@
+name: LUOV-8-82-323
+security level:
+  nist category: 4
+  classical: 212
+  quantum: 210
+failure probability: 0
+sizes:
+  pk: 34100
+  ct|sig: 421
+  sk: 32
+  comment: 17 (message recovery)
+number of operations: inf

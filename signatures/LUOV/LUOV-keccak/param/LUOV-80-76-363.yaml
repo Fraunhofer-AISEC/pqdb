@@ -1,0 +1,12 @@
+name: LUOV-80-76-363
+security level:
+  classical: 272
+  quantum: 257
+  nist category: 5
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 27100
+  ct|sig: 4390
+  comment: 695 (message recovery)
+number of operations: inf

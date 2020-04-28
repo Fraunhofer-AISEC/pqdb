@@ -1,0 +1,12 @@
+name: LUOV-48-43-222
+security level:
+  nist category: 2
+  classical: 147
+  quantum: 146
+sizes:
+  sk: 32
+  pk: 5000
+  ct|sig: 1606
+  comment: 225 (message recovery)
+number of operations: inf
+failure probability: 0

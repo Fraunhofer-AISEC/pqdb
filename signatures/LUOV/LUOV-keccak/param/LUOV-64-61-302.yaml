@@ -1,0 +1,12 @@
+name: LUOV-64-61-302
+security level:
+  classical: 214
+  quantum: 210
+  nist category: 4
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 14100
+  ct|sig: 2904
+  comment: 423 (message recovery)
+number of operations: inf
