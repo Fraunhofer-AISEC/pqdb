@@ -1,0 +1,13 @@
+name: SIKEp610_compressed
+security level:
+    classical: 189
+    quantum: 169
+    nist category: 4
+    comment: Classical security level is achieved using 2^80 memory. Quantum security uses a depth of 159 and width of 25.
+failure probability: 0
+number of operations: inf
+sizes:
+    sk: 491
+    pk: 274
+    ct|sig: 336
+    msg: 24

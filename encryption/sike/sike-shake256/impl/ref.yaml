@@ -1,0 +1,10 @@
+name: Reference implementation
+type: reference
+platform: c
+dependencies: 
+  - GMP library
+side channel guarding:
+  branching: false
+  timing: false
+code size:
+  overall: 81860
