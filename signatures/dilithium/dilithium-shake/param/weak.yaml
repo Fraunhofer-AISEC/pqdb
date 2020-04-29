@@ -1,4 +1,4 @@
-name: weak
+name: Dilithium-SHAKE-weak
 security level:
   classical: 58
   quantum: 53

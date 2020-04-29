@@ -4,5 +4,3 @@ side channel guarding:
   branching: true
 type: reference
 platform: c
-dependencies:
-  - OpenSSL

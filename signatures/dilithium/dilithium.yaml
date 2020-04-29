@@ -22,5 +22,7 @@ problems:
       combination of MSIS and the hash function H.
 sources:
   - 'https://eprint.iacr.org/2017/633'
-  - 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
-last_updated: '2020-04-22'
+  - >-
+    https://web.archive.org/web/20200423102237/https://pq-crystals.org/dilithium/data/dilithium-specification-round2.pdf
+  - 'https://github.com/pq-crystals/dilithium/tree/round2'
+last_updated: '2020-04-29'

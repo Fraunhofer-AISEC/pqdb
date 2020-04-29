@@ -1,10 +1,5 @@
 name: AVX2, vectorized SHAKE
 platform: c
 type: optimized
-side channel guarding:
-  branching: true
-  timing: true
-dependencies:
-  - OpenSSL
 hardware features:
   - avx2

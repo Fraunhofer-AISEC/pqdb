@@ -1,4 +1,4 @@
-name: very-high
+name: Dilithium-AES-very-high
 security level:
   comment: Best known LWE attack
   classical: 174
@@ -10,3 +10,7 @@ sizes:
   ct|sig: 3366
   sk: 3856
 number of operations: inf
+comment: >-
+  Authors understate the actual security of the paramsets (based on conservative
+  methodology) and believe that they still satisfiy their stated NIST Security
+  Levels despite the security numbers appearing to be below the required levels.

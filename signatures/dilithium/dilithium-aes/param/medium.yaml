@@ -1,4 +1,4 @@
-name: medium
+name: Dilithium-AES-medium
 security level:
   classical: 91
   quantum: 100
@@ -10,3 +10,7 @@ sizes:
   ct|sig: 2044
   sk: 2800
 number of operations: inf
+comment: >-
+  Authors understate the actual security of the paramsets (based on conservative
+  methodology) and believe that they still satisfiy their stated NIST Security
+  Levels despite the security numbers appearing to be below the required levels.
