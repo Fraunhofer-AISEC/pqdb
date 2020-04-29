@@ -1,5 +1,4 @@
 platform: Intel Core i7-6600U Skylake (Mhz 2600) | GCC 7.3.0
-comment: 'https://pq-crystals.org/dilithium/data/dilithium-submission-nist-round2.zip'
 timings:
   unit: cycles
   measurements:
