@@ -1,0 +1,8 @@
+platform: Intel Core i7-6600U Skylake (Mhz 2600) | GCC 7.3.0
+timings:
+  unit: cycles
+  measurements:
+    gen: 221348
+    enc|sign: 496423
+    dec|vrfy: 220400
+  comment: median timings (the signing algorithm varies in time)
