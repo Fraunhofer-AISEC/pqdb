@@ -11,6 +11,7 @@ sizes:
   sk: 3504
 number of operations: inf
 comment: >-
-  Authors understate the actual security of the paramsets (based on conservative
-  methodology) and believe that they still satisfiy their stated NIST Security
-  Levels despite the security numbers appearing to be below the required levels.
+  Authors say their estimations are very conservative and understate the
+  actual security of the parameter sets, which is why they believe that they
+  still satisfy the stated NIST Categories despite the security numbers
+  appearing to be below the required levels.
