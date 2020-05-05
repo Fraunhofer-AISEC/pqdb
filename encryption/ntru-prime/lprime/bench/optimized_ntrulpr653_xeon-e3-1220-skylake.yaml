@@ -1,5 +1,6 @@
 platform: xeon-e3-1220-skylake
-comment: 'https://bench.cr.yp.to/results-kem.html'
+sources:
+  - 'https://bench.cr.yp.to/results-kem.html'
 timings:
   unit: cycles
   comment: median
