@@ -58,8 +58,11 @@
             },
             "$comment": "Links to additional resources. Use `source` to denote where the data is from."
         },
-        "source": {
-            "type": "string",
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
             "$comment": "Source of the data specified here. Use only if it differs from the overall data source."
         },
         "platform": {
