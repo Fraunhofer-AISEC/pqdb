@@ -1,0 +1,17 @@
+name: Dilithium-AES-very-high
+security level:
+  comment: Best known LWE attack
+  classical: 174
+  quantum: 158
+  nist category: 3
+failure probability: 0
+sizes:
+  pk: 1760
+  ct|sig: 3366
+  sk: 3856
+number of operations: inf
+comment: >-
+  Authors say their estimations are very conservative and understate the
+  actual security of the parameter sets, which is why they believe that they
+  still satisfy the stated NIST Categories despite the security numbers
+  appearing to be below the required levels.
