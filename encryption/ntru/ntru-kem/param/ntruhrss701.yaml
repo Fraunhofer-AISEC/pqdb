@@ -1,0 +1,14 @@
+name: NTRU-HRSS-701
+security level:
+  quantum: 134
+  nist category: 1
+  comment: >-
+    Assuming a non-local model of computation.
+    (With a local model: 185 bits quantum security, category 3)
+sizes:
+  sk: 1450
+  pk: 1138
+  msg: 256
+  ct|sig: 1138
+failure probability: 0
+number of operations: inf

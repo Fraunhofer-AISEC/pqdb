@@ -1,0 +1,14 @@
+name: NTRU-HPS-4096-821
+security level:
+  quantum: 178
+  nist category: 3
+  comment: >-
+    Assuming a non-local model of computation.
+    (With a local model: 253 bits quantum security, category 5)
+sizes:
+  sk: 1590
+  pk: 1230
+  msg: 256
+  ct|sig: 1230
+failure probability: 0
+number of operations: inf

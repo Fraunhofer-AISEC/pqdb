@@ -1,0 +1,22 @@
+name: NTRU
+stateful: false
+category: lattice
+category comment: ''
+nist round: 2
+authors:
+  - Cong Chen
+  - Oussama Danba
+  - Jerey Hostein
+  - Andreas Hülsing
+  - Joost Rijneveld
+  - John M. Schanck
+  - Peter Schwabe
+  - William Whyte
+  - Zhenfei Zhang
+year:
+  candidate: 2017
+  paper: 1998
+problems:
+  - assumption: SVP
+sources:
+  - 'NIST Submission, Round 2 (https://ntru.org/f/ntru-20190330.pdf)'
