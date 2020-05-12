@@ -5,5 +5,5 @@ timings:
   measurements:
     gen: 12506668
     enc|sign: 761236
-    dec|vrfy: 1940810
+    dec|vrfy: 1940870
   unit: cycles

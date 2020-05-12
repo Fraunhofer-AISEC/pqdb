@@ -8,7 +8,7 @@ security level:
 sizes:
   sk: 1234
   pk: 930
-  msg: 256
+  msg: 32
   ct|sig: 930
 failure probability: 0
 number of operations: inf
