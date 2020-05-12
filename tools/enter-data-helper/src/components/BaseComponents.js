@@ -130,7 +130,7 @@ class JsonFormsContainer extends React.Component {
                 renderers={[
                     ...materialRenderers,
                     {
-                        tester: rankWith(3, schemaMatches((schema) => "$comment" in schema)),
+                        tester: rankWith(5, schemaMatches((schema) => "$comment" in schema)),
                         renderer: TooltipWrapper
                     }
                 ]}
