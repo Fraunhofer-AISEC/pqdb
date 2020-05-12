@@ -1,5 +1,4 @@
 name: NTRU
-stateful: false
 category: lattice
 category comment: ''
 nist round: 2
@@ -18,5 +17,9 @@ year:
   paper: 1998
 problems:
   - assumption: SVP
+stateful: false
+links:
+  - https://ntru.org/
 sources:
   - 'NIST Submission, Round 2 (https://ntru.org/f/ntru-20190330.pdf)'
+last_updated: '2020-05-11'
