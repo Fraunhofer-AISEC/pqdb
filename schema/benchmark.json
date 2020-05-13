@@ -33,6 +33,7 @@
             "$comment": "#TODO make this reference to platform object. Add OS and Compiler info"
         },
         "timings": {
+            "type":"object",
             "properties": {
                 "gen": {
                     "type": "number"
