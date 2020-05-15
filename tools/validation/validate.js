@@ -319,7 +319,12 @@ function validate() {
     );
 }
 
-var db = new Database(':memory:');
+var argv = process.argv.slice(2);
+
+var dbFile = ":memory:";
+if (argv.length == 1) dbFile = argv[0];
+
+var db = new Database(dbFile);
 
 createTableForSchema("scheme", schemaForScheme, []);
 createTableForSchema("flavor", schemaForFlavor, ["scheme"]);
