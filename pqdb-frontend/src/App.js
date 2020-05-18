@@ -1,5 +1,8 @@
 import React from 'react';
-import { CssBaseline, Grid, Box, Paper, TextField, Button, Table, TableHead, TableRow, TableCell, TableContainer, TableBody, Typography } from '@material-ui/core';
+import {
+  CssBaseline, Grid, Box, Paper, TextField, Button,
+  Table, TableHead, TableRow, TableCell, TableContainer, TableBody
+} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import initSqlJs from "sql.js";
 
@@ -109,7 +112,7 @@ class App extends React.Component {
                           rows={6}
                           variant="outlined"
                           error={this.state.error != null}
-                          helperText={this.state.error? this.state.error.toString() : ""}
+                          helperText={this.state.error ? this.state.error.toString() : ""}
                           value={this.state.sqlQuery}
                           onChange={e => this.setState({ sqlQuery: e.target.value })}
                         />
