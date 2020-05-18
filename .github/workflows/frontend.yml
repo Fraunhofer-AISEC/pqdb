@@ -10,9 +10,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         persist-credentials: false
+    - name: Install Validation Dependencies
+      working-directory: tools/validation
+      run: npm install
     - name: Create PQDB SQLite-File
       run: node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite
-    - name: Install Dependencies and Build
+    - name: Install Frontend Dependencies and Build
       working-directory: pqdb-frontend
       run: |
         yarn install
