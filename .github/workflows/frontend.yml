@@ -17,7 +17,7 @@ jobs:
       working-directory: tools/validation
       run: npm install
     - name: Create PQDB SQLite-File
-      run: node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite
+      run: node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite pqdb-frontend/src/tables.svg
     - name: Install Frontend Dependencies and Build
       working-directory: pqdb-frontend
       run: |

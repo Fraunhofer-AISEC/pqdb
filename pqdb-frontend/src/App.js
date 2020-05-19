@@ -5,8 +5,11 @@ import {
 } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import initSqlJs from "sql.js";
+import Lightbox from 'react-image-lightbox';
 
 import logo from './pqdb.svg';
+import databaseDiagram from './tables.svg';
+import 'react-image-lightbox/style.css';
 
 
 function getTheme(type) {
@@ -56,7 +59,8 @@ class App extends React.Component {
       db: null,
       sqlQuery: "",
       queryResult: null,
-      error: null
+      error: null,
+      lightBoxIsOpen: false
     };
   }
 
@@ -96,9 +100,18 @@ class App extends React.Component {
       <React.Fragment>
         <ThemeProvider key={this.state.themeId} theme={themes[this.state.themeId]}>
           <CssBaseline />
+          {this.state.lightBoxIsOpen && (
+            <Lightbox
+              mainSrc={databaseDiagram}
+              onCloseRequest={() => this.setState({ lightBoxIsOpen: false })}
+
+            />
+          )}
           <Box p={2}>
             <Grid container direction="column" spacing={2}>
-              <Grid item><Box display='flex' justifyContent="center"><img src={logo} width="500em" alt="Logo" /></Box></Grid>
+              <Grid item><Box display='flex' justifyContent="center">
+                <img src={logo} width="500em" height="192.5em" alt="Logo" />
+              </Box></Grid>
               <Grid item>
                 <Paper>
                   <Box p={2} display='flex' alignItems="center" justifyContent="center">
@@ -131,6 +144,15 @@ class App extends React.Component {
                 <Paper>
                   <Box p={2} display='flex' alignItems="center" justifyContent="center">
                     <QueryTable queryResult={this.state.queryResult} />
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item>
+                <Paper>
+                  <Box p={2} display='flex' alignItems="center" justifyContent="center">
+                    <Button onClick={() => this.setState({ lightBoxIsOpen: true })}>
+                      Show Database Diagram
+                    </Button>
                   </Box>
                 </Paper>
               </Grid>

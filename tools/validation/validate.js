@@ -322,21 +322,50 @@ function validate() {
 var argv = process.argv.slice(2);
 
 var dbFile = ":memory:";
-if (argv.length == 1) dbFile = argv[0];
-
+if (argv.length > 0 && argv.length < 3) dbFile = argv[0];
+var dbSchemaSvg = (argv.length == 2) ? dbSchemaSvg = argv[1] : null;
 var db = new Database(dbFile);
 
 createTableForSchema("scheme", schemaForScheme, []);
 createTableForSchema("flavor", schemaForFlavor, ["scheme"]);
 createTableForSchema("paramset", schemaForParam, ["flavor"]);
 createTableForSchema("implementation", schemaForImpl, ["flavor"]);
-var schemaForBenchReduced = {};
-Object.assign(schemaForBenchReduced, schemaForBench);
-delete schemaForBenchReduced.impl;
-delete schemaForBenchReduced.param;
+var schemaForBenchReduced = JSON.parse(JSON.stringify(schemaForBench));
+delete schemaForBenchReduced.properties.impl;
+delete schemaForBenchReduced.properties.param;
+delete schemaForBenchReduced.required;
 createTableForSchema("benchmark", schemaForBenchReduced, ["paramset", "implementation"]);
 
 if (!validate()) process.exit(1);
+
+if (dbSchemaSvg != null) {
+    const nomnoml = require('nomnoml');
+    var tables = db.prepare(
+        "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
+    ).all().map(row => row.name);
+    var tableInfo = {};
+    tables.forEach(table => tableInfo[table] = db.pragma("table_info(" + table + ")"));
+    var foreignKeyInfo = {};
+    tables.forEach(table => foreignKeyInfo[table] = db.pragma("foreign_key_list(" + table + ")"));
+
+    var source = "#title: PQDB Database Diagram\n";
+    // Add tables
+    source += tables.map(table => "[" + table + "|" +
+        tableInfo[table].map(info => info.name + ": " + info.type + ((info.pk === 1) ? " 🔑" : "")).join(";") +
+        "]").join("\n");
+    source += "\n";
+    // Add foreign key connectors
+    source += tables.filter(table => foreignKeyInfo[table].length > 0).map(
+        table => foreignKeyInfo[table].map(info => "[" + table + "] -> [" + info.table + "]").join("\n")
+    ).join("\n");
+    // Render svg
+    var svgData = nomnoml.renderSvg(source);
+    // Add white background color
+    svgData = svgData.replace('</desc>\n', '</desc>\n  <rect width="100%" height="100%" fill="white"/>\n');
+
+    // Write to file
+    fs.writeFileSync(dbSchemaSvg, svgData);
+}
 
 db.close();
 
