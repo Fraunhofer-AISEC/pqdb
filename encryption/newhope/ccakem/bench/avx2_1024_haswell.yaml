@@ -1,7 +1,6 @@
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
-  measurements:
-    gen: 131768
-    enc|sign: 211576
-    dec|vrfy: 219683
+  gen: 131768
+  enc|sign: 211576
+  dec|vrfy: 219683
