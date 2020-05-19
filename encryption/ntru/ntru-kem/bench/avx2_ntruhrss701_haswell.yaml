@@ -2,8 +2,7 @@ platform: >-
   Intel Core i7-4770K (Haswell, 3.5 GHz), 32GB RAM (1333MHz), Linux 4.90-4,
   Debian 9, GCC 6.3.0-18 (-O3 -march=native))
 timings:
-  measurements:
-    gen: 381476
-    enc|sign: 71238
-    dec|vrfy: 77848
+  gen: 381476
+  enc|sign: 71238
+  dec|vrfy: 77848
   unit: cycles
