@@ -2,7 +2,6 @@ platform: STM32F407G-DISC1 board with ARM Cortex-M4 32-bit 168MHz
 comment: OS is pqm4. Compiler is GNU GCC 5.4.0. 
 timings:
   unit: cycles
-  measurements:
-    gen: 1076000000
-    enc|sign: 1773000000
-    dec|vrfy: 1886000000
+  gen: 1076000000
+  enc|sign: 1773000000
+  dec|vrfy: 1886000000

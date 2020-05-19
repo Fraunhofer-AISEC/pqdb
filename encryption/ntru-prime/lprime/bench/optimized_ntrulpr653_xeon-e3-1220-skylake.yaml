@@ -4,7 +4,6 @@ sources:
 timings:
   unit: cycles
   comment: median
-  measurements:
-    gen: 38361
-    enc|sign: 63575
-    dec|vrfy: 77099
+  gen: 38361
+  enc|sign: 63575
+  dec|vrfy: 77099

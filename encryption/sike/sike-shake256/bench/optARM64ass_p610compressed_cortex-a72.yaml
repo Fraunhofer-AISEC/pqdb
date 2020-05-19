@@ -2,7 +2,6 @@ platform: ARM Cortex-A72 64-bit 1.992GHz
 comment: OS is Ubuntu 16.04.2 LTS. Compiler is GNU GCC 5.4.0. 
 timings:
   unit: cycles
-  measurements:
-    gen: 86010000
-    enc|sign: 123086000
-    dec|vrfy: 96805000
+  gen: 86010000
+  enc|sign: 123086000
+  dec|vrfy: 96805000
