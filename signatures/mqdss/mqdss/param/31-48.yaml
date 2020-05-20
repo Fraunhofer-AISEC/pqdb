@@ -8,4 +8,4 @@ number of operations: inf
 sizes:
     sk: 16
     pk: 46
-    ct/sig: 20854
+    ct|sig: 20854
