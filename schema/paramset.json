@@ -25,15 +25,15 @@
                 },
                 "nist category": {
                     "type": "integer",
-                    "minimum": 1,
-                    "maximum": 5
+                    "minimum": 0,
+                    "maximum": 5,
+                    "$comment": "According to the authors. If weaker than category 1, use 0."
                 },
                 "comment": {
                     "type": "string"
                 }
             },
             "required": [
-                "classical",
                 "quantum"
             ]
         },
