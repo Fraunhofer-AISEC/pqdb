@@ -1,8 +1,8 @@
-impl: avx2
-param: "31-64"
+
+
 platform: Intel Core i7-4770K (Haswell) 3.5GHz
 timings:
   unit: cycles
   gen: 2491050
-  enc/sign: 9047148
-  dec/vrfy: 6132948
+  enc|sign: 9047148
+  dec|vrfy: 6132948
