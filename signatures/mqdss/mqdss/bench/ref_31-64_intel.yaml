@@ -1,8 +1,6 @@
-
-
 platform: Intel Core i7-4770K (Haswell) 3.5GHz
 timings:
   unit: cycles
-  gen: 2767384
-  enc|sign: 85268712
-  dec|vrfy: 62306098
+  gen: 2670612
+  enc|sign: 116772480
+  dec|vrfy: 84685222
