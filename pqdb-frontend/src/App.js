@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  CssBaseline, Grid, Box, Paper, TextField, Button,
-  Table, TableHead, TableRow, TableCell, TableContainer, TableBody
+  CssBaseline, Grid, Box, Paper, List, ListItem, ListItemText, Button, IconButton, Drawer, CircularProgress
 } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Menu as MenuIcon } from '@material-ui/icons';
 import initSqlJs from "sql.js";
 import Lightbox from 'react-image-lightbox';
+import { CustomSQLQuery } from './components/views';
 
 import logo from './pqdb.svg';
 import databaseDiagram from './tables.svg';
@@ -25,31 +26,27 @@ const themes = {
   'dark': getTheme('dark')
 }
 
-function QueryTable(props) {
-  if (!props.queryResult) return null;
-  return (
-    <TableContainer component={Paper}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            {
-              props.queryResult.columns.map(column => <TableCell>{column}</TableCell>)
-            }
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.queryResult.values.map((row) => (
-            <TableRow>
-              {
-                row.map(val => <TableCell>{val}</TableCell>)
-              }
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
+// Add new views here
+const views = {
+  "default": {
+    name: "Custom SQL Query",
+    description: "Enter a custom database query and display the result in a table.",
+    view: (db) => <CustomSQLQuery db={db} />
+  }
+};
+
+const Progess = (props) => <Box display='flex' justifyContent="center"><CircularProgress /></Box>;
+
+const DrawerList = (props) =>
+  <List>
+    {
+      Object.keys(views).map(key =>
+        <ListItem key={key} button onClick={() => props.onClick(key)}>
+          <ListItemText primary={views[key].name} secondary={views[key].description} />
+        </ListItem>
+      )
+    }
+  </List>;
 
 class App extends React.Component {
   constructor(props) {
@@ -57,10 +54,9 @@ class App extends React.Component {
     this.state = {
       themeId: "light",
       db: null,
-      sqlQuery: "",
-      queryResult: null,
-      error: null,
-      lightBoxIsOpen: false
+      lightBoxIsOpen: false,
+      selectedView: "default",
+      drawerOpen: false
     };
   }
 
@@ -85,15 +81,7 @@ class App extends React.Component {
     xhr.send();
   }
 
-  executeSQLQuery() {
-    try {
-      var results = this.state.db.exec(this.state.sqlQuery)[0];
-      console.log(results);
-      this.setState({ queryResult: results, error: null });
-    } catch (e) {
-      this.setState({ queryResult: null, error: e });
-    }
-  }
+
 
   render() {
     return (
@@ -109,44 +97,14 @@ class App extends React.Component {
           )}
           <Box p={2}>
             <Grid container direction="column" spacing={2}>
-              <Grid item><Box display='flex' justifyContent="center">
-                <img src={logo} width="500em" height="192.5em" alt="Logo" />
-              </Box></Grid>
               <Grid item>
-                <Paper>
-                  <Box p={2} display='flex' alignItems="center" justifyContent="center">
-                    <Grid container direction="column" spacing={3}>
-                      <Grid item>
-                        <TextField
-                          label="SQL Query"
-                          multiline
-                          fullWidth
-                          margin="normal"
-                          rows={6}
-                          variant="outlined"
-                          error={this.state.error != null}
-                          helperText={this.state.error ? this.state.error.toString() : ""}
-                          value={this.state.sqlQuery}
-                          onChange={e => this.setState({ sqlQuery: e.target.value })}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Box display='flex' alignItems="center" justifyContent="center">
-                          <Button variant="contained" color="primary" disabled={!this.state.db}
-                            onClick={this.executeSQLQuery.bind(this)}>Run Query</Button>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Paper>
+                <Box display='flex' justifyContent="center">
+                  <img src={logo} width="500em" height="192.5em" alt="Logo" />
+                </Box>
               </Grid>
-              <Grid item>
-                <Paper>
-                  <Box p={2} display='flex' alignItems="center" justifyContent="center">
-                    <QueryTable queryResult={this.state.queryResult} />
-                  </Box>
-                </Paper>
-              </Grid>
+              {
+                (this.state.db != null) ? <Grid item style={{ overflow: 'auto' }}>{views[this.state.selectedView].view(this.state.db)}</Grid> : <Progess />
+              }
               <Grid item>
                 <Paper>
                   <Box p={2} display='flex' alignItems="center" justifyContent="center">
@@ -157,7 +115,13 @@ class App extends React.Component {
                 </Paper>
               </Grid>
             </Grid>
+            <IconButton style={{ position: "absolute", top: 0, left: 0 }} onClick={() => this.setState({ drawerOpen: true })}>
+              <MenuIcon />
+            </IconButton>
           </Box>
+          <Drawer anchor="left" open={this.state.drawerOpen} onClose={() => this.setState({ drawerOpen: false })}>
+            <DrawerList onClick={(key) => this.setState({ selectedView: key, drawerOpen: false })} />
+          </Drawer>
         </ThemeProvider>
       </React.Fragment>
     );
