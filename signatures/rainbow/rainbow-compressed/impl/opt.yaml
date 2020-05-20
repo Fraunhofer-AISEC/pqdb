@@ -5,5 +5,6 @@ dependencies:
   - OpenSSL
 side channel guarding:
   timing: true
+  branching: true
 hardware features:
   - avx2

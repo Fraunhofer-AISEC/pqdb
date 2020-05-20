@@ -4,7 +4,7 @@ timings:
   gen: 879000000
   enc|sign: 469000000
   dec|vrfy: 45400000
-memory requirement:
+memory requirements:
   gen: 7000000
   enc|sign: 3700000
   dec|vrfy: 3900000

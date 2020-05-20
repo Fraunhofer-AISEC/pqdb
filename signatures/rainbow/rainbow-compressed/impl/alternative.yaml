@@ -3,3 +3,5 @@ type: optimized
 comment: less researched, therefore not suggested
 platform: c
 side channel guarding:
+  timing: true
+  branching: true

@@ -2,3 +2,5 @@ name: Reference
 type: reference
 platform: c
 side channel guarding:
+  timing: true
+  branching: true
