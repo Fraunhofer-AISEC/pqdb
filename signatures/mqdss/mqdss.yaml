@@ -1,10 +1,10 @@
 name: MQDSS 2.0
 category: multivariate
 year:
-	paper: 2016
-	candidate: 2019
+    paper: 2016
+    candidate: 2019
 problems:
-	- assumption: MQ
+    - assumption: MQ
 stateful: false
 nist round: 2
 authors:
