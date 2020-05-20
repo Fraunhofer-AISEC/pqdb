@@ -4,21 +4,46 @@
     "type": "object",
     "properties": {
         "impl": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]+$"
         },
         "param": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]+$"
         },
         "comment": {
             "type": "string"
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+        },
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Source of the data specified here. Use only if it differs from the overall data source."
         },
         "platform": {
             "type": "string",
             "$comment": "#TODO make this reference to platform object. Add OS and Compiler info"
         },
         "timings": {
-            "type": "object",
+            "type":"object",
             "properties": {
+                "gen": {
+                    "type": "number"
+                },
+                "enc|sign": {
+                    "type": "number"
+                },
+                "dec|vrfy": {
+                    "type": "number"
+                },
                 "unit": {
                     "type": "string",
                     "enum": [
@@ -26,19 +51,17 @@
                         "ms"
                     ]
                 },
-                "gen": {
-                    "type": "number"
-                },
-                "enc/sign": {
-                    "type": "number"
-                },
-                "dec/vrfy": {
-                    "type": "number"
-                },
                 "comment": {
                     "type": "string"
                 }
             },
+            "required": [
+                "unit",
+                "gen",
+                "enc|sign",
+                "dec|vrfy"
+
+            ],
             "additionalProperties": false
         },
         "memory requirements": {
@@ -47,10 +70,10 @@
                 "gen": {
                     "type": "integer"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "integer"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "integer"
                 },
                 "comment": {

@@ -1,0 +1,9 @@
+name: Optimized implementation using x64 assembly for p610 with compressed keys
+type: optimized
+platform: c, x64assembly
+side channel guarding:
+  branching: true
+  timing: true
+  timing comment: Also guarded against cache attacks.
+code size:
+  overall: 1369050

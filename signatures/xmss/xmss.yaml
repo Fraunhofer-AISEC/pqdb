@@ -1,0 +1,21 @@
+name: XMSS
+category: hash
+year:
+    paper: 2011
+    standardization: 2018
+authors:
+  - Andreas Hülsing
+  - Denis Butin
+  - Stefan-Lukas Gazdag
+  - Joost Rijneveld
+  - Aziz Mohaisen
+stateful: true
+nist round: 0
+problems: []
+problems comment: "Only properties of hash functions assumed. This is implicitly assumed by all schemes, so we don't list it explicitly here."
+trust comment: "Very high because of minimal assumptions: Only relies on some rather weak properties of the hash function used (collision resistance is only required for the hash function used on the message itself)"
+sources:
+  - RFC8391 https://tools.ietf.org/html/rfc8391
+  - https://doi.org/10.6028/NIST.SP.800-208-draft
+  - https://eprint.iacr.org/2011/484
+  - https://eprint.iacr.org/2017/349 (for public key size)

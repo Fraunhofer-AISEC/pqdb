@@ -12,7 +12,8 @@
             "$comment": "`enc` stands for all types of key exchange (KEMs etc)"
         },
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name"
         },
         "comment": {
             "type": "string"
@@ -29,6 +30,17 @@
                 },
                 "category comment": {
                     "type": "string"
+        },
+        "stateful": {
+            "type": "boolean"
+        },
+        "stateful comment": {
+            "type": "string"
+        },
+        "nist round": {
+            "type": "integer",
+            "minimum": 0,
+            "$comment": "0 for schemes that were not submitted to the NIST PQC Standardization Process."
         },
         "year": {
             "type": "object",
@@ -51,20 +63,11 @@
         },
         "authors": {
             "type": "array",
+            "minItems": 1,
             "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 2
             }
-        },
-        "stateful": {
-            "type": "boolean"
-        },
-        "stateful comment": {
-            "type": "string"
-        },
-        "nist round": {
-            "type": "integer",
-            "minimum": 0,
-            "$comment": "0 for schemes that were not submitted to the NIST PQC Standardization Process."
         },
         "problems": {
             "type": "array",
@@ -85,15 +88,33 @@
                 ]
             }
         },
+        "problems comment": {
+            "type": "string"
+        },
+        "trust comment": {
+            "type": "string",
+            "$comment": "Notes about trustworthyness (existing attacks, cryptanalysis). Just add free text for now."
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+        },
         "sources": {
             "type": "array",
             "items": {
                 "type": "string"
             }
         },
-        "trust comment": {
+        "last_updated": {
             "type": "string",
-            "$comment": "Notes about trustworthyness (existing attacks, cryptanalysis). Just add free text for now."
+            "format": "date",
+            "$comment": "Date when the data was updated last"
+        },
+        "last_updated comment": {
+            "type": "string"
         }
     },
     "additionalProperties": false,

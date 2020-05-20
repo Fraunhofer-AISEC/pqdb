@@ -4,10 +4,25 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name (don't include scheme/flavor name, but do include the parameter set if the implementation is specific to it)"
         },
         "comment": {
             "type": "string"
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Links to additional resources, for example source code. Use `source` to denote where the data is from."
+        },
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Source of the data specified here. Use only if it differs from the overall data source."
         },
         "platform": {
             "type": "string"
@@ -56,7 +71,7 @@
         "code size": {
             "type": "object",
             "$comment": "in bytes",
-            "items": {
+            "properties": {
                 "overall": {
                     "type": "number",
                     "$comment": "If there is only one implementation for all operations"
@@ -64,10 +79,10 @@
                 "gen": {
                     "type": "number"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "number"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "number"
                 },
                 "comment": {
@@ -75,19 +90,16 @@
                 }
             }
         },
-        "code size comment": {
-            "type": "string"
-        },
         "randomness required": {
             "type": "object",
-            "items": {
+            "properties": {
                 "gen": {
                     "type": "number"
                 },
-                "enc/sign": {
+                "enc|sign": {
                     "type": "number"
                 },
-                "dec/vrfy": {
+                "dec|vrfy": {
                     "type": "number"
                 },
                 "comment": {

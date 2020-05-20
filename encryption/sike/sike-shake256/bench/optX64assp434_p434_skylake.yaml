@@ -1,0 +1,12 @@
+platform: Intel Core i7-6700 (Skylake) 3.4GHz
+comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0.
+timings:
+  unit: cycles
+  gen: 5927000
+  enc|sign: 9681000
+  dec|vrfy: 10343000
+memory requirements:
+  gen: 8136
+  enc|sign: 8456
+  dec|vrfy: 8840
+  comment: Numbers are referring to peak memory usage.

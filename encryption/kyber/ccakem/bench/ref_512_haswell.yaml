@@ -1,8 +1,6 @@
-impl: ref
-param: "512"
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
   gen: 141872
-  enc/sign: 205468
-  dec/vrfy: 246040
+  enc|sign: 205468
+  dec|vrfy: 246040
