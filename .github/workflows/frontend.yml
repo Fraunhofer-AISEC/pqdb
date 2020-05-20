@@ -1,0 +1,32 @@
+name: Frontend Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: Install Validation Dependencies
+      working-directory: tools/validation
+      run: npm install
+    - name: Create PQDB SQLite-File
+      run: node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite pqdb-frontend/src/tables.svg
+    - name: Install Frontend Dependencies and Build
+      working-directory: pqdb-frontend
+      run: |
+        yarn install
+        yarn build
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: pqdb-frontend/build
+        SINGLE_COMMIT: true

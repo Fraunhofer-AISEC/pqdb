@@ -4,7 +4,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "$comment": "Human readable name (full, including scheme and flavor name)"
         },
         "comment": {
             "type": "string"
@@ -24,15 +25,15 @@
                 },
                 "nist category": {
                     "type": "integer",
-                    "minimum": 1,
-                    "maximum": 5
+                    "minimum": 0,
+                    "maximum": 5,
+                    "$comment": "According to the authors. If weaker than category 1, use 0."
                 },
                 "comment": {
                     "type": "string"
                 }
             },
             "required": [
-                "classical",
                 "quantum"
             ]
         },
@@ -75,6 +76,20 @@
         "number of operations": {
             "type": "string",
             "$comment": "Use the literal string `inf` if there's no limitation. #TODO We'll allow strings for now and think of a good representation once we know more about the typical values for this."
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+        },
+        "sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Source of the data specified here. Use only if it differs from the overall data source."
         }
     },
     "additionalProperties": false,
