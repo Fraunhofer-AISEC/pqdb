@@ -1,8 +1,8 @@
 name: Reference
 platform: c
 type: reference
-comment: >-
-  https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html
+links:
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html
 side channel guarding:
   branching: false
   timing comment: ToDo
