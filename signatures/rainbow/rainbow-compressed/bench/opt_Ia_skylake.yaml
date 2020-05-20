@@ -1,5 +1,5 @@
-impl: opt
-param: Ia
+
+
 platform: Intel iXEON E3-1275 (Skylake) 3.6GHZ
 timings:
   unit: cycles
