@@ -8,6 +8,7 @@ A comprehensive list of post-quantum crypto schemes and their properties
 * [Kyber](encryption/kyber) ([Website](https://pq-crystals.org/kyber/))
 * [NewHope](encryption/newhope) ([Website](https://www.newhopecrypto.org/))
 * [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
+* [NTRU](encryption/ntru) ([Website](https://ntru.org/))
 
 ### Signature
 * [qTESLA](signatures/qTESLA) ([Website](https://www.isara.com/resource-center/qtesla.html))

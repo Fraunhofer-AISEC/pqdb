@@ -1,41 +1,4 @@
 {
-    "definitions": {
-        "timing_totalled": {
-            "title": "Totalled",
-            "type": "object",
-            "properties": {
-                "total": {
-                    "type": "number",
-                    "$comment": "Equaling gen+enc+dec. Makes sense in a KEM setting."
-                }
-            },
-            "additionalProperties": false,
-            "required": [
-                "total"
-            ]
-        },
-        "timing_detailled": {
-            "title": "Detailled",
-            "type": "object",
-            "properties": {
-                "gen": {
-                    "type": "number"
-                },
-                "enc|sign": {
-                    "type": "number"
-                },
-                "dec|vrfy": {
-                    "type": "number"
-                }
-            },
-            "additionalProperties": false,
-            "required": [
-                "gen",
-                "enc|sign",
-                "dec|vrfy"
-            ]
-        }
-    },
     "$schema": "http://json-schema.org/schema#",
     "$id": "benchmark.json#",
     "type": "object",
@@ -70,16 +33,16 @@
             "$comment": "#TODO make this reference to platform object. Add OS and Compiler info"
         },
         "timings": {
+            "type":"object",
             "properties": {
-                "measurements": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/timing_detailled"
-                        },
-                        {
-                            "$ref": "#/definitions/timing_totalled"
-                        }
-                    ]
+                "gen": {
+                    "type": "number"
+                },
+                "enc|sign": {
+                    "type": "number"
+                },
+                "dec|vrfy": {
+                    "type": "number"
                 },
                 "unit": {
                     "type": "string",
@@ -93,9 +56,13 @@
                 }
             },
             "required": [
-                "measurements",
-                "unit"
-            ]
+                "unit",
+                "gen",
+                "enc|sign",
+                "dec|vrfy"
+
+            ],
+            "additionalProperties": false
         },
         "memory requirements": {
             "type": "object",

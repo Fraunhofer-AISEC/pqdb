@@ -2,9 +2,8 @@ platform: xeon-e3-1220-skylake
 timings:
   unit: cycles
   comment: median
-  measurements:
-    gen: 646184
-    enc|sign: 43437
-    dec|vrfy: 58166
+  gen: 646184
+  enc|sign: 43437
+  dec|vrfy: 58166
 sources:
   - 'https://bench.cr.yp.to/results-kem.html'
