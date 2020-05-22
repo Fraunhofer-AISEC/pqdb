@@ -1,6 +1,4 @@
-
-
-platform: Intel iXEON E7-8860 v3 (Haswell) 2.2GHZ
+platform: Intel XEON E7-8860 v3 (Haswell) 2.2GHz (Turboboost off), 2TB RAM @2133 MHz, Linux 4.15.0-39, GCC 7.3 (-O2 -std=c99 -Wall -Wextra -mavx2)
 timings:
   unit: cycles
   gen: 101000000

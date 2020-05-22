@@ -1,6 +1,4 @@
-
-
-platform: Intel iXEON E3-1275 (Skylake) 3.6GHZ
+platform: Intel XEON E3-1275 v5 (Skylake) 3.6GHz (Turboboost off), 64GB RAM @2133 MHz, Linux 4.8.5, GCC 6.4 (-O2 -std=c99 -Wall -Wextra -mavx2)
 timings:
   unit: cycles
   gen: 94800000

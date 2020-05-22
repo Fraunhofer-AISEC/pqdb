@@ -1,4 +1,4 @@
-platform: Intel iXEON E3-1225 (Skylake) 3.3GHZ
+platform: Intel XEON E3-1225 (Skylake) 3.3GHz (Turboboost off), 64GB RAM @2133 MHz, Linux 4.8.15, GCC 6.4 (-O2 -std=c99 -Wall -Wextra)
 timings:
   unit: cycles
   gen: 40200000
