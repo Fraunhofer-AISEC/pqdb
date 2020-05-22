@@ -1,6 +1,6 @@
 name: optimized
-comment: >-
-  https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
+links:
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
 platform: x64
 side channel guarding:
   timing comment: ToDo

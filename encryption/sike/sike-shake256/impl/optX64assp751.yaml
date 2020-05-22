@@ -1,0 +1,10 @@
+name: Optimized implementation using x64 assembly for p751
+type: optimized
+platform: c, x64assembly
+side channel guarding:
+  branching: true
+  timing: true
+  timing comment: Also guarded against cache attacks.
+code size:
+  overall: 76840
+  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"

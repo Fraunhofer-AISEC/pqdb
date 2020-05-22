@@ -4,7 +4,11 @@
   "main": "validate.js",
   "dependencies": {
     "ajv": "^6.11.0",
+    "better-sqlite3": "^7.0.1",
     "js-yaml": "^3.13.1"
   },
-  "license": "SEE LICENSE IN ../LICENSE"
+  "license": "SEE LICENSE IN ../LICENSE",
+  "optionalDependencies": {
+    "nomnoml": "^0.7.2"
+  }
 }

@@ -1,0 +1,6 @@
+name: Dilithium-AES
+type: SIG
+security notion: SUF-CMA
+comment: >-
+  Note that Dilithium can be used as a deterministic or randomized signature
+  scheme. We describe the deterministic variant here.

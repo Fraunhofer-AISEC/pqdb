@@ -1,0 +1,10 @@
+name: Optimized implementation for p434
+type: optimized
+platform: c
+side channel guarding:
+  branching: true
+  timing: true
+  timing comment: Also guarded against cache attacks.
+code size:
+  overall: 54170
+  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"
