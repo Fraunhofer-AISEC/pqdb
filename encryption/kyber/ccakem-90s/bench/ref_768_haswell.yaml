@@ -1,8 +1,7 @@
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
-  measurements:
-    gen: 451018
-    enc|sign: 514088
-    dec|vrfy: 556972
+  gen: 451018
+  enc|sign: 514088
+  dec|vrfy: 556972
   comment: "with compressed `sk`, `dec` takes 758934"
