@@ -28,7 +28,7 @@ const themes = {
 
 // Add new views here
 const views = {
-  "default": {
+  "raw_sql": {
     name: "Custom SQL Query",
     description: "Enter a custom database query and display the result in a table.",
     view: (db) => <CustomSQLQuery db={db} />
@@ -55,7 +55,7 @@ class App extends React.Component {
       themeId: "light",
       db: null,
       lightBoxIsOpen: false,
-      selectedView: "default",
+      selectedView: "raw_sql",
       drawerOpen: false
     };
   }
