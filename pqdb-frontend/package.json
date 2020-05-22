@@ -17,7 +17,7 @@
     "react-app-rewired": "^2.1.5"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "HOST=localhost react-app-rewired start",
     "build": "react-app-rewired build",
     "eject": "react-scripts eject"
   },
