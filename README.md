@@ -9,9 +9,12 @@ A comprehensive list of post-quantum crypto schemes and their properties
 * [NewHope](encryption/newhope) ([Website](https://www.newhopecrypto.org/))
 * [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
+* [SIKE](encryption/sike) ([Website](https://sike.org/))
 
 ### Signature
-* [qTESLA](signatures/qTESLA) ([Website](https://www.isara.com/resource-center/qtesla.html))
+* [Dilithium](signatures/dilithium) ([Website](https://pq-crystals.org/dilithium/))
+* [qTESLA](signatures/qTESLA) ([Website](https://qtesla.org/))
+* [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))
 
 ## Schema Validation
 All data is stored in .yaml files which are validated using JSON Schema. The following steps describe how to the validation script can be executed locally.
