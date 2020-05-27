@@ -139,8 +139,8 @@ scheme_to_paramset = dict(
         for l in _scheme_to_paramset.strip().split('\n'))
 
 
-def dump_preparsed(csvfile):
-    cats = preparse(csvfile)
+def dump_preparsed(csvdata):
+    cats = preparse(csvdata)
     for cat, types in cats.items():
         for type, data in types.items():
             print(cat, '/', type)
@@ -148,11 +148,11 @@ def dump_preparsed(csvfile):
                 print(v)
             print()
 
-def preparse(csvfile):
+def preparse(csvdata):
     raw = defaultdict(list)
     h1 = h2 = None
     lastwashead = False
-    for l in csvfile:
+    for l in csvdata.splitlines(True):
         if l.rstrip().endswith(',,,,,,,,,,'):
             if lastwashead:
                 h1 = h2
@@ -191,9 +191,9 @@ def preparse(csvfile):
     return out
 
 
-def import_benchmarks(csvfile, type):
+def import_benchmarks(csvdata, type, source):
     assert type in (ENC, SIG)
-    data = preparse(csvfile)
+    data = preparse(csvdata)
     speed = data['Speed Evaluation'][type]
     mem = data['Memory Evaluation'][type]
     skipcounter = Counter()
@@ -241,7 +241,7 @@ def import_benchmarks(csvfile, type):
 
         data = {
             'links': ['https://github.com/mupq/pqm4/#benchmarks'],
-            'sources': ['https://github.com/mupq/pqm4/blob/84c5f91/benchmarks.csv'],
+            'sources': [source],
             'platform': 'M4, at 24MHz, using arm-none-eabi-gcc 9.1.0 or 9.2.0',
         }
         if timings:
@@ -325,11 +325,37 @@ def get_bench_path(type, scheme, flavor, impl, paramset, arch):
 
 if __name__ == '__main__':
     import sys
-    CSVFILE = 'tools/import/pqm4-benchmarks.csv'
+    PQM4_JSON = 'https://api.github.com/repos/mupq/pqm4/commits?path=benchmarks.csv&sha=master'
+    PQM4_CSV_BASE = 'https://raw.githubusercontent.com/mupq/pqm4/{}/benchmarks.csv'
+    PQM4_SOURCE_URL_BASE = 'https://github.com/mupq/pqm4/blob/{}/benchmarks.csv'
 
-    with open(CSVFILE, newline='') as f:
-        print('IMPORTING ENCRYPTION SCHEMES')
-        import_benchmarks(f, ENC)
-        print('\nIMPORTING SIGNATURE SCHEMES')
-        f.seek(0)
-        import_benchmarks(f, SIG)
+    if len(sys.argv) > 2:
+        # only use this for developing
+        with open(sys.argv[1], newline='') as f:
+            print('Using', sys.argv[1])
+            d = f.read()
+            sha = sys.argv[2]
+
+    elif len(sys.argv) > 1:
+        sys.exit("Error: Please either supply \n"
+                 "- no arguments at all (for automatic download), or\n"
+                 "- csv file and sha hash of the last commit (for developing)")
+        sys.exit(1)
+
+    else:
+        import requests # on Debian/Ubuntu, install the `python3-requests` package
+        print('Downloading data...')
+        r = requests.get(PQM4_JSON)
+        assert r.status_code == 200
+        sha = r.json()[0]['sha'][:7]
+        f = requests.get(PQM4_CSV_BASE.format(sha))
+        print('Using', f.request.url)
+        assert r.status_code == 200
+        d = f.text
+
+    source = PQM4_SOURCE_URL_BASE.format(sha)
+
+    print('\nIMPORTING ENCRYPTION SCHEMES')
+    import_benchmarks(d, ENC, source)
+    print('\nIMPORTING SIGNATURE SCHEMES')
+    import_benchmarks(d, SIG, source)
