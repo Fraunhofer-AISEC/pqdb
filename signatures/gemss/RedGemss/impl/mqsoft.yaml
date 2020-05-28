@@ -3,3 +3,5 @@ type: optimized
 platform: c
 hardware features:
   - avx2
+  - sse2
+  - ssse3

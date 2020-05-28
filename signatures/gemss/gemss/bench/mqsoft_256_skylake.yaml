@@ -3,4 +3,4 @@ timings:
   unit: cycles
   gen: 530000000
   enc|sign: 3020000000
-  dec|vrfy: 684000
+  dec|vrfy: 678000
