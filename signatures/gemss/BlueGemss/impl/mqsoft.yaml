@@ -1,0 +1,5 @@
+name: MQsoft
+type: optimized
+platform: c
+hardware features:
+  - avx2

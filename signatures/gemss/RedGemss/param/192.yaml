@@ -1,4 +1,4 @@
-name: GeMSS192
+name: RedGeMSS192
 security level:
   classical: 192
   quantum: 112
@@ -7,5 +7,5 @@ failure probability: -6345039891167
 number of operations: inf
 sizes:
   sk: 24
-  pk: 1237964
-  ct|sig: 52
+  pk: 1290543
+  ct|sig: 55

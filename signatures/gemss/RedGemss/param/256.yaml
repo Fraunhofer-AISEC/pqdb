@@ -1,4 +1,4 @@
-name: GeMSS256
+name: RedGeMSS256
 security level:
   classical: 256
   quantum: 149
@@ -7,5 +7,5 @@ failure probability: -1.3306513097844322e+19
 number of operations: inf
 sizes:
   sk: 32
-  pk: 3040700
-  ct|sig: 72
+  pk: 3135591
+  ct|sig: 75

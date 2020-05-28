@@ -1,4 +1,4 @@
-name: GeMSS128
+name: BlueGeMSS128
 security level:
   classical: 128
   quantum: 174
@@ -7,5 +7,5 @@ failure probability: -24204404
 number of operations: inf
 sizes:
   sk: 16
-  pk: 352188
-  ct|sig: 33
+  pk: 363609
+  ct|sig: 34
