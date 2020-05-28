@@ -1,0 +1,6 @@
+platform: Haswell
+timings:
+  unit: cycles
+  gen: 810000000
+  enc|sign: 733000000
+  dec|vrfy: 989000

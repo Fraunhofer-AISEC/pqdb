@@ -1,0 +1,6 @@
+platform: Skylake
+timings:
+  unit: cycles
+  gen: 118000000
+  enc|sign: 530000000
+  dec|vrfy: 228000
