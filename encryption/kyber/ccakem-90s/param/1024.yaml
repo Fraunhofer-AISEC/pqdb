@@ -1,0 +1,13 @@
+name: Kyber-90s.CCAKEM1024
+security level:
+    classical: 254
+    quantum: 230
+    nist category: 5
+failure probability: -174
+number of operations: inf
+sizes:
+    sk: 3168
+    pk: 1568
+    ct|sig: 1568
+    msg: 32
+    comment: "`sk` can be expanded from 32 byte seed"

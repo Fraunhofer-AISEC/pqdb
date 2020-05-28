@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
@@ -150,9 +152,12 @@ function insertColData(tableName, columns, data) {
 
 function exists(file) {
     try {
-        fs.accessSync(file, 'fs.constants.F_OK');
-    } catch {
-        return false;
+        fs.accessSync(file, fs.constants.F_OK);
+    } catch (err) {
+        if ( err.code == 'ENOENT' )
+            return false;
+        else
+            throw err;
     }
     return true;
 }

@@ -1,4 +1,4 @@
-name: Kyber.CCAKEM512
+name: Kyber-90s.CCAKEM512
 security level:
     classical: 111
     quantum: 100
