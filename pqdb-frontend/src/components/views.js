@@ -1,33 +1,88 @@
 import React from 'react';
 import {
     Grid, Box, Paper, TextField, Button,
-    Table, TableHead, TableRow, TableCell, TableContainer, TableBody
+    Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel
 } from '@material-ui/core';
 
-function QueryTable(props) {
-    if (!props.queryResult) return null;
-    return (
-        <TableContainer component={Paper}>
-            <Table stickyHeader>
-                <TableHead>
-                    <TableRow>
-                        {
-                            props.queryResult.columns.map(column => <TableCell>{column}</TableCell>)
-                        }
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {props.queryResult.values.map((row) => (
+function comparator(a, b, orderBy, isAsc) {
+    if (b[orderBy] < a[orderBy]) {
+        return isAsc ? 1 : -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return isAsc ? -1 : 1;
+    }
+    return 0;
+}
+
+function sortedRows(array, orderBy, isAsc) {
+    const indexedRows = array.map((row, index) => [row, index]);
+    if (orderBy === null) return indexedRows;
+    indexedRows.sort((a, b) => {
+        const order = comparator(a[0], b[0], orderBy, isAsc);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return indexedRows;
+}
+
+class QueryTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.queryResult = props.queryResult;
+        this.state = {
+            orderBy: null,
+            order: 'asc'
+        };
+    }
+
+    handleRequestSort(property) {
+        const isAsc = this.state.orderBy === property && this.state.order === 'asc';
+        this.setState({
+            order: isAsc ? 'desc' : 'asc',
+            orderBy: property
+        });
+    }
+
+    render() {
+        const { order, orderBy } = this.state;
+        if (!this.queryResult) return null;
+
+        return (
+            <TableContainer component={Paper}>
+                <Table stickyHeader>
+                    <TableHead>
                         <TableRow>
                             {
-                                row.map(val => <TableCell>{val}</TableCell>)
+                                this.queryResult.columns.map((column, idx) =>
+                                    <TableCell key={idx}>
+                                        <TableSortLabel
+                                            active={orderBy === idx}
+                                            direction={orderBy === idx ? order : 'asc'}
+                                            onClick={(e) => this.handleRequestSort(idx)}>
+                                            {column}
+                                        </TableSortLabel>
+                                    </TableCell>
+                                )
                             }
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+                    </TableHead>
+                    <TableBody>
+                        {
+                            sortedRows(this.queryResult.values, orderBy, order === 'asc').map(
+                                (row) => (
+                                    <TableRow key={row[1]}>
+                                        {
+                                            row[0].map((val, j) => <TableCell key={j}>{val}</TableCell>)
+                                        }
+                                    </TableRow>
+                                )
+                            )
+                        }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    }
 }
 
 class CustomSQLQuery extends React.Component {
@@ -35,19 +90,20 @@ class CustomSQLQuery extends React.Component {
         super(props);
         this.db = props.db;
         this.state = {
-            sqlQuery: "",
+            sqlInput: "",
+            executedSqlQuery: "",
             queryResult: null,
             error: null,
         }
     }
 
     executeSQLQuery() {
+        var sqlQuery = this.state.sqlInput;
         try {
-            var results = this.db.exec(this.state.sqlQuery)[0];
-            console.log(results);
-            this.setState({ queryResult: results, error: null });
-        } catch (e) {
-            this.setState({ queryResult: null, error: e });
+            var results = this.db.exec(sqlQuery)[0];
+            this.setState({ queryResult: results, error: null, executedSqlQuery: sqlQuery });
+        } catch (error) {
+            this.setState({ queryResult: null, error: error, executedSqlQuery: sqlQuery });
         }
     }
 
@@ -68,8 +124,8 @@ class CustomSQLQuery extends React.Component {
                                         variant="outlined"
                                         error={this.state.error != null}
                                         helperText={this.state.error ? this.state.error.toString() : ""}
-                                        value={this.state.sqlQuery}
-                                        onChange={e => this.setState({ sqlQuery: e.target.value })}
+                                        value={this.state.sqlInput}
+                                        onChange={e => this.setState({ sqlInput: e.target.value })}
                                     />
                                 </Grid>
                                 <Grid item>
@@ -85,7 +141,7 @@ class CustomSQLQuery extends React.Component {
                 <Grid item>
                     <Paper>
                         <Box p={2} display='flex' justifyContent="center">
-                            <QueryTable queryResult={this.state.queryResult} />
+                            <QueryTable key={this.state.executedSqlQuery} queryResult={this.state.queryResult} />
                         </Box>
                     </Paper>
                 </Grid>
