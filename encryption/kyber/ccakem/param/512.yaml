@@ -1,12 +1,13 @@
 name: Kyber.CCAKEM512
 security level:
-    classical: 112
-    quantum: 102
+    classical: 111
+    quantum: 100
     nist category: 1
-failure probability: -145
+failure probability: -178
 number of operations: inf
 sizes:
     sk: 1632
-    pk: 736
-    ct|sig: 800
+    pk: 800
+    ct|sig: 736
     msg: 32
+    comment: "`sk` can be expanded from 32 byte seed"

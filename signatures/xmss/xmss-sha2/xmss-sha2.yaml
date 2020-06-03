@@ -1,0 +1,3 @@
+name: XMSS using SHA2
+type: SIG
+security notion: EUF-CMA

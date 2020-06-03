@@ -1,6 +1,9 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml')
+const yaml = require('js-yaml');
+const Database = require('better-sqlite3');
 const Ajv = require('ajv');
 const ajv = new Ajv();
 
@@ -14,13 +17,147 @@ const schemaForFlavor = JSON.parse(fs.readFileSync('schema/flavor.json', 'utf-8'
 const schemaForParam = JSON.parse(fs.readFileSync('schema/paramset.json', 'utf-8'));
 const schemaForImpl = JSON.parse(fs.readFileSync('schema/implementation.json', 'utf-8'));;
 const schemaForBench = JSON.parse(fs.readFileSync('schema/benchmark.json', 'utf-8'));;
+const _validIdentifier = RegExp('^[-A-Za-z0-9]+$');
 
+const TYPE_MAP = { "integer": "INTEGER", "number": "REAL", "string": "TEXT", "boolean": "INTEGER" };
+const BASIC_TYPES = ["boolean", "integer", "number", "string"];
+
+const ARRAY_COLUMN_NAMES = {
+    "authors": "name", "links": "url", "sources": "url", "hardware features": "feature",
+    "dependencies": "dependency"
+};
+const SINGULAR = { "dependencies": "dependency" };
+
+function singular(word) {
+    if (word in SINGULAR)
+        return SINGULAR[word];
+
+    return word.substring(0, word.length - 1);
+}
+
+function convertName(name) {
+    return name.replace(/[ |-]/g, "_");
+}
+
+function createTableForSchema(name, schema, additional_foreign_keys) {
+    var tableInfos = tableInfoForSchema(name, schema, additional_foreign_keys);
+    for (var name in tableInfos)
+        db.prepare(sqlFromTableInfo(name, tableInfos[name])).run();
+}
+
+function sqlFromTableInfo(name, columnTypes) {
+    return "CREATE TABLE " + name + "(id INTEGER PRIMARY KEY," + columnTypes.join(",") + ");";
+}
+
+// Supported: String, Integer, Number, Boolean, Array (in root object)
+function tableInfoForSchema(name, schema, additional_foreign_keys) {
+    var tables = {};
+    tables[name] = extractColTypes(schema);
+    for (var target of additional_foreign_keys) {
+        tables[name].push(target + "_id INTEGER REFERENCES " + target + "(id)");
+    }
+    var properties = schema.properties;
+    for (var key in properties) {
+        if (properties[key].type === "array") {
+            var tableName = name + "_" + singular(convertName(key));
+            if (properties[key].items.type === "object") {
+                tables[tableName] = extractColTypes(properties[key].items);
+            } else if (BASIC_TYPES.includes(properties[key].items.type)) {
+                tables[tableName] = [ARRAY_COLUMN_NAMES[key] + " " + TYPE_MAP[properties[key].items.type]];
+            } else {
+                throw "Error in schema '" + name + "." + key + "': Unsupported type '" +
+                properties[key].items.type + "' in array";
+            }
+            tables[tableName].push(name + "_id INTEGER REFERENCES " + name + "(id)");
+        }
+    }
+
+    return tables;
+}
+
+function extractColTypes(schema) {
+    var columnTypes = [];
+    var properties = schema.properties;
+    for (var key in properties) {
+        if (BASIC_TYPES.includes(properties[key].type)) {
+            columnTypes.push(convertName(key) + " " + TYPE_MAP[properties[key].type]);
+        } else if (properties[key].type === "object") {
+            var namePrefix = convertName(key) + "_";
+            var objColumnTypes = extractColTypes(properties[key]);
+            for (var i = 0; i < objColumnTypes.length; i++) {
+                columnTypes.push(namePrefix + objColumnTypes[i]);
+            }
+        }
+    }
+
+    return columnTypes;
+}
+
+function extractArrayColData(obj, name, parent_id) {
+    var colData = {};
+    for (var key in obj) {
+        if (typeof obj[key] != "object" || !Array.isArray(obj[key]) || obj[key].length == 0)
+            continue;
+        var tableName = name + "_" + singular(convertName(key));
+        if (typeof obj[key][0] === "object") {
+            colData[tableName] = obj[key].map(item => {
+                var [col, dat] = extractColData(item);
+                col.push(name + "_id");
+                dat.push(parent_id);
+                return [col, dat];
+            });
+        } else {
+            var colName = ARRAY_COLUMN_NAMES[key];
+            colData[tableName] = obj[key].map(item => [[colName, name + "_id"], [convertValue(item), parent_id]]);
+        }
+    }
+
+    return colData;
+}
+
+function convertValue(value) {
+    if (typeof value === "boolean") return value ? 1 : 0;
+    return value;
+}
+
+function extractColData(obj) {
+    var columns = [];
+    var data = [];
+    for (var key in obj) {
+        if (BASIC_TYPES.includes(typeof obj[key])) {
+            columns.push(convertName(key));
+            data.push(convertValue(obj[key]));
+        } else if (typeof obj[key] === "object") {
+            if (Array.isArray(obj[key])) continue;
+
+            var namePrefix = convertName(key) + "_";
+            var [objColumns, objData] = extractColData(obj[key]);
+            for (var i = 0; i < objColumns.length; i++) {
+                columns.push(namePrefix + objColumns[i]);
+                data.push(objData[i]);
+            }
+        } else {
+            console.log((typeof obj[key]) + " is currently skipped.");
+        }
+    }
+    return [columns, data];
+}
+
+function insertColData(tableName, columns, data) {
+    var sql = "INSERT INTO " + tableName + "(" + columns.join(",") + ") VALUES (" + columns.map(col => "?").join(",") + ")";
+    var stmt = db.prepare(sql);
+    var result = stmt.run(data);
+    return result.lastInsertRowid;
+}
 
 function exists(file) {
     try {
-        fs.accessSync(file, 'fs.constants.F_OK');
-    } catch {
-        return false;
+        fs.accessSync(file, fs.constants.F_OK);
+    } catch (err) {
+        if ( err.code == 'ENOENT' )
+            return false;
+        else
+            throw err;
     }
     return true;
 }
@@ -45,13 +182,22 @@ function isValidSchemeDir(rootDirectory, directory) {
         return false;
     }
 
+    // Insert scheme into database
+    var [columns, data] = extractColData(scheme);
+    var schemeID = insertColData("scheme", columns, data);
+    var arrayColData = extractArrayColData(scheme, "scheme", schemeID);
+    for (var tableName in arrayColData)
+        for (var [columns, data] of arrayColData[tableName])
+            insertColData(tableName, columns, data);
+
+    // Validate flavors
     return fs.readdirSync(fullPath).every(
         flavorDir => !fs.statSync(path.join(fullPath, flavorDir)).isDirectory()
-            || isValidFlavorDir(fullPath, flavorDir)
+            || isValidFlavorDir(fullPath, flavorDir, schemeID)
     );
 }
 
-function isValidFlavorDir(rootDirectory, directory) {
+function isValidFlavorDir(rootDirectory, directory, schemeID) {
     var fullPath = path.join(rootDirectory, directory);
     console.log(fullPath);
 
@@ -60,38 +206,56 @@ function isValidFlavorDir(rootDirectory, directory) {
         console.error('Flavor file ' + flavorFile + ' is not present.');
         return false;
     }
-    if (!isValidFile(flavorFile, schemaForFlavor)) return false;
+    var flavorID = validateFileAndInsert(flavorFile, schemaForFlavor, "flavor", "scheme", schemeID);
+    if (flavorID == 0) return false;
 
+    // Validate paramsets, implementations
     var schemaForDir = {
         "param": schemaForParam,
         "impl": schemaForImpl
     };
 
-    var valid = Object.keys(schemaForDir).every(
-        directory => !exists(path.join(fullPath, directory))
-            || fs.readdirSync(path.join(fullPath, directory)).every(
-                file => !fs.statSync(path.join(fullPath, directory, file)).isFile()
-                    || !file.endsWith(".yaml")
-                    || isValidFile(path.join(fullPath, directory, file), schemaForDir[directory])
-            )
-    );
-    if (!valid) return false;
+    var schemaNameForDir = {
+        "param": "paramset",
+        "impl": "implementation"
+    };
 
+    var paramImplIDs = { "param": {}, "impl": {} };
 
+    for (var directory in schemaForDir) {
+        if (!exists(path.join(fullPath, directory)))
+            continue;
+        for (var file of fs.readdirSync(path.join(fullPath, directory))) {
+            if (!fs.statSync(path.join(fullPath, directory, file)).isFile() || !file.endsWith(".yaml"))
+                continue;
+            var id = validateFileAndInsert(
+                path.join(fullPath, directory, file), schemaForDir[directory],
+                schemaNameForDir[directory], "flavor", flavorID
+            );
+            if (id == 0) return false;
+            paramImplIDs[directory][file.substring(0, file.length - 5)] = id;
+        }
+    }
+
+    // Validate benchmarks
     return !exists(path.join(fullPath, "bench")) || fs.readdirSync(path.join(fullPath, "bench")).every(
         file => !fs.statSync(path.join(fullPath, "bench", file)).isFile()
             || !file.endsWith(".yaml")
-            || isValidBenchmarkFile(fullPath, file)
+            || validateBenchmarkFileAndInsert(fullPath, file, paramImplIDs)
     );
 }
 
-function isValidBenchmarkFile(fullPath, file) {
+function validateBenchmarkFileAndInsert(fullPath, file, paramImplIDs) {
     var filePath = path.join(fullPath, "bench", file);
     console.log(filePath);
-    var parts = file.split('_');
+    var parts = path.basename(file, '.yaml').split('_');
     var data = yaml.load(fs.readFileSync(filePath));
     if ('impl' in data || 'param' in data) {
         console.log("'impl' and 'param' should not be explicity set in benchmark files but are inferred from the filename.");
+        return false;
+    }
+    if (parts.length != 3 || !parts.every(p => _validIdentifier.test(p))) {
+        console.log("Filename must be impl_param_arch.yaml and each segment must match A-Za-z0-9-.");
         return false;
     }
     data.impl = parts[0];
@@ -104,12 +268,42 @@ function isValidBenchmarkFile(fullPath, file) {
         console.log("Referenced parameter set '" + data.param + "' does not exist.");
         return false;
     }
-    return isValidData(data, schemaForBench);
+    if (!isValidData(data, schemaForBench)) return false;
+
+    var paramID = paramImplIDs["param"][data.param];
+    var implID = paramImplIDs["impl"][data.impl];
+    delete data.impl;
+    delete data.param;
+
+    return insertData(data, "benchmark", ["paramset", "implementation"], [paramID, implID]) > 0;
 }
 
-function isValidFile(file, schema) {
+function validateFileAndInsert(file, schema, schemaName, parentName, parentID) {
     console.log(file);
-    return isValidData(yaml.load(fs.readFileSync(file)), schema);
+    if (!_validIdentifier.test(path.basename(file, '.yaml'))) {
+        console.log("Filename must match A-Za-z0-9-!");
+        return 0;
+    }
+    var obj = yaml.load(fs.readFileSync(file));
+    if (isValidData(obj, schema))
+        return insertData(obj, schemaName, [parentName], [parentID]);
+
+    return 0;
+}
+
+function insertData(obj, schemaName, parentNames, parentIDs) {
+    var [columns, data] = extractColData(obj);
+    for (var i = 0; i < parentNames.length; i++) {
+        columns.push(parentNames[i] + "_id");
+        data.push(parentIDs[i]);
+    }
+
+    var schemaID = insertColData(schemaName, columns, data);
+    var arrayColData = extractArrayColData(obj, schemaName, schemaID);
+    for (var tableName in arrayColData)
+        for (var [columns, data] of arrayColData[tableName])
+            insertColData(tableName, columns, data);
+    return schemaID;
 }
 
 function isValidData(data, schema) {
@@ -130,5 +324,54 @@ function validate() {
     );
 }
 
+var argv = process.argv.slice(2);
+
+var dbFile = ":memory:";
+if (argv.length > 0 && argv.length < 3) dbFile = argv[0];
+var dbSchemaSvg = (argv.length == 2) ? dbSchemaSvg = argv[1] : null;
+var db = new Database(dbFile);
+
+createTableForSchema("scheme", schemaForScheme, []);
+createTableForSchema("flavor", schemaForFlavor, ["scheme"]);
+createTableForSchema("paramset", schemaForParam, ["flavor"]);
+createTableForSchema("implementation", schemaForImpl, ["flavor"]);
+var schemaForBenchReduced = JSON.parse(JSON.stringify(schemaForBench));
+delete schemaForBenchReduced.properties.impl;
+delete schemaForBenchReduced.properties.param;
+delete schemaForBenchReduced.required;
+createTableForSchema("benchmark", schemaForBenchReduced, ["paramset", "implementation"]);
+
 if (!validate()) process.exit(1);
-console.log("Validation successfully completed. All files are valid.")
+
+if (dbSchemaSvg != null) {
+    const nomnoml = require('nomnoml');
+    var tables = db.prepare(
+        "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
+    ).all().map(row => row.name);
+    var tableInfo = {};
+    tables.forEach(table => tableInfo[table] = db.pragma("table_info(" + table + ")"));
+    var foreignKeyInfo = {};
+    tables.forEach(table => foreignKeyInfo[table] = db.pragma("foreign_key_list(" + table + ")"));
+
+    var source = "#title: PQDB Database Diagram\n";
+    // Add tables
+    source += tables.map(table => "[" + table + "|" +
+        tableInfo[table].map(info => info.name + ": " + info.type + ((info.pk === 1) ? " 🔑" : "")).join(";") +
+        "]").join("\n");
+    source += "\n";
+    // Add foreign key connectors
+    source += tables.filter(table => foreignKeyInfo[table].length > 0).map(
+        table => foreignKeyInfo[table].map(info => "[" + table + "] -> [" + info.table + "]").join("\n")
+    ).join("\n");
+    // Render svg
+    var svgData = nomnoml.renderSvg(source);
+    // Add white background color
+    svgData = svgData.replace('</desc>\n', '</desc>\n  <rect width="100%" height="100%" fill="white"/>\n');
+
+    // Write to file
+    fs.writeFileSync(dbSchemaSvg, svgData);
+}
+
+db.close();
+
+console.log("Validation and building the database successfully completed.");
