@@ -1,0 +1,12 @@
+name: FALCON.FALCON512
+security level:
+    classical: 114
+    quantum: 103
+    nist category: 1
+failure probability: 0000
+number of operations: inf
+sizes:
+    sk: 1281
+    pk: 897
+    ct|sig: 617
+    msg: 256
