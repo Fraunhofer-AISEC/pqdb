@@ -1,7 +1,0 @@
-platform: Intel Core i7-6567 (Skylake) 3.6GHZ
-timings:
-  unit: ms
-  measurements:
-    gen: 7.26
-    enc|sign: 7692.9
-    dec|vrfy: 44424.7
