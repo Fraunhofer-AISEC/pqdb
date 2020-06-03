@@ -1,7 +1,0 @@
-platform: m4, at 168MHz, using GCC6.3.1 with optimization -02 -mcpu=cortex-m4
-timings:
-  unit: cycles 
-  gen:  513950073
-  enc|sign: 44985653
-  dec|vrfy: 1032261
-  comment: Expanded keys are used.
