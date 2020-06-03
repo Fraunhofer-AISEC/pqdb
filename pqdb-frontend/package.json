@@ -6,9 +6,11 @@
   "dependencies": {
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-image-lightbox": "^5.1.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "sql.js": "^1.2.2"
   },

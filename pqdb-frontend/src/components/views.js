@@ -1,8 +1,10 @@
 import React from 'react';
 import {
-    Grid, Box, Paper, TextField, Button,
+    Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel
 } from '@material-ui/core';
+import { AccountTree as DiagramIcon } from '@material-ui/icons';
+import qs from 'query-string';
 
 function comparator(a, b, orderBy, isAsc) {
     if (b[orderBy] < a[orderBy]) {
@@ -85,20 +87,103 @@ class QueryTable extends React.Component {
     }
 }
 
-class CustomSQLQuery extends React.Component {
+class Welcome extends React.Component {
+
     constructor(props) {
         super(props);
         this.db = props.db;
         this.state = {
-            sqlInput: "",
-            executedSqlQuery: "",
+            enc: [],
+            sig: []
+        };
+    }
+
+    componentDidMount() {
+        var results = this.db.exec(
+            "SELECT name FROM scheme WHERE type='enc' ORDER BY name;" +
+            "SELECT name FROM scheme WHERE type='sig' ORDER BY name;"
+        );
+        var enc = results[0].values.map(row => row[0]);
+        var sig = results[1].values.map(row => row[0]);
+        this.setState({ enc: enc, sig: sig });
+    }
+
+    render() {
+        return (
+            <Container maxWidth="md">
+                <Paper>
+                    <Box p={4}>
+                        <Typography variant="h4" gutterBottom>Welcome!</Typography>
+                        <Typography paragraph>
+                            This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner. The automatically generated database scheme can be shown by clicking the <DiagramIcon fontSize='inherit' color='action'/> button at the bottom of the page.
+                        </Typography>
+                        <Typography paragraph>
+                            The page is written in <Link href="https://reactjs.org/">React</Link> and operates purely client site by loading an <Link href="https://www.sqlite.org/">SQLite</Link> database (located <Link href="pqdb.sqlite">here</Link>) which is generated from the data in pqdb.
+                        </Typography>
+                        <Typography paragraph>
+                            Contributions are warmly welcomed, see <Link href="https://github.com/cryptoeng/pqdb#contribute">here</Link> for details.
+                        </Typography>
+
+                        <Typography variant='h5' align='center'>Available Schemes</Typography>
+                        <Box mt={1} />
+                        <Grid container justify="space-evenly">
+                            <Grid item>
+                                <Paper>
+                                    <Box p={4}>
+                                        <Typography variant="h6">Encryption Schemes</Typography>
+                                        <List>
+                                            {this.state.enc.map(name => <ListItem><ListItemText>{name}</ListItemText></ListItem>)}
+                                        </List>
+                                    </Box>
+                                </Paper>
+                            </Grid>
+                            <Grid item>
+                                <Paper>
+                                    <Box p={4}>
+                                        <Typography variant="h6">Signature Schemes</Typography>
+                                        <List>
+                                            {this.state.sig.map(name => <ListItem><ListItemText>{name}</ListItemText></ListItem>)}
+                                        </List>
+                                    </Box>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Paper>
+            </Container>
+        );
+    }
+}
+
+class CustomSQLQuery extends React.Component {
+    constructor(props) {
+        super(props);
+        this.db = props.db;
+        this.params = qs.parse(this.props.history.location.search);
+        var sqlInput = ('query' in this.params) ? this.params['query'] : '';
+
+        this.state = {
+            sqlInput: sqlInput,
+            executedSqlQuery: '',
             queryResult: null,
             error: null,
         }
     }
 
+    componentDidMount() {
+        if (this.state.sqlInput !== '') this.executeSQLQuery();
+    }
+
     executeSQLQuery() {
+        const history = this.props.history;
+        this.params.query = this.state.sqlInput;
+        history.replace({
+            pathname: history.location.pathname,
+            search: '?' + qs.stringify(this.params)
+        });
+
         var sqlQuery = this.state.sqlInput;
+
         try {
             var results = this.db.exec(sqlQuery)[0];
             this.setState({ queryResult: results, error: null, executedSqlQuery: sqlQuery });
@@ -131,23 +216,25 @@ class CustomSQLQuery extends React.Component {
                                 <Grid item>
                                     <Box display='flex' justifyContent="center">
                                         <Button variant="contained" color="primary"
-                                            onClick={this.executeSQLQuery.bind(this)}>Run Query</Button>
+                                            onClick={() => this.executeSQLQuery()}>Run Query</Button>
                                     </Box>
                                 </Grid>
                             </Grid>
                         </Box>
                     </Paper>
                 </Grid>
-                <Grid item>
-                    <Paper>
-                        <Box p={2} display='flex' justifyContent="center">
-                            <QueryTable key={this.state.executedSqlQuery} queryResult={this.state.queryResult} />
-                        </Box>
-                    </Paper>
+                <Grid container item>
+                    <Container maxWidth='false' disableGutters='true'>
+                        <Paper>
+                            <Box p={2} display='flex' justifyContent="center">
+                                <QueryTable key={this.state.executedSqlQuery} queryResult={this.state.queryResult} />
+                            </Box>
+                        </Paper>
+                    </Container>
                 </Grid>
             </Grid>
         );
     }
 }
 
-export { CustomSQLQuery };
+export { CustomSQLQuery, Welcome };
