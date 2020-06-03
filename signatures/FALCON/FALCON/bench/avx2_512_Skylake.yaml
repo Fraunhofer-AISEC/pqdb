@@ -4,4 +4,4 @@ timings:
   gen:  26604000
   enc|sign: 531684
   dec|vrfy: 141408
-  comment: Expanded keys are used.
+  comment: Expanded keys are used
