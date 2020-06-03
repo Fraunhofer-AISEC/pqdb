@@ -1,0 +1,12 @@
+name: FALCON.FALCON1024
+security level:
+    classical: 263
+    quantum: 230
+    nist category: 5
+failure probability: 0000
+number of operations: inf
+sizes:
+    sk: 2305
+    pk: 1793
+    ct|sig: 1233
+    msg: 256
