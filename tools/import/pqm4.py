@@ -251,7 +251,7 @@ def import_benchmarks(csvdata, type, source):
         data = {
             'links': ['https://github.com/mupq/pqm4/#benchmarks'],
             'sources': [source],
-            'platform': 'M4, at 24MHz, using arm-none-eabi-gcc 9.1.0 or 9.2.0',
+            'platform': 'M4, at 24MHz, using arm-none-eabi-gcc 10.1.0',
         }
         if timings:
             data['timings'] = timings
