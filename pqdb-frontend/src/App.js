@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   CssBaseline, Grid, Box, Paper, List, ListItem, ListItemText,
-  Button, IconButton, Drawer, CircularProgress, Container, Tooltip
+  IconButton, Drawer, CircularProgress, Container, Tooltip
 } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {

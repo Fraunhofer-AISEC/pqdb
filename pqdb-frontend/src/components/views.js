@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText,
-    Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel
+    Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
+    MenuItem, Grow, ClickAwayListener
 } from '@material-ui/core';
 import { AccountTree as DiagramIcon } from '@material-ui/icons';
 import qs from 'query-string';
+import genCSV from 'csv-stringify';
+
+function startDownload(content, filename) {
+    const element = document.createElement("a");
+    const file = new Blob([content], {type: 'text/plain;charset=utf-8'});
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 
 function comparator(a, b, orderBy, isAsc) {
     if (b[orderBy] < a[orderBy]) {
@@ -25,6 +37,68 @@ function sortedRows(array, orderBy, isAsc) {
         return a[1] - b[1];
     });
     return indexedRows;
+}
+
+const options = [".csv", ".json"];
+
+function DownloadTableButton(props) {
+    const [open, setOpen] = useState(false);
+    const anchorRef = React.useRef(null);
+
+    const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleMenuItemClick = (event, index) => {
+        if (index === 0) {
+            genCSV([props.queryResult.columns, ...props.queryResult.values], (err, output) => {
+                startDownload(output, "data.csv");
+            });
+        } else if (index === 1) {
+            startDownload(JSON.stringify(props.queryResult, null, 2), "data.json");
+        }
+        setOpen(false);
+    };
+
+    return (
+        <Box>
+            <Button variant='outlined' ref={anchorRef} onClick={handleToggle}>Download as ...</Button>
+            <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        style={{
+                            transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                        }}
+                    >
+                        <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                                <MenuList>
+                                    {options.map((option, index) => (
+                                        <MenuItem
+                                            key={option}
+                                            onClick={(event) => handleMenuItemClick(event, index)}
+                                        >
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
+        </Box>
+    );
+
 }
 
 class QueryTable extends React.Component {
@@ -50,39 +124,44 @@ class QueryTable extends React.Component {
         if (!this.queryResult) return null;
 
         return (
-            <TableContainer component={Paper}>
-                <Table stickyHeader>
-                    <TableHead>
-                        <TableRow>
-                            {
-                                this.queryResult.columns.map((column, idx) =>
-                                    <TableCell key={idx}>
-                                        <TableSortLabel
-                                            active={orderBy === idx}
-                                            direction={orderBy === idx ? order : 'asc'}
-                                            onClick={(e) => this.handleRequestSort(idx)}>
-                                            {column}
-                                        </TableSortLabel>
-                                    </TableCell>
-                                )
-                            }
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            sortedRows(this.queryResult.values, orderBy, order === 'asc').map(
-                                (row) => (
-                                    <TableRow key={row[1]}>
-                                        {
-                                            row[0].map((val, j) => <TableCell key={j}>{val}</TableCell>)
-                                        }
-                                    </TableRow>
-                                )
-                            )
-                        }
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Grid direction='column' alignItems='flex-end' spacing={1} container>
+                <Grid container item>
+                    <TableContainer component={Paper}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    {
+                                        this.queryResult.columns.map((column, idx) =>
+                                            <TableCell key={idx}>
+                                                <TableSortLabel
+                                                    active={orderBy === idx}
+                                                    direction={orderBy === idx ? order : 'asc'}
+                                                    onClick={(e) => this.handleRequestSort(idx)}>
+                                                    {column}
+                                                </TableSortLabel>
+                                            </TableCell>
+                                        )
+                                    }
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    sortedRows(this.queryResult.values, orderBy, order === 'asc').map(
+                                        (row) => (
+                                            <TableRow key={row[1]}>
+                                                {
+                                                    row[0].map((val, j) => <TableCell key={j}>{val}</TableCell>)
+                                                }
+                                            </TableRow>
+                                        )
+                                    )
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+                <Grid item><DownloadTableButton queryResult={this.queryResult}/></Grid>
+            </Grid>
         );
     }
 }
@@ -115,7 +194,7 @@ class Welcome extends React.Component {
                     <Box p={4}>
                         <Typography variant="h4" gutterBottom>Welcome!</Typography>
                         <Typography paragraph>
-                            This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner. The automatically generated database scheme can be shown by clicking the <DiagramIcon fontSize='inherit' color='action'/> button at the bottom of the page.
+                            This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner. The automatically generated database scheme can be shown by clicking the <DiagramIcon fontSize='inherit' color='action' /> button at the bottom of the page.
                         </Typography>
                         <Typography paragraph>
                             The page is written in <Link href="https://reactjs.org/">React</Link> and operates purely client site by loading an <Link href="https://www.sqlite.org/">SQLite</Link> database (located <Link href="pqdb.sqlite">here</Link>) which is generated from the data in pqdb.
