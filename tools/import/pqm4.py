@@ -97,8 +97,8 @@ _scheme_to_paramset = '''
     dilithium2                  dilithium  dilithium-shake  medium
     dilithium3                  dilithium  dilithium-shake  recommended
     dilithium4                  dilithium  dilithium-shake  very-high
-    falcon-1024
-    falcon-512
+    falcon-1024                 FALCON     FALCON           1024
+    falcon-512                  FALCON     FALCON           512
     falcon-512-tree
     luov-47-42-182-chacha
     luov-47-42-182-keccak
