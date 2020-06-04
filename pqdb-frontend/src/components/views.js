@@ -211,7 +211,7 @@ class Welcome extends React.Component {
                                     <Box p={4}>
                                         <Typography variant="h6">Encryption Schemes</Typography>
                                         <List>
-                                            {this.state.enc.map(name => <ListItem><ListItemText>{name}</ListItemText></ListItem>)}
+                                            {this.state.enc.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
                                         </List>
                                     </Box>
                                 </Paper>
@@ -221,7 +221,7 @@ class Welcome extends React.Component {
                                     <Box p={4}>
                                         <Typography variant="h6">Signature Schemes</Typography>
                                         <List>
-                                            {this.state.sig.map(name => <ListItem><ListItemText>{name}</ListItemText></ListItem>)}
+                                            {this.state.sig.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
                                         </List>
                                     </Box>
                                 </Paper>
@@ -303,7 +303,7 @@ class CustomSQLQuery extends React.Component {
                     </Paper>
                 </Grid>
                 <Grid container item>
-                    <Container maxWidth='false' disableGutters='true'>
+                    <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
                                 <QueryTable key={this.state.executedSqlQuery} queryResult={this.state.queryResult} />
