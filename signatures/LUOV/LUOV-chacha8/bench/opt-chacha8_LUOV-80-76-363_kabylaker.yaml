@@ -1,4 +1,4 @@
-platform: Intel Core i5-8250U (Kaby Lake R) CPU @ 1.60 GHz
+platform: Intel Core i5-8250U (Kaby Lake R) 1.60 GHz | gcc 7.3.0
 timings:
   measurements:
     gen: 70000000
@@ -6,4 +6,3 @@ timings:
     dec|vrfy: 99000000
   unit: cycles
   comment: average of 1000 executions
-comment: compiled with ”gcc - O3” with gcc version 7.3.0
