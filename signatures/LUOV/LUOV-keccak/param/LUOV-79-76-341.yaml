@@ -1,0 +1,12 @@
+name: LUOV-79-76-341
+security level:
+  classical: 272
+  quantum: 234
+  nist category: 5
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 27200
+  ct|sig: 4134
+  msg: 686
+number of operations: inf

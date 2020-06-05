@@ -1,0 +1,13 @@
+name: LUOV-7-57-197
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 11500
+  ct|sig: 239
+  msg: 17
+number of operations: inf
+security level:
+  nist category: 1
+  classical: 157
+  quantum: 107
+  comment: ''

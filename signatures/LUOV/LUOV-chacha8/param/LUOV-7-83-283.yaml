@@ -1,0 +1,12 @@
+name: LUOV-7-83-283
+security level:
+  nist category: 3
+  classical: 226
+  quantum: 169
+failure probability: 0
+sizes:
+  pk: 35400
+  ct|sig: 337
+  sk: 32
+  msg: 24
+number of operations: inf
