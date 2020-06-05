@@ -1,0 +1,7 @@
+name: Skylake
+platform: 'c, assembly'
+sources:
+  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
+code size:
+  overall: !<tag:yaml.org,2002:js/undefined> ''
+  comment: ''

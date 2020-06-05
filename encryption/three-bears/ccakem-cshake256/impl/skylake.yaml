@@ -1,0 +1,7 @@
+name: Skylake
+platform: c, assembly
+sources:
+  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
+code size:
+  overall: 7740
+  comment: Information available only for MamaBear parameter set.

@@ -1,0 +1,7 @@
+name: Cortex-A53
+platform: c
+code size:
+  overall: 6328
+  comment: Information only available for MamaBear parameter set.
+sources:
+  - 'Implementation code (https://sourceforge.net/projects/threebears/)'

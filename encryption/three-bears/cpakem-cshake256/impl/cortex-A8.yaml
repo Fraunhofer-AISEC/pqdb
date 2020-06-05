@@ -1,0 +1,7 @@
+name: Cortex-A8
+platform: c
+code size:
+  overall: !<tag:yaml.org,2002:js/undefined> ''
+  comment: ''
+sources:
+  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
