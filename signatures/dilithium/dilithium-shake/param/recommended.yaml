@@ -1,0 +1,17 @@
+name: Dilithium-SHAKE-recommended
+security level:
+  comment: Best known SIS attack
+  classical: 138
+  quantum: 125
+  nist category: 2
+failure probability: 0
+sizes:
+  pk: 1472
+  ct|sig: 2701
+  sk: 3504
+number of operations: inf
+comment: >-
+  Authors say their estimations are very conservative and understate the
+  actual security of the parameter sets, which is why they believe that they
+  still satisfy the stated NIST Categories despite the security numbers
+  appearing to be below the required levels.

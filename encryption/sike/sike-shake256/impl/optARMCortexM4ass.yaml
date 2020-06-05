@@ -1,5 +1,6 @@
 name: Optimized implementation for ARM-Cortex-M4 platform using ARMv7 assembly
-comment: Paper of the implementation https://eprint.iacr.org/2020/410
+links:
+  - "Paper of the implementation: https://eprint.iacr.org/2020/410"
 type: optimized
 platform: ARM-Cortex-M4
 side channel guarding:

@@ -1,7 +1,6 @@
 platform: ARM Cortex-A72 (1.992GHz 64-bit)
 timings:
   unit: cycles
-  measurements:
-    gen: 11278000
-    enc|sign: 12411000
-    dec|vrfy: 12311000
+  gen: 11278000
+  enc|sign: 12411000
+  dec|vrfy: 12311000
