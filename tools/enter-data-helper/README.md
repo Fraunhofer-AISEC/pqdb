@@ -6,7 +6,7 @@ There are two possible ways of using it:
 
 ## Use Packaged Build (Recommended)
 
-Download a packaged build for your system [here](https://github.com/cryptoeng/pqdb/releases) (Currently Linux and MacOS are supported).
+Download a packaged build for your system [here](https://github.com/cryptoeng/pqdb/releases).
 
 ### Linux
 
@@ -27,6 +27,19 @@ Run the application giving the path to the pqdb repository as a command line arg
 ```
 ./enter-data-helper.app/Contents/MacOS/enter-data-helper /path/to/pqdb
 ```
+
+### Windows
+
+Run the executable in cmd giving the path to the pqdb repository as a command line argument:
+
+```
+enter-data-helper-win.exe C:\path\to\pqdb
+```
+
+Another way is to create a shortcut:
+1. Right-click .exe -> "Create Shortcut"
+2. Right-click shortcut -> "Properties"
+3. In "Target" after "enter-data-helper-win.exe" append a blank and paste your path to pqdb
 
 ## Use Dev-Mode
 
