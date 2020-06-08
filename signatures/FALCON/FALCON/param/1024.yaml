@@ -10,4 +10,4 @@ sizes:
     pk: 1793
     ct|sig: 1233
     msg: 256
-    comment: "signature size varies, size noted here is the average. Compressed max is 1462"
+    comment: "signature size varies, size noted here is the average. Compressed max is 1462. Expanded keys are used"
