@@ -4,4 +4,9 @@ timings:
   gen:  26604000
   enc|sign: 531684
   dec|vrfy: 141408
-  comment: Expanded keys are used
+  comment: Expanded keys are used.
+memory requirements:
+  gen: 15879
+  enc|sign: 25607
+  dec|vrfy: 4097
+  comment: Expanded keys are used.
