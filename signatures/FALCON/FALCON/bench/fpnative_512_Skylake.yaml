@@ -2,9 +2,9 @@ platform: Intel Core i7-6567 (Skylake) 3.3 GHZ
 timings:
   unit: cycles 
   gen:  26136000
-  enc|sign: 1368504
+  enc|sign: 814464
   dec|vrfy: 158040
-  comment: Expanded keys are used.
+  comment: Results marked with(tree,ct). Expanded keys are used.
 memory requirements:
   gen: 15879
   enc|sign: 25607
