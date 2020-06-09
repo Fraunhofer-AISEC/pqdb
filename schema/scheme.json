@@ -25,7 +25,8 @@
                 "code",
                 "multivariate",
                 "isogeny",
-                "hash"
+                "hash",
+				"other"
             ]
                 },
                 "category comment": {
