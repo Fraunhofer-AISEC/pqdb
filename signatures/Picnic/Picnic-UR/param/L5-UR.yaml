@@ -10,4 +10,4 @@ sizes:
   pk: 64
   ct|sig: 209506
   msg: 256
-  comment: The size of signature is the maximal possible size.  
+  comment: The size of signature is the maximal possible size.

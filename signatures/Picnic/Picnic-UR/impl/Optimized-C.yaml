@@ -4,4 +4,3 @@ type: optimized
 side channel guarding:
   branching: true
 hardware features: []
- 
