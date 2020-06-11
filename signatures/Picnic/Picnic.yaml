@@ -1,0 +1,23 @@
+name: Picnic
+year:
+    candidate: 2017
+category: other
+authors:
+  - Greg Zaverucha
+  - Melissa Chase
+  - David Derler
+  - Steven Goldfeder
+  - Claudio Orlandi
+  - Sebastian Ramacher
+  - Christian Rechberger
+  - Daniel Slamanig
+  - Jonathan Katz
+  - Xiao Wang
+  - Vladmir Kolesnikov
+  - Daniel Kales
+problems:
+    - assumption: Zero Knowledge proof
+stateful: false
+nist round: 2
+sources:
+  - NIST Submission Paper

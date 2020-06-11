@@ -1,0 +1,13 @@
+name: L3-UR
+security level: 
+  classical:  1
+  quantum:  1
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 24
+  pk: 48
+  ct|sig: 121845
+  msg: 256
+  comment: The size of signature is the maximal possible size. 

@@ -1,0 +1,6 @@
+platform: Intel Core i7-4790 3.60GHZ
+timings:
+  unit: cycles
+  gen: 427625
+  enc|sign: 461886045
+  dec|vrfy: 304933466

@@ -1,0 +1,6 @@
+platform: Intel Xeon CPU E31230 3.20GHz
+timings:
+  unit: cycles
+  gen: 17781
+  enc|sign: 17539617
+  dec|vrfy: 13976186

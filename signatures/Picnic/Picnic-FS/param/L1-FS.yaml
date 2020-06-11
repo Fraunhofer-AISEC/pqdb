@@ -1,0 +1,13 @@
+name: L1-FS
+security level:  
+  classical: 1
+  quantum:  1
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 16
+  pk: 32
+  ct|sig: 34032
+  msg: 256
+  comment: The size of signature is the maximal possible size. The signature average is 32838.

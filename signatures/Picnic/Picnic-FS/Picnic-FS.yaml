@@ -1,0 +1,4 @@
+name: Picnic-FS
+type: SIG
+security notion: EUF-CMA
+ 
