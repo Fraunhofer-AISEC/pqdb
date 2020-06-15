@@ -5,18 +5,13 @@ import {
 } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
-  Menu as MenuIcon, BrightnessHigh as LightIcon, Brightness4 as DarkIcon,
-  AccountTree as DiagramIcon
+  Menu as MenuIcon, BrightnessHigh as LightIcon, Brightness4 as DarkIcon
 } from '@material-ui/icons';
 import initSqlJs from "sql.js";
-import Lightbox from 'react-image-lightbox';
 import { CustomSQLQuery, Welcome } from './components/views';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-
 import logo from './pqdb.svg';
-import databaseDiagram from './tables.svg';
-import 'react-image-lightbox/style.css';
 
 
 function getTheme(type) {
@@ -62,7 +57,6 @@ class App extends React.Component {
     this.state = {
       themeId: "light",
       db: null,
-      lightBoxIsOpen: false,
       drawerOpen: false
     };
   }
@@ -109,13 +103,6 @@ class App extends React.Component {
     return (
       <ThemeProvider theme={getTheme(this.state.themeId)}>
         <CssBaseline />
-        {this.state.lightBoxIsOpen && (
-          <Lightbox
-            mainSrc={databaseDiagram}
-            onCloseRequest={() => this.setState({ lightBoxIsOpen: false })}
-
-          />
-        )}
         <Box p={2}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
@@ -141,11 +128,6 @@ class App extends React.Component {
               <Container maxWidth="md">
                 <Paper>
                   <Box p={1} display='flex' alignItems="center" justifyContent="center">
-                    <Tooltip title="Show database diagram">
-                      <IconButton onClick={() => this.setState({ lightBoxIsOpen: true })}>
-                        <DiagramIcon />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title={"Switch to " + ((this.state.themeId === 'light') ? 'dark' : 'light') + " theme"}>
                     <IconButton onClick={() => this.toggleTheme()}>
                       {(this.state.themeId === 'light') ? <DarkIcon /> : <LightIcon />}

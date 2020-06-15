@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
-    MenuItem, Grow, ClickAwayListener
+    MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails
 } from '@material-ui/core';
-import { AccountTree as DiagramIcon } from '@material-ui/icons';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import qs from 'query-string';
 import genCSV from 'csv-stringify';
+import { GlassMagnifier } from "react-image-magnifiers";
+
+import diagramImage from '../tables.svg';
 
 function startDownload(content, filename) {
     const element = document.createElement("a");
@@ -213,7 +216,7 @@ class Welcome extends React.Component {
                     <Box p={4}>
                         <Typography variant="h4" gutterBottom>Welcome!</Typography>
                         <Typography paragraph>
-                            This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner. The automatically generated database scheme can be shown by clicking the <DiagramIcon fontSize='inherit' color='action' /> button at the bottom of the page.
+                            This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner.
                         </Typography>
                         <Typography paragraph>
                             The page is written in <Link href="https://reactjs.org/">React</Link> and operates purely client site by loading an <Link href="https://www.sqlite.org/">SQLite</Link> database (located <Link href="pqdb.sqlite">here</Link>) which is generated from the data in pqdb.
@@ -252,6 +255,15 @@ class Welcome extends React.Component {
         );
     }
 }
+
+function DatabaseDiagram() {
+    return <GlassMagnifier
+        imageSrc={diagramImage}
+        square={true}
+        magnifierSize='25%'
+        allowOverflow={true}
+    />
+};
 
 class CustomSQLQuery extends React.Component {
     constructor(props) {
@@ -330,6 +342,18 @@ class CustomSQLQuery extends React.Component {
                             </Grid>
                         </Box>
                     </Paper>
+                </Grid>
+                <Grid container item>
+                    <Container maxWidth={false} disableGutters={true}>
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                Database Diagram
+                                </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <DatabaseDiagram />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </Container>
                 </Grid>
                 <Grid container item>
                     <Container maxWidth={false} disableGutters={true}>
