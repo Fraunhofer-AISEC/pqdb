@@ -10,7 +10,7 @@ import genCSV from 'csv-stringify';
 
 function startDownload(content, filename) {
     const element = document.createElement("a");
-    const file = new Blob([content], {type: 'text/plain;charset=utf-8'});
+    const file = new Blob([content], { type: 'text/plain;charset=utf-8' });
     element.href = URL.createObjectURL(file);
     element.download = filename;
     document.body.appendChild(element);
@@ -101,6 +101,23 @@ function DownloadTableButton(props) {
 
 }
 
+// As suggested in https://github.com/mui-org/material-ui/issues/1594#issuecomment-272547735
+function AutoFocusTextField(props) {
+    const inputRef = React.useRef();
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            inputRef.current.focus();
+        }, 100);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, []);
+
+    return <TextField inputRef={inputRef} {...props} />;
+}
+
 class QueryTable extends React.Component {
     constructor(props) {
         super(props);
@@ -121,6 +138,7 @@ class QueryTable extends React.Component {
 
     render() {
         const { order, orderBy } = this.state;
+        if (this.queryResult === undefined) return <Typography>No results</Typography>;
         if (!this.queryResult) return null;
 
         return (
@@ -160,7 +178,7 @@ class QueryTable extends React.Component {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item><DownloadTableButton queryResult={this.queryResult}/></Grid>
+                <Grid item><DownloadTableButton queryResult={this.queryResult} /></Grid>
             </Grid>
         );
     }
@@ -190,6 +208,7 @@ class Welcome extends React.Component {
     render() {
         return (
             <Container maxWidth="md">
+
                 <Paper>
                     <Box p={4}>
                         <Typography variant="h4" gutterBottom>Welcome!</Typography>
@@ -239,6 +258,7 @@ class CustomSQLQuery extends React.Component {
         super(props);
         this.db = props.db;
         this.params = qs.parse(this.props.history.location.search);
+        this.runningQueryHandler = null;
         var sqlInput = ('query' in this.params) ? this.params['query'] : '';
 
         this.state = {
@@ -246,28 +266,36 @@ class CustomSQLQuery extends React.Component {
             executedSqlQuery: '',
             queryResult: null,
             error: null,
+            queryProcessing: false
         }
     }
 
     componentDidMount() {
-        if (this.state.sqlInput !== '') this.executeSQLQuery();
+        if (this.state.sqlInput === '') return;
+
+        var sqlQuery = this.state.sqlInput;
+        this.setState({ queryProcessing: true });
+        setTimeout(
+            () => {
+                try {
+                    var results = this.db.exec(sqlQuery)[0];
+                    this.setState({ queryResult: results, error: null, executedSqlQuery: sqlQuery, queryProcessing: false });
+                } catch (error) {
+                    this.setState({ queryResult: null, error: error, executedSqlQuery: sqlQuery, queryProcessing: false });
+                }
+            }, 0
+        )
     }
 
     executeSQLQuery() {
         const history = this.props.history;
         this.params.query = this.state.sqlInput;
-        history.replace({
-            pathname: history.location.pathname,
-            search: '?' + qs.stringify(this.params)
-        });
-
-        var sqlQuery = this.state.sqlInput;
-
-        try {
-            var results = this.db.exec(sqlQuery)[0];
-            this.setState({ queryResult: results, error: null, executedSqlQuery: sqlQuery });
-        } catch (error) {
-            this.setState({ queryResult: null, error: error, executedSqlQuery: sqlQuery });
+        var search = '?' + qs.stringify(this.params);
+        if (history.location.search !== search) {
+            history.push({
+                pathname: history.location.pathname,
+                search: search
+            });
         }
     }
 
@@ -279,12 +307,13 @@ class CustomSQLQuery extends React.Component {
                         <Box p={2}>
                             <Grid container direction="column" spacing={3}>
                                 <Grid item>
-                                    <TextField
+                                    <AutoFocusTextField
                                         label="SQL Query"
                                         multiline
                                         fullWidth
                                         margin="normal"
                                         rows={6}
+                                        rowsMax={100}
                                         variant="outlined"
                                         error={this.state.error != null}
                                         helperText={this.state.error ? this.state.error.toString() : ""}
@@ -294,8 +323,8 @@ class CustomSQLQuery extends React.Component {
                                 </Grid>
                                 <Grid item>
                                     <Box display='flex' justifyContent="center">
-                                        <Button variant="contained" color="primary"
-                                            onClick={() => this.executeSQLQuery()}>Run Query</Button>
+                                        <Button variant="contained" color="primary" disabled={this.state.queryProcessing}
+                                            onClick={() => this.executeSQLQuery()}>{(this.state.queryProcessing) ? "Computing..." : "Run Query"}</Button>
                                     </Box>
                                 </Grid>
                             </Grid>

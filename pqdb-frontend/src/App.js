@@ -95,7 +95,7 @@ class App extends React.Component {
 
   switchView(view) {
     const history = this.props.history;
-    history.replace({
+    history.push({
       pathname: pathname(view)
     });
     this.setState({ drawerOpen: false });
