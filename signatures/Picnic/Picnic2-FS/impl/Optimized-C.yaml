@@ -1,6 +1,0 @@
-name: Optimized-C
-platform: c
-type: optimized
-side channel guarding:
-  branching: true
-hardware features: []
