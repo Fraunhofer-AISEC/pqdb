@@ -1,7 +1,7 @@
 name: L5-FS
 security level: 
-  classical:  1
-  quantum:  1
+  classical:  256
+  quantum:  128
   nist category: 5
 failure probability: 0
 number of operations: inf

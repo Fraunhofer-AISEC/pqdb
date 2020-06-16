@@ -1,7 +1,7 @@
 name: L3-FS
 security level: 
-  classical:  1
-  quantum:  1
+  classical:  192
+  quantum:  96
   nist category: 3
 failure probability: 0
 number of operations: inf
