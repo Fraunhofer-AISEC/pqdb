@@ -4,3 +4,6 @@ timings:
   gen: 33241
   enc|sign: 34829503
   dec|vrfy: 29730907
+memory requirements:
+  enc|sign: 284632
+  dec|vrfy: 163560
