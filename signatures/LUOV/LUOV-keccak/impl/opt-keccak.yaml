@@ -1,6 +1,6 @@
 name: opt-keccak
-comment: >-
-  Generic optimized implementation using Keccak as PRNG
-  https://github.com/WardBeullens/LUOV/tree/master/Optimized_Implementation
+comment: Generic optimized implementation using Keccak as PRNG
 platform: C
 type: optimized
+links:
+  - https://github.com/WardBeullens/LUOV/tree/master/Optimized_Implementation
