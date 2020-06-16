@@ -19,5 +19,3 @@ problems:
     - assumption: Zero Knowledge proof
 stateful: false
 nist round: 2
-sources:
-  - NIST Submission Paper
