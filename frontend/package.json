@@ -2,7 +2,7 @@
   "name": "pqdb-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://cryptoeng.github.io/pqdb",
   "dependencies": {
     "@material-ui/core": "4.10.2",
     "@material-ui/icons": "^4.9.1",
@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "HOST=localhost react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && cp build/index.html build/404.html",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
