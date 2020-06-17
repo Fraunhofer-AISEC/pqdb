@@ -97,8 +97,8 @@ _scheme_to_paramset = '''
     dilithium2                  dilithium  dilithium-shake  medium
     dilithium3                  dilithium  dilithium-shake  recommended
     dilithium4                  dilithium  dilithium-shake  very-high
-    falcon-1024
-    falcon-512
+    falcon-1024                 FALCON     FALCON           1024
+    falcon-512                  FALCON     FALCON           512
     falcon-512-tree
     luov-47-42-182-chacha
     luov-47-42-182-keccak
@@ -251,7 +251,7 @@ def import_benchmarks(csvdata, type, source):
         data = {
             'links': ['https://github.com/mupq/pqm4/#benchmarks'],
             'sources': [source],
-            'platform': 'M4, at 24MHz, using arm-none-eabi-gcc 9.1.0 or 9.2.0',
+            'platform': 'M4, at 24MHz, using arm-none-eabi-gcc 10.1.0',
         }
         if timings:
             data['timings'] = timings
