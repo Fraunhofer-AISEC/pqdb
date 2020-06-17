@@ -4,16 +4,19 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "csv-stringify": "^5.5.0",
+    "query-string": "6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-image-lightbox": "^5.1.1",
+    "react-image-magnifiers": "^1.3.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "sql.js": "^1.2.2"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "6.0.2",
     "react-app-rewired": "^2.1.5"
   },
   "scripts": {
