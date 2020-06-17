@@ -6,7 +6,7 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom';
 const AppWithRouter = withRouter(props => <App {...props} />);
 ReactDOM.render(
   <React.StrictMode>
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={"/pqdb"}>
       <AppWithRouter />
     </Router>
   </React.StrictMode>,

@@ -77,7 +77,7 @@ class App extends React.Component {
 
   loadDatabase(SQL) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'pqdb.sqlite', true);
+    xhr.open('GET', '/pqdb/pqdb.sqlite', true);
     xhr.responseType = 'arraybuffer';
 
     xhr.onload = e => {
