@@ -1,5 +1,6 @@
 name: Cortex-A8
 platform: c
+type: optimized
 code size:
   overall: 4894
   comment: Information only available for MamaBear parameter set.

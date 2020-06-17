@@ -1,5 +1,6 @@
 name: Cortex-A53
 platform: c
+type: optimized
 code size:
   overall: 6328
   comment: Information only available for MamaBear parameter set.

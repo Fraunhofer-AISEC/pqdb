@@ -1,5 +1,6 @@
 name: Skylake
 platform: c, assembly
+type: optimized
 sources:
   - 'Implementation code (https://sourceforge.net/projects/threebears/)'
 code size:
