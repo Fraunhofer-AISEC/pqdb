@@ -4,5 +4,7 @@ type: optimized
 code size:
   overall: 6328
   comment: Information only available for MamaBear parameter set.
+dependencies:
+  - Keccak library. Code size does not include the size of a Keccak library.
 sources:
   - 'Implementation code (https://sourceforge.net/projects/threebears/)'

@@ -6,3 +6,5 @@ sources:
 code size:
   overall: 7740
   comment: Information available only for MamaBear parameter set.
+dependencies:
+  - Keccak library. Code size does not include the size of a Keccak library.
