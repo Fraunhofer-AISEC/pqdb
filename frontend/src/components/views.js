@@ -527,20 +527,6 @@ class SchemeDetail extends React.Component {
                            "In Round 2 of the NIST standardization"][s.nist_round] }
                     </PropItem>
 
-                    <PropItem k="problems_trust" icon={ SecurityIcon }>
-                        { [
-                            s.trust_comment && [
-                                <div><strong>Trust: </strong></div>,
-                                <div style={{ marginBottom: ".6em" }}>{ s.trust_comment }</div>
-                            ],
-                            ( problems.length > 0 || s.problems_comment ) && [
-                                <div><strong>Problems:</strong></div>,
-                                s.problems_comment && <div><TextComment>{ s.problems_comment }</TextComment></div>,
-                                problems.map(p => <div>{ p.assumption } <Comment title={ p.comment } /></div>),
-                            ]
-                        ] }
-                    </PropItem>
-
                     <PropItem k="year" title="Year" icon={ EventIcon }>
                         {
                             [
@@ -557,6 +543,20 @@ class SchemeDetail extends React.Component {
                                     [...accu, " \u2022 ", elem]}, []
                             )
                         }
+                    </PropItem>
+
+                    <PropItem k="problems_trust" icon={ SecurityIcon }>
+                        { [
+                            s.trust_comment && [
+                                <div><strong>Trust: </strong></div>,
+                                <div style={{ marginBottom: ".6em" }}>{ s.trust_comment }</div>
+                            ],
+                            ( problems.length > 0 || s.problems_comment ) && [
+                                <div><strong>Problems:</strong></div>,
+                                s.problems_comment && <div><TextComment>{ s.problems_comment }</TextComment></div>,
+                                problems.map(p => <div>{ p.assumption } <Comment title={ p.comment } /></div>),
+                            ]
+                        ] }
                     </PropItem>
 
                     <PropItem k="authors" title="Authors" icon={ PeopleIcon }>
