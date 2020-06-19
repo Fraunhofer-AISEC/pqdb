@@ -264,7 +264,7 @@ def import_benchmarks(csvdata, type, source):
             print('{}: bench data written to {}'.format(name, bpath))
 
         idata = {
-            'name': '{} from pqm4'.format(impl),
+            'name': '{} for {} from pqm4'.format(impl, name),
             'links': ['https://github.com/mupq/pqm4/tree/master/{}/{}/{}'
                 .format(type2api(type), name, impl)],
             'platform': 'm4',
