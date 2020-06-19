@@ -1,15 +1,65 @@
 import React, { useState } from 'react';
 import {
-    Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText,
+    Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
-    MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails
+    MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, SvgIcon, Tooltip,
 } from '@material-ui/core';
+import CategoryIcon from '@material-ui/icons/Category';
+import CodeIcon from '@material-ui/icons/Code';
+import DiffieHellmanIcon from '@material-ui/icons/SyncAlt';
+import EncryptionIcon from '@material-ui/icons/LockOutlined';
+import EventIcon from '@material-ui/icons/Event';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LinkIcon from '@material-ui/icons/Link';
+import ParamSetIcon from '@material-ui/icons/Tune';
+import PeopleIcon from '@material-ui/icons/PeopleAlt';
+import SaveIcon from '@material-ui/icons/Save';
+import SecurityIcon from '@material-ui/icons/Security';
+import SignatureIcon from '@material-ui/icons/Create';
 import qs from 'query-string';
 import genCSV from 'csv-stringify';
 import { GlassMagnifier } from "react-image-magnifiers";
 
 import diagramImage from '../tables.svg';
+
+import { queryAll, BookIcon as SourceIcon, PodiumIcon } from '../utils';
+
+const Comment = function (props) {
+    if ( props.title === undefined || props.title === null || props.title === '' )
+        return null;
+
+    return [
+      '\u2002',
+      <Tooltip interactive title={props.title} placement="right" arrow>
+        <span>&#x1f6c8;</span>
+      </Tooltip>
+    ];
+}
+
+const TextComment = function (props) {
+    return ["\u{1f6c8}", <em {...props}> { props.children } </em> ];
+}
+
+const PropItem = function (props) {
+    let ItemIcon = props.icon;
+    console.log('icon for', props.k, 'is', ItemIcon);
+    return <ListItem key={ props.k } alignItems="flex-start">
+        <ListItemIcon>
+            { props.hasOwnProperty('title') ?
+                <Typography component="h2" variant="inherit">
+                    <Tooltip title={ props.title } arrow>
+                        <ItemIcon titleAccess={ props.title } />
+                    </Tooltip>
+                </Typography>
+                :
+                <ItemIcon />
+            }
+        </ListItemIcon>
+        <ListItemText>
+            { props.children }
+        </ListItemText>
+    </ListItem>
+}
 
 function startDownload(content, filename) {
     const element = document.createElement("a");
@@ -369,4 +419,241 @@ class CustomSQLQuery extends React.Component {
     }
 }
 
-export { CustomSQLQuery, Welcome };
+class SchemeDetail extends React.Component {
+    types = {
+        enc: {
+            name: "Encryption Scheme",
+            icon: EncryptionIcon,
+        },
+        sig: {
+            name: "Signature Scheme",
+            icon: SignatureIcon,
+        }
+    }
+    sec_notions = {
+        "IND-CCA": "Indistinguisability under an adaptive Chosen Ciphertext Attack",
+        "IND-CPA": "Indistinguisability under an adaptive Chosen Plaintext Attack",
+        "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
+        "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
+    }
+
+    constructor(props) {
+        super(props);
+        this.db = props.db;
+        this.params = qs.parse(this.props.history.location.search);
+
+        // TODO: use path not query string
+        var path = this.params['_'] ?? '';
+
+        this.state = {
+            path: path
+        }
+    }
+
+    renderOverview () {
+        var stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
+
+        return (
+            <Grid container justify="center" spacing={2} maxWidth="md">
+                {Object.keys(this.types).map(type => (
+                <Grid item>
+                    <Paper>
+                        <Box p={4}>
+                            <Typography variant="h6">{ this.types[type].name }s</Typography>
+                            <List>
+                                {queryAll(this.db, stmt, [type]).map(s => (
+                                    <ListItem key={s.id}><ListItemText>
+                                        <Link href={"?_=" + type + "/" + s.id}>{s.name}</Link>
+                                    </ListItemText></ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    </Paper>
+                </Grid>
+                ))}
+            </Grid>
+        );
+    }
+
+    renderScheme (type, id) {
+        let db = this.db; // `this` is overriden inside `map`s and the like
+
+        const s = queryAll(this.db, "SELECT * FROM scheme WHERE type=? AND id=?", [type, id])[0];
+        console.log('response', s);
+        if ( s === undefined ) {
+            return <Container><Paper>No such scheme.</Paper></Container>;
+        }
+
+        const authors = queryAll(db, "SELECT * FROM scheme_author WHERE scheme_id=?", [id]);
+        const problems = queryAll(db, "SELECT * FROM scheme_problem WHERE scheme_id=?", [id]);
+        const links = queryAll(db, "SELECT * FROM scheme_link WHERE scheme_id=?", [id]);
+        const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [id]);
+        const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [id]);
+
+        let TypeIcon = this.types[s.type].icon;
+        return [
+            <Container maxWidth="md">
+            <Paper>
+            <Box>
+                <List>
+                    <ListItem key="head" alignItems="flex-start">
+                        <ListItemIcon>
+                            <Typography component="span" variant="h2">
+                                <Tooltip title={ this.types[s.type].name } arrow>
+                                    { <TypeIcon fontSize="large" titleAccess={ this.types[s.type].name } /> }
+                                </Tooltip>
+                            </Typography>
+                        </ListItemIcon>
+                        <ListItemText>
+                            <Typography component="h1" variant="h2">
+                                { s.name }
+                            </Typography>
+                            { s.comment && <div><TextComment>{ s.comment }</TextComment></div> }
+                        </ListItemText>
+                    </ListItem>
+
+                    <PropItem k="category" title="Category" icon={ CategoryIcon }>
+                        { s.category } based <Comment title={s.category_comment} />
+                    </PropItem>
+
+                { s.stateful === true && (
+                    <PropItem k="stateful" icon={ SaveIcon }>
+                        stateful <Comment title={s.stateful_comment} />
+                    </PropItem>)
+                }
+                    <PropItem k="nist_round" icon={ PodiumIcon }>
+                        { ["Not submitted to the NIST standardization",
+                           "Reached Round 1 of the NIST standardization",
+                           "In Round 2 of the NIST standardization"][s.nist_round] }
+                    </PropItem>
+
+                    <PropItem k="year" title="Year" icon={ EventIcon }>
+                        {
+                            [
+                                s.year_paper === null ? [] :
+                                    [s.year_paper, <span style={{opacity:.5}}> (paper)</span>],
+                                s.year_candidate === null ? [] :
+                                    [s.year_candidate, <span style={{opacity:.5}}> (NIST candidate)</span>],
+                                s.year_standardization === null ? [] :
+                                    [s.year_standardization, <span style={{opacity:.5}}> (standardization)</span>],
+                                s.year_comment === null ? [] :
+                                    <em>{ s.year_comment }</em>,
+                            ].reduce((accu, elem) => { /* join(), but skipping empty entries */
+                                return !elem.length ? accu : !accu.length ? [elem] :
+                                    [...accu, " \u2022 ", elem]}, []
+                            )
+                        }
+                    </PropItem>
+
+                    <PropItem k="authors" title="Authors" icon={ PeopleIcon }>
+                        { authors.map(a => <div>{ a.name }</div>) }
+                    </PropItem>
+
+                    <PropItem k="problems_trust" icon={ SecurityIcon }>
+                        { [
+                            s.trust_comment && [
+                                <div><strong>Trust: </strong></div>,
+                                <div style={{ marginBottom: ".6em" }}>{ s.trust_comment }</div>
+                            ],
+                            ( problems.length > 0 || s.problems_comment ) && [
+                                <div><strong>Problems:</strong></div>,
+                                s.problems_comment && <div><TextComment>{ s.problems_comment }</TextComment></div>,
+                                problems.map(p => <div>{ p.assumption } <Comment title={ p.comment } /></div>),
+                            ]
+                        ] }
+                    </PropItem>
+
+                    { /* TODO: make links links (maybe altering the db scheme, let's see) */ }
+                    { links.length > 0 &&
+                    <PropItem k="links" title="Links" icon={ LinkIcon }>
+                        { links.map(l => <div>{ l.url }</div>) }
+                    </PropItem> }
+
+                    { sources.length > 0 &&
+                    <PropItem k="sources" title="Sources" icon={ SourceIcon }>
+                        { sources.map(s => <div>{ s.url }</div>) }
+                    </PropItem> }
+
+
+                    <ListItem key="flavors">
+                        <Typography component="h2" variant="h4">Flavors</Typography>
+                    </ListItem>
+
+                    { flavors.map((function (f) {
+                        const f_paramsets = queryAll(db, "SELECT name FROM paramset WHERE flavor_id=?", [f.id]);
+                        const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=?", [f.id]);
+                        const f_links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
+                        const f_sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+
+                        return [
+                        <ListItem key={ "flavor-" + f.id + "-head" } style={{ display: "block" }}>
+                            <Typography component="h3" variant="h5">{ f.name }</Typography>
+                            { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
+                        </ListItem>,
+
+                        <PropItem k={ "flavor-" + f.id + "-type" } title="API Type" icon={ CategoryIcon }>
+                            { f.type } <Comment title={ f.type_comment } />
+                        </PropItem>,
+
+                        <PropItem k={ "flavor-" + f.id + "-securitynotion" } title="Security Notion" icon={ SecurityIcon }>
+                            <Tooltip title={ this.sec_notions[f.security_notion] }>
+                                <span>{ f.security_notion }</span>
+                            </Tooltip>
+                            <Comment title={ f.security_notion_comment } />
+                        </PropItem>,
+
+                        f.dh_ness && (
+                        <PropItem k={ "flavor-" + f.id + "-dhness" } title="Diffie-Hellman-Ness" icon={ DiffieHellmanIcon }>
+                            <strong>Diffie-Hellman-Ness: </strong>
+                            { f.dh_ness }
+                        </PropItem>
+                        ),
+
+                        <PropItem k={ "flavor-" + f.id + "-paramsets" } title="Parameter sets" icon={ ParamSetIcon }>
+                            { f_paramsets.map(p => <div>{ p.name }</div>) }
+                        </PropItem>,
+
+                        <PropItem k={ "flavor-" + f.id + "-implementations" } title="Implementations" icon={ CodeIcon }>
+                            { f_implementations.map(i => <div>{ i.name }</div>) }
+                        </PropItem>,
+
+                        f_links.length > 0 &&
+                        <PropItem k={ "flavor-" + f.id + "-links" } title="Links" icon={ LinkIcon }>
+                            { f_links.map(l => <div>{ l.url }</div>) }
+                        </PropItem>,
+
+                        f_sources.length > 0 &&
+                        <PropItem k={ "flavor-" + f.id + "-sources" } title="Sources" icon={ SourceIcon }>
+                            { f_sources.map(s => <div>{ s.url }</div>) }
+                        </PropItem>,
+                    ] } ).bind(this)) }
+                </List>
+            </Box>
+            </Paper>
+            </Container>,
+        ];
+    }
+
+    render () {
+        let comp = this.state.path.split('/');
+
+        console.log('path components:', comp)
+        if ( comp.length === 1 && comp[0] === '' )
+            return this.renderOverview();
+
+        if ( comp.length > 1 && ! (comp[0] in this.types) ) {
+            // TODO error
+            return "invalid url, must be enc or sig"
+        }
+        if ( comp.length === 1 ) {
+            return "invalid url, go up"
+            // TODO redirect to /
+        }
+
+        if ( comp.length === 2 ) {
+            return this.renderScheme(...comp)
+        }
+    }
+}
+
+export { CustomSQLQuery, SchemeDetail, Welcome };
