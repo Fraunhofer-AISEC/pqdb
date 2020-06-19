@@ -527,6 +527,20 @@ class SchemeDetail extends React.Component {
                            "In Round 2 of the NIST standardization"][s.nist_round] }
                     </PropItem>
 
+                    <PropItem k="problems_trust" icon={ SecurityIcon }>
+                        { [
+                            s.trust_comment && [
+                                <div><strong>Trust: </strong></div>,
+                                <div style={{ marginBottom: ".6em" }}>{ s.trust_comment }</div>
+                            ],
+                            ( problems.length > 0 || s.problems_comment ) && [
+                                <div><strong>Problems:</strong></div>,
+                                s.problems_comment && <div><TextComment>{ s.problems_comment }</TextComment></div>,
+                                problems.map(p => <div>{ p.assumption } <Comment title={ p.comment } /></div>),
+                            ]
+                        ] }
+                    </PropItem>
+
                     <PropItem k="year" title="Year" icon={ EventIcon }>
                         {
                             [
@@ -547,20 +561,6 @@ class SchemeDetail extends React.Component {
 
                     <PropItem k="authors" title="Authors" icon={ PeopleIcon }>
                         { authors.map(a => <div>{ a.name }</div>) }
-                    </PropItem>
-
-                    <PropItem k="problems_trust" icon={ SecurityIcon }>
-                        { [
-                            s.trust_comment && [
-                                <div><strong>Trust: </strong></div>,
-                                <div style={{ marginBottom: ".6em" }}>{ s.trust_comment }</div>
-                            ],
-                            ( problems.length > 0 || s.problems_comment ) && [
-                                <div><strong>Problems:</strong></div>,
-                                s.problems_comment && <div><TextComment>{ s.problems_comment }</TextComment></div>,
-                                problems.map(p => <div>{ p.assumption } <Comment title={ p.comment } /></div>),
-                            ]
-                        ] }
                     </PropItem>
 
                     { /* TODO: make links links (maybe altering the db scheme, let's see) */ }
@@ -591,6 +591,7 @@ class SchemeDetail extends React.Component {
                             { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
                         </ListItem>,
 
+                        f.type != "SIG" && // there's just one type for signatures, not worth showing this here
                         <PropItem k={ "flavor-" + f.id + "-type" } title="API Type" icon={ CategoryIcon }>
                             { f.type } <Comment title={ f.type_comment } />
                         </PropItem>,
