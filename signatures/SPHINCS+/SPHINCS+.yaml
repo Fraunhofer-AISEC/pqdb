@@ -20,7 +20,7 @@ authors:
   - Peter Schwabe
   - Jean-Philippe Aumasson
 problems:
-    - resistance of second preimage cryptographic hash function
+    - assumption: resistance of second preimage cryptographic hash function
 stateful: false
 nist round: 2
 sources:
