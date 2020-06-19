@@ -1,0 +1,27 @@
+name: SPHINCS+
+year:
+    candidate: 2015
+category: hash
+authors:
+  - Andreas Hulsing
+  - Daniel J. Bernstein
+  - Christoph Dobraunig
+  - Maria Eichlseder
+  - Scott Fluhrer
+  - Stefan-Lukas Gazdag
+  - Panos Kampanakis
+  - Stefan Kolbl
+  - Tanja Lange
+  - Martin M Lauridsen
+  - Florian Mendel
+  - Ruben Niederhagen
+  - Christian Rechberger
+  - Joost Rijneveld
+  - Peter Schwabe
+  - Jean-Philippe Aumasson
+problems:
+    - resistance of second preimage cryptographic hash function
+stateful: false
+nist round: 2
+sources:
+  - NIST Submission Paper
