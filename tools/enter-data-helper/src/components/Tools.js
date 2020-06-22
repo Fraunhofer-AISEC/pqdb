@@ -1,3 +1,7 @@
+import React from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import ReactDOM from 'react-dom';
+
 const fs = window.require('fs');
 const path = require('path');
 
@@ -44,6 +48,39 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
+const getUserConfirmation = (message, callback) => {
+    const modal = document.createElement('div');
+    document.body.appendChild(modal);
+
+    const withCleanup = (answer) => {
+        ReactDOM.unmountComponentAtNode(modal);
+        document.body.removeChild(modal);
+        callback(answer);
+    }
+
+    ReactDOM.render(
+        <Dialog
+            open={true}
+            onClose={() => withCleanup(false)}>
+            <DialogTitle>Confirm</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    {message}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => withCleanup(false)} color="primary">
+                    Cancel
+            </Button>
+                <Button onClick={() => withCleanup(true)} color="primary" autoFocus>
+                    OK
+            </Button>
+            </DialogActions>
+        </Dialog>,
+        modal
+    );
+}
+
 export {
     checkRootDir,
     disableUIElements,
@@ -51,5 +88,6 @@ export {
     listFiles,
     registerApp,
     showAlert,
+    getUserConfirmation,
     ROOT_DIR
 }

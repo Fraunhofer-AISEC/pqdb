@@ -10,6 +10,11 @@ import {
     Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon, ArrowForward as ForwardIcon
 } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
+import { showAlert, getUserConfirmation } from './Tools';
+import { Prompt } from 'react-router'
+const yaml = require('js-yaml');
+const fs = window.require('fs');
+const remote = window.require('electron').remote;
 
 class TooltipWrapper extends React.Component {
     constructor(props) {
@@ -115,18 +120,77 @@ class NavBar extends React.Component {
     }
 }
 
+const quitQuestion = "Are you sure you want to discard your changes?";
+
+class EditFile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.initialData = props.initialData ?? yaml.load(fs.readFileSync(props.filePath, 'utf-8'));
+        this.schema = props.schema;
+        this.state = { errors: null, data: this.initialData, savedData: this.initialData, dataChanged: false };
+    }
+
+    onChange({ errors, data }) {
+        var dataChanged = JSON.stringify(data) !== JSON.stringify(this.initialData);
+        this.setQuitHook(dataChanged);
+        this.setState({
+            validState: errors && errors.length === 0, data: data,
+            dataChanged: dataChanged
+        });
+    }
+
+    setQuitHook(dataChanged) {
+        window.onbeforeunload = dataChanged ? function (e) {
+            e.returnValue = !dataChanged;
+            getUserConfirmation(quitQuestion, (quit) => { if (quit) remote.getCurrentWindow().destroy() });
+        } : (e) => { };
+    }
+
+    saveFile() {
+        try {
+            var data = Object.assign({}, this.state.data);
+            if (this.props.onPreSave) this.props.onPreSave(data);
+            data = yaml.dump(this.state.data);
+            fs.writeFileSync(this.props.filePath, data);
+            this.setQuitHook(false);
+            this.setState({savedData: this.state.data, dataChanged: false});
+            showAlert("Saved to " + this.props.filePath, "success");
+        } catch {
+            showAlert("Error while saving file.", "error");
+        }
+    }
+
+    render() {
+        return (
+            <Grid container direction="column" spacing={1}>
+                <Grid item>
+                    <JsonFormsContainer schema={this.props.schema} uiSchema={this.props.uiSchema}
+                        initialData={this.initialData} onChange={(content) => this.onChange(content)} />
+                </Grid>
+                <Grid item>
+                    <Button size="medium" color="primary" variant="contained"
+                        disabled={!this.state.validState} onClick={() => this.saveFile()}>
+                        Save
+                    </Button>
+                </Grid>
+                <Prompt when={this.state.dataChanged} message={quitQuestion} />
+            </Grid>
+        );
+    }
+}
+
 class JsonFormsContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { validState: false, data: {}, schema: {}, uiSchema: {} };
-        this.dataStore = {};
+        this.initialData = props.initialData ?? {};
+        this.uiSchema = props.uiSchema ?? Generate.uiSchema(props.schema);
     }
 
-    buildJSONForm() {
+    render() {
         return (
             <JsonForms
-                schema={this.state.schema}
-                uischema={this.state.uiSchema}
+                schema={this.props.schema}
+                uischema={this.uiSchema}
                 renderers={[
                     ...materialRenderers,
                     {
@@ -135,35 +199,20 @@ class JsonFormsContainer extends React.Component {
                     }
                 ]}
                 cells={materialCells}
-                data={this.dataStore}
-                onChange={this.onChange.bind(this)}
+                data={this.initialData}
+                onChange={(content) => this.props.onChange(content)}
             />
         );
-    }
-
-    onChange({ errors, data }) {
-        this.setState({ validState: errors && errors.length === 0, data: data });
     }
 }
 
 class SelectList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {entries: props.entries};
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.entries !== this.props.entries) {
-            this.setState({ entries: this.props.entries });
-        }
-    }
-
     render() {
         return (
             <Paper>
                 <List component="ul">
                     {
-                        this.state.entries.map(entry => (
+                        this.props.entries.map(entry => (
                             <ListItem button key={"item-" + entry} onClick={() => this.props.action(entry)}>
                                 <ListItemText primary={entry} />
                                 <ListItemIcon>
@@ -178,7 +227,7 @@ class SelectList extends React.Component {
     }
 }
 
-class SelectOrCreate extends JsonFormsContainer {
+class SelectOrCreate extends React.Component {
     constructor(props) {
         super(props);
         if (props.regex != null)
@@ -190,20 +239,8 @@ class SelectOrCreate extends JsonFormsContainer {
         this.action = props.action;
         this.buttonText = (this.addNew) ? "Create" : "Select";
 
-        this.state.schema = this.generateSchema();
-        this.state.uiSchema = Generate.uiSchema(this.state.schema);
-        this.state.schemes = props.schemes;
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.schemes !== this.props.schemes) {
-            var schema = this.generateSchema();
-            this.setState({ schema: schema, uiSchema: Generate.uiSchema(schema), schemes: this.props.schemes });
-        }
-    }
-
-    generateSchema() {
-        var schema = {
+        this.state = { errors: null, data: null };
+        this.schema = {
             type: "object", properties: {
                 identifier: {
                     type: "string",
@@ -212,26 +249,35 @@ class SelectOrCreate extends JsonFormsContainer {
                 }
             }, required: ["identifier"]
         };
-        if (this.addNew && this.props.schemes.length > 0)
-            schema.properties.identifier.not = { type: "string", enum: this.props.schemes };
-        else if (!this.addNew)
-            schema.properties.identifier.enum = this.props.schemes;
+    }
 
-        return schema;
+    updateSchema() {
+        delete this.schema.properties.identifier.not;
+        delete this.schema.properties.identifier.enum;
+        if (this.addNew && this.props.schemes.length > 0)
+            this.schema.properties.identifier.not = { type: "string", enum: this.props.schemes };
+        else if (!this.addNew)
+            this.schema.properties.identifier.enum = this.props.schemes;
+    }
+
+    onChange({ errors, data }) {
+        this.setState({ validState: errors && errors.length === 0, data: data });
     }
 
     render() {
-        if (this.state.schemes.length === 0 && !this.addNew)
+        if (this.props.schemes.length === 0 && !this.addNew)
             return null;
 
+        this.updateSchema();
         return (
             <Grid container direction="row" alignItems="center" spacing={1}>
                 <Grid item xs>
-                    {this.buildJSONForm()}
+                    <JsonFormsContainer key={JSON.stringify(this.props.schemes)}
+                        schema={this.schema} onChange={(content) => this.onChange(content)} />
                 </Grid>
                 <Grid item>
                     <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
-                        onClick={(evt) => this.action(this.state.data)}>
+                        onClick={() => this.action(this.state.data)}>
                         {this.buttonText}
                     </Button>
                 </Grid>
@@ -241,4 +287,4 @@ class SelectOrCreate extends JsonFormsContainer {
 }
 
 export default JsonFormsContainer;
-export { JsonFormsContainer, SelectOrCreate, SelectList, NavBar };
+export { JsonFormsContainer, SelectOrCreate, SelectList, NavBar, EditFile };
