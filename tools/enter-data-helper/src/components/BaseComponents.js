@@ -120,7 +120,7 @@ class NavBar extends React.Component {
     }
 }
 
-const quitQuestion = "Are you sure you want to discard your changes?";
+const quitQuestion = "Discard changes?"
 
 class EditFile extends React.Component {
     constructor(props) {
@@ -172,6 +172,7 @@ class EditFile extends React.Component {
                         disabled={!this.state.validState} onClick={() => this.saveFile()}>
                         Save
                     </Button>
+                    { this.state.validState ? null : <span style={{ marginLeft:"1em", opacity:.6, textColor:"red" }}>You cannot save because there still are errors in the data.</span> }
                 </Grid>
                 <Prompt when={this.state.dataChanged} message={quitQuestion} />
             </Grid>
