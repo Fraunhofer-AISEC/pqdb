@@ -2,23 +2,26 @@
   "name": "pqdb-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://cryptoeng.github.io/pqdb",
   "dependencies": {
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "csv-stringify": "^5.5.0",
+    "query-string": "6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-image-lightbox": "^5.1.1",
+    "react-image-magnifiers": "^1.3.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "sql.js": "^1.2.2"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "6.0.2",
     "react-app-rewired": "^2.1.5"
   },
   "scripts": {
     "start": "HOST=localhost react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && cp build/index.html build/404.html",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

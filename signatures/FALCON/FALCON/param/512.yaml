@@ -1,0 +1,13 @@
+name: FALCON512
+security level:
+    classical: 114
+    quantum: 103
+    nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+    sk: 1281
+    pk: 897
+    ct|sig: 657
+    msg: 256
+    comment: "signature size varies, size noted here is the average. Compressed max is 752. Expanded keys are used"
