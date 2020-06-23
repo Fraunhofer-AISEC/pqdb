@@ -1,6 +1,6 @@
 name: LUOV-7-110-374
 security level:
-  classical: 299
+  classical: 274
   quantum: 234
   nist category: 5
   comment: ''
@@ -9,5 +9,4 @@ sizes:
   sk: 32
   pk: 82000
   ct|sig: 440
-  msg: 32
 number of operations: inf

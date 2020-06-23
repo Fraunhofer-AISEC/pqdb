@@ -7,6 +7,5 @@ sizes:
   sk: 32
   pk: 4700
   ct|sig: 1332
-  msg: 214
 number of operations: inf
 failure probability: 0

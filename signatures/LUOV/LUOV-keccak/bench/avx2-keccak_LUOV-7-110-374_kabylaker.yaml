@@ -4,4 +4,4 @@ timings:
   enc|sign: 5800000
   dec|vrfy: 4300000
   unit: cycles
-  comment: average of 1000 executions
+  comment: average of 10000 executions

@@ -4,10 +4,9 @@ sizes:
   sk: 32
   pk: 11500
   ct|sig: 239
-  msg: 17
 number of operations: inf
 security level:
   nist category: 1
-  classical: 157
+  classical: 143
   quantum: 107
   comment: ''

@@ -8,5 +8,4 @@ sizes:
   sk: 32
   pk: 27200
   ct|sig: 4134
-  msg: 686
 number of operations: inf
