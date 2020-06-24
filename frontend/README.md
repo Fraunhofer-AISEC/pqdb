@@ -30,4 +30,4 @@ yarn install
 yarn start
 ```
 
-This starts the React app and loads the url (http://localhost:3000/) in the browser.
+This starts the React app and loads the url (http://localhost:3000/pqdb) in the browser.
