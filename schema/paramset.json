@@ -60,7 +60,7 @@
                 "msg": {
                     "type": "integer",
                     "minimum": 1,
-                    "$comment": "For KEMs, size of the shared secret. #TODO signatures?"
+                    "$comment": "For encryption, size of the shared secret. Probably not really useful for signatures, in most cases just leave it out"
                 },
                 "ct|sig": {
                     "type": "integer",
