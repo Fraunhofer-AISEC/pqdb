@@ -19,6 +19,10 @@ There is a script that checks validity of the data structure.
 The enter-data-helper normally only allows entering valid data, so you probably won't need it unless you edited files manually.
 We have configured github hooks that automatically run validation after pushing. You can also [run validation locally](tools/validation/README.md).
 
+If you think a change to the schema is necessary (for example to add further APIs or security notions), please do so in a separate commit and justify the change.
+
+When you are done, please [create a pull request](https://github.com/cryptoeng/pqdb/compare).
+
 Data Format Overview
 --------------------
 
