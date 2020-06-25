@@ -42,7 +42,6 @@ const TextComment = function (props) {
 
 const PropItem = function (props) {
     let ItemIcon = props.icon;
-    console.log('icon for', props.k, 'is', ItemIcon);
     return <ListItem key={ props.k } alignItems="flex-start">
         <ListItemIcon>
             { props.hasOwnProperty('title') ?
@@ -479,7 +478,6 @@ class SchemeDetail extends React.Component {
         let db = this.db; // `this` is overriden inside `map`s and the like
 
         const s = queryAll(this.db, "SELECT * FROM scheme WHERE type=? AND id=?", [type, id])[0];
-        console.log('response', s);
         if ( s === undefined ) {
             return <Container><Paper>No such scheme.</Paper></Container>;
         }
@@ -638,7 +636,6 @@ class SchemeDetail extends React.Component {
     render () {
         let comp = this.state.path.split('/');
 
-        console.log('path components:', comp)
         if ( comp.length === 1 && comp[0] === '' )
             return this.renderOverview();
 
