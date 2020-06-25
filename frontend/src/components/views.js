@@ -430,8 +430,8 @@ class SchemeDetail extends React.Component {
         }
     }
     sec_notions = {
-        "IND-CCA": "Indistinguisability under an adaptive Chosen Ciphertext Attack",
-        "IND-CPA": "Indistinguisability under an adaptive Chosen Plaintext Attack",
+        "IND-CCA": "Indistinguishability under an adaptive Chosen Ciphertext Attack",
+        "IND-CPA": "Indistinguishability under an adaptive Chosen Plaintext Attack",
         "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
         "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
     }
