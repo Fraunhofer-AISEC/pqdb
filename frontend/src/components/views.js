@@ -514,12 +514,13 @@ class SchemeDetail extends React.Component {
                         { s.category } based <Comment title={s.category_comment} />
                     </PropItem>
 
-                { s.stateful === true && (
-                    <PropItem k="stateful" icon={ SaveIcon }>
-                        stateful <Comment title={s.stateful_comment} />
+                { ( s.stateful || s.stateful_comment ) && (
+                    <PropItem k="stateful" title="Statefulness" icon={ SaveIcon }>
+                        { s.stateful ? 'stateful' : 'stateless' /* stateless only shown if there's a comment */ }
+                        <Comment title={s.stateful_comment} />
                     </PropItem>)
                 }
-                    <PropItem k="nist_round" icon={ PodiumIcon }>
+                    <PropItem k="nist_round" title="NIST standardization" icon={ PodiumIcon }>
                         { ["Not submitted to the NIST standardization",
                            "Reached Round 1 of the NIST standardization",
                            "In Round 2 of the NIST standardization"][s.nist_round] }
@@ -543,7 +544,7 @@ class SchemeDetail extends React.Component {
                         }
                     </PropItem>
 
-                    <PropItem k="problems_trust" icon={ SecurityIcon }>
+                    <PropItem k="problems_trust" title="Security Properties" icon={ SecurityIcon }>
                         { [
                             s.trust_comment && [
                                 <div><strong>Trust: </strong></div>,
