@@ -1,4 +1,5 @@
 name: Dilithium-AES
+description: using AES for seed expansion. To showcase speedups via hardware acceleration.
 type: SIG
 security notion: SUF-CMA
 comment: >-
