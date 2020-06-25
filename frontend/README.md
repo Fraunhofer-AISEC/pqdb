@@ -12,12 +12,12 @@ This is the frontend for displaying data from pqdb. The latest deployment of the
 
 Before you can run the frontend locally you need to generate the SQLite database and the database diagram. This can be done by running the following command from the root directory of pqdb.
 ```
-node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite pqdb-frontend/src/tables.svg
+node tools/validation/validate.js frontend/public/pqdb.sqlite frontend/src/tables.svg
 ```
 If you want to update the data source for the frontend, you need to remove the two files (`pqdb.sqlite`, `tables.svg`) and re-run the command.
 
 ### Installation
-If not done already, switch to the `pqdb-frontend` directory, then install the dependencies.
+If not done already, switch to the `frontend` directory, then install the dependencies.
 
 ```
 yarn install
@@ -30,4 +30,4 @@ yarn install
 yarn start
 ```
 
-This starts the React app and loads the url (http://localhost:3000/) in the browser.
+This starts the React app and loads the url (http://localhost:3000/pqdb) in the browser.
