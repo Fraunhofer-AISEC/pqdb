@@ -26,11 +26,11 @@
                 "multivariate",
                 "isogeny",
                 "hash",
-				"other"
+                "other"
             ]
-                },
-                "category comment": {
-                    "type": "string"
+        },
+        "category comment": {
+            "type": "string"
         },
         "stateful": {
             "type": "boolean"

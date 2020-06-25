@@ -2,6 +2,7 @@ name: Picnic
 year:
     candidate: 2017
 category: other
+category comment: based on zero-knowledge proofs
 authors:
   - Greg Zaverucha
   - Melissa Chase
