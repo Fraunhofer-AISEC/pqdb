@@ -10,6 +10,7 @@ import DiffieHellmanIcon from '@material-ui/icons/SyncAlt';
 import EncryptionIcon from '@material-ui/icons/LockOutlined';
 import EventIcon from '@material-ui/icons/Event';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import LinkIcon from '@material-ui/icons/Link';
 import ParamSetIcon from '@material-ui/icons/Tune';
 import PeopleIcon from '@material-ui/icons/PeopleAlt';
@@ -31,13 +32,16 @@ const Comment = function (props) {
     return [
       '\u2002',
       <Tooltip interactive title={props.title} placement="right" arrow>
-        <span>&#x1f6c8;</span>
+          <InfoIcon fontSize="inherit" style={{ cursor: "help" }} />
       </Tooltip>
     ];
 }
 
 const TextComment = function (props) {
-    return ["\u{1f6c8}", <em {...props}> { props.children } </em> ];
+    return [
+        <InfoIcon fontSize="inherit" style={{ cursor: "help" }} />,
+        <em {...props}> { props.children } </em>
+    ];
 }
 
 const PropItem = function (props) {
