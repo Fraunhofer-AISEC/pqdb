@@ -457,20 +457,20 @@ class SchemeDetail extends React.Component {
         var stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
 
         return (
-            <Grid container justify="center" spacing={2} maxWidth="md">
+            <Grid container justify="center" spacing={2}>
                 { Object.entries(this.types).map(([typeKey, type]) => (
                 <Grid item>
                     <Paper>
-                        <Box p={4}>
-                            <Typography variant="h6">
+                        <Box p={2}>
+                            <Typography component="h1" variant="h6">
                                 { type.name }s
                                 { "  " }
                                 <type.icon fontSize="inherit"  />
                             </Typography>
                             <List>
                                 {queryAll(this.db, stmt, [typeKey]).map(s => (
-                                    <ListItem key={s.id}><ListItemText>
-                                        <Link href={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
+                                    <ListItem key={ typeKey + "-" + s.id } style={{ paddingLeft: 0 }}><ListItemText>
+                                        <Link href={ "?_=" + typeKey + "/" + s.id }>{ s.name }</Link>
                                     </ListItemText></ListItem>
                                 ))}
                             </List>
