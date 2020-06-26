@@ -9,5 +9,4 @@ sizes:
   sk: 24
   pk: 48
   ct|sig: 121845
-  msg: 256
-  comment: The size of signature is the maximal possible size.
+  msg: 256 

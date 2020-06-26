@@ -9,5 +9,4 @@ sizes:
   sk: 16
   pk: 32
   ct|sig: 34032
-  msg: 256
   comment: The size of signature is the maximal possible size. The signature average is 32838.
