@@ -17,9 +17,9 @@ jobs:
       working-directory: tools/validation
       run: npm install
     - name: Create PQDB SQLite-File
-      run: node tools/validation/validate.js pqdb-frontend/public/pqdb.sqlite pqdb-frontend/src/tables.svg
+      run: node tools/validation/validate.js frontend/public/pqdb.sqlite frontend/src/tables.svg
     - name: Install Frontend Dependencies and Build
-      working-directory: pqdb-frontend
+      working-directory: frontend
       run: |
         yarn install
         yarn build
@@ -28,5 +28,5 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: pqdb-frontend/build
+        FOLDER: frontend/build
         SINGLE_COMMIT: true

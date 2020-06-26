@@ -1,0 +1,21 @@
+name: Three Bears
+category: lattice
+nist round: 2
+year:
+  paper: 2017
+  candidate: 2017
+authors:
+  - Mike Hamburg
+sources:
+  - >-
+    NIST Round 2 revised submission
+    (https://www.shiftleft.org/papers/threebears/threebears-july2019.pdf)
+last_updated: '2019-07-25'
+stateful: false
+problems:
+  - assumption: I-MLWE
+    comment: Integer module learning with errors
+comment: Based on NewHope and Kyber, but using Integer-MLWE
+problems comment: >-
+  Replacing the polynomial ring from M-LWE with integers modulo a generalized
+  Mersenne number.
