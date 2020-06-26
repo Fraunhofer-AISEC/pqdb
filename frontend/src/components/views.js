@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
-    MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, SvgIcon, Tooltip,
+    MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Tooltip,
 } from '@material-ui/core';
 import CategoryIcon from '@material-ui/icons/Category';
 import CodeIcon from '@material-ui/icons/Code';
@@ -39,7 +39,7 @@ const Comment = function (props) {
 
 const TextComment = function (props) {
     return [
-        <InfoIcon fontSize="inherit" style={{ cursor: "help" }} />,
+        <InfoIcon fontSize="inherit" />,
         <em {...props}> { props.children } </em>
     ];
 }
@@ -51,7 +51,8 @@ const PropItem = function (props) {
             { props.hasOwnProperty('title') ?
                 <Typography component="h2" variant="inherit">
                     <Tooltip title={ props.title } arrow>
-                        <ItemIcon titleAccess={ props.title } />
+                        { /* overwrite some properties <Tooltip> sets */ }
+                        <ItemIcon role="img" aria-hidden={ false } aria-label={ props.title } aria-describedby={ null } />
                     </Tooltip>
                 </Typography>
                 :
@@ -499,16 +500,13 @@ class SchemeDetail extends React.Component {
             <Box>
                 <List>
                     <ListItem key="head" alignItems="flex-start">
-                        <ListItemIcon>
-                            <Typography component="span" variant="h2">
-                                <Tooltip title={ this.types[s.type].name } arrow>
-                                    { <TypeIcon fontSize="large" titleAccess={ this.types[s.type].name } /> }
-                                </Tooltip>
-                            </Typography>
-                        </ListItemIcon>
                         <ListItemText>
                             <Typography component="h1" variant="h2">
                                 { s.name }
+                                { "  " }
+                                <Tooltip title={ this.types[s.type].name } arrow>
+                                    <TypeIcon fontSize="large" aria-hidden={ false } role="img" aria-label={ this.types[s.type].name } aria-describedby={ null } />
+                                </Tooltip>
                             </Typography>
                             { s.comment && <div><TextComment>{ s.comment }</TextComment></div> }
                         </ListItemText>
@@ -594,7 +592,7 @@ class SchemeDetail extends React.Component {
                             { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
                         </ListItem>,
 
-                        f.type != "SIG" && // there's just one type for signatures, not worth showing this here
+                        f.type !== "SIG" && // there's just one type for signatures, not worth showing this here
                         <PropItem k={ "flavor-" + f.id + "-type" } title="API Type" icon={ CategoryIcon }>
                             { f.type } <Comment title={ f.type_comment } />
                         </PropItem>,
