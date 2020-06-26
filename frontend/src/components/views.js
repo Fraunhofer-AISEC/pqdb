@@ -16,14 +16,13 @@ import ParamSetIcon from '@material-ui/icons/Tune';
 import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import SaveIcon from '@material-ui/icons/Save';
 import SecurityIcon from '@material-ui/icons/Security';
-import SignatureIcon from '@material-ui/icons/Create';
 import qs from 'query-string';
 import genCSV from 'csv-stringify';
 import { GlassMagnifier } from "react-image-magnifiers";
 
 import diagramImage from '../tables.svg';
 
-import { queryAll, BookIcon as SourceIcon, PodiumIcon } from '../utils';
+import { queryAll, BookIcon as SourceIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
 const Comment = function (props) {
     if ( props.title === undefined || props.title === null || props.title === '' )
@@ -459,22 +458,26 @@ class SchemeDetail extends React.Component {
 
         return (
             <Grid container justify="center" spacing={2} maxWidth="md">
-                {Object.keys(this.types).map(type => (
+                { Object.entries(this.types).map(([typeKey, type]) => (
                 <Grid item>
                     <Paper>
                         <Box p={4}>
-                            <Typography variant="h6">{ this.types[type].name }s</Typography>
+                            <Typography variant="h6">
+                                { type.name }s
+                                { "  " }
+                                <type.icon fontSize="inherit"  />
+                            </Typography>
                             <List>
-                                {queryAll(this.db, stmt, [type]).map(s => (
+                                {queryAll(this.db, stmt, [typeKey]).map(s => (
                                     <ListItem key={s.id}><ListItemText>
-                                        <Link href={"?_=" + type + "/" + s.id}>{s.name}</Link>
+                                        <Link href={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
                                     </ListItemText></ListItem>
                                 ))}
                             </List>
                         </Box>
                     </Paper>
                 </Grid>
-                ))}
+                )) }
             </Grid>
         );
     }
