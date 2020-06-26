@@ -569,12 +569,12 @@ class SchemeDetail extends React.Component {
                     { /* TODO: make links links (maybe altering the db scheme, let's see) */ }
                     { links.length > 0 &&
                     <PropItem k="links" title="Links" icon={ LinkIcon }>
-                        { links.map(l => <div>{ l.url }</div>) }
+                        { links.map(l => <div><Link href={ l.url.match(/https:\/\/[^\s]+/g) } >{ l.url }</Link></div>) }
                     </PropItem> }
 
                     { sources.length > 0 &&
                     <PropItem k="sources" title="Sources" icon={ SourceIcon }>
-                        { sources.map(s => <div>{ s.url }</div>) }
+                        { sources.map(s => <div><Link href={ s.url.match(/https:\/\/[^\s]+/g) } >{ s.url }</Link></div>) }
                     </PropItem> }
 
 
