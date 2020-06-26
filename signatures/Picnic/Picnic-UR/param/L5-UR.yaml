@@ -1,4 +1,4 @@
-name: L5-FS
+name: Picnic-L5-FS
 security level: 
   classical:  256
   quantum:  128
@@ -9,4 +9,4 @@ sizes:
   sk: 32
   pk: 64
   ct|sig: 209506
-  msg: 256 
+  msg: 256

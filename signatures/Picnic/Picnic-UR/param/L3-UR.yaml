@@ -1,4 +1,4 @@
-name: L3-UR
+name: Picnic-L3-UR
 security level: 
   classical:  192
   quantum:  96
@@ -9,4 +9,4 @@ sizes:
   sk: 24
   pk: 48
   ct|sig: 121845
-  msg: 256 
+  msg: 256
