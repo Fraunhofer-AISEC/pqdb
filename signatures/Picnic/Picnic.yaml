@@ -1,5 +1,6 @@
 name: Picnic
 year:
+    paper: 2017
     candidate: 2017
 category: other
 category comment: based on zero-knowledge proofs
@@ -22,3 +23,5 @@ stateful: false
 nist round: 2
 sources:
   - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"
+links:
+  - Original Paper https://eprint.iacr.org/2017/279
