@@ -8,21 +8,25 @@
     "appId": "de.cryptoeng.enter-data-helper",
     "files": [
       "build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "assets/icon.*"
     ],
     "directories": {
       "buildResources": "assets"
     },
     "linux": {
       "target": "AppImage",
-      "artifactName": "enter-data-helper-linux.${ext}"
+      "artifactName": "enter-data-helper-linux.${ext}",
+      "icon": "./assets/icon.icns"
     },
     "mac": {
-      "target": "dir"
+      "target": "dir",
+      "icon": "./assets/icon.icns"
     },
     "win": {
       "target": "portable",
-      "artifactName": "enter-data-helper-win.${ext}"
+      "artifactName": "enter-data-helper-win.${ext}",
+      "icon": "./assets/icon.ico"
     }
   },
   "dependencies": {

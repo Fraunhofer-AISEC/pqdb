@@ -2,14 +2,14 @@
 links:
 - https://github.com/mupq/pqm4/#benchmarks
 sources:
-- https://github.com/mupq/pqm4/blob/aac104e/benchmarks.csv
+- https://github.com/mupq/pqm4/blob/28eb2d8/benchmarks.csv
 platform: M4, at 24MHz, using arm-none-eabi-gcc 10.1.0
 timings:
-  gen: 2901151
-  enc|sign: 6709457
-  dec|vrfy: 2963186
+  gen: 3046239
+  enc|sign: 6846027
+  dec|vrfy: 2962577
   unit: cycles
 memory requirements:
-  gen: 67116
-  enc|sign: 104380
-  dec|vrfy: 71452
+  gen: 60996
+  enc|sign: 93076
+  dec|vrfy: 58084
