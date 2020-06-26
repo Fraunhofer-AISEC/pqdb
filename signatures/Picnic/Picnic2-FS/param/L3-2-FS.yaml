@@ -8,6 +8,6 @@ number of operations: inf
 sizes:
   sk: 24
   pk: 48
-  ct|sig: 76772
+  ct|sig: 29750
   msg: 256
-  comment: The size of signature is the maximal. The signature average is 74134.
+  comment: The size of signature is the maximal. The signature average is 27173.
