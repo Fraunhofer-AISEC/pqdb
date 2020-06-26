@@ -12,6 +12,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
+* [ThreeBears](encryption/three-bears) ([Website](https://sourceforge.net/projects/threebears/))
 
 ### Signature
 * [Dilithium](signatures/dilithium) ([Website](https://pq-crystals.org/dilithium/))

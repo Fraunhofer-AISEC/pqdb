@@ -1,0 +1,12 @@
+timings:
+  gen: 117000
+  enc|sign: 144000
+  dec|vrfy: 230000
+  unit: cycles
+memory requirements:
+  gen: 12872
+  enc|sign: 13304
+  dec|vrfy: 15688
+platform: >-
+  Intel NUC6i5SYH with Core i3-6100U “Skylake” 64-bit CPU (2.3GHz) with clang-8
+  as compiler

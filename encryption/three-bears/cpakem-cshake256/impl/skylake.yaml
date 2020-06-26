@@ -1,0 +1,10 @@
+name: Skylake
+platform: 'c, assembly'
+type: optimized
+code size:
+  overall: 7740
+  comment: Size actually smaller than 7740. Information available only for MamaBear parameter set.
+dependencies:
+  - Keccak library. Code size does not include the size of a Keccak library.
+sources:
+  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
