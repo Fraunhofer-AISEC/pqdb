@@ -22,6 +22,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Lattice-based
 * [Dilithium](signatures/dilithium) ([Website](https://pq-crystals.org/dilithium/))
+* [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
 * [qTESLA](signatures/qTESLA) ([Website](https://qtesla.org/))
 * [FALCON](signatures/FALCON) ([Website](https://falcon-sign.info))
 
@@ -61,4 +62,3 @@ npm install
 To run the validation, execute the following command from the project root:
 
 `node tools/validation/validate.js`
-
