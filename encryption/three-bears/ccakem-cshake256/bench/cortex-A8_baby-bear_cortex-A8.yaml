@@ -1,0 +1,8 @@
+timings:
+  gen: 351000
+  enc|sign: 498000
+  dec|vrfy: 846000
+  unit: cycles
+platform: >-
+  BeagleBone Black with ARM Cortex-A8 32-bit CPU (1.0GHz) with clang-8 as
+  compiler

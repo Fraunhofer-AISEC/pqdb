@@ -1,57 +1,12 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
-import { JsonFormsContainer, SelectOrCreate, SelectList } from './BaseComponents';
-import { Grid, Button, Paper, Box } from '@material-ui/core';
+import { SelectOrCreate, SelectList, EditFile } from './BaseComponents';
+import { Grid, Paper, Box } from '@material-ui/core';
 import { listDirs, ROOT_DIR, disableUIElements, showAlert } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
 const typeDirs = { "enc": path.join(ROOT_DIR, "encryption"), "sig": path.join(ROOT_DIR, "signatures") }
-
-
-class EditScheme extends JsonFormsContainer {
-    constructor(props) {
-        super(props)
-        this.type = props.type;
-        this.identifier = props.identifier;
-        this.schemeFile = path.join(typeDirs[this.type], this.identifier, this.identifier + '.yaml');
-        this.dataStore = yaml.load(fs.readFileSync(this.schemeFile, 'utf-8'));
-        this.dataStore.type = this.type;
-        if (!('stateful' in this.dataStore))
-            this.dataStore.stateful = false;
-        this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'scheme.json'), 'utf-8'));
-        this.state.uiSchema = Generate.uiSchema(this.state.schema);
-        disableUIElements(this.state.uiSchema, ['#/properties/type']);
-    }
-
-    render() {
-        return (
-            <Grid container direction="column" spacing={1}>
-                <Grid item>
-                    {this.buildJSONForm()}
-                </Grid>
-                <Grid item>
-                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
-                        onClick={(evt) => this.saveScheme()}>
-                        Save
-                    </Button>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    saveScheme() {
-        try {
-            var data = Object.assign({}, this.state.data);
-            delete data.type;
-            data = yaml.dump(data);
-            fs.writeFileSync(this.schemeFile, data);
-            showAlert("Saved to " + this.schemeFile, "success");
-        } catch {
-            showAlert("Error while saving file.", "error");
-        }
-    }
-}
 
 class SchemeOverview extends React.Component {
     constructor(props) {
@@ -61,6 +16,15 @@ class SchemeOverview extends React.Component {
         this.baseDir = path.join(typeDirs[this.type], this.identifier);
         this.state = { flavors: listDirs(this.baseDir) };
         this.history = props.history;
+
+        this.schemeFile = path.join(typeDirs[this.type], this.identifier, this.identifier + '.yaml');
+        this.data = yaml.load(fs.readFileSync(this.schemeFile, 'utf-8'));
+        this.data.type = this.type;
+        if (!('stateful' in this.data))
+            this.data.stateful = false;
+        this.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'scheme.json'), 'utf-8'));
+        this.uiSchema = Generate.uiSchema(this.schema);
+        disableUIElements(this.uiSchema, ['#/properties/type']);
     }
 
     submitForm(identifier, create) {
@@ -90,6 +54,10 @@ class SchemeOverview extends React.Component {
         window.scrollTo(0, 0);
     }
 
+    onPreSave(data) {
+        delete data.type;
+    }
+
     render() {
         return (
             <Grid container direction="column" spacing={3}>
@@ -97,7 +65,8 @@ class SchemeOverview extends React.Component {
                     <Paper >
                         <Box px={2} pt={1} pb={2}>
                             <h2>Scheme Properties</h2>
-                            <EditScheme type={this.type} identifier={this.identifier} />
+                            <EditFile filePath={this.schemeFile} initialData={this.data} schema={this.schema}
+                                uiSchema={this.uiSchema} onPreSave={(data) => this.onPreSave(data)} />
                         </Box>
                     </Paper>
                 </Grid>

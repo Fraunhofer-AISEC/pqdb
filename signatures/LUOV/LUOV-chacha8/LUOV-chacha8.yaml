@@ -1,0 +1,4 @@
+name: LUOV-chacha8
+type: SIG
+security notion: EUF-CMA
+comment: Chacha8 as PRNG
