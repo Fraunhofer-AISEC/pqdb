@@ -1,0 +1,8 @@
+name: ThreeBears.CPAKEM
+type: KEM
+security notion: IND-CPA
+sources:
+  - >-
+    Security proof of Three Bears
+    (https://www.shiftleft.org/papers/threebears/proof-round2.pdf)
+
