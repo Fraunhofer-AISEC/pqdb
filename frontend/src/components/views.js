@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
@@ -470,7 +471,7 @@ class SchemeDetail extends React.Component {
                             <List>
                                 {queryAll(this.db, stmt, [typeKey]).map(s => (
                                     <ListItem key={ typeKey + "-" + s.id } style={{ paddingLeft: 0 }}><ListItemText>
-                                        <Link href={ "?_=" + typeKey + "/" + s.id }>{ s.name }</Link>
+                                        <Link component={RouterLink} to={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
                                     </ListItemText></ListItem>
                                 ))}
                             </List>
