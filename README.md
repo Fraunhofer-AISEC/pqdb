@@ -30,7 +30,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Hash-based
 * [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))
-
+* [Picnic](signatures/Picnic) ([Website](https://microsoft.github.io/Picnic/))
 
 
 ## Contribute

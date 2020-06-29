@@ -1,0 +1,9 @@
+platform: Intel Core i7-6700 (Skylake) 3.4GHZ
+timings:
+  unit: cycles
+  gen: 39579
+  enc|sign: 56541841
+  dec|vrfy: 46933599
+memory requirements:
+  enc|sign: 463016
+  dec|vrfy: 259784
