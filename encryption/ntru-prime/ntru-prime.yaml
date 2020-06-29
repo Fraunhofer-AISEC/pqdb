@@ -13,4 +13,4 @@ problems:
 stateful: false
 nist round: 2
 sources:
-  - NIST Submission Paper
+  - NIST Submission Paper ( https://ntruprime.cr.yp.to/nist/ntruprime-20190330.pdf )

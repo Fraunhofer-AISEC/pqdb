@@ -8,11 +8,10 @@ import {
   Menu as MenuIcon, BrightnessHigh as LightIcon, Brightness4 as DarkIcon
 } from '@material-ui/icons';
 import initSqlJs from "sql.js";
-import { CustomSQLQuery, Welcome } from './components/views';
+import { CustomSQLQuery, SchemeDetail, Welcome } from './components/views';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import logo from './pqdb.svg';
-
 
 function getTheme(type) {
   return createMuiTheme({
@@ -35,6 +34,11 @@ const views = {
     name: "Custom SQL Query",
     description: "Enter a custom database query and display the result in a table.",
     view: CustomSQLQuery
+  },
+  "detail": {
+    name: "Scheme Details",
+    description: "Browse data stored for a scheme",
+    view: SchemeDetail
   }
 };
 
