@@ -22,9 +22,11 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Lattice-based
 * [Dilithium](signatures/dilithium) ([Website](https://pq-crystals.org/dilithium/))
-* [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
 * [qTESLA](signatures/qTESLA) ([Website](https://qtesla.org/))
 * [FALCON](signatures/FALCON) ([Website](https://falcon-sign.info))
+
+#### Multivariate
+* [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
 
 #### Hash-based
 * [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))
