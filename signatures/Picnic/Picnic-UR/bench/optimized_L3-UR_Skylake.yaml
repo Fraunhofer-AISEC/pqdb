@@ -1,0 +1,9 @@
+platform: Intel Xeon CPU E31230 3.20GHz
+timings:
+  unit: cycles
+  gen: 30785
+  enc|sign: 43827423
+  dec|vrfy: 35505712
+memory requirements:
+  enc|sign: 427747
+  dec|vrfy: 269498

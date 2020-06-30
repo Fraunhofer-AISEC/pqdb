@@ -24,8 +24,8 @@ _schemename_replace = re.compile('^([-A-Za-z0-9]+) \(([\d]+) executions\)$')
 # to create a list, run this from `/encryption` or `/signatures`:
 # printf '%s\n' */*/param/*.yaml | sed 's|param/||; s|\.yaml$||; y|/| |' | column -t
 _scheme_to_paramset = '''
-    babybear
-    babybear-ephem
+    babybear            three-bears ccakem-cshake256  baby-bear
+    babybear-ephem      three-bears cpakem-cshake256  baby-bear
     firesaber
     frodokem640aes      frodo       frodokem-aes    640
     frodokem640shake    frodo       frodokem-shake  640
@@ -44,8 +44,8 @@ _scheme_to_paramset = '''
     lac-light-v3a
     lac-light-v3b
     lightsaber
-    mamabear
-    mamabear-ephem
+    mamabear            three-bears ccakem-cshake256  mama-bear
+    mamabear-ephem      three-bears cpakem-cshake256  mama-bear
     newhope1024cca      newhope     ccakem          1024
     newhope1024cpa
     newhope512cca       newhope     ccakem          512
@@ -57,8 +57,8 @@ _scheme_to_paramset = '''
     ntrulpr653          ntru-prime  lprime          ntrulpr653
     ntrulpr761          ntru-prime  lprime          ntrulpr761
     ntrulpr857          ntru-prime  lprime          ntrulpr857
-    papabear
-    papabear-ephem
+    papabear            three-bears ccakem-cshake256  papa-bear
+    papabear-ephem      three-bears cpakem-cshake256  papa-bear
     r5n1-1cca-0d
     r5n1-1cpa-0d
     r5n1-3cca-0d
@@ -264,7 +264,7 @@ def import_benchmarks(csvdata, type, source):
             print('{}: bench data written to {}'.format(name, bpath))
 
         idata = {
-            'name': '{} from pqm4'.format(impl),
+            'name': '{} for {} from pqm4'.format(impl, name),
             'links': ['https://github.com/mupq/pqm4/tree/master/{}/{}/{}'
                 .format(type2api(type), name, impl)],
             'platform': 'm4',
