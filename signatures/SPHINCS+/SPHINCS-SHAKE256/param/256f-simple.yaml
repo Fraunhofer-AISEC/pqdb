@@ -1,6 +1,6 @@
 name: 256f-simple
 security level:
-  classical:  
+  classical:  254
   quantum:  
   nist category: 1
 failure probability: 0

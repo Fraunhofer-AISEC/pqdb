@@ -1,6 +1,6 @@
 name: 128s-robust
 security level:
-  classical:  
+  classical:  133
   quantum:  
   nist category: 1
 failure probability: 0
