@@ -1,0 +1,12 @@
+name: 192s-robust
+security level:
+  classical:  
+  quantum:  
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 92
+  pk: 48
+  ct|sig: 17064
+  msg: 256
