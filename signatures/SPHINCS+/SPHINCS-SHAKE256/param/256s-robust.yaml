@@ -1,7 +1,7 @@
 name: 256s-robust
 security level:
   classical:  255
-  quantum:  
+  quantum:  128
   nist category: 1
 failure probability: 0
 number of operations: inf
