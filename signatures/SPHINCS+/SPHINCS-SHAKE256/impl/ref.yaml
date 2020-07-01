@@ -1,7 +1,0 @@
-name: ref
-platform: c
-type: optimized
-side channel guarding:
-  branching: true
-hardware features: []
-
