@@ -24,4 +24,4 @@ problems:
 stateful: false
 nist round: 2
 sources:
-  - NIST Submission Paper
+  - NIST Submission Paper ( https://sphincs.org/data/sphincs+-paper.pdf )
