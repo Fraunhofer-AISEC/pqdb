@@ -27,7 +27,7 @@ Data Format Overview
 --------------------
 
 Data is stored in a hierarchical structure as follows.
-
+```
          +-------------+
          |   scheme    |
          +-------------+
@@ -43,7 +43,7 @@ Data is stored in a hierarchical structure as follows.
          +-------------+
          |  benchmark  |
          +-------------+
-
+```
 We count everything described in one NIST submission as one scheme.
 Under scheme, we store basic information such as authors and problems the scheme's security is based on.
 
