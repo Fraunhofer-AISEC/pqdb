@@ -4,3 +4,4 @@ timings:
   gen: 1260024
   enc|sign:    38911468
   dec|vrfy:   3482634
+comment: There is a typo in the paper. This scheme is called 192f-robust is called 192f-simple.

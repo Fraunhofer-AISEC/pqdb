@@ -3,5 +3,8 @@ platform: c
 type: optimized
 side channel guarding:
   branching: true
+  timing: true
 hardware features:
   - avx2
+comment: link of tha paper https://sphincs.org/data/sphincs+-paper.pdf
+
