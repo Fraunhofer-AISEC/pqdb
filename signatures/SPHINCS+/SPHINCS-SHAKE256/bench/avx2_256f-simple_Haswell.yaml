@@ -1,0 +1,6 @@
+platform:  Intel Xeon E3-1275 V3 (Haswell) 3.5GHz
+timings:
+  unit: cycles
+  gen: 15875308
+  enc|sign:   373185700
+  dec|vrfy:    15397090
