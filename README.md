@@ -33,7 +33,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [SPHINCS+](signatures/SPHINCS) ([Website])(https://sphincs.org/)
 
 #### Zero-knowledge proofs
-* [Picnic](signatures/Picnic) ([Website](https://microsoft.github.io/Picnic/))
+* [Picnic](signatures/Picnic) ([Website])(https://microsoft.github.io/Picnic/))
 
 ## Contribute
 
