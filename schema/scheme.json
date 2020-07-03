@@ -101,7 +101,7 @@
             "items": {
                 "type": "string"
             },
-            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+            "$comment": "Links to additional resources. Use `sources` to denote where the data is from."
         },
         "sources": {
             "type": "array",
@@ -112,7 +112,7 @@
         "last_updated": {
             "type": "string",
             "format": "date",
-            "$comment": "Date when the data was updated last"
+            "$comment": "Date when the data entered here was updated last"
         },
         "last_updated comment": {
             "type": "string"

@@ -1,6 +1,7 @@
 name: SPHINCS+
 year:
     candidate: 2017
+    paper: 2015
 category: hash
 authors:
   - Andreas Hülsing

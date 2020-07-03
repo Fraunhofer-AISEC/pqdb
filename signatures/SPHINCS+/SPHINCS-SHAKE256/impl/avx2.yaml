@@ -6,5 +6,5 @@ side channel guarding:
   timing: true
 hardware features:
   - avx2
-comment: link of tha paper https://sphincs.org/data/sphincs+-paper.pdf
+comment: link of the implementation paper https://sphincs.org/data/sphincs+-paper.pdf
 
