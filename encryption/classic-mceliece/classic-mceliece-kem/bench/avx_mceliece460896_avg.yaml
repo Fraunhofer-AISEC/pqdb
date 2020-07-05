@@ -1,0 +1,8 @@
+impl: avx
+param: mceliece460896
+timings:
+  gen: 612458270
+  enc|sign: 85410
+  dec|vrfy: 274759
+  unit: cycles
+platform: 'Intel Xeon E3-1275 v3, 3.50GHz'

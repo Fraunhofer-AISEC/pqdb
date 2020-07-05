@@ -1,0 +1,4 @@
+type: reference
+comment: Intel/AMD 256-bit vector instructions
+name: 'avx, titan0'
+platform: C

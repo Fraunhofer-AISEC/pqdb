@@ -1,0 +1,4 @@
+name: sse
+hardware features:
+  - Intel/AMD 128-bit vector instructions
+platform: Todo

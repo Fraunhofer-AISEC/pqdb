@@ -1,0 +1,8 @@
+impl: fpga
+param: mceliece460896
+platform: Artix-7
+timings:
+  gen: 1383104
+  enc|sign: 3360
+  dec|vrfy: 18771
+  unit: cycles

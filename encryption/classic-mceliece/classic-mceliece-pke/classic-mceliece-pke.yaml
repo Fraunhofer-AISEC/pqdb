@@ -1,0 +1,4 @@
+name: Classic McEliece Public Key Encryption
+type: KTM
+security notion: IND-CPA
+security notion comment: 'OW-CPA '

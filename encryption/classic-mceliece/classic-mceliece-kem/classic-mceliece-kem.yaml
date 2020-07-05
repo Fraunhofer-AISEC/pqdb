@@ -1,0 +1,4 @@
+name: Classic McEliece
+type: KEM
+security notion: IND-CCA
+security notion comment: CCA2
