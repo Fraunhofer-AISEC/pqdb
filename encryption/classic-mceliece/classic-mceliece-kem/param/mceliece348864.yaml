@@ -1,8 +1,8 @@
 name: mceliece348864
 security level:
   nist category: 1
-  quantum: 28
-  classical: 87
+  quantum: 96
+  classical: 171
 sizes:
   pk: 261120
   sk: 6452

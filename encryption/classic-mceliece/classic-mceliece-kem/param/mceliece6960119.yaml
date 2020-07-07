@@ -1,8 +1,8 @@
 name: McEliece 6960119
 security level:
   nist category: 5
-  quantum: 128
-  classical: 256
+  quantum: 170
+  classical: 306
 sizes:
   pk: 1047319
   sk: 13908

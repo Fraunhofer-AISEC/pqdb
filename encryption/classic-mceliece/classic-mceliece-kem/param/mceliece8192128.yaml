@@ -1,7 +1,7 @@
 name: McEliece 8192128
 security level:
-  quantum: 128
-  classical: 256
+  quantum: 196
+  classical: 352
   nist category: 5
 failure probability: 0
 number of operations: inf
