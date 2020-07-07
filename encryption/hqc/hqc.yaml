@@ -1,0 +1,26 @@
+type: enc
+stateful: false
+name: hqc
+category: code
+nist round: 2
+year:
+  paper: 2020
+  candidate: !<tag:yaml.org,2002:js/undefined> ''
+authors:
+  - Carlos Aguilar Melchor
+  - Nicolas Aragon
+  - Slim Bettaieb
+  - Loïc Bidoux
+  - Olivier Blazy
+  - Jurjen Bos
+  - Jean-Christophe Deneuville
+  - Philippe Gaborit
+  - Edoardo Persichetti
+  - Jean-Marc Robert
+  - Pascal Véron
+  - Gilles Zémor
+links: []
+sources:
+  - 'http://pqc-hqc.org/doc/hqc-nist-conference_2019-08-24.pdf'
+  - 'https://pqc-hqc.org/index.html'
+  - 'https://pqc-hqc.org/doc/hqc-specification_2020-05-29.pdf'

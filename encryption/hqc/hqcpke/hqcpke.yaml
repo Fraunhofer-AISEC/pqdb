@@ -1,0 +1,5 @@
+name: HQC Public Key Encryption
+type: KTM
+security notion: IND-CPA
+sources:
+  - 'https://pqc-hqc.org/doc/hqc-specification_2020-05-29.pdf#section.1'
