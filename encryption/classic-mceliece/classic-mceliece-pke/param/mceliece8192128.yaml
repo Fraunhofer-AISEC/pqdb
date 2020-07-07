@@ -1,0 +1,14 @@
+name: McEliece 8192128
+security level:
+  quantum: 196
+  classical: 352
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  pk: 1357824
+  sk: 14080
+  ct|sig: 240
+  comment: 'Sessionkey: 32'
+  msg: 13
+comment: ''

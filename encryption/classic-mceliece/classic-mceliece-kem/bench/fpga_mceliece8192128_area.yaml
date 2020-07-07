@@ -1,5 +1,3 @@
-impl: fpga
-param: mceliece8192128
 platform: Virtex-7
 timings:
   gen: 15185314
