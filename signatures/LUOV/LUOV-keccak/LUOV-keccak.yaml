@@ -1,0 +1,4 @@
+name: LUOV-keccak
+type: SIG
+security notion: EUF-CMA
+comment: Keccak as PRNG

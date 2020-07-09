@@ -1,0 +1,6 @@
+name: ref-chacha8
+comment: Reference implementation using Chacha8 as PRNG
+platform: C
+type: reference
+links:
+  - https://github.com/WardBeullens/LUOV/tree/master/Reference_Implementation

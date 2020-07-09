@@ -1,54 +1,14 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
-import { JsonFormsContainer, SelectOrCreate, SelectList } from './BaseComponents';
-import { Grid, Button, Paper, Box } from '@material-ui/core';
+import { SelectOrCreate, SelectList, EditFile } from './BaseComponents';
+import { Grid, Paper, Box } from '@material-ui/core';
 import { listFiles, ROOT_DIR, disableUIElements, showAlert } from './Tools';
 const fs = window.require('fs');
 const path = require('path');
 const yaml = require('js-yaml')
 const typeDirs = { "enc": path.join(ROOT_DIR, "encryption"), "sig": path.join(ROOT_DIR, "signatures") };
 
-
-class EditFlavor extends JsonFormsContainer {
-    constructor(props) {
-        super(props)
-        this.type = props.type;
-        this.schemeIdentifier = props.schemeIdentifier;
-        this.flavorIdentifier = props.flavorIdentifier;
-        this.flavorFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier, this.flavorIdentifier + '.yaml');
-        this.dataStore = yaml.load(fs.readFileSync(this.flavorFile, 'utf-8'));
-        this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'flavor.json'), 'utf-8'));
-        this.state.uiSchema = Generate.uiSchema(this.state.schema);
-    }
-
-    render() {
-        return (
-            <Grid container direction="column" spacing={1}>
-                <Grid item>
-                    {this.buildJSONForm()}
-                </Grid>
-                <Grid item>
-                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
-                        onClick={(evt) => this.saveFlavor()}>
-                        Save
-                    </Button>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    saveFlavor() {
-        try {
-            var data = yaml.dump(this.state.data);
-            fs.writeFileSync(this.flavorFile, data);
-            showAlert("Saved to " + this.flavorFile, "success");
-        } catch {
-            showAlert("Error while saving file.", "error");
-        }
-    }
-}
-
-class SubtypeOverview extends JsonFormsContainer {
+class SubtypeOverview extends React.Component {
     constructor(props) {
         super(props)
         this.type = props.match.params.type;
@@ -57,47 +17,36 @@ class SubtypeOverview extends JsonFormsContainer {
         this.subType = props.match.params.subType;
         this.subIdentifier = props.match.params.subIdentifier;
 
-        this.targetFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier, this.subType, this.subIdentifier + '.yaml');
-        this.dataStore = yaml.load(fs.readFileSync(this.targetFile, 'utf-8'));
-        this.state.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
+        this.targetFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier,
+            this.subType, this.subIdentifier + '.yaml');
+        this.data = yaml.load(fs.readFileSync(this.targetFile, 'utf-8'));
+        this.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
             { 'bench': 'benchmark', 'param': 'paramset', 'impl': 'implementation' }[this.subType] + '.json')));
-        this.state.uiSchema = Generate.uiSchema(this.state.schema);
+        this.uiSchema = Generate.uiSchema(this.schema);
         if (this.subType === 'bench') {
             var parts = this.subIdentifier.split('_');
-            this.dataStore.impl = parts[0];
-            this.dataStore.param = parts[1];
-            disableUIElements(this.state.uiSchema, ['#/properties/impl', '#/properties/param']);
+            this.data.impl = parts[0];
+            this.data.param = parts[1];
+            disableUIElements(this.uiSchema, ['#/properties/impl', '#/properties/param']);
         }
     }
 
-    saveFile() {
-        var data = Object.assign({}, this.state.data);
+    onPreSave(data) {
         if (this.subType === 'bench') {
             delete data.param;
             delete data.impl;
-        }
-        try {
-            fs.writeFileSync(this.targetFile, yaml.dump(data));
-            showAlert("Saved to " + this.targetFile, "success");
-        } catch {
-            showAlert("Error while saving file.", "error");
         }
     }
 
     render() {
         return (
-            <Grid container direction="column" spacing={1}>
-                <Grid item>
-                    <h2>{{ 'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation' }[this.subType] + " Properties"}</h2>
-                    {this.buildJSONForm()}
-                </Grid>
-                <Grid item>
-                    <Button size="medium" color="primary" variant="contained" disabled={!this.state.validState}
-                        onClick={(evt) => this.saveFile()}>
-                        Save
-                    </Button>
-                </Grid>
-            </Grid>
+            <Box px={2} pt={1} pb={2}>
+                <h2>{{
+                    'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation'
+                }[this.subType] + " Properties"}</h2>
+                <EditFile filePath={this.targetFile} initialData={this.data} schema={this.schema}
+                    uiSchema={this.uiSchema} onPreSave={(data) => this.onPreSave(data)} />
+            </Box>
         );
     }
 }
@@ -117,6 +66,9 @@ class FlavorOverview extends React.Component {
 
         this.benchRegex = '^(:?' + this.state.impl.join('|') + ')_(:?' + this.state.param.join('|') + ')_[A-Za-z0-9-]+$';
         this.history = props.history;
+
+        this.flavorFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.identifier, this.identifier + '.yaml');
+        this.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'flavor.json'), 'utf-8'));
     }
 
     generateChoices(type) {
@@ -159,7 +111,7 @@ class FlavorOverview extends React.Component {
                     <Paper>
                         <Box px={2} pt={1} pb={2}>
                             <h2>Flavor Properties</h2>
-                            <EditFlavor type={this.type} schemeIdentifier={this.schemeIdentifier} flavorIdentifier={this.identifier} />
+                            <EditFile filePath={this.flavorFile} schema={this.schema} />
                         </Box>
                     </Paper>
                 </Grid>

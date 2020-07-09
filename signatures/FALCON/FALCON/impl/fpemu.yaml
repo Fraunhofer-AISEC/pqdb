@@ -1,0 +1,9 @@
+name: fpemu
+platform: c
+type: optimized
+side channel guarding:
+  timing: true
+  timing comment: For some operations, constant-time hash-to-point and fixed-size signature size are used to ensure privacy of the signed message.
+hardware features:
+  - fpemu
+
