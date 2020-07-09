@@ -1,8 +1,9 @@
-name: MQDSS 2.1
+name: MQDSS
+comment: Version 2.1
 category: multivariate
 year:
     paper: 2016
-    candidate: 2019
+    candidate: 2017
 problems:
     - assumption: MQ
 stateful: false
@@ -14,6 +15,5 @@ authors:
   - Simona Samardjiska
   - Peter Schwabe
 sources:
-  - NIST Submission Paper
+  - NIST Submission Paper ( http://mqdss.org/files/mqdssVer2point1.pdf )
   - http://mqdss.org/
-  - https://pqc-wiki.fau.edu/w/Special:DatabaseHome
