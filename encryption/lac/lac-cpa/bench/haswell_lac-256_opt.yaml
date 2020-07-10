@@ -1,0 +1,7 @@
+platform: 'Intel Core-i7-4770S, Intel x64 processor'
+timings:
+  gen: 382627
+  enc|sign: 636997
+  dec|vrfy: 302890
+  unit: cycles
+  comment: 'Decryption(Const-BCH): 338993'

@@ -1,0 +1,7 @@
+platform: 'Core-i7-4770S, Intel x64 processor'
+timings:
+  gen: 333649
+  enc|sign: 445696
+  dec|vrfy: 731472
+  unit: cycles
+  comment: 'Decapsulation(Const-BCH): 759871 cycles'

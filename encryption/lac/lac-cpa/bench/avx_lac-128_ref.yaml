@@ -1,0 +1,6 @@
+timings:
+  gen: 61242
+  enc|sign: 80173
+  dec|vrfy: 25004
+  unit: cycles
+  comment: 'Decryption(Const-BCH): 64238 cycles'

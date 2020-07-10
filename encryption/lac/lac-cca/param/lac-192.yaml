@@ -1,0 +1,12 @@
+name: LAC -192
+security level:
+  classical: 286
+  quantum: 259
+  nist category: 5
+failure probability: -143
+sizes:
+  sk: 1024
+  pk: 1056
+  ct|sig: 1188
+  msg: 256
+number of operations: inf

@@ -1,0 +1,3 @@
+name: avx2
+platform: 'AVX2, Intel Core-i7-4770S (Haswell), in C'
+type: reference

@@ -1,0 +1,6 @@
+timings:
+  gen: 135780
+  enc|sign: 207938
+  dec|vrfy: 343335
+  unit: cycles
+  comment: 'Decapsulation(Const-BCH): 359209 cycles'
