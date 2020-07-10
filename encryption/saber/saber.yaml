@@ -17,3 +17,4 @@ sources:
     )
 links:
   - 'Homepage ( https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html )'
+nist round: 2
