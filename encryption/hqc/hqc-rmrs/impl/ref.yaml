@@ -1,0 +1,5 @@
+name: Reference
+platform: 'Intel Core i7-7820X CPU, 3.6GHz '
+type: reference
+hardware features:
+  - 'Hyper-Threading, Turbo Boost and SpeedStep features were disabled '
