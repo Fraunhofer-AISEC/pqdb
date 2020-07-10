@@ -1,0 +1,19 @@
+stateful: false
+name: SABER
+category: lattice
+year:
+  candidate: 2017
+authors:
+  - Jan-Pieter D’Anvers
+  - Angshuman Karmakar
+  - Sujoy Sinha Roy
+  - Frederik Vercauteren
+problems:
+  - assumption: Mod-LWR
+sources:
+  - >-
+    Submission package (
+    https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/SABER_KEM_Round_2.zip
+    )
+links:
+  - 'Homepage ( https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html )'

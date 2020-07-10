@@ -1,0 +1,13 @@
+name: SABER
+security level:
+  classical: 203
+  quantum: 185
+  nist category: 3
+  comment: 'See https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
+failure probability: -136
+sizes:
+  sk: 2304
+  pk: 992
+  msg: 32
+  ct|sig: 1088
+number of operations: inf

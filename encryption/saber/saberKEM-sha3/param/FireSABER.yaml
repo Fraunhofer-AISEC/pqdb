@@ -1,0 +1,13 @@
+name: FireSABER
+security level:
+  classical: 283
+  quantum: 257
+  nist category: 5
+  comment: 'See https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
+failure probability: -165
+sizes:
+  sk: 3040
+  pk: 1312
+  msg: 32
+  ct|sig: 1472
+number of operations: inf
