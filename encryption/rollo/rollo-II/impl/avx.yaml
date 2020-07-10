@@ -1,0 +1,5 @@
+name: AVX2
+platform: 'AVX2 '
+type: optimized
+sources:
+  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#table.8'

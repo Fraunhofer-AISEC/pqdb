@@ -1,0 +1,5 @@
+timings:
+  gen: 23364000
+  enc|sign: 1618000
+  dec|vrfy: 6241000
+  unit: cycles

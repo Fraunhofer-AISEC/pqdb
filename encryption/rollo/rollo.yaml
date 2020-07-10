@@ -1,0 +1,24 @@
+stateful: false
+name: 'ROLLO '
+category: code
+nist round: 2
+year:
+  paper: 2020
+authors:
+  - Carlos Aguilar Melchor
+  - Nicolas Aragon
+  - Magali Bardet
+  - Slim Bettaieb
+  - Loïc Bidoux
+  - Olivier Blazy
+  - Jean-Christophe Deneuville
+  - Philippe Gaborit
+  - Adrien Hauteville
+  - Ayoub Otmani
+  - Olivier Ruatta
+  - Jean-Pierre Tillich
+  - Gilles Zémor
+links:
+  - 'https://pqc-rollo.org/'
+sources:
+  - 'https://pqc-rollo.org/'

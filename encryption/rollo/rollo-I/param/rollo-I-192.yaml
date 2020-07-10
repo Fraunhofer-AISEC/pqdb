@@ -1,0 +1,12 @@
+name: ROLLO-I 192
+security level:
+  classical: 192
+  quantum: 191
+  nist category: 3
+failure probability: -34
+failure probability comment: 2^-34
+sizes:
+  sk: 40
+  pk: 958
+  ct|sig: 958
+number of operations: inf

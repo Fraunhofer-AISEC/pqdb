@@ -1,0 +1,6 @@
+name: 'ROLLO-I '
+comment: LAKE became ROLLO-I
+type: KEM
+security notion: IND-CPA
+sources:
+  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf'

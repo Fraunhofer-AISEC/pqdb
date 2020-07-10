@@ -1,0 +1,6 @@
+platform: AVX2
+timings:
+  gen: 16986000
+  enc|sign: 1307000
+  dec|vrfy: 4484000
+  unit: cycles
