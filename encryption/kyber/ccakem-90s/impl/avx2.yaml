@@ -1,0 +1,9 @@
+name: AVX2
+platform: c
+type: optimized
+side channel guarding:
+  branching: true
+  timing comment: Assumed, but not verified
+hardware features:
+  - avx2
+  - aes-ni
