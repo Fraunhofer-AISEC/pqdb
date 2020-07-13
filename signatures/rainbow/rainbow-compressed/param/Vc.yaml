@@ -2,11 +2,11 @@ name: Rainbow-Vc
 security level:
   classical: 275
   quantum: 219
-  nist category: 5
+  nist category: 6
   comment: classical direct (forgery), quantum HighRank (key recovery)
 failure probability: 0
-number of operations: TODO
+number of operations: inf
 sizes:
-  sk: 1227100
+  sk: 64
   pk: 491900
   ct|sig: 204
