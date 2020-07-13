@@ -1,3 +1,7 @@
+import React from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import ReactDOM from 'react-dom';
+
 const fs = window.require('fs');
 const path = require('path');
 
@@ -44,6 +48,54 @@ function disableUIElements(uiSchema, scopes) {
     }
 }
 
+const getUserConfirmation = (message, callback, title, yesmsg, nomsg) => {
+    const modal = document.createElement('div');
+    document.body.appendChild(modal);
+
+    const withCleanup = (answer) => {
+        ReactDOM.unmountComponentAtNode(modal);
+        document.body.removeChild(modal);
+        callback(answer);
+    }
+
+    // dirty hack because <Prompt> does not allow passing other parameters than `message`
+    const knownQuestions = {
+        "Discard changes?": {
+            message: [<p>You are about to leave this view, but there are unsaved changes.</p>, <p>Are you sure you want to discard your changes?</p>],
+            yesmsg: "Discard",
+            nomsg: "Keep Editing",
+        }
+    };
+    if ( knownQuestions.hasOwnProperty(message) ) {
+        let title = message;
+        message = knownQuestions[title].message;
+        yesmsg = knownQuestions[title].yesmsg;
+        nomsg = knownQuestions[title].nomsg;
+    }
+
+    ReactDOM.render(
+        <Dialog
+            open={true}
+            onClose={() => withCleanup(false)}>
+            <DialogTitle>{ title ?? "Confirm" }</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    { message }
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => withCleanup(false)} color="primary">
+                    { nomsg ?? "Cancel" }
+            </Button>
+                <Button onClick={() => withCleanup(true)} color="primary" autoFocus>
+                    { yesmsg ?? "OK" }
+            </Button>
+            </DialogActions>
+        </Dialog>,
+        modal
+    );
+}
+
 export {
     checkRootDir,
     disableUIElements,
@@ -51,5 +103,6 @@ export {
     listFiles,
     registerApp,
     showAlert,
+    getUserConfirmation,
     ROOT_DIR
 }

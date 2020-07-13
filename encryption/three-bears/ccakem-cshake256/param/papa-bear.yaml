@@ -1,0 +1,13 @@
+sizes:
+  sk: 40
+  pk: 1584
+  msg: 32
+  ct|sig: 1697
+number of operations: inf
+security level:
+  classical: 314
+  quantum: 280
+  nist category: 5
+failure probability: -256
+failure probability comment: 'Failure Probability is less than 2^{-256}'
+name: ThreeBears.CCAKEM.PapaBear
