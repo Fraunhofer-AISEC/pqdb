@@ -26,7 +26,7 @@
                 "nist category": {
                     "type": "integer",
                     "minimum": 0,
-                    "maximum": 5,
+                    "maximum": 6,
                     "$comment": "According to the authors. If weaker than category 1, use 0."
                 },
                 "comment": {
