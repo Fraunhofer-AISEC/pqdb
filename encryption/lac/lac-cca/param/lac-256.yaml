@@ -1,12 +1,12 @@
 sizes:
-  sk: 1024
+  sk: 2080
   pk: 1056
   ct|sig: 1424
-  msg: 256
+  msg: 32
 failure probability: -122
 number of operations: inf
 security level:
   nist category: 5
   classical: 320
   quantum: 290
-name: LAC -256
+name: LAC-256

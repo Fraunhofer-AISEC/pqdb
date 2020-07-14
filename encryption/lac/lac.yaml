@@ -3,6 +3,7 @@ name: LAC
 category: lattice
 year:
   paper: 2019
+  candidate: 2017
 authors:
   - Xianhui Lu
   - Yamin Liu
@@ -16,6 +17,8 @@ authors:
   - Hao Yang
 sources:
   - >-
-    https://csrc.nist.gov/CSRC/media/Presentations/lac-round-2-presentation/images-media/lac-zhang.pdf
-  - 'https://csrc.nist.gov/projects/post-quantum-cryptography/round-2-submissions'
+    https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip
 nist round: 2
+problems comment: LWE over rings
+links:
+  - ''

@@ -1,10 +1,10 @@
-name: LAC -128
+name: LAC-128
 failure probability: -116
 sizes:
-  sk: 512
+  sk: 1056
   pk: 544
   ct|sig: 712
-  msg: 256
+  msg: 32
 number of operations: inf
 security level:
   classical: 147
