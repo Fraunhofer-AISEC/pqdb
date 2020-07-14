@@ -1,0 +1,8 @@
+timings:
+  gen: 500000
+  enc|sign: 590000
+  dec|vrfy: 879000
+  unit: cycles
+platform: >-
+  Raspberry Pi 3 with ARM Cortex-A53 64-bit CPU (1.2GHz) with clang-8 as
+  compiler

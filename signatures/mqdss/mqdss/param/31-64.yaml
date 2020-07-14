@@ -1,0 +1,11 @@
+name: MQDSS-31-64
+security level:
+    classical: 206
+    quantum: 120
+    nist category: 4
+failure probability: 0
+number of operations: inf
+sizes:
+    sk: 24
+    pk: 64
+    ct|sig: 59928

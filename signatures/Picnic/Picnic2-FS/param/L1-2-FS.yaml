@@ -1,0 +1,13 @@
+name: Picnic2-L1-FS
+security level: 
+  classical:  128
+  quantum:  64
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 16
+  pk: 32
+  ct|sig: 13802
+  msg: 256
+  comment: The size of signature is the maximal. The signature average is 12359.
