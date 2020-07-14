@@ -1,11 +1,10 @@
-type: enc
 stateful: false
 name: hqc
 category: code
 nist round: 2
 year:
   paper: 2020
-  candidate: !<tag:yaml.org,2002:js/undefined> ''
+  candidate: 2017
 authors:
   - Carlos Aguilar Melchor
   - Nicolas Aragon
@@ -24,3 +23,6 @@ sources:
   - 'http://pqc-hqc.org/doc/hqc-nist-conference_2019-08-24.pdf'
   - 'https://pqc-hqc.org/index.html'
   - 'https://pqc-hqc.org/doc/hqc-specification_2020-05-29.pdf'
+problems:
+  - assumption: Decisional 2-/ 3-QCSD Problem
+    comment: quasi-cyclic codes
