@@ -4,6 +4,7 @@ category: code
 nist round: 2
 year:
   paper: 2020
+  candidate: 2017
 authors:
   - Carlos Aguilar Melchor
   - Nicolas Aragon
@@ -22,3 +23,5 @@ links:
   - 'https://pqc-rollo.org/'
 sources:
   - 'https://pqc-rollo.org/'
+problems:
+  - assumption: Rank Syndrome Decoding problem
