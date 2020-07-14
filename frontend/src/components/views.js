@@ -4,6 +4,7 @@ import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
     MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Tooltip,
+    Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel, Slider
 } from '@material-ui/core';
 import CategoryIcon from '@material-ui/icons/Category';
 import CodeIcon from '@material-ui/icons/Code';
@@ -306,6 +307,160 @@ class Welcome extends React.Component {
                     </Box>
                 </Paper>
             </Container>
+        );
+    }
+}
+
+const secLevelMarks = [
+    { label: '0', value: 0 }, { label: '128', value: 128 }, { label: '64', value: 64 },
+    { label: '192', value: 192 }, { label: '256', value: 256 }
+];
+class SchemeComparison extends React.Component {
+    constructor(props) {
+        super(props);
+        this.db = props.db;
+        this.state = {
+            showStorage: false, showBenchmarks: true, showStateful: false, schemeType: 'sig', platformFilter: '',
+            sliderValue: 128, securityLevel: 128, showSecClassical: true, showSecQuantum: false
+        };
+    }
+
+    computeResult(state) {
+        var sqlQuery = `
+        SELECT
+            (s.name || '/' || f.name || '/' || p.name) AS 'Scheme Name'
+            ${(state.showSecClassical) ? ",p.security_level_classical AS 'Security Level (classical)'" : ''}
+            ${(state.showSecQuantum) ? ",p.security_level_quantum AS 'Security Level (quantum)'" : ''}
+            ${(state.showStateful) ? `
+            ,CASE
+                s.stateful
+                WHEN 0 THEN 'No'
+                ELSE 'Yes'
+            END AS Stateful
+            ` : ''}
+            ${(state.showStorage) ? `
+            ,p.sizes_sk AS 'Secret Key Size',
+            p.sizes_pk AS 'Public Key Size',
+            p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
+            (p.sizes_sk + p.sizes_pk + p.sizes_ct_sig) AS 'Total Size'
+            ` : ''}
+            ${(state.showBenchmarks) ? `
+            ,round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
+            round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
+            round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
+            b.platform AS 'Platform',
+            i.name AS 'Implementation Name',
+            (
+                SELECT
+                    GROUP_CONCAT(hf.feature, ", ")
+                FROM
+                    implementation_hardware_feature hf
+                WHERE
+                    hf.implementation_id = i.id
+            ) AS 'Hardware Features'
+            ` : ''}
+        FROM
+            scheme s
+            JOIN flavor f ON s.id = f.scheme_id
+            JOIN paramset p ON f.id = p.flavor_id
+            ${(state.showBenchmarks) ? `
+            LEFT JOIN benchmark b ON p.id = b.paramset_id
+            LEFT JOIN implementation i ON i.id = b.implementation_id
+            ` : ''}
+        WHERE
+            s.type = ?
+            AND p.security_level_classical >= ?
+            ${(state.showBenchmarks) ? `
+            AND (
+                i.type IS NULL
+                OR i.type = 'optimized'
+            )
+            ${(state.platformFilter !== '') ? "AND b.platform LIKE '%' || ? || '%'" : ''}
+            ` : ''}
+        `;
+        var params = [state.schemeType, state.securityLevel];
+        if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
+        var results = queryAll(this.db, sqlQuery, params);
+        if (results.length === 0) return undefined;
+        return {
+            columns: Object.keys(results[0]),
+            values: results.map(row => Object.keys(row).map(k => row[k]))
+        };
+    }
+
+    render() {
+        return (
+            <Grid container direction="column" spacing={2} >
+                <Grid item>
+                    <Container maxWidth="md">
+                        <Paper>
+                            <Box p={2}>
+                                <Typography variant="h4">Scheme Comparison</Typography>
+                                <Box display="flex" mt={2} justifyContent="space-evenly">
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Display</FormLabel>
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showStorage}
+                                                onChange={() => this.setState({ showStorage: !this.state.showStorage })} />
+                                        } label="Include Sizes" />
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showBenchmarks}
+                                                onChange={() => this.setState({ showBenchmarks: !this.state.showBenchmarks })} />
+                                        } label="Include Benchmarks" />
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showStateful}
+                                                onChange={() => this.setState({ showStateful: !this.state.showStateful })} />
+                                        } label="Statefulness" />
+                                    </FormControl>
+
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Security Level</FormLabel>
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showSecClassical}
+                                                onChange={() => this.setState({ showSecClassical: !this.state.showSecClassical })} />
+                                        } label="Classical" />
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showSecQuantum}
+                                                onChange={() => this.setState({ showSecQuantum: !this.state.showSecQuantum })} />
+                                        } label="Quantum" />
+                                    </FormControl>
+
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Scheme Type</FormLabel>
+                                        <RadioGroup value={this.state.schemeType}
+                                            onChange={(event) => this.setState({ schemeType: event.target.value })}>
+                                            <FormControlLabel value="sig" control={<Radio />} label="Signature" />
+                                            <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
+                                        </RadioGroup>
+                                    </FormControl>
+
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Filter</FormLabel>
+                                        <TextField label="Platform"
+                                            onChange={e => this.setState({ platformFilter: e.target.value })} />
+                                        <Box mt={1}>
+                                            <Typography>Classical Security ≥</Typography>
+                                            <Slider defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks}
+                                                onChangeCommitted={(e, v) => this.setState({ securityLevel: v })}
+                                                valueLabelDisplay="auto" />
+                                        </Box>
+                                    </FormControl>
+                                </Box>
+                            </Box>
+                        </Paper>
+                    </Container>
+                </Grid>
+                <Grid container item>
+                    <Container maxWidth={false} disableGutters={true}>
+                        <Paper>
+                            <Box p={2} display='flex' justifyContent="center">
+                                <QueryTable key={JSON.stringify(this.state)}
+                                    queryResult={this.computeResult(this.state)} />
+                            </Box>
+                        </Paper>
+                    </Container>
+                </Grid>
+            </Grid>
         );
     }
 }
@@ -663,4 +818,4 @@ class SchemeDetail extends React.Component {
     }
 }
 
-export { CustomSQLQuery, SchemeDetail, Welcome };
+export { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison };
