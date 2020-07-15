@@ -1,7 +1,7 @@
 name: GeMSS128
 security level:
   classical: 128
-  quantum: 174
+  quantum: 74
   nist category: 1
 failure probability: -24204404
 number of operations: inf
