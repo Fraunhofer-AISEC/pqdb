@@ -5,7 +5,7 @@ security level:
   nist category: 4
   comment: classical RBS, quantum HighRank, both recover key
 failure probability: 0
-number of operations: int
+number of operations: inf
 sizes:
   sk: 64
   pk: 206700
