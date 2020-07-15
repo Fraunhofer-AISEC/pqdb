@@ -1,0 +1,7 @@
+platform: Intel Core i5-8250U (Kaby Lake R) 1.60 GHz | gcc 7.3.0
+timings:
+  gen: 13000000
+  enc|sign: 4400000
+  dec|vrfy: 3400000
+  unit: cycles
+  comment: average of 1000 executions

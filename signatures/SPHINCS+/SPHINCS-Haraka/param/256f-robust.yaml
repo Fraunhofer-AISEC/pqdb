@@ -1,0 +1,12 @@
+name: 256f-robust
+security level:
+  classical:  254
+  quantum:  127
+  nist category: 2
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 128
+  pk: 64
+  ct|sig: 49216
+  msg: 256

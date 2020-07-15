@@ -1,0 +1,7 @@
+platform:  Intel Xeon E3-1275 V3 (Haswell) 3.5GHz
+timings:
+  unit: cycles
+  gen: 1260024
+  enc|sign:    38911468
+  dec|vrfy:   3482634
+comment: There is a typo in the implementation paper. This parameterset benchmark should be named 192f-robust, but is named 192f-simple.

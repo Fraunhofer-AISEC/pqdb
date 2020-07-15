@@ -1,0 +1,12 @@
+name: 192s-simple
+security level:
+  classical: 196
+  quantum:  98
+  nist category: 2
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 96
+  pk: 48
+  ct|sig: 17064
+  msg: 256

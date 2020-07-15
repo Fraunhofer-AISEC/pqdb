@@ -1,0 +1,13 @@
+name: ThreeBears.CPAKEM.MamaBear
+security level:
+  classical: 262
+  quantum: 238
+  nist category: 5
+failure probability: -51
+failure probability comment: 'Failure Probability is approx 2^{-51}'
+sizes:
+  sk: 40
+  pk: 1194
+  msg: 32
+  ct|sig: 1307
+number of operations: inf

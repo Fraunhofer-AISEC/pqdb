@@ -1,47 +1,55 @@
 {
   "name": "enter-data-helper",
   "author": "CryptoEng",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "private": true,
   "homepage": "./",
   "build": {
     "appId": "de.cryptoeng.enter-data-helper",
     "files": [
       "build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "assets/icon.*"
     ],
     "directories": {
       "buildResources": "assets"
     },
     "linux": {
       "target": "AppImage",
-      "artifactName": "enter-data-helper-linux.${ext}"
+      "artifactName": "enter-data-helper-linux.${ext}",
+      "icon": "./assets/icon.icns"
     },
     "mac": {
-      "target": "dir"
+      "target": "dir",
+      "icon": "./assets/icon.icns"
+    },
+    "win": {
+      "target": "portable",
+      "artifactName": "enter-data-helper-win.${ext}",
+      "icon": "./assets/icon.ico"
     }
   },
   "dependencies": {
     "@jsonforms/core": "^2.3.2",
     "@jsonforms/material-renderers": "^2.3.2",
     "@jsonforms/react": "^2.4.0-alpha.0",
-    "@material-ui/core": "^4.9.5",
+    "@material-ui/core": "4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.47",
     "@material-ui/pickers": "^3.2.10",
-    "electron-is-dev": "^1.1.0",
+    "electron-is-dev": "1.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2",
+    "react-router-dom": "5.2.0",
     "react-scripts": "^3.4.1",
     "redux": "^4.0.4"
   },
   "devDependencies": {
-    "concurrently": "^5.1.0",
-    "electron": "^8.2.0",
-    "electron-builder": "^22.4.1",
-    "wait-on": "^4.0.1"
+    "concurrently": "5.2.0",
+    "electron": "9.0.2",
+    "electron-builder": "22.7.0",
+    "wait-on": "5.0.0"
   },
   "main": "public/electron.js",
   "scripts": {
@@ -51,7 +59,8 @@
     "eject": "react-scripts eject",
     "electron": "concurrently --kill-others \"BROWSER=none HOST=localhost yarn start\" \"wait-on http://localhost:3000 && electron . ../..\"",
     "package-linux": "electron-builder -l",
-    "package-mac": "electron-builder -m && tar -czf dist/enter-data-helper-mac.tar.gz -C dist/mac enter-data-helper.app"
+    "package-mac": "electron-builder -m && tar -czf dist/enter-data-helper-mac.tar.gz -C dist/mac enter-data-helper.app",
+    "package-windows": "electron-builder -w "
   },
   "eslintConfig": {
     "extends": "react-app"

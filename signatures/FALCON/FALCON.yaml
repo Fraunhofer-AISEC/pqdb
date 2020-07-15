@@ -1,0 +1,21 @@
+name: FALCON
+year:
+    candidate: 2017
+category: lattice
+authors:
+  - Pierre-Alain Fouque
+  - Jeffrey Hoffstein
+  - Paul Kirchner 
+  - Vadim Lyubashevsky 
+  - Thomas Pornin
+  - Thomas Prest
+  - Thomas Ricosset
+  - Gregor Seiler
+  - William Whyte
+  - Zhenfei Zhang
+problems:
+    - assumption: SIS over NTRU lattices
+stateful: false
+nist round: 2
+sources:
+  - "NIST Submission Paper, Round 2, Version 1.1 ( https://web.archive.org/web/20200604142604/https://tprest.github.io/pdf/pub/falcon.pdf )"
