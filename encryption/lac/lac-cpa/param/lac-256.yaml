@@ -1,3 +1,4 @@
+name: LAC-256
 sizes:
   sk: 2080
   pk: 1056
@@ -9,4 +10,3 @@ security level:
   nist category: 5
   classical: 320
   quantum: 290
-name: LAC-256

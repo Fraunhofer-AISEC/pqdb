@@ -20,5 +20,3 @@ sources:
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip
 nist round: 2
 problems comment: LWE over rings
-links:
-  - ''
