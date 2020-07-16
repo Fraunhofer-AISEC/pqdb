@@ -1,5 +1,5 @@
 name: XMSS
-description: hash-based using Merkle's tree approach and Winternitz' optimizations, stateful
+description: a stateful hash-based scheme using Merkle tree approach and Winternitz optimizations 
 category: hash
 year:
     paper: 2011
