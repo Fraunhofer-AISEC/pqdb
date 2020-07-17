@@ -19,6 +19,9 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 #### Isogeny-based
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
 
+#### Code-based
+* [Classic McEliece](encryption/classic-mceliece) ([Website](https://classic.mceliece.org/index.html))
+
 ### Signature
 
 #### Lattice-based
