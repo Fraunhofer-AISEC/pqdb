@@ -1,5 +1,5 @@
 name: SPHINCS+
-description: A hash-based scheme relies on Few time signature (FTS) and hypeertree signature.
+description: hash-based, but stateless by relying on Few time signature (FTS) and hypertree signature.
 year:
   candidate: 2017
   paper: 2015
