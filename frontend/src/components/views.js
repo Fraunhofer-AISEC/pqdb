@@ -337,11 +337,23 @@ class SchemeComparison extends React.Component {
         super(props);
         this.db = props.db;
         this.platformFilterTimeout = null;
-        this.state = {
+        this.state = { pageDisabled: false };
+        this.defaultState = {
             showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
             sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
-            showSecNist: false, showRef: false
+            showSecNist: false, showRef: false, focusPlatformFilter: false
         };
+        this.filterState = {};
+        Object.assign(this.filterState, this.defaultState);
+        var params = qs.parse(this.props.history.location.search);
+        if ('state' in params) {
+            try {
+                var paramState = JSON.parse(params.state);
+                Object.assign(this.filterState, paramState);
+            } catch {
+                // JSON state was invalid -> ignore
+            }
+        }
     }
 
     buildQuery(state) {
@@ -416,9 +428,35 @@ WHERE
         return formatFunctions;
     }
 
+    componentDidUpdate() {
+        if (this.state.pageDisabled) {
+            // setTimeout so the DOM can fully render before page load
+            setTimeout(() => {
+                const history = this.props.history;
+                var searchParam = {};
+
+                Object.keys(this.newFilterState).forEach(key => {
+                    if (this.newFilterState[key] !== this.defaultState[key]) searchParam[key] = this.newFilterState[key];
+                });
+                const searchParamStr = JSON.stringify(searchParam);
+                history.push({
+                    pathname: history.location.pathname,
+                    search: (searchParamStr === '{}') ? '' : "?" + qs.stringify({ state: searchParamStr })
+                });
+            });
+        }
+    }
+
+    changeFilterState(change) {
+        this.newFilterState = Object.assign({}, this.filterState);
+        this.newFilterState.focusPlatformFilter = false;
+        Object.assign(this.newFilterState, change);
+        this.setState({ pageDisabled: true });
+    }
+
     render() {
-        const query = this.buildQuery(this.state);
-        const queryResult = this.computeResult(this.state, query);
+        const query = this.buildQuery(this.filterState);
+        const queryResult = this.computeResult(this.filterState, query);
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
@@ -429,10 +467,10 @@ WHERE
                                 <Box mt={2} px={3}>
                                     <Grid justify="space-between" spacing={2} container direction="row">
                                         <Grid item>
-                                            <FormControl component="fieldset">
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
                                                 <FormLabel component="legend">Scheme Type</FormLabel>
-                                                <RadioGroup value={this.state.schemeType}
-                                                    onChange={(event) => this.setState({ schemeType: event.target.value })}>
+                                                <RadioGroup value={this.filterState.schemeType}
+                                                    onChange={(event) => this.changeFilterState({ schemeType: event.target.value })}>
                                                     <FormControlLabel value="sig" control={<Radio />} label="Signature" />
                                                     <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
                                                 </RadioGroup>
@@ -440,41 +478,41 @@ WHERE
                                         </Grid>
 
                                         <Grid item>
-                                            <FormControl component="fieldset">
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
                                                 <FormLabel component="legend">Display</FormLabel>
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showStorage}
-                                                        onChange={() => this.setState({ showStorage: !this.state.showStorage })} />
+                                                    <Checkbox defaultChecked={this.filterState.showStorage}
+                                                        onChange={() => this.changeFilterState({ showStorage: !this.filterState.showStorage })} />
                                                 } label="Sizes" />
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showBenchmarks}
-                                                        onChange={() => this.setState({ showBenchmarks: !this.state.showBenchmarks })} />
+                                                    <Checkbox defaultChecked={this.filterState.showBenchmarks}
+                                                        onChange={() => this.changeFilterState({ showBenchmarks: !this.filterState.showBenchmarks })} />
                                                 } label="Benchmarks" />
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showRef}
-                                                        onChange={() => this.setState({ showRef: !this.state.showRef })} />
+                                                    <Checkbox defaultChecked={this.filterState.showRef}
+                                                        onChange={() => this.changeFilterState({ showRef: !this.filterState.showRef })} />
                                                 } label="Reference Implementations" />
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showHwFeatures}
-                                                        onChange={() => this.setState({ showHwFeatures: !this.state.showHwFeatures })} />
+                                                    <Checkbox defaultChecked={this.filterState.showHwFeatures}
+                                                        onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
                                                 } label="Hardware Features" />
                                             </FormControl>
                                         </Grid>
 
                                         <Grid item>
-                                            <FormControl component="fieldset">
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
                                                 <FormLabel component="legend">Security Level</FormLabel>
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showSecClassical}
-                                                        onChange={() => this.setState({ showSecClassical: !this.state.showSecClassical })} />
+                                                    <Checkbox defaultChecked={this.filterState.showSecClassical}
+                                                        onChange={() => this.changeFilterState({ showSecClassical: !this.filterState.showSecClassical })} />
                                                 } label="Classical" />
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showSecQuantum}
-                                                        onChange={() => this.setState({ showSecQuantum: !this.state.showSecQuantum })} />
+                                                    <Checkbox defaultChecked={this.filterState.showSecQuantum}
+                                                        onChange={() => this.changeFilterState({ showSecQuantum: !this.filterState.showSecQuantum })} />
                                                 } label="Quantum" />
                                                 <FormControlLabel control={
-                                                    <Checkbox checked={this.state.showSecNist}
-                                                        onChange={() => this.setState({ showSecNist: !this.state.showSecNist })} />
+                                                    <Checkbox defaultChecked={this.filterState.showSecNist}
+                                                        onChange={() => this.changeFilterState({ showSecNist: !this.filterState.showSecNist })} />
                                                 } label="NIST Category" />
                                             </FormControl>
                                         </Grid>
@@ -482,31 +520,32 @@ WHERE
                                         <Grid item>
                                             <FormControl component="fieldset">
                                                 <FormLabel component="legend">Filter</FormLabel>
-                                                <TextField color="secondary" label="Platform" onChange={e => {
-                                                    clearTimeout(this.platformFilterTimeout);
-                                                    const filterValue = e.target.value;
-                                                    this.platformFilterTimeout = setTimeout(() => {
-                                                        this.platformFilterTimeout = null;
-                                                        this.setState({ platformFilter: filterValue });
-                                                    }, 750);
-                                                }} />
+                                                <TextField disabled={this.state.pageDisabled} defaultValue={this.filterState.platformFilter}
+                                                    color="secondary" label="Platform" onChange={e => {
+                                                        clearTimeout(this.platformFilterTimeout);
+                                                        const filterValue = e.target.value;
+                                                        this.platformFilterTimeout = setTimeout(() => {
+                                                            this.platformFilterTimeout = null;
+                                                            this.changeFilterState({ platformFilter: filterValue, focusPlatformFilter: true });
+                                                        }, 750);
+                                                    }} autoFocus={this.filterState.focusPlatformFilter} />
                                                 <Box mt={1}>
                                                     <Typography>Classical Security ≥</Typography>
                                                     <Slider color="secondary" defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                        onChangeCommitted={(e, v) => this.setState({ securityLevel: v })}
-                                                        valueLabelDisplay="auto" />
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityLevel: v })}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
                                                 <Box mt={1}>
                                                     <Typography>Quantum Security ≥</Typography>
                                                     <Slider color="secondary" defaultValue={0} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                        onChangeCommitted={(e, v) => this.setState({ securityQuantum: v })}
-                                                        valueLabelDisplay="auto" />
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
                                             </FormControl>
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                        <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
+                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
@@ -515,8 +554,7 @@ WHERE
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable key={JSON.stringify(this.state)} queryResult={queryResult}
-                                    formatFunctions={this.getFormatFunctions(queryResult)} />
+                                <QueryTable queryResult={queryResult} formatFunctions={this.getFormatFunctions(queryResult)} />
                             </Box>
                         </Paper>
                     </Container>
