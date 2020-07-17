@@ -422,83 +422,91 @@ WHERE
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
-                    <Container maxWidth="md">
+                    <Container maxWidth="lg">
                         <Paper>
                             <Box p={2}>
                                 <Typography variant="h4">Scheme Comparison</Typography>
-                                <Box position="relative" display="flex" mt={2} justifyContent="space-evenly">
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Scheme Type</FormLabel>
-                                        <RadioGroup value={this.state.schemeType}
-                                            onChange={(event) => this.setState({ schemeType: event.target.value })}>
-                                            <FormControlLabel value="sig" control={<Radio />} label="Signature" />
-                                            <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
-                                        </RadioGroup>
-                                    </FormControl>
+                                <Box mt={2} px={3}>
+                                    <Grid justify="space-between" spacing={2} container direction="row">
+                                        <Grid item>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">Scheme Type</FormLabel>
+                                                <RadioGroup value={this.state.schemeType}
+                                                    onChange={(event) => this.setState({ schemeType: event.target.value })}>
+                                                    <FormControlLabel value="sig" control={<Radio />} label="Signature" />
+                                                    <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </Grid>
 
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Display</FormLabel>
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showStorage}
-                                                onChange={() => this.setState({ showStorage: !this.state.showStorage })} />
-                                        } label="Sizes" />
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showBenchmarks}
-                                                onChange={() => this.setState({ showBenchmarks: !this.state.showBenchmarks })} />
-                                        } label="Benchmarks" />
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showRef}
-                                                onChange={() => this.setState({ showRef: !this.state.showRef })} />
-                                        } label="Reference Implementations" />
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showHwFeatures}
-                                                onChange={() => this.setState({ showHwFeatures: !this.state.showHwFeatures })} />
-                                        } label="Hardware Features" />
-                                    </FormControl>
+                                        <Grid item>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">Display</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showStorage}
+                                                        onChange={() => this.setState({ showStorage: !this.state.showStorage })} />
+                                                } label="Sizes" />
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showBenchmarks}
+                                                        onChange={() => this.setState({ showBenchmarks: !this.state.showBenchmarks })} />
+                                                } label="Benchmarks" />
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showRef}
+                                                        onChange={() => this.setState({ showRef: !this.state.showRef })} />
+                                                } label="Reference Implementations" />
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showHwFeatures}
+                                                        onChange={() => this.setState({ showHwFeatures: !this.state.showHwFeatures })} />
+                                                } label="Hardware Features" />
+                                            </FormControl>
+                                        </Grid>
 
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Security Level</FormLabel>
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showSecClassical}
-                                                onChange={() => this.setState({ showSecClassical: !this.state.showSecClassical })} />
-                                        } label="Classical" />
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showSecQuantum}
-                                                onChange={() => this.setState({ showSecQuantum: !this.state.showSecQuantum })} />
-                                        } label="Quantum" />
-                                        <FormControlLabel control={
-                                            <Checkbox checked={this.state.showSecNist}
-                                                onChange={() => this.setState({ showSecNist: !this.state.showSecNist })} />
-                                        } label="NIST Category" />
-                                    </FormControl>
+                                        <Grid item>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">Security Level</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showSecClassical}
+                                                        onChange={() => this.setState({ showSecClassical: !this.state.showSecClassical })} />
+                                                } label="Classical" />
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showSecQuantum}
+                                                        onChange={() => this.setState({ showSecQuantum: !this.state.showSecQuantum })} />
+                                                } label="Quantum" />
+                                                <FormControlLabel control={
+                                                    <Checkbox checked={this.state.showSecNist}
+                                                        onChange={() => this.setState({ showSecNist: !this.state.showSecNist })} />
+                                                } label="NIST Category" />
+                                            </FormControl>
+                                        </Grid>
 
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Filter</FormLabel>
-                                        <TextField color="secondary" label="Platform" onChange={e => {
-                                            clearTimeout(this.platformFilterTimeout);
-                                            const filterValue = e.target.value;
-                                            this.platformFilterTimeout = setTimeout(() => {
-                                                this.platformFilterTimeout = null;
-                                                this.setState({ platformFilter: filterValue });
-                                            }, 750);
-                                        }} />
-                                        <Box mt={1}>
-                                            <Typography>Classical Security ≥</Typography>
-                                            <Slider color="secondary" defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                onChangeCommitted={(e, v) => this.setState({ securityLevel: v })}
-                                                valueLabelDisplay="auto" />
-                                        </Box>
-                                        <Box mt={1}>
-                                            <Typography>Quantum Security ≥</Typography>
-                                            <Slider color="secondary" defaultValue={0} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                onChangeCommitted={(e, v) => this.setState({ securityQuantum: v })}
-                                                valueLabelDisplay="auto" />
-                                        </Box>
-                                    </FormControl>
-                                    <Box position="absolute" left={0} bottom={0}>
-                                        <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
-                                    </Box>
+                                        <Grid item>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">Filter</FormLabel>
+                                                <TextField color="secondary" label="Platform" onChange={e => {
+                                                    clearTimeout(this.platformFilterTimeout);
+                                                    const filterValue = e.target.value;
+                                                    this.platformFilterTimeout = setTimeout(() => {
+                                                        this.platformFilterTimeout = null;
+                                                        this.setState({ platformFilter: filterValue });
+                                                    }, 750);
+                                                }} />
+                                                <Box mt={1}>
+                                                    <Typography>Classical Security ≥</Typography>
+                                                    <Slider color="secondary" defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.setState({ securityLevel: v })}
+                                                        valueLabelDisplay="auto" />
+                                                </Box>
+                                                <Box mt={1}>
+                                                    <Typography>Quantum Security ≥</Typography>
+                                                    <Slider color="secondary" defaultValue={0} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.setState({ securityQuantum: v })}
+                                                        valueLabelDisplay="auto" />
+                                                </Box>
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
                                 </Box>
+                                        <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
