@@ -1,3 +1,3 @@
+name: LAC.CCA
 type: KEM
 security notion: IND-CCA
-name: LAC CCA

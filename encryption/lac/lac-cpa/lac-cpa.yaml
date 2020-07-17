@@ -1,4 +1,4 @@
-name: LAC CPA
+name: LAC.CPA
 type: KTM
 security notion: IND-CPA
 sources:
