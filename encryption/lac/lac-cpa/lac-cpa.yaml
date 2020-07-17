@@ -1,4 +1,5 @@
 name: LAC.CPA
+description: CPA-secure encryption scheme
 type: KTM
 security notion: IND-CPA
 sources:
