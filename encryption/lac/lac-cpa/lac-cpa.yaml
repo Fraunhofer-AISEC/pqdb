@@ -1,0 +1,7 @@
+name: LAC CPA
+type: KTM
+security notion: IND-CPA
+sources:
+  - >-
+    https://csrc.nist.gov/projects/post-quantum-cryptography/round-2-submissions
+    ZIP-File PDF
