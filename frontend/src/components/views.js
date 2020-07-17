@@ -77,10 +77,14 @@ function startDownload(content, filename) {
 }
 
 function comparator(a, b, orderBy, isAsc) {
-    if (b[orderBy] < a[orderBy]) {
+    var x = a[orderBy];
+    var y = b[orderBy];
+    if (React.isValidElement(x)) x = x.props.children;
+    if (React.isValidElement(y)) y = y.props.children;
+    if (y < x) {
         return isAsc ? 1 : -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (y > x) {
         return isAsc ? -1 : 1;
     }
     return 0;
@@ -180,6 +184,7 @@ class QueryTable extends React.Component {
     constructor(props) {
         super(props);
         this.queryResult = props.queryResult;
+        this.formatFunctions = props.formatFunctions;
         this.state = {
             orderBy: null,
             order: 'asc'
@@ -203,7 +208,7 @@ class QueryTable extends React.Component {
             <Grid direction='column' alignItems='flex-end' spacing={1} container>
                 <Grid container item>
                     <TableContainer component={Paper}>
-                        <Table stickyHeader>
+                        <Table stickyHeader size="small">
                             <TableHead>
                                 <TableRow>
                                     {
@@ -226,7 +231,12 @@ class QueryTable extends React.Component {
                                         (row) => (
                                             <TableRow key={row[1]}>
                                                 {
-                                                    row[0].map((val, j) => <TableCell key={j}>{val}</TableCell>)
+                                                    row[0].map((val, j) =>
+                                                        (this.formatFunctions && this.formatFunctions[j]) ?
+                                                            <TableCell key={j}>{this.formatFunctions[j](val)}</TableCell>
+                                                            :
+                                                            <TableCell key={j}>{val}</TableCell>
+                                                    )
                                                 }
                                             </TableRow>
                                         )
@@ -315,80 +325,100 @@ const secLevelMarks = [
     { label: '0', value: 0 }, { label: '128', value: 128 }, { label: '64', value: 64 },
     { label: '192', value: 192 }, { label: '256', value: 256 }
 ];
+
+function humanReadableSize(size, baseUnit) {
+    if (!Number.isFinite(size)) return '';
+    var i = (size === 0) ? 0 : Math.floor(Math.log(size) / Math.log(1000));
+    return (size / Math.pow(1000, i)).toFixed(2) * 1 + ' ' + ['', 'k', 'M', 'G', 'T'][i] + baseUnit;
+};
+
 class SchemeComparison extends React.Component {
     constructor(props) {
         super(props);
         this.db = props.db;
+        this.platformFilterTimeout = null;
         this.state = {
-            showStorage: false, showBenchmarks: true, showStateful: false, schemeType: 'sig', platformFilter: '',
-            sliderValue: 128, securityLevel: 128, showSecClassical: true, showSecQuantum: false
+            showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
+            sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
+            showSecNist: false, showRef: false
         };
     }
 
-    computeResult(state) {
-        var sqlQuery = `
+    buildQuery(state) {
+        return `SELECT
+    s.id as 'ID',
+    p.name || CASE
+        s.stateful
+        WHEN 0 THEN ''
+        ELSE ' (Stateful)'
+    END AS 'Parameter Set'` +
+            ((state.showSecClassical) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
+            ((state.showSecQuantum) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
+            ((state.showSecNist) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
+            ((state.showStorage) ? `,
+    p.sizes_sk AS 'Secret Key Size',
+    p.sizes_pk AS 'Public Key Size',
+    p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
+    (p.sizes_sk + p.sizes_pk + p.sizes_ct_sig) AS 'Total Size'` : '') + ((state.showBenchmarks) ? `,
+    i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
+    (
         SELECT
-            (s.name || '/' || f.name || '/' || p.name) AS 'Scheme Name'
-            ${(state.showSecClassical) ? ",p.security_level_classical AS 'Security Level (classical)'" : ''}
-            ${(state.showSecQuantum) ? ",p.security_level_quantum AS 'Security Level (quantum)'" : ''}
-            ${(state.showStateful) ? `
-            ,CASE
-                s.stateful
-                WHEN 0 THEN 'No'
-                ELSE 'Yes'
-            END AS Stateful
-            ` : ''}
-            ${(state.showStorage) ? `
-            ,p.sizes_sk AS 'Secret Key Size',
-            p.sizes_pk AS 'Public Key Size',
-            p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
-            (p.sizes_sk + p.sizes_pk + p.sizes_ct_sig) AS 'Total Size'
-            ` : ''}
-            ${(state.showBenchmarks) ? `
-            ,round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
-            round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
-            round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
-            b.platform AS 'Platform',
-            i.name AS 'Implementation Name',
-            (
-                SELECT
-                    GROUP_CONCAT(hf.feature, ", ")
-                FROM
-                    implementation_hardware_feature hf
-                WHERE
-                    hf.implementation_id = i.id
-            ) AS 'Hardware Features'
-            ` : ''}
+            GROUP_CONCAT(hf.feature, ", ")
         FROM
-            scheme s
-            JOIN flavor f ON s.id = f.scheme_id
-            JOIN paramset p ON f.id = p.flavor_id
-            ${(state.showBenchmarks) ? `
-            LEFT JOIN benchmark b ON p.id = b.paramset_id
-            LEFT JOIN implementation i ON i.id = b.implementation_id
-            ` : ''}
+            implementation_hardware_feature hf
         WHERE
-            s.type = ?
-            AND p.security_level_classical >= ?
-            ${(state.showBenchmarks) ? `
-            AND (
-                i.type IS NULL
-                OR i.type = 'optimized'
-            )
-            ${(state.platformFilter !== '') ? "AND b.platform LIKE '%' || ? || '%'" : ''}
-            ` : ''}
-        `;
-        var params = [state.schemeType, state.securityLevel];
+            hf.implementation_id = i.id
+    ) AS 'Hardware Features'` : ''},
+    b.platform AS 'Platform',
+    round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
+    round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
+    round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
+    round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
+` : '') + `FROM
+    scheme s
+    JOIN flavor f ON s.id = f.scheme_id
+    JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
+    LEFT JOIN benchmark b ON p.id = b.paramset_id
+    LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
+WHERE
+    s.type = ?
+    AND p.security_level_classical >= ?
+    AND p.security_level_quantum >= ?` + (
+                (state.showBenchmarks) ?
+                    ((!state.showRef) ? "\n    AND i.type = 'optimized'" : '') +
+                    ((state.platformFilter !== '') ? "\n    AND b.platform LIKE '%' || ? || '%'" : '')
+                    : ''
+            );
+    }
+
+    computeResult(state, sqlQuery) {
+        var params = [state.schemeType, state.securityLevel, state.securityQuantum];
         if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
+        results.forEach(res => {
+            res['Parameter Set'] = <Link component={RouterLink} to={"../detail?_=" + state.schemeType + "/" + res.ID}>{res['Parameter Set']}</Link>;
+            delete res.ID;
+        });
         return {
             columns: Object.keys(results[0]),
             values: results.map(row => Object.keys(row).map(k => row[k]))
         };
     }
 
+    getFormatFunctions(results) {
+        if (results === undefined) return undefined;
+        var formatFunctions = Array(results.columns.length).fill(undefined);
+        results.columns.forEach((col, idx) => {
+            if (col.endsWith('(kCycles)')) formatFunctions[idx] = (val => val?.toLocaleString());
+            if (col.endsWith('Size')) formatFunctions[idx] = (val => humanReadableSize(val, 'B'));
+        });
+        return formatFunctions;
+    }
+
     render() {
+        const query = this.buildQuery(this.state);
+        const queryResult = this.computeResult(this.state, query);
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
@@ -396,21 +426,34 @@ class SchemeComparison extends React.Component {
                         <Paper>
                             <Box p={2}>
                                 <Typography variant="h4">Scheme Comparison</Typography>
-                                <Box display="flex" mt={2} justifyContent="space-evenly">
+                                <Box position="relative" display="flex" mt={2} justifyContent="space-evenly">
+                                    <FormControl component="fieldset">
+                                        <FormLabel component="legend">Scheme Type</FormLabel>
+                                        <RadioGroup value={this.state.schemeType}
+                                            onChange={(event) => this.setState({ schemeType: event.target.value })}>
+                                            <FormControlLabel value="sig" control={<Radio />} label="Signature" />
+                                            <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
+                                        </RadioGroup>
+                                    </FormControl>
+
                                     <FormControl component="fieldset">
                                         <FormLabel component="legend">Display</FormLabel>
                                         <FormControlLabel control={
                                             <Checkbox checked={this.state.showStorage}
                                                 onChange={() => this.setState({ showStorage: !this.state.showStorage })} />
-                                        } label="Include Sizes" />
+                                        } label="Sizes" />
                                         <FormControlLabel control={
                                             <Checkbox checked={this.state.showBenchmarks}
                                                 onChange={() => this.setState({ showBenchmarks: !this.state.showBenchmarks })} />
-                                        } label="Include Benchmarks" />
+                                        } label="Benchmarks" />
                                         <FormControlLabel control={
-                                            <Checkbox checked={this.state.showStateful}
-                                                onChange={() => this.setState({ showStateful: !this.state.showStateful })} />
-                                        } label="Statefulness" />
+                                            <Checkbox checked={this.state.showRef}
+                                                onChange={() => this.setState({ showRef: !this.state.showRef })} />
+                                        } label="Reference Implementations" />
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showHwFeatures}
+                                                onChange={() => this.setState({ showHwFeatures: !this.state.showHwFeatures })} />
+                                        } label="Hardware Features" />
                                     </FormControl>
 
                                     <FormControl component="fieldset">
@@ -423,28 +466,38 @@ class SchemeComparison extends React.Component {
                                             <Checkbox checked={this.state.showSecQuantum}
                                                 onChange={() => this.setState({ showSecQuantum: !this.state.showSecQuantum })} />
                                         } label="Quantum" />
-                                    </FormControl>
-
-                                    <FormControl component="fieldset">
-                                        <FormLabel component="legend">Scheme Type</FormLabel>
-                                        <RadioGroup value={this.state.schemeType}
-                                            onChange={(event) => this.setState({ schemeType: event.target.value })}>
-                                            <FormControlLabel value="sig" control={<Radio />} label="Signature" />
-                                            <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
-                                        </RadioGroup>
+                                        <FormControlLabel control={
+                                            <Checkbox checked={this.state.showSecNist}
+                                                onChange={() => this.setState({ showSecNist: !this.state.showSecNist })} />
+                                        } label="NIST Category" />
                                     </FormControl>
 
                                     <FormControl component="fieldset">
                                         <FormLabel component="legend">Filter</FormLabel>
-                                        <TextField label="Platform"
-                                            onChange={e => this.setState({ platformFilter: e.target.value })} />
+                                        <TextField color="secondary" label="Platform" onChange={e => {
+                                            clearTimeout(this.platformFilterTimeout);
+                                            const filterValue = e.target.value;
+                                            this.platformFilterTimeout = setTimeout(() => {
+                                                this.platformFilterTimeout = null;
+                                                this.setState({ platformFilter: filterValue });
+                                            }, 750);
+                                        }} />
                                         <Box mt={1}>
                                             <Typography>Classical Security ≥</Typography>
-                                            <Slider defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks}
+                                            <Slider color="secondary" defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
                                                 onChangeCommitted={(e, v) => this.setState({ securityLevel: v })}
                                                 valueLabelDisplay="auto" />
                                         </Box>
+                                        <Box mt={1}>
+                                            <Typography>Quantum Security ≥</Typography>
+                                            <Slider color="secondary" defaultValue={0} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                onChangeCommitted={(e, v) => this.setState({ securityQuantum: v })}
+                                                valueLabelDisplay="auto" />
+                                        </Box>
                                     </FormControl>
+                                    <Box position="absolute" left={0} bottom={0}>
+                                        <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Paper>
@@ -454,8 +507,8 @@ class SchemeComparison extends React.Component {
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable key={JSON.stringify(this.state)}
-                                    queryResult={this.computeResult(this.state)} />
+                                <QueryTable key={JSON.stringify(this.state)} queryResult={queryResult}
+                                    formatFunctions={this.getFormatFunctions(queryResult)} />
                             </Box>
                         </Paper>
                     </Container>
