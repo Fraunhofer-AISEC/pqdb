@@ -1,0 +1,19 @@
+name: MQDSS
+comment: Version 2.1
+category: multivariate
+year:
+    paper: 2016
+    candidate: 2017
+problems:
+    - assumption: MQ
+stateful: false
+nist round: 2
+authors:
+  - Ming-Shing Chen
+  - Andreas Hülsing
+  - Joost Rijneveld
+  - Simona Samardjiska
+  - Peter Schwabe
+sources:
+  - NIST Submission Paper ( http://mqdss.org/files/mqdssVer2point1.pdf )
+  - http://mqdss.org/
