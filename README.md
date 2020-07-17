@@ -10,6 +10,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 #### Lattice-based
 * [Frodo](encryption/frodo) ([Website](https://frodokem.org/))
 * [Kyber](encryption/kyber) ([Website](https://pq-crystals.org/kyber/))
+* [LAC](encryption/lac)
 * [NewHope](encryption/newhope) ([Website](https://www.newhopecrypto.org/))
 * [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
@@ -27,6 +28,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Multivariate
 * [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
+* [MQDSS] (signatures/mqdss) ([Website](http://mqdss.org))
 
 #### Hash-based
 * [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))

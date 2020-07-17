@@ -1,0 +1,11 @@
+name: BlueGeMSS192
+security level:
+  classical: 192
+  quantum: 112
+  nist category: 3
+failure probability: -6345039891167
+number of operations: inf
+sizes:
+  sk: 24
+  pk: 1264116
+  ct|sig: 53
