@@ -126,7 +126,6 @@
     "required": [
         "type",
         "name",
-        "description",
         "category",
         "year",
         "authors",
