@@ -1,4 +1,3 @@
-type: enc
 stateful: false
 name: Classic McEliece
 category: code
@@ -18,10 +17,14 @@ authors:
   - Peter Schwabe
   - Jakub Szefer
   - Wen Wang
+  - Nicolas Sendrier
 sources:
   - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf'
   - >-
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/official-comments/Classic-McEliece-round2-official-comment.pdf
 links:
   - 'https://classic.mceliece.org/'
-problems comment: Patent conflict with ISARA
+problems comment: ''
+trust comment: ''
+problems:
+  - assumption: Computational Syndrome Decoding

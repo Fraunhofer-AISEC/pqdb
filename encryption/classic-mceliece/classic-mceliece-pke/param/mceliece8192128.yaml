@@ -9,6 +9,6 @@ sizes:
   pk: 1357824
   sk: 14080
   ct|sig: 240
-  comment: 'Sessionkey: 32'
-  msg: 13
+  comment: ''
+  msg: 32
 comment: ''

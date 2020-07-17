@@ -3,8 +3,8 @@ sizes:
   pk: 524160
   sk: 13568
   ct|sig: 188
-  comment: 'Sessionkey: 32'
-  msg: 13
+  comment: ''
+  msg: 32
 number of operations: inf
 failure probability: 0
 security level:
