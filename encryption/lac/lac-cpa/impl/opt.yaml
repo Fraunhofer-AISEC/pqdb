@@ -1,0 +1,5 @@
+name: Intel Core-i7-4770S (Haswell)
+platform: 'Intel Core-i7-4770S, programm language: C'
+hardware features:
+  - Turbo Boost and Hyperthreading disabled
+type: optimized
