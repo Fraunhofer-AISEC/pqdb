@@ -1,5 +1,7 @@
 name: SPHINCS+
-description: hash-based, but stateless by relying on Few time signature (FTS) and hypertree signature.
+description: >-
+  stateless hash-based using Merkle's tree approach with a new few-time
+  signature scheme (FORS).
 year:
   candidate: 2017
   paper: 2015
@@ -29,6 +31,3 @@ sources:
   - >-
     NIST Submission Paper (
     https://sphincs.org/data/sphincs+-round2-specification.pdf )
-description: >-
-  stateless hash-based using Merkle's tree approach with a new few-time
-  signature scheme (FORS).
