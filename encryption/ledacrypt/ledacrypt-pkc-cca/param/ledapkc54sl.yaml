@@ -1,0 +1,15 @@
+name: LEDApkc54sl
+sizes:
+  sk: 42
+  pk: 18144
+  ct|sig: 24192
+number of operations: inf
+security level:
+  quantum: 163
+  classical: 274
+  nist category: 5
+failure probability: -256
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=114'
+comment: ''

@@ -1,0 +1,12 @@
+name: LEDAcrypt
+security level:
+  classical: 144
+  quantum: 92
+  nist category: 1
+sizes:
+  pk: 2712
+  sk: 2680
+  msg: 32
+  ct|sig: 928
+number of operations: inf
+failure probability: -29

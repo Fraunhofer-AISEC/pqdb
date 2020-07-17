@@ -1,8 +1,0 @@
-impl: fpga
-param: mceliece6960119
-platform: Virtex-7
-timings:
-  gen: 11179636
-  enc|sign: 5413
-  dec|vrfy: 40728
-  unit: cycles

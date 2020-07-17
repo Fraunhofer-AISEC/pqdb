@@ -1,0 +1,5 @@
+name: LEDAcrypt KEM
+type: KEM
+security notion: IND-CPA
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf, page 112, page 82 '

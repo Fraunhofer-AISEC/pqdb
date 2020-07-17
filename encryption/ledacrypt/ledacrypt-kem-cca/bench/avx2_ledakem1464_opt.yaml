@@ -1,0 +1,8 @@
+platform: C11
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=119'
+timings:
+  gen: 3198800
+  enc|sign: 241000
+  dec|vrfy: 2174100
+  unit: cycles
