@@ -1,6 +1,6 @@
 name: aarch64
 sources:
   - 'https://bench.cr.yp.to/results-kem.html'
-platform: 'aarch64, rpi4ubuntu64, armv8, 4 x 1500MHz'
+platform: C
 hardware features:
-  - '4 x 1500MHz, A72 (410fd083); 2019 Broadcom BCM2711'
+  - ''

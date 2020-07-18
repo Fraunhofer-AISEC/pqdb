@@ -1,3 +1,5 @@
 name: AVX2
-platform: 'AVX2 , C'
 type: optimized
+platform: C
+sources:
+  - ''
