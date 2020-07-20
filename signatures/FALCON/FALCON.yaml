@@ -1,4 +1,5 @@
 name: FALCON
+description: Hash-and-sign scheme over NTRU-lattice that relies on trapdoor sampler (Fast Fourier sampler)
 year:
     candidate: 2017
 category: lattice
