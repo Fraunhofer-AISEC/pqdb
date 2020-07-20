@@ -323,7 +323,7 @@ class Welcome extends React.Component {
 
 const secLevelMarks = [
     { label: '0', value: 0 }, { label: '128', value: 128 }, { label: '64', value: 64 },
-    { label: '192', value: 192 }, { label: '256', value: 256 }
+    { label: '192', value: 192 }, { label: '256+', value: 256 }
 ];
 
 function humanReadableSize(size, baseUnit) {
@@ -371,7 +371,7 @@ class SchemeComparison extends React.Component {
     p.sizes_sk AS 'Secret Key Size',
     p.sizes_pk AS 'Public Key Size',
     p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
-    (p.sizes_sk + p.sizes_pk + p.sizes_ct_sig) AS 'Total Size'` : '') + ((state.showBenchmarks) ? `,
+    (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showBenchmarks) ? `,
     i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
     (
         SELECT
@@ -464,7 +464,7 @@ WHERE
                         <Paper>
                             <Box p={2}>
                                 <Typography variant="h4">Scheme Comparison</Typography>
-                                <Box mt={2} px={3}>
+                                <Box my={2} px={3}>
                                     <Grid justify="space-between" spacing={2} container direction="row">
                                         <Grid item>
                                             <FormControl disabled={this.state.pageDisabled} component="fieldset">
@@ -488,10 +488,6 @@ WHERE
                                                     <Checkbox defaultChecked={this.filterState.showBenchmarks}
                                                         onChange={() => this.changeFilterState({ showBenchmarks: !this.filterState.showBenchmarks })} />
                                                 } label="Benchmarks" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showRef}
-                                                        onChange={() => this.changeFilterState({ showRef: !this.filterState.showRef })} />
-                                                } label="Reference Implementations" />
                                                 <FormControlLabel control={
                                                     <Checkbox defaultChecked={this.filterState.showHwFeatures}
                                                         onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
@@ -520,8 +516,12 @@ WHERE
                                         <Grid item>
                                             <FormControl component="fieldset">
                                                 <FormLabel component="legend">Filter</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showRef}
+                                                        onChange={() => this.changeFilterState({ showRef: !this.filterState.showRef })} />
+                                                } label="Include 'ref' Implementations" />
                                                 <TextField disabled={this.state.pageDisabled} defaultValue={this.filterState.platformFilter}
-                                                    color="secondary" label="Platform" onChange={e => {
+                                                    color="secondary" label="Platform" variant="outlined" onChange={e => {
                                                         clearTimeout(this.platformFilterTimeout);
                                                         const filterValue = e.target.value;
                                                         this.platformFilterTimeout = setTimeout(() => {
@@ -529,15 +529,17 @@ WHERE
                                                             this.changeFilterState({ platformFilter: filterValue, focusPlatformFilter: true });
                                                         }, 750);
                                                     }} autoFocus={this.filterState.focusPlatformFilter} />
-                                                <Box mt={1}>
-                                                    <Typography>Classical Security ≥</Typography>
-                                                    <Slider color="secondary" defaultValue={128} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                <Box mt={1} display="flex">
+                                                    <Typography>Classical Security</Typography>
+                                                    <Slider color="secondary" defaultValue={this.filterState.securityLevel}
+                                                        step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
                                                         onChangeCommitted={(e, v) => this.changeFilterState({ securityLevel: v })}
                                                         valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
-                                                <Box mt={1}>
-                                                    <Typography>Quantum Security ≥</Typography>
-                                                    <Slider color="secondary" defaultValue={0} step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                <Box mt={1} display="flex">
+                                                    <Typography>Quantum Security</Typography>
+                                                    <Slider color="secondary" defaultValue={this.filterState.securityQuantum} step={16}
+                                                        min={0} max={256} marks={secLevelMarks} track="inverted"
                                                         onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
                                                         valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
@@ -545,7 +547,7 @@ WHERE
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View SQL</Link>
+                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View this query as SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
