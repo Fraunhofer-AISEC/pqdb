@@ -3,3 +3,8 @@ type: KTM
 security notion: IND-CCA
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf, page 80,81,113,114'
+description: >-
+  Is composed by a triple of algorithms for the generation of the public/private
+  keypair, the encryption transformation of a plaintext message with arbitrary
+  length, and the decryption transformation of a ciphertext with arbitrary
+  length

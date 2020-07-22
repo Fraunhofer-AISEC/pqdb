@@ -9,7 +9,7 @@ authors:
 category: code
 nist round: 2
 year:
-  paper: 2020
+  paper: 2017
   candidate: 2017
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf'
@@ -18,3 +18,6 @@ links:
 problems:
   - assumption: Quasi-cyclic low-density parity-check
     comment: '  QC-LDPC '
+description: >-
+  Based on binary linear error-correcting codes. The name "LEDAcrypt" is a short
+  version of Low-dEnsity parity-check coDe-bAsed cryptographic systems

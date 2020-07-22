@@ -3,3 +3,7 @@ type: KEM
 security notion: IND-CPA
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf, page 112, page 82 '
+description: >-
+  Employs ephemeral public/private keypairs for scenarios where the security
+  property of indistinguishability against chosen ciphertext attacks is usually
+  required and the Perfect Forward Secrecy property is desirable

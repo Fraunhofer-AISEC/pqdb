@@ -4,3 +4,4 @@ security notion: IND-CCA
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=120'
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
+description: Employs long term keys for scenarios where key reuse is desirable
