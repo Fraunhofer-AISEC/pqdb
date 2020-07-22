@@ -1,0 +1,19 @@
+name: 'NTS-KEM(12, 64)'
+security level:
+  classical: 192
+  nist category: 3
+  quantum: 96
+  comment: >-
+    "We claim that NTS-KEM(12,64), NTS-KEM(13,80) and NTS-KEM(13,136) provide at
+    least 128-bit, 192-bit and 256-bit classical security, respectively, and at
+    least 64-bit, 96-bit and 128- bit post-quantum security."
+failure probability: 0
+sizes:
+  pk: 947316
+  sk: 929760
+  ct|sig: 1296
+number of operations: inf
+sources:
+  - >-
+    https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view, page
+    19

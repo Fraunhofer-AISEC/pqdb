@@ -1,0 +1,10 @@
+name: NTS-KEM
+type: KEM
+security notion: IND-CCA
+sources:
+  - >-
+    https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view, page
+    20
+description: >-
+  can be considered as a mixture of McEliece and Niederreiter schemes combined
+  with a transform akin to the Fujisaki-Okamoto or Dent transforms

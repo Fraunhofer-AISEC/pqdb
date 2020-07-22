@@ -1,0 +1,22 @@
+stateful: false
+nist round: 2
+category: code
+name: NTS-KEM
+year:
+  paper: 2017
+  candidate: 2017
+authors:
+  - Martin Albrecht
+  - Carlos Cid
+  - Kenneth G. Paterson
+  - Cen Jung Tjhai
+  - Martin Tomlinson
+problems:
+  - assumption: error-correcting codes
+sources:
+  - 'https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view'
+description: >-
+  can be seen as a variant of the McEliece and Niederreiter public-key
+  encryption schemes
+links:
+  - 'https://nts-kem.io/'

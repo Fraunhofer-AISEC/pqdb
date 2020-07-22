@@ -1,0 +1,7 @@
+name: SSE2/SSE4.1
+platform: C
+sources:
+  - >-
+    https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view, page
+    23
+type: optimized

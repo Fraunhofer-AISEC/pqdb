@@ -1,0 +1,7 @@
+name: Skylake
+sources:
+  - >-
+    https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view, page
+    23
+platform: C
+type: optimized

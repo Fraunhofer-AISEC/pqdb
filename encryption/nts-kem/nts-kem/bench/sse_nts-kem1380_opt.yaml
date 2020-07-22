@@ -1,0 +1,14 @@
+sources:
+  - >-
+    https://drive.google.com/file/d/1N3rv4HKCt9yU4xn6wuepsBUrfQW8cuFy/view, page
+    24
+timings:
+  gen: 127384590
+  enc|sign: 396881
+  dec|vrfy: 1493171
+  unit: cycles
+  comment: avg
+memory requirements:
+  gen: 3000228
+  enc|sign: 931010
+  dec|vrfy: 1907238
