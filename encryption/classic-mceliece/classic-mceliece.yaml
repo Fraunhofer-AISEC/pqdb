@@ -28,3 +28,7 @@ problems comment: ''
 trust comment: ''
 problems:
   - assumption: Computational Syndrome Decoding
+description: >-
+  Built conservatively from a PKE designed for OW-CPA security, namely
+  Niederreiter’s  dual  version  of  McEliece’s  PKE  using  binary  Goppa 
+  codes

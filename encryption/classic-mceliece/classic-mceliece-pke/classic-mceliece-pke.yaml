@@ -2,3 +2,8 @@ name: Classic McEliece Public Key Encryption
 type: KTM
 security notion: IND-CPA
 security notion comment: 'OW-CPA '
+description: >-
+  Built conservatively on Niederreiter’s  dual  version  of  McEliece’s  PKE 
+  using  binary  Goppa  codes
+sources:
+  - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf#section.3'
