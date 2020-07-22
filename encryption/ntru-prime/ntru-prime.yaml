@@ -1,4 +1,5 @@
 name: NTRU Prime
+description: version of NTRU that reduces the attack surface by using a prime-degree number field.
 year:
     candidate: 2017
     paper: 2016

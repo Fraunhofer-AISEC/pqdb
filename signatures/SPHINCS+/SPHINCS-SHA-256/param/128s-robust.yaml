@@ -1,4 +1,4 @@
-name: 128s-robust
+name: SPHINCS+-SHA-256-128s-robust
 security level:
   classical:  133
   quantum:  64
