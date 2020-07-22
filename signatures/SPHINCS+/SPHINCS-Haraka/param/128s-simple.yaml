@@ -1,4 +1,4 @@
-name: 128s-simple
+name: SPHINCS+-Haraka-128s-simple
 security level:
   classical:  133
   quantum:  64

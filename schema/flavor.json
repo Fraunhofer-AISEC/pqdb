@@ -7,6 +7,10 @@
             "type": "string",
             "$comment": "Human readable name (full, including the scheme name)"
         },
+        "description": {
+            "type": "string",
+            "$comment": "One-liner describing the flavor's unique features. Only needed if there are several flavors."
+        },
         "comment": {
             "type": "string"
         },
