@@ -26,3 +26,4 @@ sources:
 problems:
   - assumption: Decisional 2-/ 3-QCSD Problem
     comment: quasi-cyclic codes
+description: Based on Syndrome Decoding

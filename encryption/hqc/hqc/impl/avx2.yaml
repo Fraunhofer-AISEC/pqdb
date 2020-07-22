@@ -3,3 +3,5 @@ type: optimized
 platform: C
 sources:
   - ''
+hardware features:
+  - avx2
