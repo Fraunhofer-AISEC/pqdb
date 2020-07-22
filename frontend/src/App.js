@@ -8,7 +8,7 @@ import {
   Menu as MenuIcon, BrightnessHigh as LightIcon, Brightness4 as DarkIcon
 } from '@material-ui/icons';
 import initSqlJs from "sql.js";
-import { CustomSQLQuery, SchemeDetail, Welcome } from './components/views';
+import { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison } from './components/views';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import logo from './pqdb.svg';
@@ -39,6 +39,11 @@ const views = {
     name: "Scheme Details",
     description: "Browse data stored for a scheme",
     view: SchemeDetail
+  },
+  "comparison": {
+    name: "Scheme Comparison",
+    description: "Compare schemes based on memory requirements and performance.",
+    view: SchemeComparison
   }
 };
 
