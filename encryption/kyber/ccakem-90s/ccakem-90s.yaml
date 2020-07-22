@@ -1,4 +1,4 @@
 name: Kyber.CCAKEM90s
-comment: Variant that uses AES and SHA2 instead of Keccak
+description: using AES and SHA2 instead of Keccak, to showcase performance when hardware acceleration is available
 type: KEM
 security notion: IND-CCA
