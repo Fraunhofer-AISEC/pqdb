@@ -1,5 +1,7 @@
 name: AVX2
-platform: 'AVX2 '
+platform: C
 type: optimized
 sources:
   - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#table.8'
+hardware features:
+  - avx2

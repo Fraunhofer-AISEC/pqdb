@@ -4,9 +4,10 @@ security level:
   quantum: 191
   nist category: 3
 failure probability: -34
-failure probability comment: 2^-34
+failure probability comment: ''
 sizes:
   sk: 40
   pk: 958
   ct|sig: 958
+  msg: 64
 number of operations: inf

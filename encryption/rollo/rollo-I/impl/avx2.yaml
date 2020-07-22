@@ -1,3 +1,5 @@
 name: AVX2
-platform: AVX2
+platform: C
 type: optimized
+hardware features:
+  - avx2

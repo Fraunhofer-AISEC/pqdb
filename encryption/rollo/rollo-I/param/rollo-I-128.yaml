@@ -1,11 +1,12 @@
 name: ROLLO-I-128
 failure probability: -28
-failure probability comment: 2^-28
+failure probability comment: ''
 sizes:
   pk: 696
   sk: 40
   ct|sig: 696
-  comment: 'SessionKey: 64'
+  comment: ''
+  msg: 64
 number of operations: inf
 security level:
   classical: 128

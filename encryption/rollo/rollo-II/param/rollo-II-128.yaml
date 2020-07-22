@@ -9,4 +9,5 @@ sizes:
   sk: 40
   pk: 1941
   ct|sig: 2089
+  msg: !<tag:yaml.org,2002:js/undefined> ''
 number of operations: inf

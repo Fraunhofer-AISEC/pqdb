@@ -1,9 +1,9 @@
 stateful: false
-name: 'ROLLO '
+name: ROLLO
 category: code
 nist round: 2
 year:
-  paper: 2020
+  paper: 2017
   candidate: 2017
 authors:
   - Carlos Aguilar Melchor
@@ -22,6 +22,9 @@ authors:
 links:
   - 'https://pqc-rollo.org/'
 sources:
-  - 'https://pqc-rollo.org/'
+  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf'
 problems:
   - assumption: Rank Syndrome Decoding problem
+description: >-
+  Rank-Ouroboros, LAKE & LOCKER is based on rank metric codes and uses LRPC Code
+  for decryption
