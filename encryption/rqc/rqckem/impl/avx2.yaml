@@ -1,0 +1,8 @@
+name: AVX2
+sources:
+  - 'http://pqc-rqc.org/doc/rqc-specification_2020-04-21.pdf#subsection.3.2'
+platform: C
+type: optimized
+hardware features:
+  - avx2
+  - clmux

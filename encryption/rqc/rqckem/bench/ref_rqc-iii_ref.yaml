@@ -1,0 +1,11 @@
+platform: >-
+  Intel Core i7-7820X CPU 3.6GHz, compiled with gcc (version 9.2.0) -O3 -flto
+  use theopenssl(version 1.1.1d) library as a providerfor SHA2
+timings:
+  comment: >-
+    The meanfrom 1000 random instance, each instances have been repeated 100
+    times and averaged
+  unit: cycles
+  gen: 2860000
+  enc|sign: 5270000
+  dec|vrfy: 36390000

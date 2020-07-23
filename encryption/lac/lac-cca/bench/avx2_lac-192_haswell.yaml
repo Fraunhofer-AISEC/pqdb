@@ -1,7 +1,0 @@
-platform: 'Intel Core-i7-4770S (Haswell), 3.10GHz, 7.6GB RAM'
-timings:
-  gen: 119246
-  enc|sign: 137653
-  dec|vrfy: 224249
-  unit: cycles
-  comment: 'Decapsulation(Const-BCH): 320135 cycles'

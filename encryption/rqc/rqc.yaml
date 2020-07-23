@@ -1,0 +1,25 @@
+stateful: false
+name: RQC
+year:
+  candidate: 2017
+  paper: 2017
+problems:
+  - assumption: Rank syndrome decoding problem
+authors:
+  - Carlos Aguilar Melchor
+  - Nicolas Aragon
+  - Slim Bettaieb
+  - Loïc Bidoux
+  - Olivier Blazy
+  - Maxime Bros
+  - Alain Couvreur
+  - Jean-Christophe Deneuville
+  - Philippe Gaborit
+  - Adrien Hauteville
+  - Gilles Zémor
+sources:
+  - 'http://pqc-rqc.org/doc/rqc-specification_2020-04-21.pdf'
+links:
+  - 'http://pqc-rqc.org/'
+category: code
+description: It uses ideal codes as well as Gabidulin codes
