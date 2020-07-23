@@ -20,7 +20,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
 
 #### Code-based
-* [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
+* [RQC](encryption/rqc) ([Website](https://pqc-rqc.org/))
 
 ### Signature
 
