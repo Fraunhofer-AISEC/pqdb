@@ -1,9 +1,9 @@
 platform: Intel XEON E3-1275 v5 (Skylake) 3.6GHz (Turboboost off), 64GB RAM @2133 MHz, Linux 4.8.5, GCC 6.4 (-O2 -std=c99 -Wall -Wextra -mavx2)
 timings:
   unit: cycles
-  gen: 126000000
-  enc|sign: 755000
-  dec|vrfy: 197000
+  gen: 137000000
+  enc|sign: 87200000
+  dec|vrfy: 43000000
 memory requirements:
   gen: 7000000
   enc|sign: 4200000
