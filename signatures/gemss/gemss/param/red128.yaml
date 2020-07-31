@@ -1,0 +1,11 @@
+name: RedGeMSS128
+security level:
+  classical: 128
+  quantum: 74
+  nist category: 1
+failure probability: -24204404
+number of operations: inf
+sizes:
+  sk: 16
+  pk: 375212
+  ct|sig: 36

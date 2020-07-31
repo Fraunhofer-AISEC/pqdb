@@ -1,4 +1,4 @@
-name: 128f-simple
+name: SPHINCS+-SHAKE256-128f-simple
 security level:
   classical:  128
   quantum:  64
