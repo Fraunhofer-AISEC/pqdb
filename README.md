@@ -14,7 +14,9 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [NewHope](encryption/newhope) ([Website](https://www.newhopecrypto.org/))
 * [NTRU Prime](encryption/ntru-prime) ([Website](https://ntruprime.cr.yp.to/))
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
+* [Round5](encryption/round5) ([Website])(https://round5.org/)
 * [ThreeBears](encryption/three-bears) ([Website](https://sourceforge.net/projects/threebears/))
+
 
 #### Isogeny-based
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
