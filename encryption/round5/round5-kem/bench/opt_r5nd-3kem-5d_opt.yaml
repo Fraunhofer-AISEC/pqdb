@@ -1,0 +1,17 @@
+sources:
+  - >-
+    https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page
+    44,51
+platform: >-
+  gcc -march=native -mtune=native-O3 -fomit-frame-pointer -fwrapv, 
+  MacBookPro15.1 with an Intel Core i7 2.6GHz, running ma-cOS 10.13.6, Apple
+  LLVM version 10.0.0 (clang-1000.10.44.4)
+timings:
+  gen: 144700
+  enc|sign: 23500
+  dec|vrfy: 111300
+  unit: cycles
+memory requirements:
+  gen: 5364
+  enc|sign: 9631
+  dec|vrfy: 4339

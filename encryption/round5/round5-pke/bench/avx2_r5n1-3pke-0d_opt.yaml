@@ -1,0 +1,8 @@
+sources:
+  - ''
+platform: 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 64'
+timings:
+  gen: 784000
+  enc|sign: 1013000
+  dec|vrfy: 1375000
+  unit: cycles

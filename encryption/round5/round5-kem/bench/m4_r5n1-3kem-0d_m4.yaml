@@ -1,0 +1,6 @@
+platform: Cortex M4
+timings:
+  gen: 9923000
+  enc|sign: 6579000
+  dec|vrfy: 1750000
+  unit: cycles

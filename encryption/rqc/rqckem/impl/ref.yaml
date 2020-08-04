@@ -1,5 +1,0 @@
-name: Reference
-sources:
-  - 'http://pqc-rqc.org/doc/rqc-specification_2020-04-21.pdf#subsection.3.1'
-platform: C
-type: reference

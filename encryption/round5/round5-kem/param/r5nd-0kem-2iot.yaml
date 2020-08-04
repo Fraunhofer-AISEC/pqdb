@@ -1,0 +1,14 @@
+name: R5ND.0KEM.2iot
+failure probability: -41
+security level:
+  classical: 96
+  quantum: 88
+sizes:
+  sk: 16
+  msg: 16
+  pk: 342
+  ct|sig: 394
+number of operations: inf
+sources:
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.10'
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.6'

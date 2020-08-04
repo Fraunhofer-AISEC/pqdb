@@ -1,0 +1,7 @@
+name: Optimized
+sources:
+  - >-
+    https://round5.org/Supporting_Documentation/Round5_Submission.pdf#subsection.3.2
+platform: C
+type: optimized
+hardware features: []
