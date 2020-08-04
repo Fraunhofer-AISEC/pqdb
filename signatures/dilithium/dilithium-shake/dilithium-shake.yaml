@@ -1,4 +1,5 @@
 name: Dilithium-SHAKE
+description: using SHAKE for seed expansion. Main submission
 type: SIG
 security notion: SUF-CMA
 comment: >-

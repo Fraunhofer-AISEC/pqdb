@@ -1,4 +1,5 @@
 name: NewHope
+description: based on Ring-LWE, using the Lindner-Peikert approach
 year:
     candidate: 2017
 category: lattice
