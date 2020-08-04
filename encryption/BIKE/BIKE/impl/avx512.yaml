@@ -1,0 +1,5 @@
+name: AVX512
+platform: c
+type: optimized
+hardware features:
+  - avx512
