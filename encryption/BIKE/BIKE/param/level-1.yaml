@@ -1,1 +1,12 @@
-{}
+name: Level 1
+comment: '(r, w, t) = (12323, 142, 134)'
+security level:
+  quantum: 128
+  nist category: 1
+failure probability: 0
+failure probability comment: in fact the failure probability is not zero but negligible low (2⁻128)
+sizes:
+  sk: 281
+  pk: 1541
+  ct|sig: 1573
+number of operations: '1'

@@ -1,1 +1,12 @@
-{}
+name: Level 3
+security level:
+  quantum: 192
+  nist category: 3
+failure probability: 0
+failure probability comment: in fact the failure probability is not zero but negligible low (2⁻192)
+comment: '(r, w, t) = (24659, 206, 199)'
+sizes:
+  sk: 419
+  pk: 3083
+  ct|sig: 3115
+number of operations: '1'

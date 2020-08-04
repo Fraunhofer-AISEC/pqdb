@@ -3,3 +3,5 @@ platform: c
 type: optimized
 hardware features:
   - avx512
+side channel guarding:
+  branching: true
