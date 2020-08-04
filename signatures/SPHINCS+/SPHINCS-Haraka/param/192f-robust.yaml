@@ -2,7 +2,7 @@ name: 192f-robust
 security level:
   classical:  194
   quantum:  97
-  nist category: 2
+  nist category: 3
 failure probability: 0
 number of operations: inf
 sizes:
