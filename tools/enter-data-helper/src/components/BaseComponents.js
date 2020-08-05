@@ -150,7 +150,7 @@ class EditFile extends React.Component {
         try {
             var data = Object.assign({}, this.state.data);
             if (this.props.onPreSave) this.props.onPreSave(data);
-            data = yaml.dump(this.state.data);
+            data = yaml.dump(data);
             fs.writeFileSync(this.props.filePath, data);
             this.setQuitHook(false);
             this.setState({savedData: this.state.data, dataChanged: false});

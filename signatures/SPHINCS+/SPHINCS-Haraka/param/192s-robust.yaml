@@ -1,4 +1,4 @@
-name: 192s-robust
+name: SPHINCS+-Haraka-192s-robust
 security level:
   classical: 196
   quantum:  98

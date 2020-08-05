@@ -1,3 +1,4 @@
 name: FrodoKEM-AES
+description: using AES for seed expansion. Superior iff hardware acceleration is available.
 type: KEM
 security notion: IND-CCA

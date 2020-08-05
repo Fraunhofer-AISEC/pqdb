@@ -1,4 +1,5 @@
 name: SIKE
+description: based on pseudo-random walks in supersingular isogeny graphs
 category: isogeny
 year:
     paper: 2011

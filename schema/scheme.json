@@ -15,6 +15,10 @@
             "type": "string",
             "$comment": "Human readable name"
         },
+        "description": {
+            "type": "string",
+            "$comment": "One-liner describing the scheme's unique features"
+        },
         "comment": {
             "type": "string"
         },

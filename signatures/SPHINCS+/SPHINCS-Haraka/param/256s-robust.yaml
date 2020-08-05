@@ -1,4 +1,4 @@
-name: 256s-robust
+name: SPHINCS+-Haraka-256s-robust
 security level:
   classical:  255
   quantum:  128
