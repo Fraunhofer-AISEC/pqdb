@@ -1,8 +1,8 @@
 name: Dilithium
-description: based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts
+description: 'based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts'
 stateful: false
 category: lattice
-nist round: 2
+nist round: 3
 year:
   paper: 2018
   candidate: 2017
