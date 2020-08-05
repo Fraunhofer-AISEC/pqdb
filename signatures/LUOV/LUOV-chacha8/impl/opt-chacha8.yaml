@@ -1,0 +1,6 @@
+name: opt-chacha8
+comment: Generic optimized implementation using Chacha8 as PRNG
+platform: C
+type: optimized
+links:
+  - https://github.com/WardBeullens/LUOV/tree/master/Optimized_Implementation

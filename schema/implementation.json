@@ -15,7 +15,7 @@
             "items": {
                 "type": "string"
             },
-            "$comment": "Links to additional resources, for example source code. Use `source` to denote where the data is from."
+            "$comment": "Links to additional resources, for example source code. Use `sources` to denote where the data is from."
         },
         "sources": {
             "type": "array",

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
     MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Tooltip,
+    Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel, Slider
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CategoryIcon from '@material-ui/icons/Category';
@@ -78,10 +80,14 @@ function startDownload(content, filename) {
 }
 
 function comparator(a, b, orderBy, isAsc) {
-    if (b[orderBy] < a[orderBy]) {
+    var x = a[orderBy];
+    var y = b[orderBy];
+    if (React.isValidElement(x)) x = x.props.children;
+    if (React.isValidElement(y)) y = y.props.children;
+    if (y < x) {
         return isAsc ? 1 : -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (y > x) {
         return isAsc ? -1 : 1;
     }
     return 0;
@@ -181,6 +187,7 @@ class QueryTable extends React.Component {
     constructor(props) {
         super(props);
         this.queryResult = props.queryResult;
+        this.formatFunctions = props.formatFunctions;
         this.state = {
             orderBy: null,
             order: 'asc'
@@ -204,7 +211,7 @@ class QueryTable extends React.Component {
             <Grid direction='column' alignItems='flex-end' spacing={1} container>
                 <Grid container item>
                     <TableContainer component={Paper}>
-                        <Table stickyHeader>
+                        <Table stickyHeader size="small">
                             <TableHead>
                                 <TableRow>
                                     {
@@ -227,7 +234,12 @@ class QueryTable extends React.Component {
                                         (row) => (
                                             <TableRow key={row[1]}>
                                                 {
-                                                    row[0].map((val, j) => <TableCell key={j}>{val}</TableCell>)
+                                                    row[0].map((val, j) =>
+                                                        (this.formatFunctions && this.formatFunctions[j]) ?
+                                                            <TableCell key={j}>{this.formatFunctions[j](val)}</TableCell>
+                                                            :
+                                                            <TableCell key={j}>{val}</TableCell>
+                                                    )
                                                 }
                                             </TableRow>
                                         )
@@ -308,6 +320,251 @@ class Welcome extends React.Component {
                     </Box>
                 </Paper>
             </Container>
+        );
+    }
+}
+
+const secLevelMarks = [
+    { label: '0', value: 0 }, { label: '128', value: 128 }, { label: '64', value: 64 },
+    { label: '192', value: 192 }, { label: '256+', value: 256 }
+];
+
+function humanReadableSize(size, baseUnit) {
+    if (!Number.isFinite(size)) return '';
+    var i = (size === 0) ? 0 : Math.floor(Math.log(size) / Math.log(1000));
+    return (size / Math.pow(1000, i)).toFixed(2) * 1 + ' ' + ['', 'k', 'M', 'G', 'T'][i] + baseUnit;
+};
+
+class SchemeComparison extends React.Component {
+    constructor(props) {
+        super(props);
+        this.db = props.db;
+        this.platformFilterTimeout = null;
+        this.state = { pageDisabled: false };
+        this.defaultState = {
+            showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
+            sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
+            showSecNist: false, showRef: false, focusPlatformFilter: false
+        };
+        this.filterState = {};
+        Object.assign(this.filterState, this.defaultState);
+        var params = qs.parse(this.props.history.location.search);
+        if ('state' in params) {
+            try {
+                var paramState = JSON.parse(params.state);
+                Object.assign(this.filterState, paramState);
+            } catch {
+                // JSON state was invalid -> ignore
+            }
+        }
+    }
+
+    buildQuery(state) {
+        return `SELECT
+    s.id as 'ID',
+    p.name || CASE
+        s.stateful
+        WHEN 0 THEN ''
+        ELSE ' (Stateful)'
+    END AS 'Parameter Set'` +
+            ((state.showSecClassical) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
+            ((state.showSecQuantum) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
+            ((state.showSecNist) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
+            ((state.showStorage) ? `,
+    p.sizes_sk AS 'Secret Key Size',
+    p.sizes_pk AS 'Public Key Size',
+    p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
+    (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showBenchmarks) ? `,
+    i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
+    (
+        SELECT
+            GROUP_CONCAT(hf.feature, ", ")
+        FROM
+            implementation_hardware_feature hf
+        WHERE
+            hf.implementation_id = i.id
+    ) AS 'Hardware Features'` : ''},
+    b.platform AS 'Platform',
+    round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
+    round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
+    round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
+    round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
+` : '') + `FROM
+    scheme s
+    JOIN flavor f ON s.id = f.scheme_id
+    JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
+    LEFT JOIN benchmark b ON p.id = b.paramset_id
+    LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
+WHERE
+    s.type = ?
+    AND p.security_level_classical >= ?
+    AND p.security_level_quantum >= ?` + (
+                (state.showBenchmarks) ?
+                    ((!state.showRef) ? "\n    AND i.type = 'optimized'" : '') +
+                    ((state.platformFilter !== '') ? "\n    AND b.platform LIKE '%' || ? || '%'" : '')
+                    : ''
+            );
+    }
+
+    computeResult(state, sqlQuery) {
+        var params = [state.schemeType, state.securityLevel, state.securityQuantum];
+        if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
+        var results = queryAll(this.db, sqlQuery, params);
+        if (results.length === 0) return undefined;
+        results.forEach(res => {
+            res['Parameter Set'] = <Link component={RouterLink} to={"../detail?_=" + state.schemeType + "/" + res.ID}>{res['Parameter Set']}</Link>;
+            delete res.ID;
+        });
+        return {
+            columns: Object.keys(results[0]),
+            values: results.map(row => Object.keys(row).map(k => row[k]))
+        };
+    }
+
+    getFormatFunctions(results) {
+        if (results === undefined) return undefined;
+        var formatFunctions = Array(results.columns.length).fill(undefined);
+        results.columns.forEach((col, idx) => {
+            if (col.endsWith('(kCycles)')) formatFunctions[idx] = (val => val?.toLocaleString());
+            if (col.endsWith('Size')) formatFunctions[idx] = (val => humanReadableSize(val, 'B'));
+        });
+        return formatFunctions;
+    }
+
+    componentDidUpdate() {
+        if (this.state.pageDisabled) {
+            // setTimeout so the DOM can fully render before page load
+            setTimeout(() => {
+                const history = this.props.history;
+                var searchParam = {};
+
+                Object.keys(this.newFilterState).forEach(key => {
+                    if (this.newFilterState[key] !== this.defaultState[key]) searchParam[key] = this.newFilterState[key];
+                });
+                const searchParamStr = JSON.stringify(searchParam);
+                history.push({
+                    pathname: history.location.pathname,
+                    search: (searchParamStr === '{}') ? '' : "?" + qs.stringify({ state: searchParamStr })
+                });
+            });
+        }
+    }
+
+    changeFilterState(change) {
+        this.newFilterState = Object.assign({}, this.filterState);
+        this.newFilterState.focusPlatformFilter = false;
+        Object.assign(this.newFilterState, change);
+        this.setState({ pageDisabled: true });
+    }
+
+    render() {
+        const query = this.buildQuery(this.filterState);
+        const queryResult = this.computeResult(this.filterState, query);
+        return (
+            <Grid container direction="column" spacing={2} >
+                <Grid item>
+                    <Container maxWidth="lg">
+                        <Paper>
+                            <Box p={2}>
+                                <Typography variant="h4">Scheme Comparison</Typography>
+                                <Box my={2} px={3}>
+                                    <Grid justify="space-between" spacing={2} container direction="row">
+                                        <Grid item>
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
+                                                <FormLabel component="legend">Scheme Type</FormLabel>
+                                                <RadioGroup value={this.filterState.schemeType}
+                                                    onChange={(event) => this.changeFilterState({ schemeType: event.target.value })}>
+                                                    <FormControlLabel value="sig" control={<Radio />} label="Signature" />
+                                                    <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item>
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
+                                                <FormLabel component="legend">Display</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showStorage}
+                                                        onChange={() => this.changeFilterState({ showStorage: !this.filterState.showStorage })} />
+                                                } label="Sizes" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showBenchmarks}
+                                                        onChange={() => this.changeFilterState({ showBenchmarks: !this.filterState.showBenchmarks })} />
+                                                } label="Benchmarks" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showHwFeatures}
+                                                        onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
+                                                } label="Hardware Features" />
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item>
+                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
+                                                <FormLabel component="legend">Security Level</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showSecClassical}
+                                                        onChange={() => this.changeFilterState({ showSecClassical: !this.filterState.showSecClassical })} />
+                                                } label="Classical" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showSecQuantum}
+                                                        onChange={() => this.changeFilterState({ showSecQuantum: !this.filterState.showSecQuantum })} />
+                                                } label="Quantum" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showSecNist}
+                                                        onChange={() => this.changeFilterState({ showSecNist: !this.filterState.showSecNist })} />
+                                                } label="NIST Category" />
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">Filter</FormLabel>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showRef}
+                                                        onChange={() => this.changeFilterState({ showRef: !this.filterState.showRef })} />
+                                                } label="Include 'ref' Implementations" />
+                                                <TextField disabled={this.state.pageDisabled} defaultValue={this.filterState.platformFilter}
+                                                    color="secondary" label="Platform" variant="outlined" onChange={e => {
+                                                        clearTimeout(this.platformFilterTimeout);
+                                                        const filterValue = e.target.value;
+                                                        this.platformFilterTimeout = setTimeout(() => {
+                                                            this.platformFilterTimeout = null;
+                                                            this.changeFilterState({ platformFilter: filterValue, focusPlatformFilter: true });
+                                                        }, 750);
+                                                    }} autoFocus={this.filterState.focusPlatformFilter} />
+                                                <Box mt={1} display="flex">
+                                                    <Typography>Classical Security</Typography>
+                                                    <Slider color="secondary" defaultValue={this.filterState.securityLevel}
+                                                        step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityLevel: v })}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
+                                                </Box>
+                                                <Box mt={1} display="flex">
+                                                    <Typography>Quantum Security</Typography>
+                                                    <Slider color="secondary" defaultValue={this.filterState.securityQuantum} step={16}
+                                                        min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
+                                                </Box>
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View this query as SQL</Link>
+                            </Box>
+                        </Paper>
+                    </Container>
+                </Grid>
+                <Grid container item>
+                    <Container maxWidth={false} disableGutters={true}>
+                        <Paper>
+                            <Box p={2} display='flex' justifyContent="center">
+                                <QueryTable queryResult={queryResult} formatFunctions={this.getFormatFunctions(queryResult)} />
+                            </Box>
+                        </Paper>
+                    </Container>
+                </Grid>
+            </Grid>
         );
     }
 }
@@ -458,31 +715,31 @@ class SchemeDetail extends React.Component {
         }
     }
 
-    renderOverview () {
+    renderOverview() {
         var stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
 
         return (
             <Grid container justify="center" spacing={2}>
-                { Object.entries(this.types).map(([typeKey, type]) => (
-                <Grid item>
-                    <Paper>
-                        <Box p={2}>
-                            <Typography component="h1" variant="h6">
-                                { type.name }s
-                                { "  " }
-                                <type.icon fontSize="inherit"  />
-                            </Typography>
-                            <List>
-                                {queryAll(this.db, stmt, [typeKey]).map(s => (
-                                    <ListItem key={ typeKey + "-" + s.id } style={{ paddingLeft: 0 }}><ListItemText>
-                                        <Link href={ "?_=" + typeKey + "/" + s.id }>{ s.name }</Link>
-                                    </ListItemText></ListItem>
-                                ))}
-                            </List>
-                        </Box>
-                    </Paper>
-                </Grid>
-                )) }
+                {Object.entries(this.types).map(([typeKey, type]) => (
+                    <Grid item>
+                        <Paper>
+                            <Box p={2}>
+                                <Typography component="h1" variant="h6">
+                                    {type.name}s
+                                    {"  "}
+                                    <type.icon fontSize="inherit" />
+                                </Typography>
+                                <List>
+                                    {queryAll(this.db, stmt, [typeKey]).map(s => (
+                                        <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
+                                            <Link component={RouterLink} to={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
+                                        </ListItemText></ListItem>
+                                    ))}
+                                </List>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                ))}
             </Grid>
         );
     }
@@ -598,7 +855,7 @@ class SchemeDetail extends React.Component {
                                         <Typography component="h3" variant="h5">
                                             <Link href={"?_=" + s.type + "/" + s.id + "/" + f.id}>{f.name}</Link>
                                         </Typography>
-                                        {f.description && <div>{ f.description }</div>}
+                                        {f.description && <div>{f.description}</div>}
                                         {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
                                     </ListItem>,
 
@@ -946,4 +1203,4 @@ function linkify ( s ) {
     return url ? <Link href={ url }>{ s }</Link> : s;
 }
 
-export { CustomSQLQuery, SchemeDetail, Welcome };
+export { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison };

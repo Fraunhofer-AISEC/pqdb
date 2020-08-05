@@ -1,0 +1,11 @@
+name: RedGeMSS256
+security level:
+  classical: 256
+  quantum: 149
+  nist category: 5
+failure probability: -1.3306513097844322e+19
+number of operations: inf
+sizes:
+  sk: 32
+  pk: 3135591
+  ct|sig: 75

@@ -7,7 +7,7 @@ import SelectScheme from './components/SelectScheme';
 import SchemeOverview from './components/SchemeOverview';
 import { FlavorOverview, SubtypeOverview } from './components/FlavorOverview';
 import { NavBar } from './components/BaseComponents';
-import { checkRootDir, registerApp } from './components/Tools'
+import { checkRootDir, registerApp, getUserConfirmation } from './components/Tools'
 import './App.css';
 
 const NavBarRouter = withRouter(props => <NavBar {...props} />);
@@ -24,6 +24,8 @@ const themes = {
   'light': getTheme('light'),
   'dark': getTheme('dark')
 }
+
+
 
 class App extends React.Component {
   constructor(props) {
@@ -62,7 +64,7 @@ class App extends React.Component {
       <ThemeProvider key={this.state.themeId} theme={themes[this.state.themeId]}>
         <CssBaseline />
         <Container disableGutters maxWidth={false}>
-          <Router forceRefresh={false}>
+          <Router forceRefresh={false} getUserConfirmation={getUserConfirmation}>
             <NavBarRouter setTheme={this.setTheme.bind(this)} theme={this.state.themeId} />
             <Container>
               <Switch>

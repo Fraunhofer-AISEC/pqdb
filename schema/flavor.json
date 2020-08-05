@@ -7,6 +7,10 @@
             "type": "string",
             "$comment": "Human readable name (full, including the scheme name)"
         },
+        "description": {
+            "type": "string",
+            "$comment": "One-liner describing the flavor's unique features. Only needed if there are several flavors."
+        },
         "comment": {
             "type": "string"
         },
@@ -16,7 +20,8 @@
                 "KEM",
                 "KTM",
                 "SIG"
-            ]
+            ],
+            "$comment": "KEM means encapsulation (shared secret is an output of the encapsulation function, KTM is key transport (shared secret is an input of the encryption function. You may add other types if the existing ones don't fit."
         },
         "type comment": {
             "type": "string"
@@ -27,9 +32,10 @@
                 "IND-CPA",
                 "IND-CCA",
                 "EUF-CMA",
-                "SUF-CMA"
+                "SUF-CMA",
+				"PQ-EU-CMA"
             ],
-            "$comment": "Note to contributors: You're welcome to add more here if needed. IND-CCA == IND-CCA2; SUF == strong unforgeability"
+            "$comment": "Note to contributors: You're welcome to add more values to the schema if needed. IND-CCA == IND-CCA2; SUF == strong existential unforgeability"
         },
         "security notion comment": {
             "type": "string"
@@ -43,7 +49,7 @@
             "items": {
                 "type": "string"
             },
-            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+            "$comment": "Links to additional resources. Use `sources` to denote where the data is from."
         },
         "sources": {
             "type": "array",

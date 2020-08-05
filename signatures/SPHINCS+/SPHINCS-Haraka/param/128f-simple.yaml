@@ -1,0 +1,12 @@
+name: SPHINCS+-Haraka-128f-simple
+security level:
+  classical:  128
+  quantum:  64
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 64
+  pk: 32
+  ct|sig: 16976
+  msg: 256

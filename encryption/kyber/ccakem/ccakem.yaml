@@ -1,3 +1,4 @@
 name: Kyber.CCAKEM
+description: Main variant using Keccak
 type: KEM
 security notion: IND-CCA

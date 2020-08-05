@@ -1,0 +1,12 @@
+name: Picnic-L5-UR
+security level: 
+  classical:  256
+  quantum:  128
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 32
+  pk: 64
+  ct|sig: 209506
+  msg: 256

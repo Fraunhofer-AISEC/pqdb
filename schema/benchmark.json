@@ -19,7 +19,7 @@
             "items": {
                 "type": "string"
             },
-            "$comment": "Links to additional resources. Use `source` to denote where the data is from."
+            "$comment": "Links to additional resources. Use `sources` to denote where the data is from."
         },
         "sources": {
             "type": "array",
@@ -30,7 +30,7 @@
         },
         "platform": {
             "type": "string",
-            "$comment": "#TODO make this reference to platform object. Add OS and Compiler info"
+            "$comment": "Please store as much data as provided by the source (exact processor name, frequency, OS, compiler, compilation options, ...) #TODO make this reference to platform object"
         },
         "timings": {
             "type":"object",

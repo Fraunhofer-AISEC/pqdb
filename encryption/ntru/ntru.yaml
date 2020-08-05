@@ -1,6 +1,6 @@
 name: NTRU
+description: Based rather closely on the original NTRU from 1998, but with perfect correctness
 category: lattice
-category comment: ''
 nist round: 2
 authors:
   - Cong Chen
