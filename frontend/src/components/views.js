@@ -29,6 +29,37 @@ import diagramImage from '../tables.svg';
 
 import { queryAll, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
+const SCHEME_TYPES = {
+    enc: {
+        name: "Key Exchange Scheme",
+        icon: EncryptionIcon,
+        ctsig: "ct",
+        ct_sig: "Ciphertext",
+        encsign: "enc",
+        enc_sign: "Encrypt",
+        decvrfy: "dec",
+        dec_vrfy: "Verify",
+    },
+    sig: {
+        name: "Signature Scheme",
+        icon: SignatureIcon,
+        ctsig: "sig",
+        ct_sig: "Signature",
+        encsign: "sign",
+        enc_sign: "Sign",
+        decvrfy: "vrfy",
+        dec_vrfy: "Verify",
+    }
+}
+
+const SEC_NOTIONS = {
+    "IND-CCA": "Indistinguishability under an adaptive Chosen Ciphertext Attack",
+    "IND-CPA": "Indistinguishability under an adaptive Chosen Plaintext Attack",
+    "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
+    "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
+}
+
+
 const Comment = function (props) {
     if (props.title === undefined || props.title === null || props.title === '')
         return null;
@@ -183,6 +214,28 @@ function AutoFocusTextField(props) {
     return <TextField inputRef={inputRef} {...props} />;
 }
 
+function renderSchemeList(db, typeKey) {
+    const stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
+    const type = SCHEME_TYPES[typeKey];
+
+    return (
+        <>
+            <Typography component="h2" variant="h6">
+                {type.name}s
+                {"  "}
+                <type.icon fontSize="inherit" />
+            </Typography>
+            <List>
+                {queryAll(db, stmt, [typeKey]).map(s => (
+                    <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
+                        <Link component={RouterLink} to={"detail?_=" + typeKey + "/" + s.id}>{s.name}</Link>
+                    </ListItemText></ListItem>
+                ))}
+            </List>
+        </>
+    );
+}
+
 class QueryTable extends React.Component {
     constructor(props) {
         super(props);
@@ -260,20 +313,6 @@ class Welcome extends React.Component {
     constructor(props) {
         super(props);
         this.db = props.db;
-        this.state = {
-            enc: [],
-            sig: []
-        };
-    }
-
-    componentDidMount() {
-        var results = this.db.exec(
-            "SELECT name FROM scheme WHERE type='enc' ORDER BY name;" +
-            "SELECT name FROM scheme WHERE type='sig' ORDER BY name;"
-        );
-        var enc = results[0].values.map(row => row[0]);
-        var sig = results[1].values.map(row => row[0]);
-        this.setState({ enc: enc, sig: sig });
     }
 
     render() {
@@ -299,20 +338,14 @@ class Welcome extends React.Component {
                             <Grid item>
                                 <Paper>
                                     <Box p={4}>
-                                        <Typography variant="h6">Key Exchange Schemes</Typography>
-                                        <List>
-                                            {this.state.enc.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
-                                        </List>
+                                        {renderSchemeList(this.db, 'enc')}
                                     </Box>
                                 </Paper>
                             </Grid>
                             <Grid item>
                                 <Paper>
                                     <Box p={4}>
-                                        <Typography variant="h6">Signature Schemes</Typography>
-                                        <List>
-                                            {this.state.sig.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
-                                        </List>
+                                        {renderSchemeList(this.db, 'sig')}
                                     </Box>
                                 </Paper>
                             </Grid>
@@ -373,7 +406,7 @@ class SchemeComparison extends React.Component {
             ((state.showStorage) ? `,
     p.sizes_sk AS 'Secret Key Size',
     p.sizes_pk AS 'Public Key Size',
-    p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
+    p.sizes_ct_sig AS '${SCHEME_TYPES[state.schemeType].ct_sig} Size',
     (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showBenchmarks) ? `,
     i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
     (
@@ -386,8 +419,8 @@ class SchemeComparison extends React.Component {
     ) AS 'Hardware Features'` : ''},
     b.platform AS 'Platform',
     round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
-    round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
-    round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
+    round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
+    round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
     round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
 ` : '') + `FROM
     scheme s
@@ -683,25 +716,6 @@ class CustomSQLQuery extends React.Component {
 }
 
 class SchemeDetail extends React.Component {
-    types = {
-        enc: {
-            name: "Key Exchange Scheme",
-            icon: EncryptionIcon,
-            ctsig: "ct",
-        },
-        sig: {
-            name: "Signature Scheme",
-            icon: SignatureIcon,
-            ctsig: "sig",
-        }
-    }
-    sec_notions = {
-        "IND-CCA": "Indistinguishability under an adaptive Chosen Ciphertext Attack",
-        "IND-CPA": "Indistinguishability under an adaptive Chosen Plaintext Attack",
-        "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
-        "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
-    }
-
     constructor(props) {
         super(props);
         this.db = props.db;
@@ -716,26 +730,13 @@ class SchemeDetail extends React.Component {
     }
 
     renderOverview() {
-        var stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
-
         return (
             <Grid container justify="center" spacing={2}>
-                {Object.entries(this.types).map(([typeKey, type]) => (
+                {Object.keys(SCHEME_TYPES).map(typeKey => (
                     <Grid item>
                         <Paper>
                             <Box p={2}>
-                                <Typography component="h1" variant="h6">
-                                    {type.name}s
-                                    {"  "}
-                                    <type.icon fontSize="inherit" />
-                                </Typography>
-                                <List>
-                                    {queryAll(this.db, stmt, [typeKey]).map(s => (
-                                        <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
-                                            <Link component={RouterLink} to={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
-                                        </ListItemText></ListItem>
-                                    ))}
-                                </List>
+                                {renderSchemeList(this.db, typeKey)}
                             </Box>
                         </Paper>
                     </Grid>
@@ -758,7 +759,7 @@ class SchemeDetail extends React.Component {
         const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [id]);
         const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [id]);
 
-        let TypeIcon = this.types[s.type].icon;
+        let TypeIcon = SCHEME_TYPES[s.type].icon;
         return [
             <Container maxWidth="md">
                 <Paper>
@@ -769,8 +770,8 @@ class SchemeDetail extends React.Component {
                                     <Typography component="h1" variant="h2">
                                         {s.name}
                                         {"  "}
-                                        <Tooltip title={this.types[s.type].name} arrow>
-                                            <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={this.types[s.type].name} aria-describedby={null} />
+                                        <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
+                                            <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
                                         </Tooltip>
                                     </Typography>
                                     {s.description && <div>{s.description}</div>}
@@ -865,7 +866,7 @@ class SchemeDetail extends React.Component {
                                     </PropItem>,
 
                                     <PropItem k={"flavor-" + f.id + "-securitynotion"} title="Security Notion" icon={SecurityIcon}>
-                                        <Tooltip title={this.sec_notions[f.security_notion]}>
+                                        <Tooltip title={SEC_NOTIONS[f.security_notion]}>
                                             <span>{f.security_notion}</span>
                                         </Tooltip>
                                         <Comment title={f.security_notion_comment} />
@@ -909,7 +910,7 @@ class SchemeDetail extends React.Component {
         const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
         const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
 
-        let TypeIcon = this.types[s.type].icon;
+        let TypeIcon = SCHEME_TYPES[s.type].icon;
         return [
             <Container maxWidth="md">
                 <Paper>
@@ -924,8 +925,8 @@ class SchemeDetail extends React.Component {
                                             { s.name }
                                         </Link>
                                         { " " }
-                                        <Tooltip title={ this.types[s.type].name } arrow>
-                                            <TypeIcon fontSize="inherit" aria-hidden={ false } role="img" aria-label={ this.types[s.type].name } aria-describedby={ null } />
+                                        <Tooltip title={ SCHEME_TYPES[s.type].name } arrow>
+                                            <TypeIcon fontSize="inherit" aria-hidden={ false } role="img" aria-label={ SCHEME_TYPES[s.type].name } aria-describedby={ null } />
                                         </Tooltip>
                                         { " " }
                                         <span style={{ fontWeight: "normal", marginLeft: ".4em" }}>
@@ -953,7 +954,7 @@ class SchemeDetail extends React.Component {
                             </PropItem>
 
                             <PropItem k="securitynotion" title="Security Notion" icon={ SecurityIcon }>
-                                <Tooltip title={ this.sec_notions[f.security_notion] }>
+                                <Tooltip title={ SEC_NOTIONS[f.security_notion] }>
                                     <span>{ f.security_notion }</span>
                                 </Tooltip>
                                 <Comment title={ f.security_notion_comment } />
@@ -1027,7 +1028,7 @@ class SchemeDetail extends React.Component {
                                     <div>
                                         sk: { p.sizes_sk } {" \u2022 "}
                                         pk: { p.sizes_pk } {" \u2022 "}
-                                        { this.types[s.type].ctsig }: { p.sizes_ct_sig }
+                                        { SCHEME_TYPES[s.type].ctsig }: { p.sizes_ct_sig }
                                     </div>
                                     { p.sizes_comment && <div><TextComment>{ p.sizes_comment }</TextComment></div> }
                                 </PropItem>,
@@ -1132,7 +1133,7 @@ class SchemeDetail extends React.Component {
         if (comp.length === 1 && comp[0] === '')
             return this.renderOverview();
 
-        if (comp.length > 1 && !(comp[0] in this.types)) {
+        if (comp.length > 1 && !(comp[0] in SCHEME_TYPES)) {
             // TODO error
             return "invalid url, must be enc or sig"
         }
