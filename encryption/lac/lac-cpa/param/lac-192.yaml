@@ -1,0 +1,12 @@
+name: LAC.CPA-192
+security level:
+  classical: 286
+  quantum: 259
+  nist category: 3
+failure probability: -143
+sizes:
+  sk: 2080
+  pk: 1056
+  ct|sig: 1188
+  msg: 32
+number of operations: inf

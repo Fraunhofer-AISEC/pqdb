@@ -1,4 +1,5 @@
 name: Frodo
+description: based on plain LWE, using the Lindner-Peikert approach
 category: lattice
 year:
     paper: 2016
