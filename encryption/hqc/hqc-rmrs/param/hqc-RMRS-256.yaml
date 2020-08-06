@@ -1,0 +1,13 @@
+security level:
+  quantum: 255
+  nist category: 5
+  classical: 256
+failure probability: -256
+failure probability comment: < 2^256
+sizes:
+  sk: 40
+  pk: 7535
+  ct|sig: 15047
+  comment: 'Sessionkey: 64'
+number of operations: inf
+name: 'HQC-RMRS-256  '
