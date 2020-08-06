@@ -1,4 +1,5 @@
 name: LAC
+description: based on Ring-LWE
 category: lattice
 year:
   paper: 2019
