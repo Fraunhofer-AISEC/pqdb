@@ -1,0 +1,8 @@
+name: LAC.CPA
+description: CPA-secure encryption scheme
+type: KTM
+security notion: IND-CPA
+sources:
+  - >-
+    https://csrc.nist.gov/projects/post-quantum-cryptography/round-2-submissions
+    ZIP-File PDF
