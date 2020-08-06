@@ -1,5 +1,6 @@
 stateful: false
 name: SABER
+description: based on Mod-LWR (Module Learning With Rounding)
 category: lattice
 year:
   candidate: 2017

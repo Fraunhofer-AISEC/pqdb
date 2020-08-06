@@ -10,4 +10,5 @@ sizes:
   pk: 992
   msg: 32
   ct|sig: 1088
+  comment: 'Compressed sk size: 1344'
 number of operations: inf

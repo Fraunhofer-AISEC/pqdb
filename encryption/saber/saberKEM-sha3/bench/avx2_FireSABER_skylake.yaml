@@ -1,4 +1,4 @@
-platform: 'Intel Core i7-6600U (Skylake) CPU 2.60GHz, Ubuntu, gcc v. 7.0'
+platform: 'Intel Core i5-7200U (Kaby Lake) CPU 2.50GHz'
 comment: Benchmarks are from submission paper
 timings:
   gen: 161379
