@@ -72,6 +72,13 @@ const Comment = function (props) {
     ];
 }
 
+const MaybeTooltip = function (props) {
+    if (props.title === undefined || props.title === null || props.title === '')
+        return props.children;
+    else
+        return <Tooltip {...props}>{props.children}</Tooltip>;
+}
+
 const TextComment = function (props) {
     return [
         <InfoIcon fontSize="inherit" />,
@@ -215,12 +222,12 @@ function AutoFocusTextField(props) {
 }
 
 function renderSchemeList(db, typeKey) {
-    const stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
+    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY name;";
     const type = SCHEME_TYPES[typeKey];
 
     return (
         <>
-            <Typography component="h2" variant="h6">
+            <Typography component="h2" variant="h5">
                 {type.name}s
                 {"  "}
                 <type.icon fontSize="inherit" />
@@ -228,7 +235,22 @@ function renderSchemeList(db, typeKey) {
             <List>
                 {queryAll(db, stmt, [typeKey]).map(s => (
                     <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
-                        <Link component={RouterLink} to={"detail?_=" + typeKey + "/" + s.id}>{s.name}</Link>
+                        <Typography variant="h6">
+                            <Link component={RouterLink} to={"detail?_=" + typeKey + "/" + s.id}>
+                                {s.name}
+                            </Link>
+                        </Typography>
+                        <small style={{ lineHeight: 1 }}>
+                            <MaybeTooltip title={s.category_comment}>
+                                <span>{s.category}</span>
+                            </MaybeTooltip>
+                            {s.nist_round > 0 && [" \u2022 ",
+                                <MaybeTooltip title={s.nist_round_comment}>
+                                    <span>round {s.nist_round}</span>
+                                </MaybeTooltip>]}
+                            {s.description && " \u2022 "}
+                            <em>{s.description}</em>
+                        </small>
                     </ListItemText></ListItem>
                 ))}
             </List>
@@ -318,10 +340,9 @@ class Welcome extends React.Component {
     render() {
         return (
             <Container maxWidth="md">
-
                 <Paper>
                     <Box p={4}>
-                        <Typography variant="h4" gutterBottom>Welcome!</Typography>
+                        <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
                         <Typography paragraph>
                             This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner.
                         </Typography>
@@ -332,22 +353,17 @@ class Welcome extends React.Component {
                             Contributions are warmly welcomed, see <Link href="https://github.com/cryptoeng/pqdb#contribute">here</Link> for details.
                         </Typography>
 
-                        <Typography variant='h5' align='center'>Available Schemes</Typography>
-                        <Box mt={1} />
-                        <Grid container justify="space-evenly">
-                            <Grid item>
-                                <Paper>
+                        <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
+                        <Grid container>
+                            <Grid item xs px={4} key="enc">
                                     <Box p={4}>
                                         {renderSchemeList(this.db, 'enc')}
                                     </Box>
-                                </Paper>
                             </Grid>
-                            <Grid item>
-                                <Paper>
+                            <Grid item xs px={4} key="sig">
                                     <Box p={4}>
                                         {renderSchemeList(this.db, 'sig')}
                                     </Box>
-                                </Paper>
                             </Grid>
                         </Grid>
                     </Box>
@@ -731,9 +747,10 @@ class SchemeDetail extends React.Component {
 
     renderOverview() {
         return (
+            <Container maxWidth="md">
             <Grid container justify="center" spacing={2}>
                 {Object.keys(SCHEME_TYPES).map(typeKey => (
-                    <Grid item>
+                    <Grid item xs>
                         <Paper>
                             <Box p={2}>
                                 {renderSchemeList(this.db, typeKey)}
@@ -742,6 +759,7 @@ class SchemeDetail extends React.Component {
                     </Grid>
                 ))}
             </Grid>
+            </Container>
         );
     }
 
