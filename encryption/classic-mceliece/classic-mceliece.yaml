@@ -1,7 +1,7 @@
 stateful: false
 name: Classic McEliece
 category: code
-nist round: 2
+nist round: 3
 year:
   paper: 1978
   candidate: 2017
