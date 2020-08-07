@@ -21,6 +21,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Code-based
 * [ROLLO](encryption/rollo) ([Website](https://pqc-rollo.org/index.html))
+* [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
 
 ### Signature
 
@@ -31,7 +32,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Multivariate
 * [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
-* [MQDSS] (signatures/mqdss) ([Website](http://mqdss.org))
+* [MQDSS](signatures/mqdss) ([Website](http://mqdss.org))
 
 #### Hash-based
 * [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))

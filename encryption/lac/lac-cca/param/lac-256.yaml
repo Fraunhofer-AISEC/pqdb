@@ -1,4 +1,4 @@
-name: LAC-256
+name: LAC.CCA-256
 sizes:
   sk: 2080
   pk: 1056
