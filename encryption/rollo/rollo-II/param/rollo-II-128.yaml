@@ -1,8 +1,9 @@
+name: ROLLO-II 128
 security level:
   classical: 128
-  quantum: 127
+  quantum: 64
   nist category: 1
-name: ROLLO-II 128
+  comment: bit values deduced from category
 failure probability: -134
 sizes:
   sk: 40

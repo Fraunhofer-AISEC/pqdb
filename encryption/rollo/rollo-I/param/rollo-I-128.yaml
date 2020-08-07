@@ -8,5 +8,6 @@ sizes:
 number of operations: inf
 security level:
   classical: 128
-  quantum: 127
+  quantum: 64
   nist category: 1
+  comment: bit values deduced from category
