@@ -1,3 +1,4 @@
+platform: 'Intel Core i7-7820X, 16 GB RAM; gcc 9.2, openssl 1.1.1d'
 timings:
   gen: 939000
   enc|sign: 113000

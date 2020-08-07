@@ -1,6 +1,6 @@
-platform: AVX2
+platform: 'Intel Core i7-7820X, 16 GB RAM; gcc 9.2, openssl 1.1.1d'
 timings:
-  gen: 16986000
-  enc|sign: 1307000
-  dec|vrfy: 4484000
+  gen: 3690000
+  enc|sign: 331000
+  dec|vrfy: 1195000
   unit: cycles
