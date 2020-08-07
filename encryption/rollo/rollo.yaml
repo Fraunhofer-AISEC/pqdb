@@ -26,5 +26,5 @@ sources:
 problems:
   - assumption: Rank Syndrome Decoding problem
 description: >-
-  Rank-Ouroboros, LAKE & LOCKER is based on rank metric codes and uses LRPC Code
-  for decryption
+  Based on rank metric codes and uses LRPC Code for decryption.
+  Merger of Rank-Ouroboros, LAKE & LOCKER.
