@@ -1,8 +1,6 @@
 name: ROLLO-II
-comment: ''
 type: KTM
 security notion: IND-CCA
-security notion comment: ''
 sources:
   - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#section.1'
 description: LOCKER became ROLLO-II

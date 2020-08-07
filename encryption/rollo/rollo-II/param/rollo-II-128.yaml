@@ -4,10 +4,8 @@ security level:
   nist category: 1
 name: ROLLO-II 128
 failure probability: -134
-failure probability comment: 2^-134
 sizes:
   sk: 40
   pk: 1941
   ct|sig: 2089
-  msg: !<tag:yaml.org,2002:js/undefined> ''
 number of operations: inf

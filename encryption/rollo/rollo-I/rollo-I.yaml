@@ -1,5 +1,4 @@
-name: 'ROLLO-I '
-comment: ''
+name: ROLLO-I
 type: KEM
 security notion: IND-CPA
 sources:

@@ -4,7 +4,6 @@ security level:
   quantum: 255
   nist category: 5
 failure probability: -33
-failure probability comment: ''
 sizes:
   sk: 40
   pk: 1371
