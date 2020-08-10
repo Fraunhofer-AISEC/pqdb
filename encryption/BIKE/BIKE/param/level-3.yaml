@@ -1,13 +1,13 @@
-name: Level 3
+name: BIKE Level-3
 security level:
   quantum: 96
   nist category: 3
   classical: 192
 failure probability: -192
-failure probability comment: !<tag:yaml.org,2002:js/undefined> ''
 comment: '(r, w, t) = (24659, 206, 199)'
 sizes:
   sk: 419
   pk: 3083
   ct|sig: 3115
-number of operations: '1'
+  msg: 256
+number of operations: inf

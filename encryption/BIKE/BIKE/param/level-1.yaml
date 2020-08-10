@@ -1,4 +1,4 @@
-name: Level 1
+name: BIKE Level-1
 comment: '(r, w, t) = (12323, 142, 134)'
 security level:
   quantum: 64
@@ -10,4 +10,5 @@ sizes:
   sk: 281
   pk: 1541
   ct|sig: 1573
-number of operations: '1'
+  msg: 256
+number of operations: inf

@@ -4,4 +4,5 @@ hardware features:
   - avx2
 type: optimized
 side channel guarding:
-  branching: true
+  branching: false
+  timing: false

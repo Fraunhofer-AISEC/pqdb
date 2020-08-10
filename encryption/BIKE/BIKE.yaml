@@ -1,7 +1,7 @@
 stateful: false
 name: BIKE
 category: code
-nist round: 2
+nist round: 3
 year:
   candidate: 2017
   paper: 2017
@@ -23,13 +23,16 @@ authors:
   - Valentin Vasseur
   - Gilles Zémor
 problems:
-  - assumption: SD
-    comment: Syndrome Decoding
-  - assumption: CF
-    comment: Codeword Finding
+  - assumption: QCSD
+    comment: Quasi-cyclic Codes Syndrome Decoding
+  - assumption: QCCF
+    comment: Quasi-cyclic Codes Codeword Finding
 links:
   - 'https://bikesuite.org/'
 sources:
   - >-
     NIST submission paper, round 3 consideration
     https://bikesuite.org/files/v4.0/BIKE_Spec.2020.05.03.1.pdf
+description: >-
+  based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, that can
+  be decoded using bit flipping decoding techniques
