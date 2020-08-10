@@ -5,7 +5,6 @@ security level:
   nist category: 1
   classical: 128
 failure probability: -128
-failure probability comment: !<tag:yaml.org,2002:js/undefined> ''
 sizes:
   sk: 281
   pk: 1541
