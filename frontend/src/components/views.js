@@ -26,6 +26,14 @@ import diagramImage from '../tables.svg';
 
 import { queryAll, BookIcon as SourceIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
+const NIST_ROUNDS = {
+    "none": "Not submitted to the NIST standardization",
+    "1": "Reached Round 1 of the NIST standardization",
+    "2": "Reached Round 2 of the NIST standardization",
+    "3a": "Alternate Candidate in Round 3 of the NIST standardization",
+    "3f": "Finalist in Round 3 of the NIST standardization",
+}
+
 const Comment = function (props) {
     if (props.title === undefined || props.title === null || props.title === '')
         return null;
@@ -783,9 +791,7 @@ class SchemeDetail extends React.Component {
                                 </PropItem>)
                             }
                             <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
-                                {["Not submitted to the NIST standardization",
-                                    "Reached Round 1 of the NIST standardization",
-                                    "In Round 2 of the NIST standardization"][s.nist_round]}
+                                {NIST_ROUNDS[s.nist_round]}
                             </PropItem>
 
                             <PropItem k="year" title="Year" icon={EventIcon}>
