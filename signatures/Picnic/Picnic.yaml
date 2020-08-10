@@ -20,7 +20,7 @@ authors:
 problems:
     - assumption: Zero Knowledge proof
 stateful: false
-nist round: 2
+nist round: '2'
 sources:
   - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"
 links:

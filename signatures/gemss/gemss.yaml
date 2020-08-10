@@ -7,7 +7,7 @@ year:
 problems:
   - assumption: HFE
 stateful: false
-nist round: 2
+nist round: '2'
 authors:
   - A. Casanova
   - J.-C. Faugère
