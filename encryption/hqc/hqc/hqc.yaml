@@ -1,0 +1,6 @@
+name: HQC
+type: KEM
+security notion: IND-CCA
+security notion comment: ''
+sources: []
+description: uses tensor product codes

@@ -1,0 +1,14 @@
+name: HQC-RMRS-128
+security level:
+  quantum: 127
+  nist category: 1
+  comment: TODO
+  classical: 128
+failure probability: -128
+failure probability comment: <2^-128
+sizes:
+  sk: 40
+  pk: 2607
+  ct|sig: 5191
+  comment: 'Sessionkey: 64'
+number of operations: inf
