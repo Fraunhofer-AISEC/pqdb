@@ -7,7 +7,7 @@ year:
 problems:
     - assumption: LWE
 stateful: false
-nist round: '2'
+nist round: '3a'
 authors:
   - Erdem Alkim
   - Joppe W. Bos
