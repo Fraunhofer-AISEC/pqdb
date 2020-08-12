@@ -61,11 +61,11 @@ const SEC_NOTIONS = {
 
 
 const NIST_ROUNDS = {
-    "none": "Not submitted to the NIST standardization",
-    "1": "Reached Round 1 of the NIST standardization",
-    "2": "Reached Round 2 of the NIST standardization",
-    "3a": "Alternate Candidate in Round 3 of the NIST standardization",
-    "3f": "Finalist in Round 3 of the NIST standardization",
+    "none": {short: null, long: "Not submitted to the NIST standardization"},
+    "1": {short: "round 1", long: "Reached Round 1 of the NIST standardization"},
+    "2": {short: "round 2", long: "Reached Round 2 of the NIST standardization"},
+    "3a": {short: "round 3 alternate", long: "Alternate Candidate in Round 3 of the NIST standardization"},
+    "3f": {short: "round 3 finalist", long: "Finalist in Round 3 of the NIST standardization"},
 }
 
 const Comment = function (props) {
@@ -252,9 +252,9 @@ function renderSchemeList(db, typeKey) {
                             <MaybeTooltip title={s.category_comment}>
                                 <span>{s.category}</span>
                             </MaybeTooltip>
-                            {s.nist_round > 0 && [" \u2022 ",
+                            {s.nist_round != "none" && [" \u2022 ",
                                 <MaybeTooltip title={s.nist_round_comment}>
-                                    <span>round {s.nist_round}</span>
+                                    <span>{NIST_ROUNDS[s.nist_round].short}</span>
                                 </MaybeTooltip>]}
                             {s.description && " \u2022 "}
                             <em>{s.description}</em>
@@ -816,7 +816,7 @@ class SchemeDetail extends React.Component {
                                 </PropItem>)
                             }
                             <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
-                                {NIST_ROUNDS[s.nist_round]}
+                                {NIST_ROUNDS[s.nist_round].long}
                             </PropItem>
 
                             <PropItem k="year" title="Year" icon={EventIcon}>
