@@ -1,8 +1,5 @@
-name: Classic McEliece
+name: Classic McEliece KEM
 type: KEM
 security notion: IND-CCA
-description: >-
-  Built conservatively on Niederreiter’s  dual  version  of  McEliece’s  PKE 
-  using  binary  Goppa  codes
 sources:
   - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf#section.3'
