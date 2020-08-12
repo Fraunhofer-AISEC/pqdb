@@ -15,7 +15,7 @@ authors:
 problems:
     - assumption: R-LWE
 stateful: false
-nist round: 2
+nist round: '2'
 sources:
   - NIST Submission Paper (2020-04-10) ( https://newhopecrypto.org/data/NewHope_2020_04_10.pdf )
 last_updated: "2020-04-15"
