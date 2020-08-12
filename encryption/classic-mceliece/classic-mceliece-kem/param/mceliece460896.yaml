@@ -3,7 +3,6 @@ sizes:
   pk: 524160
   sk: 13568
   ct|sig: 188
-  comment: ''
   msg: 32
 number of operations: inf
 failure probability: 0
