@@ -1,6 +1,0 @@
-platform: Virtex-7
-timings:
-  gen: 974306
-  enc|sign: 5413
-  dec|vrfy: 19722
-  unit: cycles

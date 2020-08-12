@@ -1,8 +1,0 @@
-sources:
-  - 'https://classic.mceliece.org/hardware.html'
-platform: Artix-7
-timings:
-  gen: 482893
-  enc|sign: 2720
-  dec|vrfy: 12036
-  unit: cycles

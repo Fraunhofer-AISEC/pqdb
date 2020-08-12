@@ -1,7 +1,7 @@
 stateful: false
 name: Classic McEliece
 category: code
-nist round: '3f'
+nist round: 3f
 year:
   paper: 1978
   candidate: 2017
@@ -27,5 +27,7 @@ links:
 problems:
   - assumption: Computational Syndrome Decoding
 description: >-
-  Built conservatively from Niederreiter’s dual version of McEliece’s PKE
-  using binary Goppa codes
+  "Classic McEliece has a somewhat unusual performance profile—it has a very
+  large public key but the smallest ciphertexts of all competing KEMs" ~ "Status
+  Report on the Second Round of the NIST Post-Quantum Cryptography
+  Standardization Process 

@@ -1,6 +1,0 @@
-timings:
-  gen: 1599882
-  enc|sign: 2720
-  dec|vrfy: 15638
-  unit: cycles
-platform: Artix-7
