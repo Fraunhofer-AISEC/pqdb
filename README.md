@@ -19,6 +19,9 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 #### Isogeny-based
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
 
+#### Code-based
+* [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
+
 ### Signature
 
 #### Lattice-based
@@ -28,7 +31,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Multivariate
 * [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
-* [MQDSS] (signatures/mqdss) ([Website](http://mqdss.org))
+* [MQDSS](signatures/mqdss) ([Website](http://mqdss.org))
 
 #### Hash-based
 * [XMSS](signatures/xmss) ([Website](https://tools.ietf.org/html/rfc8391))

@@ -12,6 +12,6 @@ authors:
 problems:
     - assumption: NTRU prime
 stateful: false
-nist round: 2
+nist round: '3a'
 sources:
   - NIST Submission Paper ( https://ntruprime.cr.yp.to/nist/ntruprime-20190330.pdf )
