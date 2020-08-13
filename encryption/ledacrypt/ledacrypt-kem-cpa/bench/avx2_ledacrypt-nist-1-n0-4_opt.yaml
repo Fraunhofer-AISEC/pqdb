@@ -1,0 +1,5 @@
+timings:
+  gen: 0.271
+  enc|sign: 0.029
+  dec|vrfy: 0.305
+  unit: ms

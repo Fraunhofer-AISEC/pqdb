@@ -21,6 +21,8 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Code-based
 * [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
+* [LEDAcrypt](encryption/ledacrypt) ([Website](https://www.ledacrypt.org/))
+
 
 ### Signature
 

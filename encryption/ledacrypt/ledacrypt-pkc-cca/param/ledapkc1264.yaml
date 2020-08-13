@@ -1,0 +1,17 @@
+name: LEDApkc1264
+sizes:
+  sk: 26
+  pk: 2928
+  ct|sig: 5856
+  msg: 32
+  comment: 'min ct size: 2,967'
+number of operations: inf
+security level:
+  quantum: 93
+  classical: 144
+  nist category: 1
+failure probability: -64
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=114'
+comment: ''
