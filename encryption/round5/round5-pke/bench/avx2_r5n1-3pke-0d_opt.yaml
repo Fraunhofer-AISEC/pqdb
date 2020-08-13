@@ -1,6 +1,6 @@
 sources:
-  - ''
-platform: 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 64'
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 64'
+platform: ''
 timings:
   gen: 784000
   enc|sign: 1013000
