@@ -43,9 +43,15 @@
             "type": "string"
         },
         "nist round": {
-            "type": "integer",
-            "minimum": 0,
-            "$comment": "0 for schemes that were not submitted to the NIST PQC Standardization Process."
+            "type": "string",
+            "enum": [
+                "none",
+                "1",
+                "2",
+                "3a",
+                "3f"
+            ],
+            "$comment": "`3a`/`3f` for round 3 alternate candidates and finalists, respectively. `none` for schemes that were not submitted to the NIST PQC Standardization Process."
         },
         "year": {
             "type": "object",

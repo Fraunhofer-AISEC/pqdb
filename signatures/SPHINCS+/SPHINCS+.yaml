@@ -26,7 +26,7 @@ authors:
 problems:
   - assumption: resistance of second preimage cryptographic hash function
 stateful: false
-nist round: 2
+nist round: '3a'
 sources:
   - >-
     NIST Submission Paper (
