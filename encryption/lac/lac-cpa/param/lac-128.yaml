@@ -1,4 +1,4 @@
-name: LAC-128
+name: LAC.CPA-128
 failure probability: -116
 sizes:
   sk: 1056
