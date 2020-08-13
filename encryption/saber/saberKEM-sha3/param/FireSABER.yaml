@@ -1,7 +1,7 @@
 name: FireSABER
 security level:
-  classical: 270
-  quantum: 245
+  classical: 283
+  quantum: 257
   nist category: 5
 failure probability: -165
 sizes:

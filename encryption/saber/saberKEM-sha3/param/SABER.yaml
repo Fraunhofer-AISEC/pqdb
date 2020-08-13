@@ -1,7 +1,7 @@
 name: SABER
 security level:
-  classical: 198
-  quantum: 180
+  classical: 203
+  quantum: 185
   nist category: 3
 failure probability: -136
 sizes:
