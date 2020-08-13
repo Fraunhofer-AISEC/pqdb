@@ -7,7 +7,7 @@ authors:
   - Gerardo Pelosi
   - Paolo Santini
 category: code
-nist round: 2
+nist round: '2'
 year:
   paper: 2020
   candidate: 2017
