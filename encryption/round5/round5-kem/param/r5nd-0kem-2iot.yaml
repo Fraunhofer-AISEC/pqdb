@@ -3,6 +3,7 @@ failure probability: -41
 security level:
   classical: 96
   quantum: 88
+  nist category: 0
 sizes:
   sk: 16
   msg: 16

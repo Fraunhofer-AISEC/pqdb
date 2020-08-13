@@ -1,9 +1,9 @@
 name: R5ND.1PKE.5d
 security level:
   classical: 128
-  quantum: 118
+  quantum: 120
   nist category: 1
-failure probability: -155
+failure probability: -142
 sizes:
   sk: 493
   pk: 461

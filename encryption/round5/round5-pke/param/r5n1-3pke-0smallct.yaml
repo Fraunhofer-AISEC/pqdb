@@ -2,7 +2,6 @@ name: R5N1.3PKE.0smallCT
 security level:
   classical: 191
   quantum: 175
-  comment: ''
   nist category: 3
 failure probability: -149
 sizes:

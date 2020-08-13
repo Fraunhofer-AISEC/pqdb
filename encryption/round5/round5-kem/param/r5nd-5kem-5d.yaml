@@ -2,7 +2,7 @@ name: R5ND.5KEM.5d
 failure probability: -64
 security level:
   classical: 256
-  quantum: 233
+  quantum: 232
   nist category: 5
 sizes:
   pk: 972
