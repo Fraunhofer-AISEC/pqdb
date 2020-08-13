@@ -1,9 +1,8 @@
 name: FireSABER
 security level:
-  classical: 283
-  quantum: 257
+  classical: 270
+  quantum: 245
   nist category: 5
-  comment: 'See https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
 failure probability: -165
 sizes:
   sk: 3040

@@ -1,9 +1,8 @@
 name: LightSABER
 security level:
-  classical: 125
-  quantum: 114
+  classical: 126
+  quantum: 115
   nist category: 1
-  comment: 'See https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
 failure probability: -120
 sizes:
   sk: 1568
