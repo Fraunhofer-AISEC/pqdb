@@ -1,0 +1,12 @@
+name: LAC.CPA-128
+failure probability: -116
+sizes:
+  sk: 1056
+  pk: 544
+  ct|sig: 712
+  msg: 32
+number of operations: inf
+security level:
+  classical: 147
+  quantum: 133
+  nist category: 1
