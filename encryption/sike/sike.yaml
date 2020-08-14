@@ -21,7 +21,7 @@ authors:
   - Vladimir Soukharev
   - David Urbanik
 stateful: false
-nist round: 2
+nist round: '3a'
 problems:
     - assumption: hardness of isogeny computation on supersingular elliptic curves
 sources:
