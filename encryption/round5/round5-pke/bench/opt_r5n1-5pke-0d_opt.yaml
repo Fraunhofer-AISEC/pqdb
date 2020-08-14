@@ -1,5 +1,5 @@
 sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 62'
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.15'
 platform: >-
   gcc -march=native -mtune=native-O3 -fomit-frame-pointer -fwrapv, 
   MacBookPro15.1 with an Intel Core i7 2.6GHz, running ma-cOS 10.13.6, Apple

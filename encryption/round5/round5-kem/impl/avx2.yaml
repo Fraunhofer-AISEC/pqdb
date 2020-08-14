@@ -1,6 +1,6 @@
 name: AVX2
 sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 64'
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.19'
 platform: C
 type: optimized
 hardware features:

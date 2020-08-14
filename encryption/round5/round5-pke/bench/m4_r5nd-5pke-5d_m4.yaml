@@ -4,3 +4,5 @@ timings:
   enc|sign: 2017000
   dec|vrfy: 2551000
   unit: cycles
+sources:
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.22'

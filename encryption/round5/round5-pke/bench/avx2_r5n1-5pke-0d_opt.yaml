@@ -1,5 +1,5 @@
 sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf, page 64'
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.20'
 timings:
   gen: 961000
   enc|sign: 1246000
