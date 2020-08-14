@@ -6,7 +6,7 @@ year:
 problems:
   - assumption: MQ
 stateful: false
-nist round: 2
+nist round: '3f'
 authors:
   - Jintai Ding
   - Ming-Shing Chen
