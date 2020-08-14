@@ -22,7 +22,10 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
 
 #### Code-based
+* [Classic McEliece](encryption/classic-mceliece) ([Website](https://classic.mceliece.org/index.html))
 * [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
+* [ROLLO](encryption/rollo) ([Website](https://pqc-rollo.org/index.html))
+* [BIKE](encryption/BIKE) ([Website](https://bikesuite.org/))
 
 ### Signature
 

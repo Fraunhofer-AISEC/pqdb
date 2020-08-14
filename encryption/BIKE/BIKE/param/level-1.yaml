@@ -1,0 +1,13 @@
+name: BIKE Level-1
+comment: '(r, w, t) = (12323, 142, 134)'
+security level:
+  quantum: 64
+  nist category: 1
+  classical: 128
+failure probability: -128
+sizes:
+  sk: 281
+  pk: 1541
+  ct|sig: 1573
+  msg: 32
+number of operations: inf

@@ -1,0 +1,12 @@
+name: McEliece 6960119
+security level:
+  nist category: 5
+  quantum: 170
+  classical: 306
+sizes:
+  pk: 1047319
+  sk: 13908
+  ct|sig: 226
+  msg: 32
+number of operations: inf
+failure probability: 0
