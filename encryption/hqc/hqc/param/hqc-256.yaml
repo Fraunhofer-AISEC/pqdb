@@ -1,0 +1,13 @@
+name: HQC-256
+security level:
+  quantum: 255
+  nist category: 5
+  classical: 256
+failure probability: -256
+failure probability comment: < 2^-256
+sizes:
+  sk: 40
+  pk: 8698
+  ct|sig: 17379
+  comment: 'Sessionkey: 64'
+number of operations: inf

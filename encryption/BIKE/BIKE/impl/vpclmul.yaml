@@ -1,0 +1,10 @@
+name: VPCLMUL
+comment: optimized implementation using vector-PCLMULQDQ instructions
+platform: c
+type: optimized
+side channel guarding:
+  branching: true
+  timing: true
+  branching comment: >-
+    No branch depends on a secret piece of information and all the memory
+    patterns are independent of secret information

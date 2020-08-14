@@ -1,5 +1,5 @@
-stateful: false
 name: LAC
+description: based on Ring-LWE
 category: lattice
 year:
   paper: 2019
@@ -15,8 +15,10 @@ authors:
   - Kunpeng Wang
   - Zhe Liu
   - Hao Yang
+stateful: false
 sources:
   - >-
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip
-nist round: 2
-problems comment: LWE over rings
+nist round: '2'
+problems:
+- assumption: Ring-LWE

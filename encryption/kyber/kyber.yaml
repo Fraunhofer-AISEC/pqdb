@@ -18,6 +18,6 @@ problems:
     - assumption: M-LWE
       comment: tight ROM reduction, no-tight QROM reduction
 stateful: false
-nist round: 2
+nist round: '3f'
 sources:
   - NIST Submission Paper, version 2.0 from 2019-04-01 ( https://pq-crystals.org/kyber/data/kyber-specification-round2.pdf )
