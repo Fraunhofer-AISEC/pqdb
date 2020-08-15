@@ -3,6 +3,6 @@ timings:
   enc|sign: 874900
   dec|vrfy: 8535600
   unit: cycles
-platform: C11
+platform: Intel Core i5-6600 clocked at 3.2 GHz
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=119'

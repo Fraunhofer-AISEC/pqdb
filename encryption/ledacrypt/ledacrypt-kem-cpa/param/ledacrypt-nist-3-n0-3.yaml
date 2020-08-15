@@ -4,7 +4,7 @@ sizes:
   ct|sig: 1960
   msg: 48
 failure probability: -29
-name: LEDAcrypt
+name: LEDAcrypt.KEM.CPA.3.N0.3
 security level:
   classical: 208
   quantum: 126

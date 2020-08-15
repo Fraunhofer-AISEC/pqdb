@@ -5,4 +5,4 @@ timings:
   enc|sign: 1602400
   dec|vrfy: 18780100
   unit: cycles
-platform: C11
+platform: Intel Core i5-6600 clocked at 3.2 GHz

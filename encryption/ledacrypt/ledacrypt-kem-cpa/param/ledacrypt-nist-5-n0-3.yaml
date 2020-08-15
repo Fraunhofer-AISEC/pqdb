@@ -2,7 +2,7 @@ security level:
   nist category: 5
   classical: 273
   quantum: 161
-name: LEDAcrypt
+name: LEDAcrypt.KEM.CPA.5.N0.3
 failure probability: -29
 sizes:
   sk: 3760

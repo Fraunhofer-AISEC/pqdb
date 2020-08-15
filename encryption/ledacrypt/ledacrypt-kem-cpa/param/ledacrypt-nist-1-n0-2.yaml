@@ -1,4 +1,4 @@
-name: LEDAcrypt
+name: LEDAcrypt.KEM.CPA.1.N0.2
 security level:
   classical: 144
   quantum: 91
@@ -13,3 +13,4 @@ sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=112'
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=82'
 number of operations: inf
+comment: ''

@@ -1,0 +1,7 @@
+name: BIKE
+type: KEM
+security notion: IND-CPA
+security notion comment: >-
+  BIKE is currently designed to be used with ephemeral keys.
+  IND-CCA could be achieved under the assumption that the Decoding Failure Rate
+  suffices a required magnitude

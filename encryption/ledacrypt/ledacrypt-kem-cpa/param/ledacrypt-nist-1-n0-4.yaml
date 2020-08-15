@@ -1,4 +1,4 @@
-name: LEDAcrypt
+name: LEDAcrypt.KEM.CPA.1.N0.4
 security level:
   classical: 144
   quantum: 92

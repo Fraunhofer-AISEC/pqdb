@@ -1,0 +1,6 @@
+platform: 'Intel Core i7-7820X, 16 GB RAM; gcc 9.2, openssl 1.1.1d'
+timings:
+  gen: 3689000
+  enc|sign: 334000
+  dec|vrfy: 1258000
+  unit: cycles
