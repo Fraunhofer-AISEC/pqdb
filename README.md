@@ -16,6 +16,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
 * [Round5](encryption/round5) ([Website](https://round5.org/))
 * [ThreeBears](encryption/three-bears) ([Website](https://sourceforge.net/projects/threebears/))
+* [SABER](encryption/saber) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/saber/))
 
 
 #### Isogeny-based
