@@ -1,10 +1,12 @@
 name: NTRU-HPS-2048-509
 security level:
+  classical: 0
   quantum: 105
   nist category: 0
   comment: >-
     Assuming a non-local model of computation.
-    (With a local model: 139 bits quantum security, category 1)
+    (With a local model: 139 bits quantum security, 128 bits classical security, category 1).
+    Classical security is derived from the NIST security level.
 sizes:
   sk: 935
   pk: 699

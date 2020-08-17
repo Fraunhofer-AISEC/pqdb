@@ -1,10 +1,12 @@
 name: NTRU-HRSS-701
 security level:
+  classical: 128
   quantum: 134
   nist category: 1
   comment: >-
     Assuming a non-local model of computation.
-    (With a local model: 185 bits quantum security, category 3)
+    (With a local model: 185 bits quantum security, 192 bits classical security, category 3)
+    Classical security is derived from the NIST security level.
 sizes:
   sk: 1450
   pk: 1138
