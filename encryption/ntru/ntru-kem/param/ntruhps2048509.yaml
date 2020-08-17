@@ -1,6 +1,5 @@
 name: NTRU-HPS-2048-509
 security level:
-  classical: 0
   quantum: 105
   nist category: 0
   comment: >-
