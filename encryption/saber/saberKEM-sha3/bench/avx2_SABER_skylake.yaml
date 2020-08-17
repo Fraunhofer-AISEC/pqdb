@@ -1,0 +1,7 @@
+platform: 'Intel Core i5-7200U (Kaby Lake) CPU 2.50GHz'
+comment: Benchmarks are from submission paper
+timings:
+  gen: 104177
+  enc|sign: 122086
+  dec|vrfy: 120464
+  unit: cycles
