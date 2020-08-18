@@ -4,7 +4,8 @@ security level:
   nist category: 0
   comment: >-
     Assuming a non-local model of computation.
-    (With a local model: 139 bits quantum security, category 1)
+    Classical security is derived from the corresponding NIST category.
+    (With a local model: 139 bits quantum security, 128 bits classical security, category 1).
 sizes:
   sk: 935
   pk: 699
