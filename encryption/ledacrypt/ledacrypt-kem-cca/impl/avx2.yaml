@@ -1,3 +1,3 @@
 name: AVX2
-platform: Intel Core i5-6600 3.2  GHz
+platform: C11
 type: optimized

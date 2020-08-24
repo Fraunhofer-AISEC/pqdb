@@ -1,5 +1,0 @@
-name: LEDAcrypt PKC
-type: KTM
-security notion: IND-CCA
-sources:
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf, page 80,81,113,114'

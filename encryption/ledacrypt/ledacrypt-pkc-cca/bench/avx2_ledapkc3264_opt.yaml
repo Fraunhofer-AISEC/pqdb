@@ -1,8 +1,0 @@
-sources:
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=120'
-platform: Intel Core i5-6600 clocked at 3.2 GHz
-timings:
-  gen: 10851400
-  enc|sign: 1429200
-  dec|vrfy: 6094200
-  unit: cycles
