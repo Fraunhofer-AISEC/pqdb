@@ -1,0 +1,6 @@
+timings:
+  gen: 1.181
+  enc|sign: 0.155
+  dec|vrfy: 1.879
+  unit: ms
+platform: Intel Core i5-6600 clocked at 3.2 GHz

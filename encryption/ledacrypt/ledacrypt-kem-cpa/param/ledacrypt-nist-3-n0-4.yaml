@@ -1,0 +1,12 @@
+name: LEDAcrypt.KEM.CPA.3.N0.4
+security level:
+  classical: 208
+  quantum: 127
+  nist category: 3
+failure probability: -29
+sizes:
+  msg: 48
+  sk: 3968
+  pk: 4920
+  ct|sig: 1672
+number of operations: inf
