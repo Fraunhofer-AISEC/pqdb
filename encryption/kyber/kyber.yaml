@@ -1,4 +1,4 @@
-name: CRYSTALS Kyber
+name: Kyber
 description: based on Module LWE, using the Lindner-Peikert approach
 year:
     candidate: 2017
