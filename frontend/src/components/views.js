@@ -1195,7 +1195,6 @@ function detailLink ( type, scheme, flavor ) {
         url += '?_=' + type + '/' + scheme;
         if ( flavor !== undefined )
             url += '/' + flavor;
-        url += '&new=true';
     }
 
     return url;
