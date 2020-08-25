@@ -9,7 +9,7 @@ security level:
   quantum: 161
   classical: 273
   nist category: 5
-failure probability: -256
+failure probability: -64
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'
