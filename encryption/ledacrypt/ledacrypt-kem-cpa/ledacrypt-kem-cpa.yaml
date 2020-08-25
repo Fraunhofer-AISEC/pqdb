@@ -1,4 +1,4 @@
-name: LEDAcrypt KEM
+name: LEDAcrypt KEM-CPA
 type: KEM
 security notion: IND-CPA
 sources:
