@@ -1,5 +1,5 @@
-stateful: false
 name: LEDAcrypt
+description: Using the Niederreiter variant of McEliece encryption, based on low density parity check codes
 authors:
   - Marco Baldi
   - Alessandro Barenghi
@@ -11,10 +11,10 @@ nist round: '2'
 year:
   paper: 2020
   candidate: 2017
+stateful: false
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf'
 links:
   - 'https://www.ledacrypt.org/'
 problems:
-  - assumption: Quasi-cyclic low-density parity-check
-    comment: '  QC-LDPC '
+  - assumption: Syndrome decoding for QC-LDPC codes (Quasi-cyclic low-density parity-check)
