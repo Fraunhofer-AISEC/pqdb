@@ -1,0 +1,5 @@
+name: Classic McEliece KEM
+type: KEM
+security notion: IND-CCA
+sources:
+  - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf#section.3'

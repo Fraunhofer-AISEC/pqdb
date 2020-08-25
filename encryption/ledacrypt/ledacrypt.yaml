@@ -1,0 +1,20 @@
+stateful: false
+name: LEDAcrypt
+authors:
+  - Marco Baldi
+  - Alessandro Barenghi
+  - Franco Chiaraluce
+  - Gerardo Pelosi
+  - Paolo Santini
+category: code
+nist round: '2'
+year:
+  paper: 2020
+  candidate: 2017
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf'
+links:
+  - 'https://www.ledacrypt.org/'
+problems:
+  - assumption: Quasi-cyclic low-density parity-check
+    comment: '  QC-LDPC '
