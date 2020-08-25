@@ -3,7 +3,6 @@ sizes:
   sk: 66
   pk: 7104
   ct|sig: 3584
-  comment: ''
 number of operations: inf
 security level:
   quantum: 128
@@ -13,4 +12,3 @@ failure probability: -64
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'
-comment: ''
