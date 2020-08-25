@@ -1,7 +1,7 @@
 stateful: false
 name: BIKE
 category: code
-nist round: 3f
+nist round: 3a
 year:
   candidate: 2017
   paper: 2017
