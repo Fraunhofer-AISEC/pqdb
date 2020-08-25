@@ -244,7 +244,7 @@ function renderSchemeList(db, typeKey) {
                 {queryAll(db, stmt, [typeKey]).map(s => (
                     <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
                         <Typography variant="h6">
-                            <Link component={RouterLink} to={"detail?_=" + typeKey + "/" + s.id}>
+                            <Link component={RouterLink} to={detailLink(typeKey, s.id)}>
                                 {s.name}
                             </Link>
                         </Typography>
@@ -252,7 +252,7 @@ function renderSchemeList(db, typeKey) {
                             <MaybeTooltip title={s.category_comment}>
                                 <span>{s.category}</span>
                             </MaybeTooltip>
-                            {s.nist_round != "none" && [" \u2022 ",
+                            {s.nist_round !== "none" && [" \u2022 ",
                                 <MaybeTooltip title={s.nist_round_comment}>
                                     <span>{NIST_ROUNDS[s.nist_round].short}</span>
                                 </MaybeTooltip>]}
@@ -469,7 +469,7 @@ WHERE
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
         results.forEach(res => {
-            res['Parameter Set'] = <Link component={RouterLink} to={"../detail?_=" + state.schemeType + "/" + res.ID}>{res['Parameter Set']}</Link>;
+            res['Parameter Set'] = <Link component={RouterLink} to={detailLink(state.schemeType, res.ID)}>{res['Parameter Set']}</Link>;
             delete res.ID;
         });
         return {
@@ -878,7 +878,7 @@ class SchemeDetail extends React.Component {
                                 return [
                                     <ListItem key={"flavor-" + f.id + "-head"} style={{ display: "block" }}>
                                         <Typography component="h3" variant="h5">
-                                            <Link href={"?_=" + s.type + "/" + s.id + "/" + f.id}>{f.name}</Link>
+                                            <Link component={RouterLink} to={detailLink(s.type, s.id, f.id)}>{f.name}</Link>
                                         </Typography>
                                         {f.description && <div>{f.description}</div>}
                                         {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
@@ -943,7 +943,7 @@ class SchemeDetail extends React.Component {
                             <ListItem key="scheme-head" alignItems="flex-start">
                                 <ListItemText>
                                     <Typography variant="h6">
-                                        <Link href={ "?_=" + s.type + "/" + s.id }>
+                                        <Link component={RouterLink} to={detailLink(s.type, s.id)}>
                                             <ArrowBackIcon fontSize="inherit" />
                                             { [" "] }
                                             { s.name }
@@ -1141,7 +1141,7 @@ class SchemeDetail extends React.Component {
                             <ListItem key="benchmarks">
                                 <ListItemText>
                                     <Typography component="h3" variant="h4">Benchmarks</Typography>
-                                    <div><Link href={"raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D" + f.id}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */ }
+                                    <div><Link component={RouterLink} to={"raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D" + f.id}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */ }
                                 </ListItemText>
                             </ListItem>
                         </List>
@@ -1187,6 +1187,18 @@ function romanCat ( nistCat ) {
 function linkify ( s ) {
     let url = s.match(/https?:\/\/[^\s]+/g);
     return url ? <Link href={ url }>{ s }</Link> : s;
+}
+
+function detailLink ( type, scheme, flavor ) {
+    let url = 'detail';
+    if ( type !== undefined ) {
+        url += '?_=' + type + '/' + scheme;
+        if ( flavor !== undefined )
+            url += '/' + flavor;
+        url += '&new=true';
+    }
+
+    return url;
 }
 
 export { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison };
