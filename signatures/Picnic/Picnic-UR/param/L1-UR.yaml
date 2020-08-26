@@ -1,5 +1,5 @@
 name: Picnic-L1-UR
-security level: 
+security level:
   classical:  128
   quantum:  64
   nist category: 1
