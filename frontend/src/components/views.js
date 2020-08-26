@@ -969,6 +969,7 @@ class SchemeDetail extends React.Component {
                                     <Typography variant="h3">
                                         { f.name }
                                     </Typography>
+                                    { f.description && <div>{ f.description }</div> }
                                     { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
                                 </ListItemText>
                             </ListItem>
