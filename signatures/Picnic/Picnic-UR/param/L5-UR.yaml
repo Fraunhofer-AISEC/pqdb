@@ -1,5 +1,5 @@
 name: Picnic-L5-UR
-security level: 
+security level:
   classical:  256
   quantum:  128
   nist category: 5
