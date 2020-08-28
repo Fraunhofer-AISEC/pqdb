@@ -6,13 +6,16 @@ import {
     MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Tooltip,
     Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel, Slider
 } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CategoryIcon from '@material-ui/icons/Category';
 import CodeIcon from '@material-ui/icons/Code';
+import ChipIcon from '@material-ui/icons/Memory';
 import DiffieHellmanIcon from '@material-ui/icons/SyncAlt';
 import EncryptionIcon from '@material-ui/icons/LockOutlined';
 import EventIcon from '@material-ui/icons/Event';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
+import LanguageIcon from '@material-ui/icons/Translate';
 import LinkIcon from '@material-ui/icons/Link';
 import ParamSetIcon from '@material-ui/icons/Tune';
 import PeopleIcon from '@material-ui/icons/PeopleAlt';
@@ -24,14 +27,45 @@ import { GlassMagnifier } from "react-image-magnifiers";
 
 import diagramImage from '../tables.svg';
 
-import { queryAll, BookIcon as SourceIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
+import { queryAll, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
+
+const SCHEME_TYPES = {
+    enc: {
+        name: "Key Exchange Scheme",
+        icon: EncryptionIcon,
+        ctsig: "ct",
+        ct_sig: "Ciphertext",
+        encsign: "enc",
+        enc_sign: "Encrypt",
+        decvrfy: "dec",
+        dec_vrfy: "Verify",
+    },
+    sig: {
+        name: "Signature Scheme",
+        icon: SignatureIcon,
+        ctsig: "sig",
+        ct_sig: "Signature",
+        encsign: "sign",
+        enc_sign: "Sign",
+        decvrfy: "vrfy",
+        dec_vrfy: "Verify",
+    }
+}
+
+const SEC_NOTIONS = {
+    "IND-CCA": "Indistinguishability under an adaptive Chosen Ciphertext Attack",
+    "IND-CPA": "Indistinguishability under an adaptive Chosen Plaintext Attack",
+    "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
+    "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
+}
+
 
 const NIST_ROUNDS = {
-    "none": "Not submitted to the NIST standardization",
-    "1": "Reached Round 1 of the NIST standardization",
-    "2": "Reached Round 2 of the NIST standardization",
-    "3a": "Alternate Candidate in Round 3 of the NIST standardization",
-    "3f": "Finalist in Round 3 of the NIST standardization",
+    "none": {short: null, long: "Not submitted to the NIST standardization"},
+    "1": {short: "round 1", long: "Reached Round 1 of the NIST standardization"},
+    "2": {short: "round 2", long: "Reached Round 2 of the NIST standardization"},
+    "3a": {short: "round 3 alternate", long: "Alternate Candidate in Round 3 of the NIST standardization"},
+    "3f": {short: "round 3 finalist", long: "Finalist in Round 3 of the NIST standardization"},
 }
 
 const Comment = function (props) {
@@ -44,6 +78,13 @@ const Comment = function (props) {
             <InfoIcon fontSize="inherit" style={{ cursor: "help" }} />
         </Tooltip>
     ];
+}
+
+const MaybeTooltip = function (props) {
+    if (props.title === undefined || props.title === null || props.title === '')
+        return props.children;
+    else
+        return <Tooltip {...props}>{props.children}</Tooltip>;
 }
 
 const TextComment = function (props) {
@@ -60,7 +101,7 @@ const PropItem = function (props) {
             {props.hasOwnProperty('title') ?
                 <Typography component="h2" variant="inherit">
                     <Tooltip title={props.title} arrow>
-                        { /* overwrite some properties <Tooltip> sets */}
+                        { /* overwrite some properties <Tooltip> sets */ }
                         <ItemIcon role="img" aria-hidden={false} aria-label={props.title} aria-describedby={null} />
                     </Tooltip>
                 </Typography>
@@ -188,6 +229,43 @@ function AutoFocusTextField(props) {
     return <TextField inputRef={inputRef} {...props} />;
 }
 
+function renderSchemeList(db, typeKey) {
+    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY name;";
+    const type = SCHEME_TYPES[typeKey];
+
+    return (
+        <>
+            <Typography component="h2" variant="h5">
+                {type.name}s
+                {"  "}
+                <type.icon fontSize="inherit" />
+            </Typography>
+            <List>
+                {queryAll(db, stmt, [typeKey]).map(s => (
+                    <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
+                        <Typography variant="h6">
+                            <Link component={RouterLink} to={detailLink(typeKey, s.id)}>
+                                {s.name}
+                            </Link>
+                        </Typography>
+                        <small style={{ lineHeight: 1 }}>
+                            <MaybeTooltip title={s.category_comment}>
+                                <span>{s.category}</span>
+                            </MaybeTooltip>
+                            {s.nist_round !== "none" && [" \u2022 ",
+                                <MaybeTooltip title={s.nist_round_comment}>
+                                    <span>{NIST_ROUNDS[s.nist_round].short}</span>
+                                </MaybeTooltip>]}
+                            {s.description && " \u2022 "}
+                            <em>{s.description}</em>
+                        </small>
+                    </ListItemText></ListItem>
+                ))}
+            </List>
+        </>
+    );
+}
+
 class QueryTable extends React.Component {
     constructor(props) {
         super(props);
@@ -265,29 +343,14 @@ class Welcome extends React.Component {
     constructor(props) {
         super(props);
         this.db = props.db;
-        this.state = {
-            enc: [],
-            sig: []
-        };
-    }
-
-    componentDidMount() {
-        var results = this.db.exec(
-            "SELECT name FROM scheme WHERE type='enc' ORDER BY name;" +
-            "SELECT name FROM scheme WHERE type='sig' ORDER BY name;"
-        );
-        var enc = results[0].values.map(row => row[0]);
-        var sig = results[1].values.map(row => row[0]);
-        this.setState({ enc: enc, sig: sig });
     }
 
     render() {
         return (
             <Container maxWidth="md">
-
                 <Paper>
                     <Box p={4}>
-                        <Typography variant="h4" gutterBottom>Welcome!</Typography>
+                        <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
                         <Typography paragraph>
                             This is the frontend presenting data from <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>. You can select different views by clicking the menu icon in the top left corner.
                         </Typography>
@@ -298,28 +361,17 @@ class Welcome extends React.Component {
                             Contributions are warmly welcomed, see <Link href="https://github.com/cryptoeng/pqdb#contribute">here</Link> for details.
                         </Typography>
 
-                        <Typography variant='h5' align='center'>Available Schemes</Typography>
-                        <Box mt={1} />
-                        <Grid container justify="space-evenly">
-                            <Grid item>
-                                <Paper>
+                        <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
+                        <Grid container>
+                            <Grid item xs px={4} key="enc">
                                     <Box p={4}>
-                                        <Typography variant="h6">Encryption Schemes</Typography>
-                                        <List>
-                                            {this.state.enc.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
-                                        </List>
+                                        {renderSchemeList(this.db, 'enc')}
                                     </Box>
-                                </Paper>
                             </Grid>
-                            <Grid item>
-                                <Paper>
+                            <Grid item xs px={4} key="sig">
                                     <Box p={4}>
-                                        <Typography variant="h6">Signature Schemes</Typography>
-                                        <List>
-                                            {this.state.sig.map(name => <ListItem key={name}><ListItemText>{name}</ListItemText></ListItem>)}
-                                        </List>
+                                        {renderSchemeList(this.db, 'sig')}
                                     </Box>
-                                </Paper>
                             </Grid>
                         </Grid>
                     </Box>
@@ -394,7 +446,7 @@ class SchemeComparison extends React.Component {
             ((state.showStorage) ? `,
     p.sizes_sk AS 'Secret Key Size',
     p.sizes_pk AS 'Public Key Size',
-    p.sizes_ct_sig AS '${(state.schemeType === 'sig') ? "Signature" : "Ciphertext"} Size',
+    p.sizes_ct_sig AS '${SCHEME_TYPES[state.schemeType].ct_sig} Size',
     (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showBenchmarks) ? `,
     i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
     (
@@ -407,8 +459,8 @@ class SchemeComparison extends React.Component {
     ) AS 'Hardware Features'` : ''},
     b.platform AS 'Platform',
     round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
-    round(b.timings_enc_sign / 1000) AS '${(state.schemeType === 'sig') ? "Sign" : "Encrypt"} (kCycles)',
-    round(b.timings_dec_vrfy / 1000) AS '${(state.schemeType === 'sig') ? "Verify" : "Decrypt"} (kCycles)',
+    round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
+    round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
     round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
 ` : '') + `FROM
     scheme s
@@ -434,7 +486,7 @@ WHERE
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
         results.forEach(res => {
-            res['Parameter Set'] = <Link component={RouterLink} to={"../detail?_=" + state.schemeType + "/" + res.ID}>{res['Parameter Set']}</Link>;
+            res['Parameter Set'] = <Link component={RouterLink} to={detailLink(state.schemeType, res.ID)}>{res['Parameter Set']}</Link>;
             delete res.ID;
         });
         return {
@@ -721,23 +773,6 @@ class CustomSQLQuery extends React.Component {
 }
 
 class SchemeDetail extends React.Component {
-    types = {
-        enc: {
-            name: "Encryption Scheme",
-            icon: EncryptionIcon,
-        },
-        sig: {
-            name: "Signature Scheme",
-            icon: SignatureIcon,
-        }
-    }
-    sec_notions = {
-        "IND-CCA": "Indistinguishability under an adaptive Chosen Ciphertext Attack",
-        "IND-CPA": "Indistinguishability under an adaptive Chosen Plaintext Attack",
-        "EUF-CMA": "Existential Unforgeability under a Chosen Message Attack",
-        "SUF-CMA": "Strong Existential Unforgeability under a Chosen Message Attack",
-    }
-
     constructor(props) {
         super(props);
         this.db = props.db;
@@ -752,31 +787,20 @@ class SchemeDetail extends React.Component {
     }
 
     renderOverview() {
-        var stmt = "SELECT id, name FROM scheme WHERE type=? ORDER BY name;";
-
         return (
+            <Container maxWidth="md">
             <Grid container justify="center" spacing={2}>
-                {Object.entries(this.types).map(([typeKey, type]) => (
-                    <Grid item>
+                {Object.keys(SCHEME_TYPES).map(typeKey => (
+                    <Grid item xs>
                         <Paper>
                             <Box p={2}>
-                                <Typography component="h1" variant="h6">
-                                    {type.name}s
-                                {"  "}
-                                    <type.icon fontSize="inherit" />
-                                </Typography>
-                                <List>
-                                    {queryAll(this.db, stmt, [typeKey]).map(s => (
-                                        <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
-                                            <Link component={RouterLink} to={"?_=" + typeKey + "/" + s.id}>{s.name}</Link>
-                                        </ListItemText></ListItem>
-                                    ))}
-                                </List>
+                                {renderSchemeList(this.db, typeKey)}
                             </Box>
                         </Paper>
                     </Grid>
                 ))}
             </Grid>
+            </Container>
         );
     }
 
@@ -794,7 +818,7 @@ class SchemeDetail extends React.Component {
         const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [id]);
         const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [id]);
 
-        let TypeIcon = this.types[s.type].icon;
+        let TypeIcon = SCHEME_TYPES[s.type].icon;
         return [
             <Container maxWidth="md">
                 <Paper>
@@ -805,10 +829,11 @@ class SchemeDetail extends React.Component {
                                     <Typography component="h1" variant="h2">
                                         {s.name}
                                         {"  "}
-                                        <Tooltip title={this.types[s.type].name} arrow>
-                                            <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={this.types[s.type].name} aria-describedby={null} />
+                                        <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
+                                            <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
                                         </Tooltip>
                                     </Typography>
+                                    {s.description && <div>{s.description}</div>}
                                     {s.comment && <div><TextComment>{s.comment}</TextComment></div>}
                                 </ListItemText>
                             </ListItem>
@@ -824,7 +849,7 @@ class SchemeDetail extends React.Component {
                                 </PropItem>)
                             }
                             <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
-                                {NIST_ROUNDS[s.nist_round]}
+                                {NIST_ROUNDS[s.nist_round].long}
                             </PropItem>
 
                             <PropItem k="year" title="Year" icon={EventIcon}>
@@ -864,15 +889,14 @@ class SchemeDetail extends React.Component {
                                 {authors.map(a => <div>{a.name}</div>)}
                             </PropItem>
 
-                            { /* TODO: make links links (maybe altering the db scheme, let's see) */}
                             {links.length > 0 &&
                                 <PropItem k="links" title="Links" icon={LinkIcon}>
-                                    {links.map(l => <div><Link href={l.url.match(/https:\/\/[^\s]+/g)} >{l.url}</Link></div>)}
+                                    {links.map(l => <div>{linkify(l.url)}</div>)}
                                 </PropItem>}
 
                             {sources.length > 0 &&
                                 <PropItem k="sources" title="Sources" icon={SourceIcon}>
-                                    {sources.map(s => <div><Link href={s.url.match(/https:\/\/[^\s]+/g)} >{s.url}</Link></div>)}
+                                    {sources.map(s => <div>{linkify(s.url)}</div>)}
                                 </PropItem>}
 
 
@@ -881,24 +905,25 @@ class SchemeDetail extends React.Component {
                             </ListItem>
 
                             {flavors.map((function (f) {
-                                const f_paramsets = queryAll(db, "SELECT name FROM paramset WHERE flavor_id=?", [f.id]);
-                                const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=?", [f.id]);
-                                const f_links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
-                                const f_sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+                                const f_paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
+                                const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]);
 
                                 return [
                                     <ListItem key={"flavor-" + f.id + "-head"} style={{ display: "block" }}>
-                                        <Typography component="h3" variant="h5">{f.name}</Typography>
+                                        <Typography component="h3" variant="h5">
+                                            <Link component={RouterLink} to={detailLink(s.type, s.id, f.id)}>{f.name}</Link>
+                                        </Typography>
+                                        {f.description && <div>{f.description}</div>}
                                         {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
                                     </ListItem>,
 
-                                    f.type !== "SIG" && // there's just one type for signatures, not worth showing this here
+                                    f.type !== "SIG" && !f.type_comment && // there's just one type for signatures, not worth showing this here
                                     <PropItem k={"flavor-" + f.id + "-type"} title="API Type" icon={CategoryIcon}>
                                         {f.type} <Comment title={f.type_comment} />
                                     </PropItem>,
 
                                     <PropItem k={"flavor-" + f.id + "-securitynotion"} title="Security Notion" icon={SecurityIcon}>
-                                        <Tooltip title={this.sec_notions[f.security_notion]}>
+                                        <Tooltip title={SEC_NOTIONS[f.security_notion]}>
                                             <span>{f.security_notion}</span>
                                         </Tooltip>
                                         <Comment title={f.security_notion_comment} />
@@ -912,24 +937,247 @@ class SchemeDetail extends React.Component {
                                     ),
 
                                     <PropItem k={"flavor-" + f.id + "-paramsets"} title="Parameter sets" icon={ParamSetIcon}>
-                                        {f_paramsets.map(p => <div>{p.name}</div>)}
+                                        {f_paramsets.map(p =>
+                                            <div>
+                                                {p.name}{" "}
+                                                <Tooltip title={"NIST Category " + p.security_level_nist_category}><span>({ romanCat(p.security_level_nist_category) })</span></Tooltip>
+                                            </div>)
+                                        }
                                     </PropItem>,
 
                                     <PropItem k={"flavor-" + f.id + "-implementations"} title="Implementations" icon={CodeIcon}>
                                         {f_implementations.map(i => <div>{i.name}</div>)}
                                     </PropItem>,
-
-                                    f_links.length > 0 &&
-                                    <PropItem k={"flavor-" + f.id + "-links"} title="Links" icon={LinkIcon}>
-                                        {f_links.map(l => <div>{l.url}</div>)}
-                                    </PropItem>,
-
-                                    f_sources.length > 0 &&
-                                    <PropItem k={"flavor-" + f.id + "-sources"} title="Sources" icon={SourceIcon}>
-                                        {f_sources.map(s => <div>{s.url}</div>)}
-                                    </PropItem>,
                                 ]
                             }).bind(this))}
+                        </List>
+                    </Box>
+                </Paper>
+            </Container>,
+        ];
+    }
+
+    renderFlavor (type, scheme_id, flavor_id) {
+        let db = this.db; // `this` is overriden inside `map`s and the like
+
+        const s = queryAll(this.db, "SELECT * FROM scheme WHERE type=? AND id=?", [type, scheme_id])[0];
+        const f = queryAll(this.db, "SELECT * FROM flavor WHERE scheme_id=? AND id=?", [scheme_id, flavor_id])[0];
+        const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
+        const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
+        const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
+        const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+
+        let TypeIcon = SCHEME_TYPES[s.type].icon;
+        return [
+            <Container maxWidth="md">
+                <Paper>
+                    <Box>
+                        <List>
+                            <ListItem key="scheme-head" alignItems="flex-start">
+                                <ListItemText>
+                                    <Typography variant="h6">
+                                        <Link component={RouterLink} to={detailLink(s.type, s.id)}>
+                                            <ArrowBackIcon fontSize="inherit" />
+                                            { [" "] }
+                                            { s.name }
+                                        </Link>
+                                        { " " }
+                                        <Tooltip title={ SCHEME_TYPES[s.type].name } arrow>
+                                            <TypeIcon fontSize="inherit" aria-hidden={ false } role="img" aria-label={ SCHEME_TYPES[s.type].name } aria-describedby={ null } />
+                                        </Tooltip>
+                                        { " " }
+                                        <span style={{ fontWeight: "normal", marginLeft: ".4em" }}>
+                                            { s.category } <Comment title={ s.category_comment } />
+                                            { s.stateful ?
+                                                [" \u2022 stateful", <Comment title={ s.stateful_comment } />] : null }
+                                            { s.nist_round > 0 &&
+                                                [" \u2022 round " + s.nist_round, <Comment title={ s.nist_round_comment } />] }
+                                        </span>
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+
+                            <ListItem key="flavor-head" alignItems="flex-start">
+                                <ListItemText>
+                                    <Typography variant="h3">
+                                        { f.name }
+                                    </Typography>
+                                    { f.description && <div>{ f.description }</div> }
+                                    { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
+                                </ListItemText>
+                            </ListItem>
+
+                            <PropItem k="type" title="API Type" icon={ CategoryIcon }>
+                                { f.type } <Comment title={ f.type_comment } />
+                            </PropItem>
+
+                            <PropItem k="securitynotion" title="Security Notion" icon={ SecurityIcon }>
+                                <Tooltip title={ SEC_NOTIONS[f.security_notion] }>
+                                    <span>{ f.security_notion }</span>
+                                </Tooltip>
+                                <Comment title={ f.security_notion_comment } />
+                            </PropItem>
+
+                            { f.dh_ness &&
+                            <PropItem k="dhness" title="Diffie-Hellman-Ness" icon={ DiffieHellmanIcon }>
+                                <strong>Diffie-Hellman-Ness: </strong>
+                                { f.dh_ness }
+                            </PropItem> }
+
+                            { links.length > 0 &&
+                            <PropItem k="links" title="Links" icon={ LinkIcon }>
+                                { links.map(l => <div>{ linkify(l.url) }</div>) }
+                            </PropItem> }
+
+                            { sources.length > 0 &&
+                            <PropItem k="sources" title="Sources" icon={ SourceIcon }>
+                                { sources.map(s => <div>{ linkify(s.url) }</div>) }
+                            </PropItem> }
+
+                            <ListItem key="paramsets">
+                                <Typography component="h3" variant="h4">Parameter Sets</Typography>
+                            </ListItem>
+
+                            { paramsets.map((function (p) {
+                                const p_links = queryAll(db, "SELECT * FROM paramset_link WHERE paramset_id=?", [p.id]);
+                                const p_sources = queryAll(db, "SELECT * FROM paramset_source WHERE paramset_id=?", [p.id]);
+                                return [
+
+                                <ListItem key={ "p-" + p.id + "-head" } style={{ display: "block" }}>
+                                    <Typography component="h4" variant="h5">
+                                        { p.name }
+                                    </Typography>
+                                    { p.comment && <div><TextComment>{ p.comment }</TextComment></div> }
+                                </ListItem>,
+
+                                <PropItem k={ "p-" + p.id + "-seclevel" } title="Security Level" icon={ SecurityIcon }>
+                                    <div>
+                                        { p.security_level_nist_category > 0 && [
+                                            <Tooltip title={ "NIST Category " + p.security_level_nist_category }>
+                                                <span>{ romanCat(p.security_level_nist_category) }</span>
+                                            </Tooltip>,
+                                            " \u2022 "
+                                        ] }
+                                        { p.security_level_quantum } <span style={{ opacity:.5 }}> (quantum)</span>
+                                        { p.security_level_classical &&
+                                            [" \u2022 ", p.security_level_classical, <span style={{ opacity:.5 }}> (classical)</span> ] }
+                                    </div>
+                                    { p.security_level_comment &&
+                                        <div><TextComment>{ p.security_level_comment }</TextComment></div> }
+                                </PropItem>,
+
+                                ( s.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment ) &&
+                                <PropItem k={ "p-" + p.id + "-failureprob" } title="Failure Probability" icon={ BottomIcon }>
+                                    { p.failure_probability === 0
+                                        ? "0"
+                                        : ["2", <sup>{ p.failure_probability }</sup>]
+                                    }
+                                    <Comment title={ p.failure_probability_comment } />
+                                </PropItem>,
+
+                                <PropItem k={ "p-" + p.id + "-numop" } title="Number of operations" icon={ CounterIcon }>
+                                    { p.number_of_operations === "inf"
+                                        ? "unlimited"
+                                        : p.number_of_operations
+                                    }
+                                </PropItem>,
+
+                                <PropItem k={ "p-" + p.id + "-sizes" } title="Sizes" icon={ MeasureIcon }>
+                                    <div>
+                                        sk: { p.sizes_sk } {" \u2022 "}
+                                        pk: { p.sizes_pk } {" \u2022 "}
+                                        { SCHEME_TYPES[s.type].ctsig }: { p.sizes_ct_sig }
+                                    </div>
+                                    { p.sizes_comment && <div><TextComment>{ p.sizes_comment }</TextComment></div> }
+                                </PropItem>,
+
+                                p_links.length > 0 &&
+                                <PropItem k={ "p-" + p.id + "-links" } title="Links" icon={ LinkIcon }>
+                                    { p_links.map(l => <div>{ linkify(l.url) }</div>) }
+                                </PropItem>,
+
+                                p_sources.length > 0 &&
+                                <PropItem k={ "p-" + p.id + "-sources" } title="Sources" icon={ SourceIcon }>
+                                    { p_sources.map(s => <div>{ linkify(s.url) }</div>) }
+                                </PropItem>,
+
+
+                            ] } ).bind(this)) }
+
+                            <ListItem key="implementations">
+                                <Typography component="h3" variant="h4">Implementations</Typography>
+                            </ListItem>
+
+                            { implementations.map(function (i) {
+                                const i_links = queryAll(db, "SELECT * FROM implementation_link WHERE implementation_id=?", [i.id]);
+                                const i_sources = queryAll(db, "SELECT * FROM implementation_source WHERE implementation_id=?", [i.id]);
+                                const i_hardware = queryAll(db, "SELECT * FROM implementation_hardware_feature WHERE implementation_id=?", [i.id]);
+                                const i_dependencies = queryAll(db, "SELECT * FROM implementation_dependency WHERE implementation_id=?", [i.id]);
+                                let i_side_channel_guarding = [
+                                    i.side_channel_guarding_branching && 'branching',
+                                    i.side_channel_guarding_timing && 'timing',
+                                ].filter(Boolean);
+                                if ( i_side_channel_guarding.length === 0 ) i_side_channel_guarding = ['none'];
+                                const side_channel_info = {0: 'no', 1: 'yes', null: 'unknown'};
+
+                                return [
+
+                                <ListItem key={ "i-" + i.id + "-head" } style={{ display: "block" }}>
+                                    <Typography component="h4" variant="h5">
+                                        { i.name }
+                                    </Typography>
+                                    { i.comment && <div><TextComment>{ i.comment }</TextComment></div> }
+                                </ListItem>,
+
+                                <PropItem k={ "i-" + i.id + "-platform" } title="Platform" icon={ LanguageIcon }>
+                                    { i.platform }
+                                </PropItem>,
+
+                                <PropItem k={ "i-" + i.id + "-type" } title="Type of Implementation" icon={ CategoryIcon }>
+                                    { i.type }
+                                </PropItem>,
+
+                                i_hardware.length > 0 &&
+                                <PropItem k={ "i-" + i.id + "-hardware" } title="Required Hardware Features" icon={ ChipIcon }>
+                                    { i_hardware.map(h => <div>{ h.feature }</div>) }
+                                </PropItem>,
+
+                                i_dependencies.length > 0 &&
+                                <PropItem k={ "i-" + i.id + "-deps" } title="Code Dependencies" icon={ CodeIcon }>
+                                    { i_dependencies.map(d => <div>{ d.dependency }</div>) }
+                                </PropItem>,
+
+                                <PropItem k={ "i-" + i.id + "-sidechannel" } title="Side Channel Guarding" icon={ CastleIcon }>
+                                    <div>
+                                        branching: { side_channel_info[i.side_channel_guarding_branching] }
+                                        <Comment title={ i.side_channel_guarding_branching_comment } />
+                                    </div>
+                                    <div>
+                                        timing: { side_channel_info[i.side_channel_guarding_timing] }
+                                        <Comment title={ i.side_channel_guarding_timing_comment } />
+                                    </div>
+                                </PropItem>,
+
+                                // TODO code size and randomness missing
+
+                                i_links.length > 0 &&
+                                <PropItem k={ "i-" + i.id + "-links" } title="Links" icon={ LinkIcon }>
+                                    { i_links.map(l => <div>{ linkify(l.url) }</div>) }
+                                </PropItem>,
+
+                                i_sources.length > 0 &&
+                                <PropItem k={ "i-" + i.id + "-sources" } title="Sources" icon={ SourceIcon }>
+                                    { i_sources.map(s => <div>{ linkify(s.url) }</div>) }
+                                </PropItem>,
+
+                            ] } ) }
+
+                            <ListItem key="benchmarks">
+                                <ListItemText>
+                                    <Typography component="h3" variant="h4">Benchmarks</Typography>
+                                    <div><Link component={RouterLink} to={"raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D" + f.id}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */ }
+                                </ListItemText>
+                            </ListItem>
                         </List>
                     </Box>
                 </Paper>
@@ -943,7 +1191,7 @@ class SchemeDetail extends React.Component {
         if (comp.length === 1 && comp[0] === '')
             return this.renderOverview();
 
-        if (comp.length > 1 && !(comp[0] in this.types)) {
+        if (comp.length > 1 && !(comp[0] in SCHEME_TYPES)) {
             // TODO error
             return "invalid url, must be enc or sig"
         }
@@ -955,7 +1203,35 @@ class SchemeDetail extends React.Component {
         if (comp.length === 2) {
             return this.renderScheme(...comp)
         }
+
+        if (comp.length === 3) {
+            return this.renderFlavor(...comp)
+        }
     }
+}
+
+function romanCat ( nistCat ) {
+    let romans = ['ø', 'I', 'II', 'III', 'IV', 'V'];
+    if ( Number.isInteger(nistCat) && romans[nistCat] !== undefined )
+        return romans[nistCat];
+    else
+        return nistCat;
+}
+
+function linkify ( s ) {
+    let url = s.match(/https?:\/\/[^\s]+/g);
+    return url ? <Link href={ url }>{ s }</Link> : s;
+}
+
+function detailLink ( type, scheme, flavor ) {
+    let url = 'detail';
+    if ( type !== undefined ) {
+        url += '?_=' + type + '/' + scheme;
+        if ( flavor !== undefined )
+            url += '/' + flavor;
+    }
+
+    return url;
 }
 
 export { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison };

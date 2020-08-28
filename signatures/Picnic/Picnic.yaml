@@ -1,4 +1,5 @@
 name: Picnic
+description: Based on non-interactive zero knowledge proofs
 year:
     paper: 2017
     candidate: 2017
@@ -18,7 +19,7 @@ authors:
   - Vladmir Kolesnikov
   - Daniel Kales
 problems:
-    - assumption: Zero Knowledge proof
+    - assumption: Onewayness of LowMC, a symmetric cipher
 stateful: false
 nist round: '3a'
 sources:

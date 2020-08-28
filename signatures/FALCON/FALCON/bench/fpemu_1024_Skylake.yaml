@@ -1,6 +1,6 @@
 platform: Intel Core i7-6567 (Skylake) 3.3 GHZ
 timings:
-  unit: cycles 
+  unit: cycles
   gen:  168624000
   enc|sign: 17696268
   dec|vrfy: 337248

@@ -6,4 +6,3 @@ side channel guarding:
   timing comment: For some operations, constant-time hash-to-point and fixed-size signature size are used to ensure privacy of the signed message.
 hardware features:
   - native FP hardware (SSE2 unit)
-

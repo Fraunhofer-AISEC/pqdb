@@ -3,7 +3,6 @@ security level:
   classical: 274
   quantum: 234
   nist category: 5
-  comment: ''
 failure probability: 0
 sizes:
   sk: 32
