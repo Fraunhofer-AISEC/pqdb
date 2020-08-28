@@ -3,10 +3,11 @@ sizes:
   sk: 66
   pk: 7104
   ct|sig: 3584
+  msg: 48
 number of operations: inf
 security level:
   quantum: 128
-  classical: 209
+  classical: 207
   nist category: 3
 failure probability: -64
 sources:

@@ -3,6 +3,7 @@ sizes:
   sk: 50
   pk: 4032
   ct|sig: 2040
+  msg: 48
 number of operations: inf
 security level:
   quantum: 93
