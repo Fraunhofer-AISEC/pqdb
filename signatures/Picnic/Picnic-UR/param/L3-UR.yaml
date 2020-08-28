@@ -1,5 +1,5 @@
 name: Picnic-L3-UR
-security level: 
+security level:
   classical:  192
   quantum:  96
   nist category: 3
@@ -10,4 +10,3 @@ sizes:
   pk: 48
   ct|sig: 121845
   msg: 256
-

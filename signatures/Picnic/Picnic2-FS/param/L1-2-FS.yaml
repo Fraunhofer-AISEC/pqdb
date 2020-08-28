@@ -1,5 +1,5 @@
 name: Picnic2-L1-FS
-security level: 
+security level:
   classical:  128
   quantum:  64
   nist category: 1

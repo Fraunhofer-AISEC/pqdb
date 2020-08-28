@@ -1,8 +1,8 @@
 platform: Intel Core i7-4790 3.60GHZ
 timings:
   unit: cycles
-  gen: 58268 
-  enc|sign: 3504807600 
+  gen: 58268
+  enc|sign: 3504807600
   dec|vrfy: 1102558535
 memory requirements:
   enc|sign: 34552576

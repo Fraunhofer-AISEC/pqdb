@@ -3,7 +3,6 @@ sizes:
   sk: 50
   pk: 5040
   ct|sig: 1704
-  comment: ''
   msg: 32
 number of operations: inf
 security level:
@@ -14,4 +13,3 @@ failure probability: -64
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'
-comment: ''
