@@ -5,3 +5,7 @@ timings:
   enc|sign: 393100
   dec|vrfy: 172200
   unit: cycles
+platform: >-
+  gcc -march=native -mtune=native-O3 -fomit-frame-pointer -fwrapv, 
+  MacBookPro15.1 with an Intel Core i7 2.6GHz, running ma-cOS 10.13.6, Apple
+  LLVM version 10.0.0 (clang-1000.10.44.4)
