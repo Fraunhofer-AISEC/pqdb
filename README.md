@@ -16,16 +16,20 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 * [NTRU](encryption/ntru) ([Website](https://ntru.org/))
 * [Round5](encryption/round5) ([Website](https://round5.org/))
 * [ThreeBears](encryption/three-bears) ([Website](https://sourceforge.net/projects/threebears/))
+* [SABER](encryption/saber) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/saber/))
 
 
 #### Isogeny-based
 * [SIKE](encryption/sike) ([Website](https://sike.org/))
 
 #### Code-based
+* [BIKE](encryption/BIKE) ([Website](https://bikesuite.org/))
 * [Classic McEliece](encryption/classic-mceliece) ([Website](https://classic.mceliece.org/index.html))
 * [HQC](encryption/hqc) ([Website](https://pqc-hqc.org/))
+* [LEDAcrypt](encryption/ledacrypt) ([Website](https://www.ledacrypt.org/))
 * [ROLLO](encryption/rollo) ([Website](https://pqc-rollo.org/index.html))
-* [BIKE](encryption/BIKE) ([Website](https://bikesuite.org/))
+
+
 
 ### Signature
 

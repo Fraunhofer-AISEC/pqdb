@@ -1,0 +1,15 @@
+name: LEDAkem32sl
+sizes:
+  sk: 66
+  pk: 6584
+  ct|sig: 6616
+  msg: 48
+number of operations: inf
+security level:
+  quantum: 127
+  classical: 208
+  nist category: 3
+failure probability: -192
+sources:
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
+  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'

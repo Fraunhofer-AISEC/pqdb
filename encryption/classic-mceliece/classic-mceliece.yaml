@@ -27,7 +27,5 @@ links:
 problems:
   - assumption: Computational Syndrome Decoding
 description: >-
-  "Classic McEliece has a somewhat unusual performance profile—it has a very
-  large public key but the smallest ciphertexts of all competing KEMs" ~ "Status
-  Report on the Second Round of the NIST Post-Quantum Cryptography
-  Standardization Process 
+  Built conservatively from Niederreiter’s dual version of McEliece’s PKE
+  using binary Goppa codes
