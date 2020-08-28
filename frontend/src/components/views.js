@@ -363,7 +363,8 @@ class SchemeComparison extends React.Component {
         this.defaultState = {
             showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
             sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
-            showSecNist: false, showRef: false, focusPlatformFilter: false, showNistRound: false, nistRound: '2'
+            showSecNist: false, showRef: false, focusPlatformFilter: false, showNistRound: false, nistRound: '3a',
+            showNonNistSchemes: false
         };
         this.filterState = {};
         Object.assign(this.filterState, this.defaultState);
@@ -417,8 +418,8 @@ class SchemeComparison extends React.Component {
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
-    AND s.nist_round >= ?
-    AND p.security_level_classical >= ?
+    AND (s.nist_round BETWEEN ? AND '3f'` + ((state.showNonNistSchemes) ? "\n   OR s.nist_round = 'none')" : ')') +
+    `AND p.security_level_classical >= ?
     AND p.security_level_quantum >= ?` + (
                 (state.showBenchmarks) ?
                     ((!state.showRef) ? "\n    AND i.type = 'optimized'" : '') +
@@ -579,6 +580,10 @@ WHERE
                                                         valueLabelFormat={getNistRoundLabel}
                                                         valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showNonNistSchemes}
+                                                        onChange={() => this.changeFilterState({ showNonNistSchemes : !this.filterState.showNonNistSchemes })} />
+                                                } label="Include schemes not in the NIST competition" />
                                             </FormControl>
                                         </Grid>
                                     </Grid>
