@@ -243,7 +243,7 @@ function SchemeList(props) {
             </Typography>
             <List>
                 {queryAll(db, stmt, [typeKey]).map(s => (
-                    <ListItem key={typeKey + "-" + s.id_text} style={{ paddingLeft: 0 }}><ListItemText>
+                    <ListItem key={`${typeKey}-${s.id_text}`} style={{ paddingLeft: 0 }}><ListItemText>
                         <Typography variant="h6">
                             <Link component={RouterLink} to={detailLink(s.id_text)}>
                                 {s.name}
@@ -390,7 +390,7 @@ const secLevelMarks = [
 function humanReadableSize(size, baseUnit) {
     if (!Number.isFinite(size)) return '';
     var i = (size === 0) ? 0 : Math.floor(Math.log(size) / Math.log(1000));
-    return (size / Math.pow(1000, i)).toFixed(2) * 1 + ' ' + ['', 'k', 'M', 'G', 'T'][i] + baseUnit;
+    return `${(size / Math.pow(1000, i)).toFixed(2)} ${['', 'k', 'M', 'G', 'T'][i]}${baseUnit}`;
 };
 
 class SchemeComparison extends React.Component {
@@ -502,7 +502,7 @@ WHERE
                 const searchParamStr = JSON.stringify(searchParam);
                 history.push({
                     pathname: history.location.pathname,
-                    search: (searchParamStr === '{}') ? '' : "?" + qs.stringify({ state: searchParamStr })
+                    search: (searchParamStr === '{}') ? '' : `?${qs.stringify({ state: searchParamStr })}`
                 });
             });
         }
@@ -608,7 +608,7 @@ WHERE
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View this query as SQL</Link>
+                                <Link component={RouterLink} to={`/raw_sql?query=${encodeURIComponent(query)}`}>View this query as SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
@@ -673,7 +673,7 @@ class CustomSQLQuery extends React.Component {
     executeSQLQuery() {
         const history = this.props.history;
         this.params.query = this.state.sqlInput;
-        var search = '?' + qs.stringify(this.params);
+        var search = `?${qs.stringify(this.params)}`;
         if (history.location.search !== search) {
             history.push({
                 pathname: history.location.pathname,
@@ -875,7 +875,7 @@ function SchemeDetail(props) {
                             const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]);
 
                             return [
-                                <ListItem key={"flavor-" + f.id + "-head"} style={{ display: "block" }}>
+                                <ListItem key={`flavor-${f.id}-head`} style={{ display: "block" }}>
                                     <Typography component="h3" variant="h5">
                                         <Link component={RouterLink} to={detailLink(s.id_text, f.id_text)}>{f.name}</Link>
                                     </Typography>
@@ -884,11 +884,11 @@ function SchemeDetail(props) {
                                 </ListItem>,
 
                                 f.type !== "SIG" && !f.type_comment && // there's just one type for signatures, not worth showing this here
-                                <PropItem k={"flavor-" + f.id + "-type"} title="API Type" icon={CategoryIcon}>
+                                <PropItem k={`flavor-${f.id}-type`} title="API Type" icon={CategoryIcon}>
                                     {f.type} <Comment title={f.type_comment} />
                                 </PropItem>,
 
-                                <PropItem k={"flavor-" + f.id + "-securitynotion"} title="Security Notion" icon={SecurityIcon}>
+                                <PropItem k={`flavor-${f.id}-securitynotion`} title="Security Notion" icon={SecurityIcon}>
                                     <Tooltip title={SEC_NOTIONS[f.security_notion]}>
                                         <span>{f.security_notion}</span>
                                     </Tooltip>
@@ -896,22 +896,22 @@ function SchemeDetail(props) {
                                 </PropItem>,
 
                                 f.dh_ness && (
-                                    <PropItem k={"flavor-" + f.id + "-dhness"} title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
+                                    <PropItem k={`flavor-${f.id}-dhness`} title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
                                         <strong>Diffie-Hellman-Ness: </strong>
                                         {f.dh_ness}
                                     </PropItem>
                                 ),
 
-                                <PropItem k={"flavor-" + f.id + "-paramsets"} title="Parameter sets" icon={ParamSetIcon}>
+                                <PropItem k={`flavor-${f.id}-paramsets`} title="Parameter sets" icon={ParamSetIcon}>
                                     {f_paramsets.map(p =>
                                         <div>
                                             {p.name}{" "}
-                                            <Tooltip title={"NIST Category " + p.security_level_nist_category}><span>({romanCat(p.security_level_nist_category)})</span></Tooltip>
+                                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}><span>({romanCat(p.security_level_nist_category)})</span></Tooltip>
                                         </div>)
                                     }
                                 </PropItem>,
 
-                                <PropItem k={"flavor-" + f.id + "-implementations"} title="Implementations" icon={CodeIcon}>
+                                <PropItem k={`flavor-${f.id}-implementations`} title="Implementations" icon={CodeIcon}>
                                     {f_implementations.map(i => <div>{i.name}</div>)}
                                 </PropItem>,
                             ]
@@ -928,7 +928,13 @@ function FlavorDetail(props) {
     let { schemeId, flavorId } = useParams();
 
     const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
+    if (s === undefined) {
+        return <Container><Paper>No such scheme.</Paper></Container>;
+    }
     const f = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=? AND id_text=?", [s.id, flavorId])[0];
+    if (f === undefined) {
+        return <Container><Paper>No such flavor.</Paper></Container>;
+    }
     const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
     const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
     const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
@@ -958,7 +964,7 @@ function FlavorDetail(props) {
                                         {s.stateful ?
                                             [" \u2022 stateful", <Comment title={s.stateful_comment} />] : null}
                                         {s.nist_round > 0 &&
-                                            [" \u2022 round " + s.nist_round, <Comment title={s.nist_round_comment} />]}
+                                            [` \u2022 round ${s.nist_round}`, <Comment title={s.nist_round_comment} />]}
                                     </span>
                                 </Typography>
                             </ListItemText>
@@ -1010,17 +1016,17 @@ function FlavorDetail(props) {
                             const p_sources = queryAll(db, "SELECT * FROM paramset_source WHERE paramset_id=?", [p.id]);
                             return [
 
-                                <ListItem key={"p-" + p.id + "-head"} style={{ display: "block" }}>
+                                <ListItem key={`p-${p.id}-head`} style={{ display: "block" }}>
                                     <Typography component="h4" variant="h5">
                                         {p.name}
                                     </Typography>
                                     {p.comment && <div><TextComment>{p.comment}</TextComment></div>}
                                 </ListItem>,
 
-                                <PropItem k={"p-" + p.id + "-seclevel"} title="Security Level" icon={SecurityIcon}>
+                                <PropItem k={`p-${p.id}-seclevel`} title="Security Level" icon={SecurityIcon}>
                                     <div>
                                         {p.security_level_nist_category > 0 && [
-                                            <Tooltip title={"NIST Category " + p.security_level_nist_category}>
+                                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
                                                 <span>{romanCat(p.security_level_nist_category)}</span>
                                             </Tooltip>,
                                             " \u2022 "
@@ -1034,7 +1040,7 @@ function FlavorDetail(props) {
                                 </PropItem>,
 
                                 (s.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment) &&
-                                <PropItem k={"p-" + p.id + "-failureprob"} title="Failure Probability" icon={BottomIcon}>
+                                <PropItem k={`p-${p.id}-failureprob`} title="Failure Probability" icon={BottomIcon}>
                                     {p.failure_probability === 0
                                         ? "0"
                                         : ["2", <sup>{p.failure_probability}</sup>]
@@ -1042,14 +1048,14 @@ function FlavorDetail(props) {
                                     <Comment title={p.failure_probability_comment} />
                                 </PropItem>,
 
-                                <PropItem k={"p-" + p.id + "-numop"} title="Number of operations" icon={CounterIcon}>
+                                <PropItem k={`p-${p.id}-numop`} title="Number of operations" icon={CounterIcon}>
                                     {p.number_of_operations === "inf"
                                         ? "unlimited"
                                         : p.number_of_operations
                                     }
                                 </PropItem>,
 
-                                <PropItem k={"p-" + p.id + "-sizes"} title="Sizes" icon={MeasureIcon}>
+                                <PropItem k={`p-${p.id}-sizes`} title="Sizes" icon={MeasureIcon}>
                                     <div>
                                         sk: {p.sizes_sk} {" \u2022 "}
                                     pk: {p.sizes_pk} {" \u2022 "}
@@ -1059,12 +1065,12 @@ function FlavorDetail(props) {
                                 </PropItem>,
 
                                 p_links.length > 0 &&
-                                <PropItem k={"p-" + p.id + "-links"} title="Links" icon={LinkIcon}>
+                                <PropItem k={`p-${p.id}-links`} title="Links" icon={LinkIcon}>
                                     {p_links.map(l => <div>{linkify(l.url)}</div>)}
                                 </PropItem>,
 
                                 p_sources.length > 0 &&
-                                <PropItem k={"p-" + p.id + "-sources"} title="Sources" icon={SourceIcon}>
+                                <PropItem k={`p-${p.id}-sources`} title="Sources" icon={SourceIcon}>
                                     {p_sources.map(s => <div>{linkify(s.url)}</div>)}
                                 </PropItem>,
 
@@ -1090,32 +1096,32 @@ function FlavorDetail(props) {
 
                             return [
 
-                                <ListItem key={"i-" + i.id + "-head"} style={{ display: "block" }}>
+                                <ListItem key={`i-${i.id}-head`} style={{ display: "block" }}>
                                     <Typography component="h4" variant="h5">
                                         {i.name}
                                     </Typography>
                                     {i.comment && <div><TextComment>{i.comment}</TextComment></div>}
                                 </ListItem>,
 
-                                <PropItem k={"i-" + i.id + "-platform"} title="Platform" icon={LanguageIcon}>
+                                <PropItem k={`i-${i.id}-platform`} title="Platform" icon={LanguageIcon}>
                                     {i.platform}
                                 </PropItem>,
 
-                                <PropItem k={"i-" + i.id + "-type"} title="Type of Implementation" icon={CategoryIcon}>
+                                <PropItem k={`i-${i.id}-type`} title="Type of Implementation" icon={CategoryIcon}>
                                     {i.type}
                                 </PropItem>,
 
                                 i_hardware.length > 0 &&
-                                <PropItem k={"i-" + i.id + "-hardware"} title="Required Hardware Features" icon={ChipIcon}>
+                                <PropItem k={`i-${i.id}-hardware`} title="Required Hardware Features" icon={ChipIcon}>
                                     {i_hardware.map(h => <div>{h.feature}</div>)}
                                 </PropItem>,
 
                                 i_dependencies.length > 0 &&
-                                <PropItem k={"i-" + i.id + "-deps"} title="Code Dependencies" icon={CodeIcon}>
+                                <PropItem k={`i-${i.id}-deps`} title="Code Dependencies" icon={CodeIcon}>
                                     {i_dependencies.map(d => <div>{d.dependency}</div>)}
                                 </PropItem>,
 
-                                <PropItem k={"i-" + i.id + "-sidechannel"} title="Side Channel Guarding" icon={CastleIcon}>
+                                <PropItem k={`i-${i.id}-sidechannel`} title="Side Channel Guarding" icon={CastleIcon}>
                                     <div>
                                         branching: {side_channel_info[i.side_channel_guarding_branching]}
                                         <Comment title={i.side_channel_guarding_branching_comment} />
@@ -1129,12 +1135,12 @@ function FlavorDetail(props) {
                                 // TODO code size and randomness missing
 
                                 i_links.length > 0 &&
-                                <PropItem k={"i-" + i.id + "-links"} title="Links" icon={LinkIcon}>
+                                <PropItem k={`i-${i.id}-links`} title="Links" icon={LinkIcon}>
                                     {i_links.map(l => <div>{linkify(l.url)}</div>)}
                                 </PropItem>,
 
                                 i_sources.length > 0 &&
-                                <PropItem k={"i-" + i.id + "-sources"} title="Sources" icon={SourceIcon}>
+                                <PropItem k={`i-${i.id}-sources`} title="Sources" icon={SourceIcon}>
                                     {i_sources.map(s => <div>{linkify(s.url)}</div>)}
                                 </PropItem>,
 
@@ -1144,7 +1150,7 @@ function FlavorDetail(props) {
                         <ListItem key="benchmarks">
                             <ListItemText>
                                 <Typography component="h3" variant="h4">Benchmarks</Typography>
-                                <div><Link component={RouterLink} to={"raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D" + f.id}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */}
+                                <div><Link component={RouterLink} to={`/raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D${f.id}`}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */}
                             </ListItemText>
                         </ListItem>
                     </List>
