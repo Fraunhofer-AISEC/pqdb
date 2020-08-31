@@ -387,6 +387,20 @@ const secLevelMarks = [
     { label: '192', value: 192 }, { label: '256+', value: 256 }
 ];
 
+const nistRoundMarks = [
+    { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 }
+];
+
+function getNistRoundLabel(v) {
+    var round = nistRoundMarks.find((entry) => { return entry.value === v})
+    return round.label
+};
+
+function getNistRoundValue(l) {
+    var round = nistRoundMarks.find((entry) => { return entry.label === l})
+    return round.value
+}
+
 function humanReadableSize(size, baseUnit) {
     if (!Number.isFinite(size)) return '';
     var i = (size === 0) ? 0 : Math.floor(Math.log(size) / Math.log(1000));
@@ -402,7 +416,8 @@ class SchemeComparison extends React.Component {
         this.defaultState = {
             showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
             sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
-            showSecNist: false, showRef: false, focusPlatformFilter: false
+            showSecNist: false, showRef: false, focusPlatformFilter: false, showNistRound: false, nistRound: '3a',
+            showNonNistSchemes: false
         };
         this.filterState = {};
         Object.assign(this.filterState, this.defaultState);
@@ -425,6 +440,7 @@ class SchemeComparison extends React.Component {
         WHEN 0 THEN ''
         ELSE ' (Stateful)'
     END AS 'Parameter Set'` +
+            ((state.showNistRound) ? ",\n   s.nist_round AS 'NIST Round'" : '') +
             ((state.showSecClassical) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
             ((state.showSecQuantum) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
             ((state.showSecNist) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
@@ -447,7 +463,8 @@ class SchemeComparison extends React.Component {
     round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
     round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
     round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
-` : '') + `FROM
+` : '') + `
+FROM
     scheme s
     JOIN flavor f ON s.id = f.scheme_id
     JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
@@ -455,6 +472,10 @@ class SchemeComparison extends React.Component {
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
+    AND (
+        s.nist_round BETWEEN ? AND '3f'` +
+            ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
+    )
     AND p.security_level_classical >= ?
     AND p.security_level_quantum >= ?` + (
                 (state.showBenchmarks) ?
@@ -465,7 +486,7 @@ WHERE
     }
 
     computeResult(state, sqlQuery) {
-        var params = [state.schemeType, state.securityLevel, state.securityQuantum];
+        var params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum ];
         if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
@@ -553,6 +574,10 @@ WHERE
                                                     <Checkbox defaultChecked={this.filterState.showHwFeatures}
                                                         onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
                                                 } label="Hardware Features" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showNistRound}
+                                                        onChange={() => this.changeFilterState({ showNistRound: !this.filterState.showNistRound })} />
+                                                } label="NIST Round" />
                                             </FormControl>
                                         </Grid>
 
@@ -604,6 +629,18 @@ WHERE
                                                         onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
                                                         valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
+                                                <Box mt={1} display="flex">
+                                                    <Typography>NIST Round</Typography>
+                                                    <Slider color="secondary" defaultValue={getNistRoundValue(this.filterState.nistRound)} step={null}
+                                                        min={2} max={4} marks={nistRoundMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ nistRound: getNistRoundLabel(v) } )}
+                                                        valueLabelFormat={getNistRoundLabel}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
+                                                </Box>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showNonNistSchemes}
+                                                        onChange={() => this.changeFilterState({ showNonNistSchemes : !this.filterState.showNonNistSchemes })} />
+                                                } label="Include schemes not in the NIST competition" />
                                             </FormControl>
                                         </Grid>
                                     </Grid>
