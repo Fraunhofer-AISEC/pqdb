@@ -462,7 +462,8 @@ class SchemeComparison extends React.Component {
     round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
     round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
     round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
-` : '') + `FROM
+` : '') + `
+FROM
     scheme s
     JOIN flavor f ON s.id = f.scheme_id
     JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
@@ -470,8 +471,11 @@ class SchemeComparison extends React.Component {
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
-    AND (s.nist_round BETWEEN ? AND '3f'` + ((state.showNonNistSchemes) ? "\n   OR s.nist_round = 'none')" : ')') +
-    `AND p.security_level_classical >= ?
+    AND (
+        s.nist_round BETWEEN ? AND '3f'` +
+            ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
+    )
+    AND p.security_level_classical >= ?
     AND p.security_level_quantum >= ?` + (
                 (state.showBenchmarks) ?
                     ((!state.showRef) ? "\n    AND i.type = 'optimized'" : '') +
