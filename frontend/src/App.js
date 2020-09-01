@@ -8,7 +8,7 @@ import {
   Menu as MenuIcon, BrightnessHigh as LightIcon, Brightness4 as DarkIcon
 } from '@material-ui/icons';
 import initSqlJs from "sql.js";
-import { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison } from './components/views';
+import { CustomSQLQuery, SchemeDetailSwitch, Welcome, SchemeComparison } from './components/views';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import logo from './pqdb.svg';
@@ -38,7 +38,8 @@ const views = {
   "detail": {
     name: "Scheme Details",
     description: "Browse data stored for a scheme",
-    view: SchemeDetail
+    routing: true,
+    view: SchemeDetailSwitch
   },
   "comparison": {
     name: "Scheme Comparison",
@@ -125,7 +126,7 @@ class App extends React.Component {
                   <Switch>
                     {
                       Object.keys(views).map(key =>
-                        <Route key={key} exact path={pathname(key)} render={(props) =>
+                        <Route key={key} exact={!views[key].hasOwnProperty("routing")} path={pathname(key)} render={(props) =>
                           React.createElement(views[key].view, { key: key + "?" + this.props.history.location.search, db: this.state.db, ...props })} />
                       )
                     }
