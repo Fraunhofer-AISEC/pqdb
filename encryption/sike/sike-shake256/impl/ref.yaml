@@ -1,7 +1,7 @@
 name: Reference implementation
 type: reference
 platform: c
-dependencies: 
+dependencies:
   - GMP library
 side channel guarding:
   branching: false

@@ -46,7 +46,7 @@ function createTableForSchema(name, schema, additional_foreign_keys) {
 }
 
 function sqlFromTableInfo(name, columnTypes) {
-    return "CREATE TABLE " + name + "(id INTEGER PRIMARY KEY," + columnTypes.join(",") + ");";
+    return `CREATE TABLE ${name} (id INTEGER PRIMARY KEY,id_text TEXT,${columnTypes.join(",")});`;
 }
 
 // Supported: String, Integer, Number, Boolean, Array (in root object)
@@ -54,21 +54,21 @@ function tableInfoForSchema(name, schema, additional_foreign_keys) {
     var tables = {};
     tables[name] = extractColTypes(schema);
     for (var target of additional_foreign_keys) {
-        tables[name].push(target + "_id INTEGER REFERENCES " + target + "(id)");
+        tables[name].push(`${target}_id INTEGER REFERENCES ${target}(id)`);
     }
+
     var properties = schema.properties;
     for (var key in properties) {
         if (properties[key].type === "array") {
-            var tableName = name + "_" + singular(convertName(key));
+            var tableName = `${name}_${singular(convertName(key))}`;
             if (properties[key].items.type === "object") {
                 tables[tableName] = extractColTypes(properties[key].items);
             } else if (BASIC_TYPES.includes(properties[key].items.type)) {
-                tables[tableName] = [ARRAY_COLUMN_NAMES[key] + " " + TYPE_MAP[properties[key].items.type]];
+                tables[tableName] = [`${ARRAY_COLUMN_NAMES[key]} ${TYPE_MAP[properties[key].items.type]}`];
             } else {
-                throw "Error in schema '" + name + "." + key + "': Unsupported type '" +
-                properties[key].items.type + "' in array";
+                throw `Error in schema '${name}.${key}': Unsupported type '${properties[key].items.type}' in array`;
             }
-            tables[tableName].push(name + "_id INTEGER REFERENCES " + name + "(id)");
+            tables[tableName].push(`${name}_id INTEGER REFERENCES ${name}(id)`);
         }
     }
 
@@ -80,9 +80,9 @@ function extractColTypes(schema) {
     var properties = schema.properties;
     for (var key in properties) {
         if (BASIC_TYPES.includes(properties[key].type)) {
-            columnTypes.push(convertName(key) + " " + TYPE_MAP[properties[key].type]);
+            columnTypes.push(`${convertName(key)} ${TYPE_MAP[properties[key].type]}`);
         } else if (properties[key].type === "object") {
-            var namePrefix = convertName(key) + "_";
+            var namePrefix = `${convertName(key)}_`;
             var objColumnTypes = extractColTypes(properties[key]);
             for (var i = 0; i < objColumnTypes.length; i++) {
                 columnTypes.push(namePrefix + objColumnTypes[i]);
@@ -98,17 +98,17 @@ function extractArrayColData(obj, name, parent_id) {
     for (var key in obj) {
         if (typeof obj[key] != "object" || !Array.isArray(obj[key]) || obj[key].length == 0)
             continue;
-        var tableName = name + "_" + singular(convertName(key));
+        var tableName = `${name}_${singular(convertName(key))}`;
         if (typeof obj[key][0] === "object") {
             colData[tableName] = obj[key].map(item => {
                 var [col, dat] = extractColData(item);
-                col.push(name + "_id");
+                col.push(`${name}_id`);
                 dat.push(parent_id);
                 return [col, dat];
             });
         } else {
             var colName = ARRAY_COLUMN_NAMES[key];
-            colData[tableName] = obj[key].map(item => [[colName, name + "_id"], [convertValue(item), parent_id]]);
+            colData[tableName] = obj[key].map(item => [[colName, `${name}_id`], [convertValue(item), parent_id]]);
         }
     }
 
@@ -130,21 +130,21 @@ function extractColData(obj) {
         } else if (typeof obj[key] === "object") {
             if (Array.isArray(obj[key])) continue;
 
-            var namePrefix = convertName(key) + "_";
+            var namePrefix = `${convertName(key)}_`;
             var [objColumns, objData] = extractColData(obj[key]);
             for (var i = 0; i < objColumns.length; i++) {
                 columns.push(namePrefix + objColumns[i]);
                 data.push(objData[i]);
             }
         } else {
-            console.log((typeof obj[key]) + " is currently skipped.");
+            console.log(`${(typeof obj[key])} is currently skipped.`);
         }
     }
     return [columns, data];
 }
 
 function insertColData(tableName, columns, data) {
-    var sql = "INSERT INTO " + tableName + "(" + columns.join(",") + ") VALUES (" + columns.map(col => "?").join(",") + ")";
+    var sql = `INSERT INTO ${tableName}(${columns.join(",")}) VALUES (${columns.map(col => "?").join(",")})`;
     var stmt = db.prepare(sql);
     var result = stmt.run(data);
     return result.lastInsertRowid;
@@ -154,7 +154,7 @@ function exists(file) {
     try {
         fs.accessSync(file, fs.constants.F_OK);
     } catch (err) {
-        if ( err.code == 'ENOENT' )
+        if (err.code == 'ENOENT')
             return false;
         else
             throw err;
@@ -166,9 +166,9 @@ function isValidSchemeDir(rootDirectory, directory) {
     var fullPath = path.join(rootDirectory, directory);
     console.log(fullPath);
 
-    var schemeFile = path.join(fullPath, directory + '.yaml');
+    var schemeFile = path.join(fullPath, `${directory}.yaml`);
     if (!exists(schemeFile)) {
-        console.error('Scheme file ' + schemeFile + ' is not present.');
+        console.error(`Scheme file ${schemeFile} is not present.`);
         return false;
     }
 
@@ -184,6 +184,8 @@ function isValidSchemeDir(rootDirectory, directory) {
 
     // Insert scheme into database
     var [columns, data] = extractColData(scheme);
+    columns.push('id_text');
+    data.push(directory);
     var schemeID = insertColData("scheme", columns, data);
     var arrayColData = extractArrayColData(scheme, "scheme", schemeID);
     for (var tableName in arrayColData)
@@ -201,12 +203,12 @@ function isValidFlavorDir(rootDirectory, directory, schemeID) {
     var fullPath = path.join(rootDirectory, directory);
     console.log(fullPath);
 
-    var flavorFile = path.join(fullPath, directory + '.yaml');
+    var flavorFile = path.join(fullPath, `${directory}.yaml`);
     if (!exists(flavorFile)) {
-        console.error('Flavor file ' + flavorFile + ' is not present.');
+        console.error(`Flavor file ${flavorFile} is not present.`);
         return false;
     }
-    var flavorID = validateFileAndInsert(flavorFile, schemaForFlavor, "flavor", "scheme", schemeID);
+    var flavorID = validateFileAndInsert(flavorFile, schemaForFlavor, "flavor", "scheme", schemeID, directory);
     if (flavorID == 0) return false;
 
     // Validate paramsets, implementations
@@ -228,9 +230,10 @@ function isValidFlavorDir(rootDirectory, directory, schemeID) {
         for (var file of fs.readdirSync(path.join(fullPath, directory))) {
             if (!fs.statSync(path.join(fullPath, directory, file)).isFile() || !file.endsWith(".yaml"))
                 continue;
+            var id_text = path.basename(file, '.yaml');
             var id = validateFileAndInsert(
                 path.join(fullPath, directory, file), schemaForDir[directory],
-                schemaNameForDir[directory], "flavor", flavorID
+                schemaNameForDir[directory], "flavor", flavorID, id_text
             );
             if (id == 0) return false;
             paramImplIDs[directory][file.substring(0, file.length - 5)] = id;
@@ -259,13 +262,13 @@ function validateBenchmarkFileAndInsert(fullPath, file, paramImplIDs) {
         return false;
     }
     data.impl = parts[0];
-    if (!exists(path.join(fullPath, 'impl', data.impl + '.yaml'))) {
-        console.log("Referenced implementation '" + data.impl + "' does not exist.");
+    if (!exists(path.join(fullPath, 'impl', `${data.impl}.yaml`))) {
+        console.log(`Referenced implementation '${data.impl}' does not exist.`);
         return false;
     }
     data.param = parts[1];
-    if (!exists(path.join(fullPath, 'param', data.param + '.yaml'))) {
-        console.log("Referenced parameter set '" + data.param + "' does not exist.");
+    if (!exists(path.join(fullPath, 'param', `${data.param}.yaml`))) {
+        console.log(`Referenced parameter set '${data.param}' does not exist.`);
         return false;
     }
     if (!isValidData(data, schemaForBench)) return false;
@@ -275,10 +278,10 @@ function validateBenchmarkFileAndInsert(fullPath, file, paramImplIDs) {
     delete data.impl;
     delete data.param;
 
-    return insertData(data, "benchmark", ["paramset", "implementation"], [paramID, implID]) > 0;
+    return insertData(data, "benchmark", ["paramset", "implementation"], [paramID, implID], file) > 0;
 }
 
-function validateFileAndInsert(file, schema, schemaName, parentName, parentID) {
+function validateFileAndInsert(file, schema, schemaName, parentName, parentID, id_text) {
     console.log(file);
     if (!_validIdentifier.test(path.basename(file, '.yaml'))) {
         console.log("Filename must match A-Za-z0-9-!");
@@ -286,17 +289,19 @@ function validateFileAndInsert(file, schema, schemaName, parentName, parentID) {
     }
     var obj = yaml.load(fs.readFileSync(file));
     if (isValidData(obj, schema))
-        return insertData(obj, schemaName, [parentName], [parentID]);
+        return insertData(obj, schemaName, [parentName], [parentID], id_text);
 
     return 0;
 }
 
-function insertData(obj, schemaName, parentNames, parentIDs) {
+function insertData(obj, schemaName, parentNames, parentIDs, id_text) {
     var [columns, data] = extractColData(obj);
     for (var i = 0; i < parentNames.length; i++) {
-        columns.push(parentNames[i] + "_id");
+        columns.push(`${parentNames[i]}_id`);
         data.push(parentIDs[i]);
     }
+    columns.push('id_text');
+    data.push(id_text);
 
     var schemaID = insertColData(schemaName, columns, data);
     var arrayColData = extractArrayColData(obj, schemaName, schemaID);
@@ -349,19 +354,19 @@ if (dbSchemaSvg != null) {
         "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'"
     ).all().map(row => row.name);
     var tableInfo = {};
-    tables.forEach(table => tableInfo[table] = db.pragma("table_info(" + table + ")"));
+    tables.forEach(table => tableInfo[table] = db.pragma(`table_info(${table})`));
     var foreignKeyInfo = {};
-    tables.forEach(table => foreignKeyInfo[table] = db.pragma("foreign_key_list(" + table + ")"));
+    tables.forEach(table => foreignKeyInfo[table] = db.pragma(`foreign_key_list(${table})`));
 
     var source = "#title: PQDB Database Diagram\n";
     // Add tables
-    source += tables.map(table => "[" + table + "|" +
-        tableInfo[table].map(info => info.name + ": " + info.type + ((info.pk === 1) ? " 🔑" : "")).join(";") +
+    source += tables.map(table => `[${table}|` +
+        tableInfo[table].map(info => `${info.name}: ${info.type} ${((info.pk === 1) ? " 🔑" : "")}`).join(";") +
         "]").join("\n");
     source += "\n";
     // Add foreign key connectors
     source += tables.filter(table => foreignKeyInfo[table].length > 0).map(
-        table => foreignKeyInfo[table].map(info => "[" + table + "] -> [" + info.table + "]").join("\n")
+        table => foreignKeyInfo[table].map(info => `[${table}] -> [${info.table}]`).join("\n")
     ).join("\n");
     // Render svg
     var svgData = nomnoml.renderSvg(source);
