@@ -1,6 +1,6 @@
 name: Three Bears
 description: >-
-  based on module learning with errors (MLWE) from NewHope and Kyber. The
+  Based on module learning with errors (MLWE) from NewHope and Kyber. The
   polynomial ring underlying the MLWE module is replaced by integers modulo
   a generalized Mersenne number.
 category: lattice

@@ -1,5 +1,5 @@
 name: Dilithium
-description: based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts
+description: Based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts.
 stateful: false
 category: lattice
 nist round: '3f'

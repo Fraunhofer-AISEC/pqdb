@@ -1,5 +1,5 @@
 name: LAC
-description: based on Ring-LWE, using error correction
+description: Based on Ring-LWE, using error correction.
 category: lattice
 year:
   paper: 2019
