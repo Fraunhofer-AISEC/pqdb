@@ -19,9 +19,6 @@ authors:
   - Bo-Yin Yang
 sources:
   - >-
-    NIST Submission Paper
-    https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/Rainbow-Round2.zip
-  - >-
     Updated parameters
     http://by.iis.sinica.edu.tw/by-publ/recent/rainbow-pars.pdf
 description: >-
