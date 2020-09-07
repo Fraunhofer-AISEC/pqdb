@@ -38,6 +38,7 @@ A comprehensive list of post-quantum crypto schemes and their properties.
 
 #### Multivariate
 * [LUOV](signatures/LUOV) ([Website](https://www.esat.kuleuven.be/cosic/pqcrypto/luov/))
+* [Rainbow](signatures/rainbow) ([Website](https://www.pqcrainbow.org/))
 * [MQDSS](signatures/mqdss) ([Website](http://mqdss.org))
 
 #### Hash-based
