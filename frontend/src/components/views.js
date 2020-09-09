@@ -231,7 +231,7 @@ function AutoFocusTextField(props) {
 
 function SchemeList(props) {
     let { typeKey, db } = props;
-    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY name;";
+    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY nist_round DESC, name ASC;";
     const type = SCHEME_TYPES[typeKey];
 
     return (
