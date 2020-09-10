@@ -28,4 +28,4 @@ problems:
   - assumption: Computational Syndrome Decoding
 description: >-
   Built conservatively from Niederreiter’s dual version of McEliece’s PKE
-  using binary Goppa codes
+  using binary Goppa codes.

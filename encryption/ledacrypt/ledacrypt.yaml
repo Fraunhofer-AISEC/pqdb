@@ -1,5 +1,5 @@
 name: LEDAcrypt
-description: Using the Niederreiter variant of McEliece encryption, based on low density parity check codes
+description: Using the Niederreiter variant of McEliece encryption, based on low density parity check codes.
 authors:
   - Marco Baldi
   - Alessandro Barenghi

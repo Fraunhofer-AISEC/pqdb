@@ -1,5 +1,5 @@
 name: NTRU
-description: Based rather closely on the original NTRU from 1998, but with perfect correctness
+description: Based rather closely on the original NTRU from 1998, but with perfect correctness.
 category: lattice
 nist round: '3f'
 authors:

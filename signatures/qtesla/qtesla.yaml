@@ -1,5 +1,5 @@
 name: qTESLA
-description: based on Ring-LWE, constructed using Fiat-Shamir with aborts
+description: Based on Ring-LWE, constructed using Fiat-Shamir with aborts.
 year:
     candidate: 2017
 category: lattice
