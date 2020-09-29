@@ -1,0 +1,37 @@
+stateful: false
+name: BIKE
+category: code
+nist round: 3a
+year:
+  candidate: 2017
+  paper: 2017
+authors:
+  - Nicolas Aragon
+  - Paulo S. L. M. Barreto
+  - Slim Bettaieb
+  - Loïc Bidoux
+  - Olivier Blazy
+  - Jean-Christophe Deneuville
+  - Philippe Gaborit
+  - Shay Gueron
+  - Tim Güneysu
+  - Carlos Aguilar Melchor
+  - Rafael Misoczki
+  - Edoardo Persichetti
+  - Nicolas Sendrier
+  - Jean-Pierre Tillich
+  - Valentin Vasseur
+  - Gilles Zémor
+problems:
+  - assumption: QCSD
+    comment: Quasi-cyclic Codes Syndrome Decoding
+  - assumption: QCCF
+    comment: Quasi-cyclic Codes Codeword Finding
+links:
+  - 'https://bikesuite.org/'
+sources:
+  - >-
+    NIST submission paper, round 3 consideration
+    https://bikesuite.org/files/v4.0/BIKE_Spec.2020.05.03.1.pdf
+description: >-
+  Based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, decoding uses bit flipping.

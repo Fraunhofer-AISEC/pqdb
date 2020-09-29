@@ -1,0 +1,24 @@
+name: qTESLA
+description: Based on Ring-LWE, constructed using Fiat-Shamir with aborts.
+year:
+    candidate: 2017
+category: lattice
+authors:
+  - Nina Bindel
+  - Sedat Akleylek
+  - Erdem Alkim
+  - Paulo S. L. M. Barreto
+  - Johannes Buchmann
+  - Edward Eaton
+  - Gus Gutoski
+  - Juliane Kraemer
+  - Patrick Longa
+  - Harun Polat
+  - Jefferson E. Ricardini
+  - Gustavo Zanon
+problems:
+    - assumption: R-LWE
+stateful: false
+nist round: '2'
+sources:
+  - NIST Submission Paper ( https://qtesla.org/wp-content/uploads/2020/04/qTESLA_round2_14.04.2020.pdf )
