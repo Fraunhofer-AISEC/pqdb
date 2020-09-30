@@ -1,0 +1,4 @@
+name: XMSS-SHAKE
+description: using SHAKE as hash function
+type: SIG
+security notion: EUF-CMA

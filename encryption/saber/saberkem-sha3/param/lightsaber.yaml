@@ -1,0 +1,15 @@
+name: LightSABER
+security level:
+  classical: 118
+  quantum: 107
+  nist category: 1
+failure probability: -120
+sizes:
+  sk: 1568
+  pk: 672
+  comment: 'Compressed sk size: 992'
+  msg: 32
+  ct|sig: 736
+number of operations: inf
+sources:
+- https://groups.google.com/a/list.nist.gov/forum/#!topic/pqc-forum/YCCJ6xPgV9s

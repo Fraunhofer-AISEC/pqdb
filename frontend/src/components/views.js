@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Route, Switch, Redirect, useParams } from 'react-router-dom';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
@@ -38,7 +38,7 @@ const SCHEME_TYPES = {
         encsign: "enc",
         enc_sign: "Encrypt",
         decvrfy: "dec",
-        dec_vrfy: "Verify",
+        dec_vrfy: "Decrypt",
     },
     sig: {
         name: "Signature Scheme",
@@ -61,11 +61,11 @@ const SEC_NOTIONS = {
 
 
 const NIST_ROUNDS = {
-    "none": {short: null, long: "Not submitted to the NIST standardization"},
-    "1": {short: "round 1", long: "Reached Round 1 of the NIST standardization"},
-    "2": {short: "round 2", long: "Reached Round 2 of the NIST standardization"},
-    "3a": {short: "round 3 alternate", long: "Alternate Candidate in Round 3 of the NIST standardization"},
-    "3f": {short: "round 3 finalist", long: "Finalist in Round 3 of the NIST standardization"},
+    "none": { short: null, long: "Not submitted to the NIST standardization" },
+    "1": { short: "round 1", long: "Reached Round 1 of the NIST standardization" },
+    "2": { short: "round 2", long: "Reached Round 2 of the NIST standardization" },
+    "3a": { short: "round 3 alternate", long: "Alternate Candidate in Round 3 of the NIST standardization" },
+    "3f": { short: "round 3 finalist", long: "Finalist in Round 3 of the NIST standardization" },
 }
 
 const Comment = function (props) {
@@ -101,7 +101,7 @@ const PropItem = function (props) {
             {props.hasOwnProperty('title') ?
                 <Typography component="h2" variant="inherit">
                     <Tooltip title={props.title} arrow>
-                        { /* overwrite some properties <Tooltip> sets */ }
+                        { /* overwrite some properties <Tooltip> sets */}
                         <ItemIcon role="img" aria-hidden={false} aria-label={props.title} aria-describedby={null} />
                     </Tooltip>
                 </Typography>
@@ -229,8 +229,9 @@ function AutoFocusTextField(props) {
     return <TextField inputRef={inputRef} {...props} />;
 }
 
-function renderSchemeList(db, typeKey) {
-    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY name;";
+function SchemeList(props) {
+    let { typeKey, db } = props;
+    const stmt = "SELECT * FROM scheme WHERE type=? ORDER BY nist_round DESC, name ASC;";
     const type = SCHEME_TYPES[typeKey];
 
     return (
@@ -242,9 +243,9 @@ function renderSchemeList(db, typeKey) {
             </Typography>
             <List>
                 {queryAll(db, stmt, [typeKey]).map(s => (
-                    <ListItem key={typeKey + "-" + s.id} style={{ paddingLeft: 0 }}><ListItemText>
+                    <ListItem key={`${typeKey}-${s.id_text}`} style={{ paddingLeft: 0 }}><ListItemText>
                         <Typography variant="h6">
-                            <Link component={RouterLink} to={detailLink(typeKey, s.id)}>
+                            <Link component={RouterLink} to={detailLink(s.id_text)}>
                                 {s.name}
                             </Link>
                         </Typography>
@@ -364,14 +365,14 @@ class Welcome extends React.Component {
                         <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
                         <Grid container>
                             <Grid item xs px={4} key="enc">
-                                    <Box p={4}>
-                                        {renderSchemeList(this.db, 'enc')}
-                                    </Box>
+                                <Box p={4}>
+                                    <SchemeList db={this.db} typeKey={'enc'} />
+                                </Box>
                             </Grid>
                             <Grid item xs px={4} key="sig">
-                                    <Box p={4}>
-                                        {renderSchemeList(this.db, 'sig')}
-                                    </Box>
+                                <Box p={4}>
+                                    <SchemeList db={this.db} typeKey={'sig'} />
+                                </Box>
                             </Grid>
                         </Grid>
                     </Box>
@@ -386,10 +387,24 @@ const secLevelMarks = [
     { label: '192', value: 192 }, { label: '256+', value: 256 }
 ];
 
+const nistRoundMarks = [
+    { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 }
+];
+
+function getNistRoundLabel(v) {
+    var round = nistRoundMarks.find((entry) => { return entry.value === v})
+    return round.label
+};
+
+function getNistRoundValue(l) {
+    var round = nistRoundMarks.find((entry) => { return entry.label === l})
+    return round.value
+}
+
 function humanReadableSize(size, baseUnit) {
     if (!Number.isFinite(size)) return '';
     var i = (size === 0) ? 0 : Math.floor(Math.log(size) / Math.log(1000));
-    return (size / Math.pow(1000, i)).toFixed(2) * 1 + ' ' + ['', 'k', 'M', 'G', 'T'][i] + baseUnit;
+    return `${(size / Math.pow(1000, i)).toFixed(2) * 1} ${['', 'k', 'M', 'G', 'T'][i]}${baseUnit}`;
 };
 
 class SchemeComparison extends React.Component {
@@ -401,7 +416,8 @@ class SchemeComparison extends React.Component {
         this.defaultState = {
             showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
             sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
-            showSecNist: false, showRef: false, focusPlatformFilter: false
+            showSecNist: false, showRef: false, focusPlatformFilter: false, showNistRound: false, nistRound: '3a',
+            showNonNistSchemes: false
         };
         this.filterState = {};
         Object.assign(this.filterState, this.defaultState);
@@ -418,12 +434,13 @@ class SchemeComparison extends React.Component {
 
     buildQuery(state) {
         return `SELECT
-    s.id as 'ID',
+    s.id_text as 'ID',
     p.name || CASE
         s.stateful
         WHEN 0 THEN ''
         ELSE ' (Stateful)'
     END AS 'Parameter Set'` +
+            ((state.showNistRound) ? ",\n   s.nist_round AS 'NIST Round'" : '') +
             ((state.showSecClassical) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
             ((state.showSecQuantum) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
             ((state.showSecNist) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
@@ -446,7 +463,8 @@ class SchemeComparison extends React.Component {
     round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
     round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
     round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
-` : '') + `FROM
+` : '') + `
+FROM
     scheme s
     JOIN flavor f ON s.id = f.scheme_id
     JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
@@ -454,6 +472,10 @@ class SchemeComparison extends React.Component {
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
+    AND (
+        s.nist_round BETWEEN ? AND '3f'` +
+            ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
+    )
     AND p.security_level_classical >= ?
     AND p.security_level_quantum >= ?` + (
                 (state.showBenchmarks) ?
@@ -464,12 +486,12 @@ WHERE
     }
 
     computeResult(state, sqlQuery) {
-        var params = [state.schemeType, state.securityLevel, state.securityQuantum];
+        var params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum ];
         if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
         results.forEach(res => {
-            res['Parameter Set'] = <Link component={RouterLink} to={detailLink(state.schemeType, res.ID)}>{res['Parameter Set']}</Link>;
+            res['Parameter Set'] = <Link component={RouterLink} to={detailLink(res.ID)}>{res['Parameter Set']}</Link>;
             delete res.ID;
         });
         return {
@@ -501,7 +523,7 @@ WHERE
                 const searchParamStr = JSON.stringify(searchParam);
                 history.push({
                     pathname: history.location.pathname,
-                    search: (searchParamStr === '{}') ? '' : "?" + qs.stringify({ state: searchParamStr })
+                    search: (searchParamStr === '{}') ? '' : `?${qs.stringify({ state: searchParamStr })}`
                 });
             });
         }
@@ -552,6 +574,10 @@ WHERE
                                                     <Checkbox defaultChecked={this.filterState.showHwFeatures}
                                                         onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
                                                 } label="Hardware Features" />
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showNistRound}
+                                                        onChange={() => this.changeFilterState({ showNistRound: !this.filterState.showNistRound })} />
+                                                } label="NIST Round" />
                                             </FormControl>
                                         </Grid>
 
@@ -603,11 +629,23 @@ WHERE
                                                         onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
                                                         valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
                                                 </Box>
+                                                <Box mt={1} display="flex">
+                                                    <Typography>NIST Round</Typography>
+                                                    <Slider color="secondary" defaultValue={getNistRoundValue(this.filterState.nistRound)} step={null}
+                                                        min={2} max={4} marks={nistRoundMarks} track="inverted"
+                                                        onChangeCommitted={(e, v) => this.changeFilterState({ nistRound: getNistRoundLabel(v) } )}
+                                                        valueLabelFormat={getNistRoundLabel}
+                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
+                                                </Box>
+                                                <FormControlLabel control={
+                                                    <Checkbox defaultChecked={this.filterState.showNonNistSchemes}
+                                                        onChange={() => this.changeFilterState({ showNonNistSchemes : !this.filterState.showNonNistSchemes })} />
+                                                } label="Include schemes not in the NIST competition" />
                                             </FormControl>
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                <Link component={RouterLink} to={"../raw_sql?query=" + encodeURIComponent(query)}>View this query as SQL</Link>
+                                <Link component={RouterLink} to={`/raw_sql?query=${encodeURIComponent(query)}`}>View this query as SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
@@ -672,7 +710,7 @@ class CustomSQLQuery extends React.Component {
     executeSQLQuery() {
         const history = this.props.history;
         this.params.query = this.state.sqlInput;
-        var search = '?' + qs.stringify(this.params);
+        var search = `?${qs.stringify(this.params)}`;
         if (history.location.search !== search) {
             history.push({
                 pathname: history.location.pathname,
@@ -739,466 +777,446 @@ class CustomSQLQuery extends React.Component {
     }
 }
 
-class SchemeDetail extends React.Component {
-    constructor(props) {
-        super(props);
-        this.db = props.db;
-        this.params = qs.parse(this.props.history.location.search);
+function SchemeDetailSwitch(props) {
+    return (
+        <Switch>
+            <Route exact path={'/detail'}><SchemeOverview db={props.db} /></Route>
+            <Route exact path={'/detail/:schemeId'}><SchemeDetail db={props.db} /></Route>
+            <Route exact path={'/detail/:schemeId/:flavorId'}><FlavorDetail db={props.db} /></Route>
+            <Route render={() => <Redirect to='/' />} />
+        </Switch>
+    );
+}
 
-        // TODO: use path not query string
-        var path = this.params['_'] ?? '';
-
-        this.state = {
-            path: path
-        }
-    }
-
-    renderOverview() {
-        return (
-            <Container maxWidth="md">
+function SchemeOverview(props) {
+    return (
+        <Container maxWidth="md">
             <Grid container justify="center" spacing={2}>
                 {Object.keys(SCHEME_TYPES).map(typeKey => (
                     <Grid item xs>
                         <Paper>
                             <Box p={2}>
-                                {renderSchemeList(this.db, typeKey)}
+                                <SchemeList db={props.db} typeKey={typeKey} />
                             </Box>
                         </Paper>
                     </Grid>
                 ))}
             </Grid>
-            </Container>
-        );
+        </Container>
+    );
+}
+
+function SchemeDetail(props) {
+    let db = props.db;
+    let { schemeId } = useParams();
+
+    const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
+    if (s === undefined) {
+        return <Container><Paper>No such scheme.</Paper></Container>;
     }
 
-    renderScheme(type, id) {
-        let db = this.db; // `this` is overriden inside `map`s and the like
+    const authors = queryAll(db, "SELECT * FROM scheme_author WHERE scheme_id=?", [s.id]);
+    const problems = queryAll(db, "SELECT * FROM scheme_problem WHERE scheme_id=?", [s.id]);
+    const links = queryAll(db, "SELECT * FROM scheme_link WHERE scheme_id=?", [s.id]);
+    const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [s.id]);
+    const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [s.id]);
 
-        const s = queryAll(this.db, "SELECT * FROM scheme WHERE type=? AND id=?", [type, id])[0];
-        if (s === undefined) {
-            return <Container><Paper>No such scheme.</Paper></Container>;
-        }
+    let TypeIcon = SCHEME_TYPES[s.type].icon;
+    return (
+        <Container maxWidth="md">
+            <Paper>
+                <Box>
+                    <List>
+                        <ListItem key="head" alignItems="flex-start">
+                            <ListItemText>
+                                <Typography component="h1" variant="h2">
+                                    {s.name}
+                                    {"  "}
+                                    <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
+                                        <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
+                                    </Tooltip>
+                                </Typography>
+                                {s.description && <div>{s.description}</div>}
+                                {s.comment && <div><TextComment>{s.comment}</TextComment></div>}
+                            </ListItemText>
+                        </ListItem>
 
-        const authors = queryAll(db, "SELECT * FROM scheme_author WHERE scheme_id=?", [id]);
-        const problems = queryAll(db, "SELECT * FROM scheme_problem WHERE scheme_id=?", [id]);
-        const links = queryAll(db, "SELECT * FROM scheme_link WHERE scheme_id=?", [id]);
-        const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [id]);
-        const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [id]);
+                        <PropItem k="category" title="Category" icon={CategoryIcon}>
+                            {s.category} based <Comment title={s.category_comment} />
+                        </PropItem>
 
-        let TypeIcon = SCHEME_TYPES[s.type].icon;
-        return [
-            <Container maxWidth="md">
-                <Paper>
-                    <Box>
-                        <List>
-                            <ListItem key="head" alignItems="flex-start">
-                                <ListItemText>
-                                    <Typography component="h1" variant="h2">
-                                        {s.name}
-                                        {"  "}
-                                        <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
-                                            <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
-                                        </Tooltip>
-                                    </Typography>
-                                    {s.description && <div>{s.description}</div>}
-                                    {s.comment && <div><TextComment>{s.comment}</TextComment></div>}
-                                </ListItemText>
-                            </ListItem>
+                        {(s.stateful || s.stateful_comment) && (
+                            <PropItem k="stateful" title="Statefulness" icon={SaveIcon}>
+                                {s.stateful ? 'stateful' : 'stateless' /* stateless only shown if there's a comment */}
+                                <Comment title={s.stateful_comment} />
+                            </PropItem>)
+                        }
+                        <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
+                            {NIST_ROUNDS[s.nist_round].long}
+                        </PropItem>
 
-                            <PropItem k="category" title="Category" icon={CategoryIcon}>
-                                {s.category} based <Comment title={s.category_comment} />
-                            </PropItem>
-
-                            {(s.stateful || s.stateful_comment) && (
-                                <PropItem k="stateful" title="Statefulness" icon={SaveIcon}>
-                                    {s.stateful ? 'stateful' : 'stateless' /* stateless only shown if there's a comment */}
-                                    <Comment title={s.stateful_comment} />
-                                </PropItem>)
+                        <PropItem k="year" title="Year" icon={EventIcon}>
+                            {
+                                [
+                                    s.year_paper === null ? [] :
+                                        [s.year_paper, <span style={{ opacity: .5 }}> (paper)</span>],
+                                    s.year_candidate === null ? [] :
+                                        [s.year_candidate, <span style={{ opacity: .5 }}> (NIST candidate)</span>],
+                                    s.year_standardization === null ? [] :
+                                        [s.year_standardization, <span style={{ opacity: .5 }}> (standardization)</span>],
+                                    s.year_comment === null ? [] :
+                                        <em>{s.year_comment}</em>,
+                                ].reduce((accu, elem) => { /* join(), but skipping empty entries */
+                                    return !elem.length ? accu : !accu.length ? [elem] :
+                                        [...accu, " \u2022 ", elem]
+                                }, []
+                                )
                             }
-                            <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
-                                {NIST_ROUNDS[s.nist_round].long}
-                            </PropItem>
+                        </PropItem>
 
-                            <PropItem k="year" title="Year" icon={EventIcon}>
-                                {
-                                    [
-                                        s.year_paper === null ? [] :
-                                            [s.year_paper, <span style={{ opacity: .5 }}> (paper)</span>],
-                                        s.year_candidate === null ? [] :
-                                            [s.year_candidate, <span style={{ opacity: .5 }}> (NIST candidate)</span>],
-                                        s.year_standardization === null ? [] :
-                                            [s.year_standardization, <span style={{ opacity: .5 }}> (standardization)</span>],
-                                        s.year_comment === null ? [] :
-                                            <em>{s.year_comment}</em>,
-                                    ].reduce((accu, elem) => { /* join(), but skipping empty entries */
-                                        return !elem.length ? accu : !accu.length ? [elem] :
-                                            [...accu, " \u2022 ", elem]
-                                    }, []
-                                    )
-                                }
-                            </PropItem>
-
-                            <PropItem k="problems_trust" title="Security Properties" icon={SecurityIcon}>
-                                {[
-                                    s.trust_comment && [
-                                        <div><strong>Trust: </strong></div>,
-                                        <div style={{ marginBottom: ".6em" }}>{s.trust_comment}</div>
-                                    ],
-                                    (problems.length > 0 || s.problems_comment) && [
-                                        <div><strong>Problems:</strong></div>,
-                                        s.problems_comment && <div><TextComment>{s.problems_comment}</TextComment></div>,
-                                        problems.map(p => <div>{p.assumption} <Comment title={p.comment} /></div>),
-                                    ]
-                                ]}
-                            </PropItem>
-
-                            <PropItem k="authors" title="Authors" icon={PeopleIcon}>
-                                {authors.map(a => <div>{a.name}</div>)}
-                            </PropItem>
-
-                            {links.length > 0 &&
-                                <PropItem k="links" title="Links" icon={LinkIcon}>
-                                    {links.map(l => <div>{linkify(l.url)}</div>)}
-                                </PropItem>}
-
-                            {sources.length > 0 &&
-                                <PropItem k="sources" title="Sources" icon={SourceIcon}>
-                                    {sources.map(s => <div>{linkify(s.url)}</div>)}
-                                </PropItem>}
-
-
-                            <ListItem key="flavors">
-                                <Typography component="h2" variant="h4">Flavors</Typography>
-                            </ListItem>
-
-                            {flavors.map((function (f) {
-                                const f_paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
-                                const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]);
-
-                                return [
-                                    <ListItem key={"flavor-" + f.id + "-head"} style={{ display: "block" }}>
-                                        <Typography component="h3" variant="h5">
-                                            <Link component={RouterLink} to={detailLink(s.type, s.id, f.id)}>{f.name}</Link>
-                                        </Typography>
-                                        {f.description && <div>{f.description}</div>}
-                                        {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
-                                    </ListItem>,
-
-                                    f.type !== "SIG" && !f.type_comment && // there's just one type for signatures, not worth showing this here
-                                    <PropItem k={"flavor-" + f.id + "-type"} title="API Type" icon={CategoryIcon}>
-                                        {f.type} <Comment title={f.type_comment} />
-                                    </PropItem>,
-
-                                    <PropItem k={"flavor-" + f.id + "-securitynotion"} title="Security Notion" icon={SecurityIcon}>
-                                        <Tooltip title={SEC_NOTIONS[f.security_notion]}>
-                                            <span>{f.security_notion}</span>
-                                        </Tooltip>
-                                        <Comment title={f.security_notion_comment} />
-                                    </PropItem>,
-
-                                    f.dh_ness && (
-                                        <PropItem k={"flavor-" + f.id + "-dhness"} title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
-                                            <strong>Diffie-Hellman-Ness: </strong>
-                                            {f.dh_ness}
-                                        </PropItem>
-                                    ),
-
-                                    <PropItem k={"flavor-" + f.id + "-paramsets"} title="Parameter sets" icon={ParamSetIcon}>
-                                        {f_paramsets.map(p =>
-                                            <div>
-                                                {p.name}{" "}
-                                                <Tooltip title={"NIST Category " + p.security_level_nist_category}><span>({ romanCat(p.security_level_nist_category) })</span></Tooltip>
-                                            </div>)
-                                        }
-                                    </PropItem>,
-
-                                    <PropItem k={"flavor-" + f.id + "-implementations"} title="Implementations" icon={CodeIcon}>
-                                        {f_implementations.map(i => <div>{i.name}</div>)}
-                                    </PropItem>,
+                        <PropItem k="problems_trust" title="Security Properties" icon={SecurityIcon}>
+                            {[
+                                s.trust_comment && [
+                                    <div><strong>Trust: </strong></div>,
+                                    <div style={{ marginBottom: ".6em" }}>{s.trust_comment}</div>
+                                ],
+                                (problems.length > 0 || s.problems_comment) && [
+                                    <div><strong>Problems:</strong></div>,
+                                    s.problems_comment && <div><TextComment>{s.problems_comment}</TextComment></div>,
+                                    problems.map(p => <div>{p.assumption} <Comment title={p.comment} /></div>),
                                 ]
-                            }).bind(this))}
-                        </List>
-                    </Box>
-                </Paper>
-            </Container>,
-        ];
-    }
+                            ]}
+                        </PropItem>
 
-    renderFlavor (type, scheme_id, flavor_id) {
-        let db = this.db; // `this` is overriden inside `map`s and the like
+                        <PropItem k="authors" title="Authors" icon={PeopleIcon}>
+                            {authors.map(a => <div>{a.name}</div>)}
+                        </PropItem>
 
-        const s = queryAll(this.db, "SELECT * FROM scheme WHERE type=? AND id=?", [type, scheme_id])[0];
-        const f = queryAll(this.db, "SELECT * FROM flavor WHERE scheme_id=? AND id=?", [scheme_id, flavor_id])[0];
-        const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
-        const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
-        const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
-        const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+                        {links.length > 0 &&
+                            <PropItem k="links" title="Links" icon={LinkIcon}>
+                                {links.map(l => <div>{linkify(l.url)}</div>)}
+                            </PropItem>}
 
-        let TypeIcon = SCHEME_TYPES[s.type].icon;
-        return [
-            <Container maxWidth="md">
-                <Paper>
-                    <Box>
-                        <List>
-                            <ListItem key="scheme-head" alignItems="flex-start">
-                                <ListItemText>
-                                    <Typography variant="h6">
-                                        <Link component={RouterLink} to={detailLink(s.type, s.id)}>
-                                            <ArrowBackIcon fontSize="inherit" />
-                                            { [" "] }
-                                            { s.name }
-                                        </Link>
-                                        { " " }
-                                        <Tooltip title={ SCHEME_TYPES[s.type].name } arrow>
-                                            <TypeIcon fontSize="inherit" aria-hidden={ false } role="img" aria-label={ SCHEME_TYPES[s.type].name } aria-describedby={ null } />
-                                        </Tooltip>
-                                        { " " }
-                                        <span style={{ fontWeight: "normal", marginLeft: ".4em" }}>
-                                            { s.category } <Comment title={ s.category_comment } />
-                                            { s.stateful ?
-                                                [" \u2022 stateful", <Comment title={ s.stateful_comment } />] : null }
-                                            { s.nist_round > 0 &&
-                                                [" \u2022 round " + s.nist_round, <Comment title={ s.nist_round_comment } />] }
-                                        </span>
+                        {sources.length > 0 &&
+                            <PropItem k="sources" title="Sources" icon={SourceIcon}>
+                                {sources.map(s => <div>{linkify(s.url)}</div>)}
+                            </PropItem>}
+
+
+                        <ListItem key="flavors">
+                            <Typography component="h2" variant="h4">Flavors</Typography>
+                        </ListItem>
+
+                        {flavors.map((function (f) {
+                            const f_paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
+                            const f_implementations = queryAll(db, "SELECT name FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]);
+
+                            return [
+                                <ListItem key={`flavor-${f.id}-head`} style={{ display: "block" }}>
+                                    <Typography component="h3" variant="h5">
+                                        <Link component={RouterLink} to={detailLink(s.id_text, f.id_text)}>{f.name}</Link>
                                     </Typography>
-                                </ListItemText>
-                            </ListItem>
-
-                            <ListItem key="flavor-head" alignItems="flex-start">
-                                <ListItemText>
-                                    <Typography variant="h3">
-                                        { f.name }
-                                    </Typography>
-                                    { f.description && <div>{ f.description }</div> }
-                                    { f.comment && <div><TextComment>{ f.comment }</TextComment></div> }
-                                </ListItemText>
-                            </ListItem>
-
-                            <PropItem k="type" title="API Type" icon={ CategoryIcon }>
-                                { f.type } <Comment title={ f.type_comment } />
-                            </PropItem>
-
-                            <PropItem k="securitynotion" title="Security Notion" icon={ SecurityIcon }>
-                                <Tooltip title={ SEC_NOTIONS[f.security_notion] }>
-                                    <span>{ f.security_notion }</span>
-                                </Tooltip>
-                                <Comment title={ f.security_notion_comment } />
-                            </PropItem>
-
-                            { f.dh_ness &&
-                            <PropItem k="dhness" title="Diffie-Hellman-Ness" icon={ DiffieHellmanIcon }>
-                                <strong>Diffie-Hellman-Ness: </strong>
-                                { f.dh_ness }
-                            </PropItem> }
-
-                            { links.length > 0 &&
-                            <PropItem k="links" title="Links" icon={ LinkIcon }>
-                                { links.map(l => <div>{ linkify(l.url) }</div>) }
-                            </PropItem> }
-
-                            { sources.length > 0 &&
-                            <PropItem k="sources" title="Sources" icon={ SourceIcon }>
-                                { sources.map(s => <div>{ linkify(s.url) }</div>) }
-                            </PropItem> }
-
-                            <ListItem key="paramsets">
-                                <Typography component="h3" variant="h4">Parameter Sets</Typography>
-                            </ListItem>
-
-                            { paramsets.map((function (p) {
-                                const p_links = queryAll(db, "SELECT * FROM paramset_link WHERE paramset_id=?", [p.id]);
-                                const p_sources = queryAll(db, "SELECT * FROM paramset_source WHERE paramset_id=?", [p.id]);
-                                return [
-
-                                <ListItem key={ "p-" + p.id + "-head" } style={{ display: "block" }}>
-                                    <Typography component="h4" variant="h5">
-                                        { p.name }
-                                    </Typography>
-                                    { p.comment && <div><TextComment>{ p.comment }</TextComment></div> }
+                                    {f.description && <div>{f.description}</div>}
+                                    {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
                                 </ListItem>,
 
-                                <PropItem k={ "p-" + p.id + "-seclevel" } title="Security Level" icon={ SecurityIcon }>
+                                f.type !== "SIG" && !f.type_comment && // there's just one type for signatures, not worth showing this here
+                                <PropItem k={`flavor-${f.id}-type`} title="API Type" icon={CategoryIcon}>
+                                    {f.type} <Comment title={f.type_comment} />
+                                </PropItem>,
+
+                                <PropItem k={`flavor-${f.id}-securitynotion`} title="Security Notion" icon={SecurityIcon}>
+                                    <Tooltip title={SEC_NOTIONS[f.security_notion]}>
+                                        <span>{f.security_notion}</span>
+                                    </Tooltip>
+                                    <Comment title={f.security_notion_comment} />
+                                </PropItem>,
+
+                                f.dh_ness && (
+                                    <PropItem k={`flavor-${f.id}-dhness`} title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
+                                        <strong>Diffie-Hellman-Ness: </strong>
+                                        {f.dh_ness}
+                                    </PropItem>
+                                ),
+
+                                <PropItem k={`flavor-${f.id}-paramsets`} title="Parameter sets" icon={ParamSetIcon}>
+                                    {f_paramsets.map(p =>
+                                        <div>
+                                            {p.name}{" "}
+                                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}><span>({romanCat(p.security_level_nist_category)})</span></Tooltip>
+                                        </div>)
+                                    }
+                                </PropItem>,
+
+                                <PropItem k={`flavor-${f.id}-implementations`} title="Implementations" icon={CodeIcon}>
+                                    {f_implementations.map(i => <div>{i.name}</div>)}
+                                </PropItem>,
+                            ]
+                        }))}
+                    </List>
+                </Box>
+            </Paper>
+        </Container>
+    );
+}
+
+function FlavorDetail(props) {
+    let db = props.db;
+    let { schemeId, flavorId } = useParams();
+
+    const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
+    if (s === undefined) {
+        return <Container><Paper>No such scheme.</Paper></Container>;
+    }
+    const f = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=? AND id_text=?", [s.id, flavorId])[0];
+    if (f === undefined) {
+        return <Container><Paper>No such flavor.</Paper></Container>;
+    }
+    const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
+    const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
+    const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
+    const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+
+    let TypeIcon = SCHEME_TYPES[s.type].icon;
+    return (
+        <Container maxWidth="md">
+            <Paper>
+                <Box>
+                    <List>
+                        <ListItem key="scheme-head" alignItems="flex-start">
+                            <ListItemText>
+                                <Typography variant="h6">
+                                    <Link component={RouterLink} to={detailLink(s.id_text)}>
+                                        <ArrowBackIcon fontSize="inherit" />
+                                        {[" "]}
+                                        {s.name}
+                                    </Link>
+                                    {" "}
+                                    <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
+                                        <TypeIcon fontSize="inherit" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
+                                    </Tooltip>
+                                    {" "}
+                                    <span style={{ fontWeight: "normal", marginLeft: ".4em" }}>
+                                        {s.category} <Comment title={s.category_comment} />
+                                        {s.stateful ?
+                                            [" \u2022 stateful", <Comment title={s.stateful_comment} />] : null}
+                                        {s.nist_round > 0 &&
+                                            [` \u2022 round ${s.nist_round}`, <Comment title={s.nist_round_comment} />]}
+                                    </span>
+                                </Typography>
+                            </ListItemText>
+                        </ListItem>
+
+                        <ListItem key="flavor-head" alignItems="flex-start">
+                            <ListItemText>
+                                <Typography variant="h3">
+                                    {f.name}
+                                </Typography>
+                                {f.description && <div>{f.description}</div>}
+                                {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
+                            </ListItemText>
+                        </ListItem>
+
+                        <PropItem k="type" title="API Type" icon={CategoryIcon}>
+                            {f.type} <Comment title={f.type_comment} />
+                        </PropItem>
+
+                        <PropItem k="securitynotion" title="Security Notion" icon={SecurityIcon}>
+                            <Tooltip title={SEC_NOTIONS[f.security_notion]}>
+                                <span>{f.security_notion}</span>
+                            </Tooltip>
+                            <Comment title={f.security_notion_comment} />
+                        </PropItem>
+
+                        {f.dh_ness &&
+                            <PropItem k="dhness" title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
+                                <strong>Diffie-Hellman-Ness: </strong>
+                                {f.dh_ness}
+                            </PropItem>}
+
+                        {links.length > 0 &&
+                            <PropItem k="links" title="Links" icon={LinkIcon}>
+                                {links.map(l => <div>{linkify(l.url)}</div>)}
+                            </PropItem>}
+
+                        {sources.length > 0 &&
+                            <PropItem k="sources" title="Sources" icon={SourceIcon}>
+                                {sources.map(s => <div>{linkify(s.url)}</div>)}
+                            </PropItem>}
+
+                        <ListItem key="paramsets">
+                            <Typography component="h3" variant="h4">Parameter Sets</Typography>
+                        </ListItem>
+
+                        {paramsets.map((function (p) {
+                            const p_links = queryAll(db, "SELECT * FROM paramset_link WHERE paramset_id=?", [p.id]);
+                            const p_sources = queryAll(db, "SELECT * FROM paramset_source WHERE paramset_id=?", [p.id]);
+                            return [
+
+                                <ListItem key={`p-${p.id}-head`} style={{ display: "block" }}>
+                                    <Typography component="h4" variant="h5">
+                                        {p.name}
+                                    </Typography>
+                                    {p.comment && <div><TextComment>{p.comment}</TextComment></div>}
+                                </ListItem>,
+
+                                <PropItem k={`p-${p.id}-seclevel`} title="Security Level" icon={SecurityIcon}>
                                     <div>
-                                        { p.security_level_nist_category > 0 && [
-                                            <Tooltip title={ "NIST Category " + p.security_level_nist_category }>
-                                                <span>{ romanCat(p.security_level_nist_category) }</span>
+                                        {p.security_level_nist_category > 0 && [
+                                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
+                                                <span>{romanCat(p.security_level_nist_category)}</span>
                                             </Tooltip>,
                                             " \u2022 "
-                                        ] }
-                                        { p.security_level_quantum } <span style={{ opacity:.5 }}> (quantum)</span>
-                                        { p.security_level_classical &&
-                                            [" \u2022 ", p.security_level_classical, <span style={{ opacity:.5 }}> (classical)</span> ] }
+                                        ]}
+                                        {p.security_level_quantum} <span style={{ opacity: .5 }}> (quantum)</span>
+                                        {p.security_level_classical &&
+                                            [" \u2022 ", p.security_level_classical, <span style={{ opacity: .5 }}> (classical)</span>]}
                                     </div>
-                                    { p.security_level_comment &&
-                                        <div><TextComment>{ p.security_level_comment }</TextComment></div> }
+                                    {p.security_level_comment &&
+                                        <div><TextComment>{p.security_level_comment}</TextComment></div>}
                                 </PropItem>,
 
-                                ( s.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment ) &&
-                                <PropItem k={ "p-" + p.id + "-failureprob" } title="Failure Probability" icon={ BottomIcon }>
-                                    { p.failure_probability === 0
+                                (s.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment) &&
+                                <PropItem k={`p-${p.id}-failureprob`} title="Failure Probability" icon={BottomIcon}>
+                                    {p.failure_probability === 0
                                         ? "0"
-                                        : ["2", <sup>{ p.failure_probability }</sup>]
+                                        : ["2", <sup>{p.failure_probability}</sup>]
                                     }
-                                    <Comment title={ p.failure_probability_comment } />
+                                    <Comment title={p.failure_probability_comment} />
                                 </PropItem>,
 
-                                <PropItem k={ "p-" + p.id + "-numop" } title="Number of operations" icon={ CounterIcon }>
-                                    { p.number_of_operations === "inf"
+                                <PropItem k={`p-${p.id}-numop`} title="Number of operations" icon={CounterIcon}>
+                                    {p.number_of_operations === "inf"
                                         ? "unlimited"
                                         : p.number_of_operations
                                     }
                                 </PropItem>,
 
-                                <PropItem k={ "p-" + p.id + "-sizes" } title="Sizes" icon={ MeasureIcon }>
+                                <PropItem k={`p-${p.id}-sizes`} title="Sizes" icon={MeasureIcon}>
                                     <div>
-                                        sk: { p.sizes_sk } {" \u2022 "}
-                                        pk: { p.sizes_pk } {" \u2022 "}
-                                        { SCHEME_TYPES[s.type].ctsig }: { p.sizes_ct_sig }
+                                        sk: {p.sizes_sk} {" \u2022 "}
+                                    pk: {p.sizes_pk} {" \u2022 "}
+                                        {SCHEME_TYPES[s.type].ctsig}: {p.sizes_ct_sig}
                                     </div>
-                                    { p.sizes_comment && <div><TextComment>{ p.sizes_comment }</TextComment></div> }
+                                    {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
                                 </PropItem>,
 
                                 p_links.length > 0 &&
-                                <PropItem k={ "p-" + p.id + "-links" } title="Links" icon={ LinkIcon }>
-                                    { p_links.map(l => <div>{ linkify(l.url) }</div>) }
+                                <PropItem k={`p-${p.id}-links`} title="Links" icon={LinkIcon}>
+                                    {p_links.map(l => <div>{linkify(l.url)}</div>)}
                                 </PropItem>,
 
                                 p_sources.length > 0 &&
-                                <PropItem k={ "p-" + p.id + "-sources" } title="Sources" icon={ SourceIcon }>
-                                    { p_sources.map(s => <div>{ linkify(s.url) }</div>) }
+                                <PropItem k={`p-${p.id}-sources`} title="Sources" icon={SourceIcon}>
+                                    {p_sources.map(s => <div>{linkify(s.url)}</div>)}
                                 </PropItem>,
 
 
-                            ] } ).bind(this)) }
+                            ]
+                        }))}
 
-                            <ListItem key="implementations">
-                                <Typography component="h3" variant="h4">Implementations</Typography>
-                            </ListItem>
+                        <ListItem key="implementations">
+                            <Typography component="h3" variant="h4">Implementations</Typography>
+                        </ListItem>
 
-                            { implementations.map(function (i) {
-                                const i_links = queryAll(db, "SELECT * FROM implementation_link WHERE implementation_id=?", [i.id]);
-                                const i_sources = queryAll(db, "SELECT * FROM implementation_source WHERE implementation_id=?", [i.id]);
-                                const i_hardware = queryAll(db, "SELECT * FROM implementation_hardware_feature WHERE implementation_id=?", [i.id]);
-                                const i_dependencies = queryAll(db, "SELECT * FROM implementation_dependency WHERE implementation_id=?", [i.id]);
-                                let i_side_channel_guarding = [
-                                    i.side_channel_guarding_branching && 'branching',
-                                    i.side_channel_guarding_timing && 'timing',
-                                ].filter(Boolean);
-                                if ( i_side_channel_guarding.length === 0 ) i_side_channel_guarding = ['none'];
-                                const side_channel_info = {0: 'no', 1: 'yes', null: 'unknown'};
+                        {implementations.map(function (i) {
+                            const i_links = queryAll(db, "SELECT * FROM implementation_link WHERE implementation_id=?", [i.id]);
+                            const i_sources = queryAll(db, "SELECT * FROM implementation_source WHERE implementation_id=?", [i.id]);
+                            const i_hardware = queryAll(db, "SELECT * FROM implementation_hardware_feature WHERE implementation_id=?", [i.id]);
+                            const i_dependencies = queryAll(db, "SELECT * FROM implementation_dependency WHERE implementation_id=?", [i.id]);
+                            let i_side_channel_guarding = [
+                                i.side_channel_guarding_branching && 'branching',
+                                i.side_channel_guarding_timing && 'timing',
+                            ].filter(Boolean);
+                            if (i_side_channel_guarding.length === 0) i_side_channel_guarding = ['none'];
+                            const side_channel_info = { 0: 'no', 1: 'yes', null: 'unknown' };
 
-                                return [
+                            return [
 
-                                <ListItem key={ "i-" + i.id + "-head" } style={{ display: "block" }}>
+                                <ListItem key={`i-${i.id}-head`} style={{ display: "block" }}>
                                     <Typography component="h4" variant="h5">
-                                        { i.name }
+                                        {i.name}
                                     </Typography>
-                                    { i.comment && <div><TextComment>{ i.comment }</TextComment></div> }
+                                    {i.comment && <div><TextComment>{i.comment}</TextComment></div>}
                                 </ListItem>,
 
-                                <PropItem k={ "i-" + i.id + "-platform" } title="Platform" icon={ LanguageIcon }>
-                                    { i.platform }
+                                <PropItem k={`i-${i.id}-platform`} title="Platform" icon={LanguageIcon}>
+                                    {i.platform}
                                 </PropItem>,
 
-                                <PropItem k={ "i-" + i.id + "-type" } title="Type of Implementation" icon={ CategoryIcon }>
-                                    { i.type }
+                                <PropItem k={`i-${i.id}-type`} title="Type of Implementation" icon={CategoryIcon}>
+                                    {i.type}
                                 </PropItem>,
 
                                 i_hardware.length > 0 &&
-                                <PropItem k={ "i-" + i.id + "-hardware" } title="Required Hardware Features" icon={ ChipIcon }>
-                                    { i_hardware.map(h => <div>{ h.feature }</div>) }
+                                <PropItem k={`i-${i.id}-hardware`} title="Required Hardware Features" icon={ChipIcon}>
+                                    {i_hardware.map(h => <div>{h.feature}</div>)}
                                 </PropItem>,
 
                                 i_dependencies.length > 0 &&
-                                <PropItem k={ "i-" + i.id + "-deps" } title="Code Dependencies" icon={ CodeIcon }>
-                                    { i_dependencies.map(d => <div>{ d.dependency }</div>) }
+                                <PropItem k={`i-${i.id}-deps`} title="Code Dependencies" icon={CodeIcon}>
+                                    {i_dependencies.map(d => <div>{d.dependency}</div>)}
                                 </PropItem>,
 
-                                <PropItem k={ "i-" + i.id + "-sidechannel" } title="Side Channel Guarding" icon={ CastleIcon }>
+                                <PropItem k={`i-${i.id}-sidechannel`} title="Side Channel Guarding" icon={CastleIcon}>
                                     <div>
-                                        branching: { side_channel_info[i.side_channel_guarding_branching] }
-                                        <Comment title={ i.side_channel_guarding_branching_comment } />
+                                        branching: {side_channel_info[i.side_channel_guarding_branching]}
+                                        <Comment title={i.side_channel_guarding_branching_comment} />
                                     </div>
                                     <div>
-                                        timing: { side_channel_info[i.side_channel_guarding_timing] }
-                                        <Comment title={ i.side_channel_guarding_timing_comment } />
+                                        timing: {side_channel_info[i.side_channel_guarding_timing]}
+                                        <Comment title={i.side_channel_guarding_timing_comment} />
                                     </div>
                                 </PropItem>,
 
                                 // TODO code size and randomness missing
 
                                 i_links.length > 0 &&
-                                <PropItem k={ "i-" + i.id + "-links" } title="Links" icon={ LinkIcon }>
-                                    { i_links.map(l => <div>{ linkify(l.url) }</div>) }
+                                <PropItem k={`i-${i.id}-links`} title="Links" icon={LinkIcon}>
+                                    {i_links.map(l => <div>{linkify(l.url)}</div>)}
                                 </PropItem>,
 
                                 i_sources.length > 0 &&
-                                <PropItem k={ "i-" + i.id + "-sources" } title="Sources" icon={ SourceIcon }>
-                                    { i_sources.map(s => <div>{ linkify(s.url) }</div>) }
+                                <PropItem k={`i-${i.id}-sources`} title="Sources" icon={SourceIcon}>
+                                    {i_sources.map(s => <div>{linkify(s.url)}</div>)}
                                 </PropItem>,
 
-                            ] } ) }
+                            ]
+                        })}
 
-                            <ListItem key="benchmarks">
-                                <ListItemText>
-                                    <Typography component="h3" variant="h4">Benchmarks</Typography>
-                                    <div><Link component={RouterLink} to={"raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D" + f.id}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */ }
-                                </ListItemText>
-                            </ListItem>
-                        </List>
-                    </Box>
-                </Paper>
-            </Container>,
-        ];
-    }
-
-    render() {
-        let comp = this.state.path.split('/');
-
-        if (comp.length === 1 && comp[0] === '')
-            return this.renderOverview();
-
-        if (comp.length > 1 && !(comp[0] in SCHEME_TYPES)) {
-            // TODO error
-            return "invalid url, must be enc or sig"
-        }
-        if (comp.length === 1) {
-            return "invalid url, go up"
-            // TODO redirect to /
-        }
-
-        if (comp.length === 2) {
-            return this.renderScheme(...comp)
-        }
-
-        if (comp.length === 3) {
-            return this.renderFlavor(...comp)
-        }
-    }
+                        <ListItem key="benchmarks">
+                            <ListItemText>
+                                <Typography component="h3" variant="h4">Benchmarks</Typography>
+                                <div><Link component={RouterLink} to={`/raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D${f.id}`}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */}
+                            </ListItemText>
+                        </ListItem>
+                    </List>
+                </Box>
+            </Paper>
+        </Container>
+    );
 }
 
-function romanCat ( nistCat ) {
+function romanCat(nistCat) {
     let romans = ['ø', 'I', 'II', 'III', 'IV', 'V'];
-    if ( Number.isInteger(nistCat) && romans[nistCat] !== undefined )
+    if (Number.isInteger(nistCat) && romans[nistCat] !== undefined)
         return romans[nistCat];
     else
         return nistCat;
 }
 
-function linkify ( s ) {
+function linkify(s) {
     let url = s.match(/https?:\/\/[^\s]+/g);
-    return url ? <Link href={ url }>{ s }</Link> : s;
+    return url ? <Link href={url}>{s}</Link> : s;
 }
 
-function detailLink ( type, scheme, flavor ) {
-    let url = 'detail';
-    if ( type !== undefined ) {
-        url += '?_=' + type + '/' + scheme;
-        if ( flavor !== undefined )
-            url += '/' + flavor;
-    }
+function detailLink(scheme, flavor) {
+    let url = '/detail';
+    url += `/${scheme}`;
+    if (flavor !== undefined)
+        url += `/${flavor}`;
 
     return url;
 }
 
-export { CustomSQLQuery, SchemeDetail, Welcome, SchemeComparison };
+export { CustomSQLQuery, SchemeDetailSwitch, Welcome, SchemeComparison };

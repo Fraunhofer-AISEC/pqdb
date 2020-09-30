@@ -1,0 +1,15 @@
+name: SABER
+security level:
+  classical: 189
+  quantum: 172
+  nist category: 3
+failure probability: -136
+sizes:
+  sk: 2304
+  pk: 992
+  msg: 32
+  ct|sig: 1088
+  comment: 'Compressed sk size: 1344'
+number of operations: inf
+sources:
+- https://groups.google.com/a/list.nist.gov/forum/#!topic/pqc-forum/YCCJ6xPgV9s
