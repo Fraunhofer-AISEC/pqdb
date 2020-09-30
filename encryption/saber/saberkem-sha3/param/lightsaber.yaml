@@ -1,7 +1,7 @@
 name: LightSABER
 security level:
-  classical: 125
-  quantum: 114
+  classical: 118
+  quantum: 107
   nist category: 1
 failure probability: -120
 sizes:
@@ -11,3 +11,5 @@ sizes:
   msg: 32
   ct|sig: 736
 number of operations: inf
+sources:
+- https://groups.google.com/a/list.nist.gov/forum/#!topic/pqc-forum/YCCJ6xPgV9s
