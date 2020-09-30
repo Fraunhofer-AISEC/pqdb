@@ -483,6 +483,10 @@ WHERE
                     ((state.platformFilter !== '') ? "\n    AND b.platform LIKE '%' || ? || '%'" : '')
                     : ''
             );
+        // Note: The (very fragile) `expandQuery` method below makes quite
+        // some assumptions on the structure of this query (for example, no
+        // question marks in strings or comments). When making changes,
+        // please verify that the "view as SQL" link still works.
     }
 
     prepareParams(state) {
