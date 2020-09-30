@@ -24,7 +24,7 @@ _schemename_replace = re.compile('^([-A-Za-z0-9]+) \(([\d]+) executions\)$')
 # to create a list, run this from `/encryption` or `/signatures`:
 # printf '%s\n' */*/param/*.yaml | sed 's|param/||; s|\.yaml$||; y|/| |' | column -t
 _scheme_to_paramset = '''
-    firesaber           saber             saberKEM-sha3         FireSABER
+    firesaber           saber             saberkem-sha3         firesaber
     frodokem640aes      frodo             frodokem-aes          640
     frodokem640shake    frodo             frodokem-shake        640
     kyber1024           kyber             ccakem                1024
@@ -33,13 +33,13 @@ _scheme_to_paramset = '''
     kyber512-90s        kyber             ccakem-90s            512
     kyber768            kyber             ccakem                768
     kyber768-90s        kyber             ccakem-90s            768
-    lightsaber          saber             saberKEM-sha3         LightSABER
+    lightsaber          saber             saberkem-sha3         lightsaber
     ntruhps2048509      ntru              ntru-kem              ntruhps2048509
     ntruhps2048677      ntru              ntru-kem              ntruhps2048677
     ntruhps4096821      ntru              ntru-kem              ntruhps4096821
     ntruhrss701         ntru              ntru-kem              ntruhrss701
     ntrulpr761          ntru-prime        lprime                ntrulpr761
-    saber               saber             saberKEM-sha3         SABER
+    saber               saber             saberkem-sha3         saber
     sikep434            sike              sike-shake256         p434
     sikep503            sike              sike-shake256         p503
     sikep610            sike              sike-shake256         p610
@@ -49,51 +49,51 @@ _scheme_to_paramset = '''
     dilithium2                   dilithium  dilithium-shake  medium
     dilithium3                   dilithium  dilithium-shake  recommended
     dilithium4                   dilithium  dilithium-shake  very-high
-    falcon-1024                  FALCON     FALCON           1024
-    falcon-512                   FALCON     FALCON           512
+    falcon-1024                  falcon     falcon           1024
+    falcon-512                   falcon     falcon           512
     falcon-512-tree
-    luov-47-42-182-chacha        LUOV       LUOV-chacha8      LUOV-47-42-182
-    luov-47-42-182-keccak        LUOV       LUOV-keccak       LUOV-47-42-182
-    luov-61-60-261-chacha        LUOV       LUOV-chacha8      LUOV-61-60-261
-    luov-61-60-261-keccak        LUOV       LUOV-keccak       LUOV-61-60-261
-    luov-7-57-197-chacha         LUOV       LUOV-chacha8      LUOV-7-57-197
-    luov-7-57-197-keccak         LUOV       LUOV-keccak       LUOV-7-57-197
-    sphincs-haraka-128f-robust   SPHINCS+   SPHINCS-Haraka    128f-robust
-    sphincs-haraka-128f-simple   SPHINCS+   SPHINCS-Haraka    128f-simple
-    sphincs-haraka-128s-robust   SPHINCS+   SPHINCS-Haraka    128s-robust
-    sphincs-haraka-128s-simple   SPHINCS+   SPHINCS-Haraka    128s-simple
-    sphincs-haraka-192f-robust   SPHINCS+   SPHINCS-Haraka    192f-robust
-    sphincs-haraka-192f-simple   SPHINCS+   SPHINCS-Haraka    192f-simple
-    sphincs-haraka-192s-robust   SPHINCS+   SPHINCS-Haraka    192s-robust
-    sphincs-haraka-192s-simple   SPHINCS+   SPHINCS-Haraka    192s-simple
-    sphincs-haraka-256f-robust   SPHINCS+   SPHINCS-Haraka    256f-robust
-    sphincs-haraka-256f-simple   SPHINCS+   SPHINCS-Haraka    256f-simple
-    sphincs-haraka-256s-robust   SPHINCS+   SPHINCS-Haraka    256s-robust
-    sphincs-haraka-256s-simple   SPHINCS+   SPHINCS-Haraka    256s-simple
-    sphincs-sha256-128f-robust   SPHINCS+   SPHINCS-SHA-256    128f-robust
-    sphincs-sha256-128f-simple   SPHINCS+   SPHINCS-SHA-256    128f-simple
-    sphincs-sha256-128s-robust   SPHINCS+   SPHINCS-SHA-256    128s-robust
-    sphincs-sha256-128s-simple   SPHINCS+   SPHINCS-SHA-256    128s-simple
-    sphincs-sha256-192f-robust   SPHINCS+   SPHINCS-SHA-256    192f-robust
-    sphincs-sha256-192f-simple   SPHINCS+   SPHINCS-SHA-256    192f-simple
-    sphincs-sha256-192s-robust   SPHINCS+   SPHINCS-SHA-256    192s-robust
-    sphincs-sha256-192s-simple   SPHINCS+   SPHINCS-SHA-256    192s-simple
-    sphincs-sha256-256f-robust   SPHINCS+   SPHINCS-SHA-256    256f-robust
-    sphincs-sha256-256f-simple   SPHINCS+   SPHINCS-SHA-256    256f-simple
-    sphincs-sha256-256s-robust   SPHINCS+   SPHINCS-SHA-256    256s-robust
-    sphincs-sha256-256s-simple   SPHINCS+   SPHINCS-SHA-256    256s-simple
-    sphincs-shake256-128f-robust SPHINCS+   SPHINCS-SHAKE256   128f-robust
-    sphincs-shake256-128f-simple SPHINCS+   SPHINCS-SHAKE256   128f-simple
-    sphincs-shake256-128s-robust SPHINCS+   SPHINCS-SHAKE256   128s-robust
-    sphincs-shake256-128s-simple SPHINCS+   SPHINCS-SHAKE256   128s-simple
-    sphincs-shake256-192f-robust SPHINCS+   SPHINCS-SHAKE256   192f-robust
-    sphincs-shake256-192f-simple SPHINCS+   SPHINCS-SHAKE256   192f-simple
-    sphincs-shake256-192s-robust SPHINCS+   SPHINCS-SHAKE256   192s-robust
-    sphincs-shake256-192s-simple SPHINCS+   SPHINCS-SHAKE256   192s-simple
-    sphincs-shake256-256f-robust SPHINCS+   SPHINCS-SHAKE256   256f-robust
-    sphincs-shake256-256f-simple SPHINCS+   SPHINCS-SHAKE256   256f-simple
-    sphincs-shake256-256s-robust SPHINCS+   SPHINCS-SHAKE256   256s-robust
-    sphincs-shake256-256s-simple SPHINCS+   SPHINCS-SHAKE256   256s-simple
+    luov-47-42-182-chacha        luov       luov-chacha8      luov-47-42-182
+    luov-47-42-182-keccak        luov       luov-keccak       luov-47-42-182
+    luov-61-60-261-chacha        luov       luov-chacha8      luov-61-60-261
+    luov-61-60-261-keccak        luov       luov-keccak       luov-61-60-261
+    luov-7-57-197-chacha         luov       luov-chacha8      luov-7-57-197
+    luov-7-57-197-keccak         luov       luov-keccak       luov-7-57-197
+    sphincs-haraka-128f-robust   sphincs+   sphincs-haraka    128f-robust
+    sphincs-haraka-128f-simple   sphincs+   sphincs-haraka    128f-simple
+    sphincs-haraka-128s-robust   sphincs+   sphincs-haraka    128s-robust
+    sphincs-haraka-128s-simple   sphincs+   sphincs-haraka    128s-simple
+    sphincs-haraka-192f-robust   sphincs+   sphincs-haraka    192f-robust
+    sphincs-haraka-192f-simple   sphincs+   sphincs-haraka    192f-simple
+    sphincs-haraka-192s-robust   sphincs+   sphincs-haraka    192s-robust
+    sphincs-haraka-192s-simple   sphincs+   sphincs-haraka    192s-simple
+    sphincs-haraka-256f-robust   sphincs+   sphincs-haraka    256f-robust
+    sphincs-haraka-256f-simple   sphincs+   sphincs-haraka    256f-simple
+    sphincs-haraka-256s-robust   sphincs+   sphincs-haraka    256s-robust
+    sphincs-haraka-256s-simple   sphincs+   sphincs-haraka    256s-simple
+    sphincs-sha256-128f-robust   sphincs+   sphincs-sha-256   128f-robust
+    sphincs-sha256-128f-simple   sphincs+   sphincs-sha-256   128f-simple
+    sphincs-sha256-128s-robust   sphincs+   sphincs-sha-256   128s-robust
+    sphincs-sha256-128s-simple   sphincs+   sphincs-sha-256   128s-simple
+    sphincs-sha256-192f-robust   sphincs+   sphincs-sha-256   192f-robust
+    sphincs-sha256-192f-simple   sphincs+   sphincs-sha-256   192f-simple
+    sphincs-sha256-192s-robust   sphincs+   sphincs-sha-256   192s-robust
+    sphincs-sha256-192s-simple   sphincs+   sphincs-sha-256   192s-simple
+    sphincs-sha256-256f-robust   sphincs+   sphincs-sha-256   256f-robust
+    sphincs-sha256-256f-simple   sphincs+   sphincs-sha-256   256f-simple
+    sphincs-sha256-256s-robust   sphincs+   sphincs-sha-256   256s-robust
+    sphincs-sha256-256s-simple   sphincs+   sphincs-sha-256   256s-simple
+    sphincs-shake256-128f-robust sphincs+   sphincs-shake256  128f-robust
+    sphincs-shake256-128f-simple sphincs+   sphincs-shake256  128f-simple
+    sphincs-shake256-128s-robust sphincs+   sphincs-shake256  128s-robust
+    sphincs-shake256-128s-simple sphincs+   sphincs-shake256  128s-simple
+    sphincs-shake256-192f-robust sphincs+   sphincs-shake256  192f-robust
+    sphincs-shake256-192f-simple sphincs+   sphincs-shake256  192f-simple
+    sphincs-shake256-192s-robust sphincs+   sphincs-shake256  192s-robust
+    sphincs-shake256-192s-simple sphincs+   sphincs-shake256  192s-simple
+    sphincs-shake256-256f-robust sphincs+   sphincs-shake256  256f-robust
+    sphincs-shake256-256f-simple sphincs+   sphincs-shake256  256f-simple
+    sphincs-shake256-256s-robust sphincs+   sphincs-shake256  256s-robust
+    sphincs-shake256-256s-simple sphincs+   sphincs-shake256  256s-simple
 '''
 scheme_to_paramset = dict(
         (l.strip().split(' ')[0], re.split(' +', l.strip())[1:] or None)
