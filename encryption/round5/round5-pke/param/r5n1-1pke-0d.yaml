@@ -1,0 +1,15 @@
+name: R5N1.1PKE.0d
+security level:
+  classical: 128
+  quantum: 122
+  nist category: 1
+failure probability: -146
+sizes:
+  sk: 5772
+  pk: 5740
+  ct|sig: 5804
+number of operations: inf
+sources:
+  - >-
+    https://round5.org/Supporting_Documentation/Round5_Submission.pdf , page
+    57,62

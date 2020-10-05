@@ -1,0 +1,6 @@
+name: Round5.PKE
+type: KTM
+security notion: IND-CCA
+sources:
+  - >-
+    https://round5.org/Supporting_Documentation/Round5_Submission.pdf#subsubsection.2.9.7
