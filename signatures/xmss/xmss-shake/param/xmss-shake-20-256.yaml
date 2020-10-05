@@ -1,4 +1,4 @@
-name: XMSS-SHA2_20_256
+name: XMSS-SHAKE_20_256
 security level:
   classical: 256
   quantum: 128

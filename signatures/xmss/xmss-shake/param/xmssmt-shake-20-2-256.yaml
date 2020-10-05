@@ -1,11 +1,11 @@
-name: XMSS-SHA2_20_256
+name: XMSSMT-SHAKE_20/2_256
 security level:
   classical: 256
   quantum: 128
 number of operations: 2^20
 failure probability: 0
 sizes:
-  sk: 831
+  sk: 659
   pk: 68
   ct|sig: 2820
   msg: 256
