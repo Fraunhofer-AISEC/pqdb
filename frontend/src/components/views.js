@@ -24,6 +24,10 @@ import SecurityIcon from '@material-ui/icons/Security';
 import qs from 'query-string';
 import genCSV from 'csv-stringify';
 import { GlassMagnifier } from "react-image-magnifiers";
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import Divider from '@material-ui/core/Divider';
+
 
 import diagramImage from '../tables.svg';
 
@@ -264,6 +268,76 @@ function SchemeList(props) {
                 ))}
             </List>
         </>
+    );
+}
+
+function intersection(a, b) {
+    return a.filter((value) => b.indexOf(value) !== -1);
+}
+
+function union(a, b) {
+    return [...a, ...not(b, a)];
+}
+
+function not(a, b) {
+    return a.filter((value) => b.indexOf(value) === -1);
+}
+
+function SchemeCheckboxList(props) {
+    let { list } = props;
+    const [checked, setChecked] = useState([]);
+
+    const handleSchemeToggle = (scheme) => () => {
+        const currentIndex = checked.indexOf(scheme);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+           newChecked.push(scheme);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+        setChecked(newChecked);
+    };
+    const numberOfChecked = (items) => intersection(checked, items).length;
+
+    const handleToggleAll = (items) => () => {
+      if (numberOfChecked(items) === items.length) {
+        setChecked(not(checked, items));
+      } else {
+        setChecked(union(checked, items));
+      }
+    };
+
+    return (
+      <Card>
+        <CardHeader 
+          avatar={
+              <Checkbox 
+                onClick={handleToggleAll(list)}
+                checked={numberOfChecked(list) === list.length && list.length !== 0}
+                indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
+              />
+          }
+          title={"Schemes"}
+        />
+        <Divider />
+        <List dense component="div" role="list">
+            {list.map((value) => {
+                return (
+                    <ListItem key={value} role="listitem" button onClick={handleSchemeToggle(value)}>
+                        <ListItemIcon>
+                            <Checkbox 
+                              checked={checked.indexOf(value) !== -1}
+                              tabIndex={-1}
+                              disableRipple
+                            />
+                        </ListItemIcon>
+                        <ListItemText primary={value} />
+                    </ListItem>
+                );
+            })}
+        </List>
+      </Card>
     );
 }
 
@@ -682,6 +756,9 @@ WHERE
                                                         onChange={() => this.changeFilterState({ showNonNistSchemes : !this.filterState.showNonNistSchemes })} />
                                                 } label="Include schemes not in the NIST competition" />
                                             </FormControl>
+                                        </Grid>
+                                        <Grid item>
+                                            <SchemeCheckboxList list={["Kyber", "SIKE"]} />
                                         </Grid>
                                     </Grid>
                                 </Box>
