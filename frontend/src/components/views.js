@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { div, useState } from 'react';
 import { Link as RouterLink, Route, Switch, Redirect, useParams } from 'react-router-dom';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
     Table, TableHead, TableRow, TableCell, TableContainer, TableBody, TableSortLabel, Popper, MenuList,
     MenuItem, Grow, ClickAwayListener, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Tooltip,
-    Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel, Slider
+    Checkbox, FormControlLabel, FormControl, Slider, Accordion, AccordionSummary, AccordionDetails
 } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CategoryIcon from '@material-ui/icons/Category';
 import CodeIcon from '@material-ui/icons/Code';
@@ -32,6 +33,8 @@ import Divider from '@material-ui/core/Divider';
 import diagramImage from '../tables.svg';
 
 import { queryAll, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
+
+import md5 from 'md5';
 
 const SCHEME_TYPES = {
     enc: {
@@ -466,12 +469,12 @@ const nistRoundMarks = [
 ];
 
 function getNistRoundLabel(v) {
-    var round = nistRoundMarks.find((entry) => { return entry.value === v})
+    var round = nistRoundMarks.find((entry) => { return entry.value === v })
     return round.label
 };
 
 function getNistRoundValue(l) {
-    var round = nistRoundMarks.find((entry) => { return entry.label === l})
+    var round = nistRoundMarks.find((entry) => { return entry.label === l })
     return round.value
 }
 
@@ -486,20 +489,20 @@ class SchemeComparison extends React.Component {
         super(props);
         this.db = props.db;
         this.platformFilterTimeout = null;
-        this.state = { pageDisabled: false };
+        this.state = { queryProcessing: true, tableKey: "0" };
+        this.query = "null";
+        this.queryResult = undefined;
         this.defaultState = {
-            showStorage: false, showBenchmarks: true, showHwFeatures: true, schemeType: 'sig', platformFilter: '',
-            sliderValue: 128, securityLevel: 128, securityQuantum: 0, showSecClassical: true, showSecQuantum: false,
-            showSecNist: false, showRef: false, focusPlatformFilter: false, showNistRound: false, nistRound: '3a',
-            showNonNistSchemes: false
+            showColumns: ['benchmarks', 'hw_features', 'nist_category'], // not shown: 'storage', 'security_levels', 'nist_round'
+            schemeType: 'sig', platformFilter: '', sliderValue: 128, securityLevel: 128, securityQuantum: 0,
+            showRef: false, nistRound: '3a', showNonNistSchemes: false
         };
-        this.filterState = {};
-        Object.assign(this.filterState, this.defaultState);
+        Object.assign(this.state, this.defaultState);
         var params = qs.parse(this.props.history.location.search);
         if ('state' in params) {
             try {
                 var paramState = JSON.parse(params.state);
-                Object.assign(this.filterState, paramState);
+                Object.assign(this.state, paramState);
             } catch {
                 // JSON state was invalid -> ignore
             }
@@ -514,16 +517,16 @@ class SchemeComparison extends React.Component {
         WHEN 0 THEN ''
         ELSE ' (Stateful)'
     END AS 'Parameter Set'` +
-            ((state.showNistRound) ? ",\n   s.nist_round AS 'NIST Round'" : '') +
-            ((state.showSecClassical) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
-            ((state.showSecQuantum) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
-            ((state.showSecNist) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
-            ((state.showStorage) ? `,
+            ((state.showColumns.includes('nist_round')) ? ",\n   s.nist_round AS 'NIST Round'" : '') +
+            ((state.showColumns.includes('security_levels')) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
+            ((state.showColumns.includes('security_levels')) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
+            ((state.showColumns.includes('nist_category')) ? ",\n    p.security_level_nist_category AS 'NIST Category'" : '') +
+            ((state.showColumns.includes('storage')) ? `,
     p.sizes_sk AS 'Secret Key Size',
     p.sizes_pk AS 'Public Key Size',
     p.sizes_ct_sig AS '${SCHEME_TYPES[state.schemeType].ct_sig} Size',
-    (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showBenchmarks) ? `,
-    i.name AS 'Implementation Name'${(state.showHwFeatures) ? `,
+    (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showColumns.includes('benchmarks')) ? `,
+    i.name AS 'Implementation Name'${(state.showColumns.includes('hw_features')) ? `,
     (
         SELECT
             GROUP_CONCAT(hf.feature, ", ")
@@ -541,7 +544,7 @@ class SchemeComparison extends React.Component {
 FROM
     scheme s
     JOIN flavor f ON s.id = f.scheme_id
-    JOIN paramset p ON f.id = p.flavor_id${(state.showBenchmarks) ? `
+    JOIN paramset p ON f.id = p.flavor_id${(state.showColumns.includes('benchmarks')) ? `
     LEFT JOIN benchmark b ON p.id = b.paramset_id
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
@@ -552,7 +555,7 @@ WHERE
     )
     AND p.security_level_classical >= ?
     AND p.security_level_quantum >= ?` + (
-                (state.showBenchmarks) ?
+                (state.showColumns.includes('benchmarks')) ?
                     ((!state.showRef) ? "\n    AND i.type = 'optimized'" : '') +
                     ((state.platformFilter !== '') ? "\n    AND b.platform LIKE '%' || ? || '%'" : '')
                     : ''
@@ -564,8 +567,8 @@ WHERE
     }
 
     prepareParams(state) {
-        var params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum ];
-        if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
+        var params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum];
+        if (state.showColumns.includes('benchmarks') && state.platformFilter !== '') params.push(state.platformFilter);
         return params;
     }
 
@@ -578,6 +581,7 @@ WHERE
             res['Parameter Set'] = <Link component={RouterLink} to={detailLink(res.ID)}>{res['Parameter Set']}</Link>;
             delete res.ID;
         });
+
         return {
             columns: Object.keys(results[0]),
             values: results.map(row => Object.keys(row).map(k => row[k]))
@@ -595,18 +599,18 @@ WHERE
 
         function replacer(match) {
             const val = params.shift();
-            if ( val === undefined ) {
+            if (val === undefined) {
                 error = true;
                 return;
             }
-            if ( typeof val === 'string' )
+            if (typeof val === 'string')
                 return "'" + val.replaceAll("'", "''") + "'";
             else
                 return val.toString();
         }
 
         sqlQuery = sqlQuery.replaceAll('?', replacer);
-        if ( error || params.length > 0 ) {
+        if (error || params.length > 0) {
             console.error("expandQuery called with number of `?`s not matching the number of params");
         } else {
             return sqlQuery;
@@ -623,139 +627,174 @@ WHERE
         return formatFunctions;
     }
 
-    componentDidUpdate() {
-        if (this.state.pageDisabled) {
-            // setTimeout so the DOM can fully render before page load
-            setTimeout(() => {
-                const history = this.props.history;
-                var searchParam = {};
+    updateResult() {
+        this.query = this.buildQuery(this.state);
+        this.queryResult = this.computeResult(this.state, this.query);
+        this.setState({ queryProcessing: false, tableKey: this.tableKey() });
+    }
 
-                Object.keys(this.newFilterState).forEach(key => {
-                    if (this.newFilterState[key] !== this.defaultState[key]) searchParam[key] = this.newFilterState[key];
-                });
-                const searchParamStr = JSON.stringify(searchParam);
-                history.push({
-                    pathname: history.location.pathname,
-                    search: (searchParamStr === '{}') ? '' : `?${qs.stringify({ state: searchParamStr })}`
-                });
+    componentDidMount() {
+        this.updateResult();
+    }
+
+    componentDidUpdate() {
+        if (this.state.queryProcessing) {
+            var searchParam = {};
+
+            Object.keys(this.defaultState).forEach(key => {
+                if (JSON.stringify(this.state[key]) !== JSON.stringify(this.defaultState[key]))
+                    searchParam[key] = this.state[key];
             });
+            const searchParamStr = JSON.stringify(searchParam);
+            window.history.pushState(null, null, (searchParamStr === '{}') ? '?' : `?${qs.stringify({ state: searchParamStr })}`);
+            setTimeout(() => {
+                console.log(this.state);
+                this.updateResult();
+                this.setState({ queryProcessing: false });
+            }, 300);
         }
     }
 
-    changeFilterState(change) {
-        this.newFilterState = Object.assign({}, this.filterState);
-        this.newFilterState.focusPlatformFilter = false;
-        Object.assign(this.newFilterState, change);
-        this.setState({ pageDisabled: true });
+    setFilterState(change) {
+        this.setState(Object.assign({ queryProcessing: true }, change));
+    }
+
+    tableKey() {
+        var key = Object.assign({}, this.state);
+        delete key.queryProcessing;
+        delete key.tableKey;
+        console.log(md5(JSON.stringify(key)));
+        return md5(JSON.stringify(key));
     }
 
     render() {
-        const query = this.buildQuery(this.filterState);
-        const queryResult = this.computeResult(this.filterState, query);
-        const expandedQuery = this.expandQuery(this.filterState, query);
+        const expandedQuery = this.expandQuery(this.state, this.query);
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
-                    <Container maxWidth="lg">
+                    <Container maxWidth="md">
                         <Paper>
                             <Box p={2}>
-                                <Typography variant="h4">Scheme Comparison</Typography>
-                                <Box my={2} px={3}>
-                                    <Grid justify="space-between" spacing={2} container direction="row">
-                                        <Grid item>
-                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
-                                                <FormLabel component="legend">Scheme Type</FormLabel>
-                                                <RadioGroup value={this.filterState.schemeType}
-                                                    onChange={(event) => this.changeFilterState({ schemeType: event.target.value })}>
-                                                    <FormControlLabel value="sig" control={<Radio />} label="Signature" />
-                                                    <FormControlLabel value="enc" control={<Radio />} label="Key Exchange" />
-                                                </RadioGroup>
-                                            </FormControl>
+                                <Grid justify="space-between" spacing={2} container direction="row">
+                                    <Grid item>
+                                        <Typography variant="h4">Scheme Comparison</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <ToggleButtonGroup value={this.state.schemeType} exclusive
+                                            size="medium" onChange={(_event, value) => this.setFilterState({ schemeType: value })}>
+                                            <ToggleButton disabled={this.state.queryProcessing} value="sig">
+                                                Signature
+                                            </ToggleButton>
+                                            <ToggleButton disabled={this.state.queryProcessing} value="enc">
+                                                Key Exchange
+                                            </ToggleButton>
+                                        </ToggleButtonGroup>
+                                    </Grid>
+                                </Grid>
+                                <Box my={2}>
+                                    <Paper><Box p={2} mb={2}>
+                                        <Box mb={2}>
+                                            <Typography variant="button">Select columns to display</Typography>
+                                        </Box>
+                                        <Box display="flex" justifyContent="center">
+                                            <ToggleButtonGroup value={this.state.showColumns}
+                                                size="medium" onChange={(_event, value) => this.setFilterState({ showColumns: value })}>
+                                                <ToggleButton disabled={this.state.queryProcessing} value="storage">
+                                                    <Tooltip title="Size of keys and ciphertext/signature">
+                                                        <div>Sizes</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                                <ToggleButton disabled={this.state.queryProcessing} value="benchmarks">
+                                                    <Tooltip title="Timings for cryptographic operations">
+                                                        <div>Benchmarks</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                                <ToggleButton disabled={this.state.queryProcessing || !this.state.showColumns.includes('benchmarks')}
+                                                    value="hw_features">
+                                                    <Tooltip title="Hardware features required by the implementation">
+                                                        <div>Hardware Features</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                                <ToggleButton disabled={this.state.queryProcessing} value="security_levels">
+                                                    <Tooltip title="Security level in bits (classical/quantum)">
+                                                        <div>Security Levels</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                                <ToggleButton disabled={this.state.queryProcessing} value="nist_category">
+                                                    <Tooltip title="NIST security level (1-5)">
+                                                        <div>NIST Category</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                                <ToggleButton disabled={this.state.queryProcessing} value="nist_round">
+                                                    <Tooltip title="Round of the NIST PQC standardization">
+                                                        <div>NIST Round</div>
+                                                    </Tooltip>
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </Box>
+                                    </Box></Paper>
+                                    <Grid container direction="row" justify="space-between" spacing={1}>
+                                        <Grid item xs>
+                                            <Accordion>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography variant="button">Filter parameter sets</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <FormControl component="fieldset">
+                                                        <Box mt={1} display="flex">
+                                                            <Typography>Classical Security</Typography>
+                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityLevel}
+                                                                step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                                onChangeCommitted={(e, v) => this.setFilterState({ securityLevel: v })}
+                                                                valueLabelDisplay="auto" />
+                                                        </Box>
+                                                        <Box mt={1} display="flex">
+                                                            <Typography>Quantum Security</Typography>
+                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityQuantum} step={16}
+                                                                min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                                onChangeCommitted={(e, v) => this.setFilterState({ securityQuantum: v })}
+                                                                valueLabelDisplay="auto" />
+                                                        </Box>
+                                                        <Box mt={1} display="flex">
+                                                            <Typography>NIST Round</Typography>
+                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={getNistRoundValue(this.state.nistRound)} step={null}
+                                                                min={2} max={4} marks={nistRoundMarks} track="inverted"
+                                                                onChangeCommitted={(e, v) => this.setFilterState({ nistRound: getNistRoundLabel(v) })}
+                                                                valueLabelFormat={getNistRoundLabel}
+                                                                valueLabelDisplay="auto" />
+                                                        </Box>
+                                                        <FormControlLabel control={
+                                                            <Checkbox disabled={this.state.queryProcessing} defaultChecked={this.state.showNonNistSchemes}
+                                                                onChange={() => this.setFilterState({ showNonNistSchemes: !this.state.showNonNistSchemes })} />
+                                                        } label="Include schemes not in the NIST competition" />
+                                                    </FormControl>
+                                                </AccordionDetails>
+                                            </Accordion>
                                         </Grid>
-
-                                        <Grid item>
-                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
-                                                <FormLabel component="legend">Display</FormLabel>
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showStorage}
-                                                        onChange={() => this.changeFilterState({ showStorage: !this.filterState.showStorage })} />
-                                                } label="Sizes" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showBenchmarks}
-                                                        onChange={() => this.changeFilterState({ showBenchmarks: !this.filterState.showBenchmarks })} />
-                                                } label="Benchmarks" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showHwFeatures}
-                                                        onChange={() => this.changeFilterState({ showHwFeatures: !this.filterState.showHwFeatures })} />
-                                                } label="Hardware Features" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showNistRound}
-                                                        onChange={() => this.changeFilterState({ showNistRound: !this.filterState.showNistRound })} />
-                                                } label="NIST Round" />
-                                            </FormControl>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <FormControl disabled={this.state.pageDisabled} component="fieldset">
-                                                <FormLabel component="legend">Security Level</FormLabel>
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showSecClassical}
-                                                        onChange={() => this.changeFilterState({ showSecClassical: !this.filterState.showSecClassical })} />
-                                                } label="Classical" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showSecQuantum}
-                                                        onChange={() => this.changeFilterState({ showSecQuantum: !this.filterState.showSecQuantum })} />
-                                                } label="Quantum" />
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showSecNist}
-                                                        onChange={() => this.changeFilterState({ showSecNist: !this.filterState.showSecNist })} />
-                                                } label="NIST Category" />
-                                            </FormControl>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <FormControl component="fieldset">
-                                                <FormLabel component="legend">Filter</FormLabel>
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showRef}
-                                                        onChange={() => this.changeFilterState({ showRef: !this.filterState.showRef })} />
-                                                } label="Include 'ref' Implementations" />
-                                                <TextField disabled={this.state.pageDisabled} defaultValue={this.filterState.platformFilter}
-                                                    color="secondary" label="Platform" variant="outlined" onChange={e => {
-                                                        clearTimeout(this.platformFilterTimeout);
-                                                        const filterValue = e.target.value;
-                                                        this.platformFilterTimeout = setTimeout(() => {
-                                                            this.platformFilterTimeout = null;
-                                                            this.changeFilterState({ platformFilter: filterValue, focusPlatformFilter: true });
-                                                        }, 750);
-                                                    }} autoFocus={this.filterState.focusPlatformFilter} />
-                                                <Box mt={1} display="flex">
-                                                    <Typography>Classical Security</Typography>
-                                                    <Slider color="secondary" defaultValue={this.filterState.securityLevel}
-                                                        step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityLevel: v })}
-                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
-                                                </Box>
-                                                <Box mt={1} display="flex">
-                                                    <Typography>Quantum Security</Typography>
-                                                    <Slider color="secondary" defaultValue={this.filterState.securityQuantum} step={16}
-                                                        min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                        onChangeCommitted={(e, v) => this.changeFilterState({ securityQuantum: v })}
-                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
-                                                </Box>
-                                                <Box mt={1} display="flex">
-                                                    <Typography>NIST Round</Typography>
-                                                    <Slider color="secondary" defaultValue={getNistRoundValue(this.filterState.nistRound)} step={null}
-                                                        min={2} max={4} marks={nistRoundMarks} track="inverted"
-                                                        onChangeCommitted={(e, v) => this.changeFilterState({ nistRound: getNistRoundLabel(v) } )}
-                                                        valueLabelFormat={getNistRoundLabel}
-                                                        valueLabelDisplay="auto" disabled={this.state.pageDisabled} />
-                                                </Box>
-                                                <FormControlLabel control={
-                                                    <Checkbox defaultChecked={this.filterState.showNonNistSchemes}
-                                                        onChange={() => this.changeFilterState({ showNonNistSchemes : !this.filterState.showNonNistSchemes })} />
-                                                } label="Include schemes not in the NIST competition" />
-                                            </FormControl>
+                                        <Grid item xs>
+                                            <Accordion>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography variant="button">Filter implementations</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <FormControl component="fieldset">
+                                                        <FormControlLabel control={
+                                                            <Checkbox disabled={this.state.queryProcessing | !this.state.showColumns.includes('benchmarks')}
+                                                            defaultChecked={this.state.showRef} onChange={() => this.setFilterState({ showRef: !this.state.showRef })} />
+                                                        } label="Include 'ref' Implementations" />
+                                                        <TextField disabled={this.state.queryProcessing || !this.state.showColumns.includes('benchmarks')} 
+                                                            defaultValue={this.state.platformFilter} color="secondary" label="Platform" variant="outlined"
+                                                            onChange={e => {
+                                                                clearTimeout(this.platformFilterTimeout);
+                                                                const filterValue = e.target.value;
+                                                                this.platformFilterTimeout = setTimeout(() => {
+                                                                    this.platformFilterTimeout = null;
+                                                                    this.setFilterState({ platformFilter: filterValue });
+                                                                }, 750);
+                                                            }} />
+                                                    </FormControl>
+                                                </AccordionDetails>
+                                            </Accordion>
                                         </Grid>
                                         <Grid item>
                                             <SchemeCheckboxList list={["Kyber", "SIKE"]} />
@@ -771,7 +810,7 @@ WHERE
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable queryResult={queryResult} formatFunctions={this.getFormatFunctions(queryResult)} />
+                                <QueryTable key={this.state.tableKey} queryResult={this.queryResult} formatFunctions={this.getFormatFunctions(this.queryResult)} />
                             </Box>
                         </Paper>
                     </Container>
@@ -884,7 +923,7 @@ class CustomSQLQuery extends React.Component {
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable key={this.state.executedSqlQuery} queryResult={this.state.queryResult} />
+                                <QueryTable key={md5(this.state.executedSqlQuery)} queryResult={this.state.queryResult} />
                             </Box>
                         </Paper>
                     </Container>

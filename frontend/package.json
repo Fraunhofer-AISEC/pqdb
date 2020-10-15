@@ -4,19 +4,21 @@
   "private": true,
   "homepage": "https://cryptoeng.github.io/pqdb",
   "dependencies": {
-    "@material-ui/core": "4.10.2",
+    "@material-ui/core": "4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "csv-stringify": "^5.5.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "csv-stringify": "^5.5.1",
+    "md5": "^2.3.0",
     "query-string": "6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-image-magnifiers": "^1.3.2",
+    "react-image-magnifiers": "^1.4.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "sql.js": "^1.2.2"
+    "react-scripts": "^3.4.3",
+    "sql.js": "^1.3.2"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "6.0.2",
+    "copy-webpack-plugin": "^6.2.1",
     "react-app-rewired": "^2.1.5"
   },
   "scripts": {
