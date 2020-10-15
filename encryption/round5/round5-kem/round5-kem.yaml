@@ -1,0 +1,5 @@
+name: Round5.KEM
+type: KEM
+security notion: IND-CPA
+sources:
+  - 'https://round5.org/doc/Round5_Submission042020.pdf#table.3'

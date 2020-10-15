@@ -38,7 +38,7 @@ const SCHEME_TYPES = {
         encsign: "enc",
         enc_sign: "Encrypt",
         decvrfy: "dec",
-        dec_vrfy: "Verify",
+        dec_vrfy: "Decrypt",
     },
     sig: {
         name: "Signature Scheme",
