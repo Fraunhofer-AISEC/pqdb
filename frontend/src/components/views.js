@@ -483,11 +483,21 @@ WHERE
                     ((state.platformFilter !== '') ? "\n    AND b.platform LIKE '%' || ? || '%'" : '')
                     : ''
             );
+        // Note: The (very fragile) `expandQuery` method below makes quite
+        // some assumptions on the structure of this query (for example, no
+        // question marks in strings or comments). When making changes,
+        // please verify that the "view as SQL" link still works.
     }
 
-    computeResult(state, sqlQuery) {
+    prepareParams(state) {
         var params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum ];
         if (state.showBenchmarks && state.platformFilter !== '') params.push(state.platformFilter);
+        return params;
+    }
+
+
+    computeResult(state, sqlQuery) {
+        var params = this.prepareParams(state);
         var results = queryAll(this.db, sqlQuery, params);
         if (results.length === 0) return undefined;
         results.forEach(res => {
@@ -498,6 +508,35 @@ WHERE
             columns: Object.keys(results[0]),
             values: results.map(row => Object.keys(row).map(k => row[k]))
         };
+    }
+
+    expandQuery(state, sqlQuery) {
+        // UNSAFE, DO NOT USE
+        // this is very hacky and unreliable - we just use it here to generate
+        // an expanded string that is returned back to the user, so there is no
+        // injection possibility, and no real harm results when it goes wrong.
+
+        var params = this.prepareParams(state).slice();
+        var error = false;
+
+        function replacer(match) {
+            const val = params.shift();
+            if ( val === undefined ) {
+                error = true;
+                return;
+            }
+            if ( typeof val === 'string' )
+                return "'" + val.replaceAll("'", "''") + "'";
+            else
+                return val.toString();
+        }
+
+        sqlQuery = sqlQuery.replaceAll('?', replacer);
+        if ( error || params.length > 0 ) {
+            console.error("expandQuery called with number of `?`s not matching the number of params");
+        } else {
+            return sqlQuery;
+        }
     }
 
     getFormatFunctions(results) {
@@ -539,6 +578,7 @@ WHERE
     render() {
         const query = this.buildQuery(this.filterState);
         const queryResult = this.computeResult(this.filterState, query);
+        const expandedQuery = this.expandQuery(this.filterState, query);
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
@@ -645,7 +685,7 @@ WHERE
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                <Link component={RouterLink} to={`/raw_sql?query=${encodeURIComponent(query)}`}>View this query as SQL</Link>
+                                <Link component={RouterLink} to={`/raw_sql?query=${encodeURIComponent(expandedQuery)}`}>View this query as SQL</Link>
                             </Box>
                         </Paper>
                     </Container>
