@@ -34,8 +34,6 @@ import diagramImage from '../tables.svg';
 
 import { queryAll, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
-import md5 from 'md5';
-
 const SCHEME_TYPES = {
     enc: {
         name: "Key Exchange Scheme",
@@ -287,7 +285,7 @@ function not(a, b) {
 }
 
 export default function SchemeCheckboxList(props) {
-    let { list, checked_list, onChange} = props;
+    let { list, checked_list, onChange } = props;
 
     // const [checked, setChecked] = useState(checked_list);
     let checked = checked_list;
@@ -297,7 +295,7 @@ export default function SchemeCheckboxList(props) {
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
-           newChecked.push(scheme);
+            newChecked.push(scheme);
         } else {
             newChecked.splice(currentIndex, 1);
         }
@@ -307,73 +305,62 @@ export default function SchemeCheckboxList(props) {
     const numberOfChecked = (items) => intersection(checked, items).length;
 
     const handleToggleAll = (items) => () => {
-      var newChecked;
-      if (numberOfChecked(items) === items.length) {
-        newChecked = not(checked, items);
-      } else {
-        newChecked = union(checked, items);
-      }
-    //   setChecked(newChecked);
-      onChange(newChecked);
+        var newChecked;
+        if (numberOfChecked(items) === items.length) {
+            newChecked = not(checked, items);
+        } else {
+            newChecked = union(checked, items);
+        }
+        //   setChecked(newChecked);
+        onChange(newChecked);
     };
 
     return (
-      <Card>
-        <CardHeader 
-          avatar={
-              <Checkbox 
-                onClick={handleToggleAll(list)}
-                checked={numberOfChecked(list) === list.length && list.length !== 0}
-                indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
-              />
-          }
-          title={"Schemes"}
-        />
-        <Divider />
-        <List dense >
-            {list.map((value) => {
-                return (
-                    <ListItem key={value} button onClick={handleSchemeToggle(value)}>
-                        <ListItemIcon>
-                            <Checkbox 
-                              checked={checked.indexOf(value) !== -1}
-                              tabIndex={-1}
-                              disableRipple
-                            />
-                        </ListItemIcon>
-                        <ListItemText primary={value} />
-                    </ListItem>
-                );
-            })}
-        </List>
-      </Card>
+        <Card>
+            <CardHeader
+                avatar={
+                    <Checkbox
+                        onClick={handleToggleAll(list)}
+                        checked={numberOfChecked(list) === list.length && list.length !== 0}
+                        indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
+                    />
+                }
+                title={"Schemes"}
+            />
+            <Divider />
+            <List dense width={100}>
+                {list.map((value) => {
+                    return (
+                        <ListItem key={value} button onClick={handleSchemeToggle(value)}>
+                            <ListItemIcon>
+                                <Checkbox
+                                    checked={checked.indexOf(value) !== -1}
+                                    tabIndex={-1}
+                                    disableRipple
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={value} />
+                        </ListItem>
+                    );
+                })}
+            </List>
+        </Card>
     );
 }
 
 class QueryTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.queryResult = props.queryResult;
-        this.formatFunctions = props.formatFunctions;
-        this.state = {
-            orderBy: null,
-            order: 'asc'
-        };
-    }
-
     handleRequestSort(property) {
-        const isAsc = this.state.orderBy === property && this.state.order === 'asc';
-        this.setState({
-            order: isAsc ? 'desc' : 'asc',
-            orderBy: property
-        });
+        if (!this.props.onChangeOrder)
+            return;
+        const isAsc = this.props.orderBy === property && this.props.order === 'asc';
+        this.props.onChangeOrder(isAsc ? 'desc' : 'asc', property);
     }
 
     render() {
-        const { order, orderBy } = this.state;
-        if (this.queryResult === undefined) return <Typography>No results</Typography>;
-        if (!this.queryResult) return null;
-
+        const { queryResult, formatFunctions, orderBy } = this.props;
+        const order = this.props.order ?? 'asc';
+        if (queryResult === undefined) return <Typography>No results</Typography>;
+        if (!queryResult) return null;
         return (
             <Grid direction='column' alignItems='flex-end' spacing={1} container>
                 <Grid container item>
@@ -382,7 +369,7 @@ class QueryTable extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     {
-                                        this.queryResult.columns.map((column, idx) =>
+                                        queryResult.columns.map((column, idx) =>
                                             <TableCell key={idx}>
                                                 <TableSortLabel
                                                     active={orderBy === idx}
@@ -397,13 +384,13 @@ class QueryTable extends React.Component {
                             </TableHead>
                             <TableBody>
                                 {
-                                    sortedRows(this.queryResult.values, orderBy, order === 'asc').map(
+                                    sortedRows(queryResult.values, orderBy, order === 'asc').map(
                                         (row) => (
                                             <TableRow key={row[1]}>
                                                 {
                                                     row[0].map((val, j) =>
-                                                        (this.formatFunctions && this.formatFunctions[j]) ?
-                                                            <TableCell key={j}>{this.formatFunctions[j](val)}</TableCell>
+                                                        (formatFunctions && formatFunctions[j]) ?
+                                                            <TableCell key={j}>{formatFunctions[j](val)}</TableCell>
                                                             :
                                                             <TableCell key={j}>{val}</TableCell>
                                                     )
@@ -416,7 +403,7 @@ class QueryTable extends React.Component {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item><DownloadTableButton queryResult={this.queryResult} /></Grid>
+                <Grid item><DownloadTableButton queryResult={queryResult} /></Grid>
             </Grid>
         );
     }
@@ -495,7 +482,7 @@ function schemesListQueryDB(db, type, nistRound, nonNist) {
         SELECT id_text FROM scheme 
         WHERE 
             type = ?
-            AND (nist_round BETWEEN ? AND '3f' ${(nonNist)? "OR nist_round = 'none'" : ""})`;
+            AND (nist_round BETWEEN ? AND '3f' ${(nonNist) ? "OR nist_round = 'none'" : ""})`;
     var schemes_list = queryAll(db, schemes_list_query, [type, nistRound]);
     return schemes_list.map(row => row.id_text);
 }
@@ -505,13 +492,11 @@ class SchemeComparison extends React.Component {
         super(props);
         this.db = props.db;
         this.platformFilterTimeout = null;
-        this.state = { queryProcessing: true, tableKey: "0" , schemesList: []};
-        this.query = "null";
-        this.queryResult = undefined;
+        this.state = { queryProcessing: true, queryResult: undefined, schemesList: [], query: "null" };
         this.defaultState = {
             showColumns: ['benchmarks', 'hw_features', 'nist_category'], // not shown: 'storage', 'security_levels', 'nist_round'
             schemeType: 'sig', platformFilter: '', sliderValue: 128, securityLevel: 128, securityQuantum: 0,
-            showRef: false, nistRound: '3a', showNonNistSchemes: false, checkedSchemes: [] 
+            showRef: false, nistRound: '3a', showNonNistSchemes: false, order: null, orderBy: null, checkedSchemes: []
         };
         Object.assign(this.state, this.defaultState);
         var params = qs.parse(this.props.history.location.search);
@@ -565,7 +550,7 @@ FROM
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
-    AND s.id_text IN (${JSON.stringify(state.checkedSchemes).slice(1,-1)})
+    AND s.id_text IN (${JSON.stringify(state.checkedSchemes).slice(1, -1)})
     AND (
         s.nist_round BETWEEN ? AND '3f'` +
             ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
@@ -605,13 +590,13 @@ WHERE
         };
     }
 
-    expandQuery(state, sqlQuery) {
+    expandQuery() {
         // UNSAFE, DO NOT USE
         // this is very hacky and unreliable - we just use it here to generate
         // an expanded string that is returned back to the user, so there is no
         // injection possibility, and no real harm results when it goes wrong.
 
-        var params = this.prepareParams(state).slice();
+        var params = this.prepareParams(this.state).slice();
         var error = false;
 
         function replacer(match) {
@@ -626,7 +611,7 @@ WHERE
                 return val.toString();
         }
 
-        sqlQuery = sqlQuery.replaceAll('?', replacer);
+        const sqlQuery = this.state.query.replaceAll('?', replacer);
         if (error || params.length > 0) {
             console.error("expandQuery called with number of `?`s not matching the number of params");
         } else {
@@ -644,51 +629,50 @@ WHERE
         return formatFunctions;
     }
 
-    updateResult(resetChecked) {
-        this.query = this.buildQuery(this.state);
-        this.queryResult = this.computeResult(this.state, this.query);
+    updateResult(resetChecked, resetOrder) {
+        var queryState = Object.assign({}, this.state);
         var schemesList = schemesListQueryDB(this.db, this.state.schemeType, this.state.nistRound, this.state.showNonNistSchemes);
-        var change = { queryProcessing: false, tableKey: this.tableKey(), schemesList: schemesList };
-        if (resetChecked) {
-            change.checkedSchemes = schemesList;
-        }
-        console.log(change)
+        if (resetChecked) queryState.checkedSchemes = schemesList;
+        var query = this.buildQuery(queryState);
+        var queryResult = this.computeResult(queryState, query);
+        var change = { queryProcessing: false, queryResult: queryResult, schemesList: schemesList, query: query };
+        if (resetChecked) change.checkedSchemes = schemesList;
+        if (resetOrder) change = Object.assign(change, { order: 'asc', orderBy: null });
         this.setState(change);
     }
 
     componentDidMount() {
-        this.updateResult(true);
+        this.updateResult(true, false);
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState) {
         if (this.state.queryProcessing) {
-            var searchParam = {};
             const resetChecked = prevState.schemeType !== this.state.schemeType;
-            Object.keys(this.defaultState).forEach(key => {
-                if (JSON.stringify(this.state[key]) !== JSON.stringify(this.defaultState[key]))
-                    searchParam[key] = this.state[key];
-            });
-            const searchParamStr = JSON.stringify(searchParam);
-            window.history.pushState(null, null, (searchParamStr === '{}') ? '?' : `?${qs.stringify({ state: searchParamStr })}`);
-            setTimeout(() => {
-                this.updateResult(resetChecked);
-            }, 300);
+            this.updateSearchParams(false);
+            setTimeout(() => this.updateResult(resetChecked, true), 300);
+        } else if (prevState.order !== this.state.order || prevState.orderBy !== this.state.orderBy) {
+            this.updateSearchParams(true);
         }
+    }
+
+    updateSearchParams(replace) {
+        var searchParam = {};
+        Object.keys(this.defaultState).forEach(key => {
+            if (JSON.stringify(this.state[key]) !== JSON.stringify(this.defaultState[key]))
+                searchParam[key] = this.state[key];
+        });
+        const searchParamStr = JSON.stringify(searchParam);
+        const historyParams = [null, null, (searchParamStr === '{}') ? '?' : `?${qs.stringify({ state: searchParamStr })}`];
+        replace ? window.history.replaceState(...historyParams) : window.history.pushState(...historyParams);
     }
 
     setFilterState(change) {
         this.setState(Object.assign({ queryProcessing: true }, change));
     }
 
-    tableKey() {
-        var key = Object.assign({}, this.state);
-        delete key.queryProcessing;
-        delete key.tableKey;
-        return md5(JSON.stringify(key));
-    }
-
     render() {
-        const expandedQuery = this.expandQuery(this.state, this.query);
+        console.log(this.state.orderBy);
+        const expandedQuery = this.expandQuery();
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
@@ -753,45 +737,65 @@ WHERE
                                             </ToggleButtonGroup>
                                         </Box>
                                     </Box></Paper>
-                                    <Grid container direction="row" justify="space-between" spacing={1}>
+                                    <Grid container justify="space-between" spacing={1}>
                                         <Grid item xs>
                                             <Accordion>
                                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                                     <Typography variant="button">Filter parameter sets</Typography>
                                                 </AccordionSummary>
                                                 <AccordionDetails>
-                                                    <FormControl component="fieldset">
-                                                        <Box mt={1} display="flex">
-                                                            <Typography>Classical Security</Typography>
-                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityLevel}
-                                                                step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                                onChangeCommitted={(e, v) => this.setFilterState({ securityLevel: v })}
-                                                                valueLabelDisplay="auto" />
-                                                        </Box>
-                                                        <Box mt={1} display="flex">
-                                                            <Typography>Quantum Security</Typography>
-                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityQuantum} step={16}
-                                                                min={0} max={256} marks={secLevelMarks} track="inverted"
-                                                                onChangeCommitted={(e, v) => this.setFilterState({ securityQuantum: v })}
-                                                                valueLabelDisplay="auto" />
-                                                        </Box>
-                                                        <Box mt={1} display="flex">
-                                                            <Typography>NIST Round</Typography>
-                                                            <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={getNistRoundValue(this.state.nistRound)} step={null}
-                                                                min={2} max={4} marks={nistRoundMarks} track="inverted"
-                                                                onChangeCommitted={(e, v) => this.setFilterState({ nistRound: getNistRoundLabel(v) })}
-                                                                valueLabelFormat={getNistRoundLabel}
-                                                                valueLabelDisplay="auto" />
-                                                        </Box>
-                                                        <FormControlLabel control={
-                                                            <Checkbox disabled={this.state.queryProcessing} defaultChecked={this.state.showNonNistSchemes}
-                                                                onChange={() => this.setFilterState({ showNonNistSchemes: !this.state.showNonNistSchemes })} />
-                                                        } label="Include schemes not in the NIST competition" />
-                                                    </FormControl>
+                                                    <Grid container spacing={3} justify="space-between">
+                                                        <Grid container item direction="column" xs>
+                                                            <Grid container item spacing={2} >
+                                                                <Grid item xs={3} style={{ "min-width": 80 }}>
+                                                                    <Box><Typography>Classical Security</Typography></Box>
+                                                                </Grid>
+                                                                <Grid item xs style={{ "min-width": 150 }}>
+                                                                    <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityLevel}
+                                                                        step={16} min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                                        onChangeCommitted={(e, v) => this.setFilterState({ securityLevel: v })}
+                                                                        valueLabelDisplay="auto" />
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid container item spacing={2}>
+                                                                <Grid item xs={3} style={{ "min-width": 80 }}>
+                                                                    <Typography>Quantum Security</Typography>
+                                                                </Grid>
+                                                                <Grid item xs style={{ "min-width": 150 }}>
+                                                                    <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={this.state.securityQuantum} step={16}
+                                                                        min={0} max={256} marks={secLevelMarks} track="inverted"
+                                                                        onChangeCommitted={(e, v) => this.setFilterState({ securityQuantum: v })}
+                                                                        valueLabelDisplay="auto" />
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid container item spacing={2}>
+                                                                <Grid item xs={3} style={{ "min-width": 80 }}>
+                                                                    <Typography>NIST Round</Typography>
+                                                                </Grid>
+                                                                <Grid item xs style={{ "min-width": 150 }}>
+                                                                    <Slider disabled={this.state.queryProcessing} color="secondary" defaultValue={getNistRoundValue(this.state.nistRound)} step={null}
+                                                                        min={2} max={4} marks={nistRoundMarks} track="inverted"
+                                                                        onChangeCommitted={(e, v) => this.setFilterState({ nistRound: getNistRoundLabel(v) })}
+                                                                        valueLabelFormat={getNistRoundLabel}
+                                                                        valueLabelDisplay="auto" />
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <FormControlLabel control={
+                                                                    <Checkbox disabled={this.state.queryProcessing} defaultChecked={this.state.showNonNistSchemes}
+                                                                        onChange={() => this.setFilterState({ showNonNistSchemes: !this.state.showNonNistSchemes })} />
+                                                                } label="Include schemes not in the NIST competition" />
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid item>
+                                                            <SchemeCheckboxList list={this.state.schemesList} checked_list={this.state.checkedSchemes}
+                                                                onChange={(newChecked) => this.setFilterState({ checkedSchemes: newChecked })} />
+                                                        </Grid>
+                                                    </Grid>
                                                 </AccordionDetails>
                                             </Accordion>
                                         </Grid>
-                                        <Grid item xs>
+                                        <Grid item>
                                             <Accordion>
                                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                                     <Typography variant="button">Filter implementations</Typography>
@@ -800,9 +804,9 @@ WHERE
                                                     <FormControl component="fieldset">
                                                         <FormControlLabel control={
                                                             <Checkbox disabled={this.state.queryProcessing | !this.state.showColumns.includes('benchmarks')}
-                                                            defaultChecked={this.state.showRef} onChange={() => this.setFilterState({ showRef: !this.state.showRef })} />
+                                                                defaultChecked={this.state.showRef} onChange={() => this.setFilterState({ showRef: !this.state.showRef })} />
                                                         } label="Include 'ref' Implementations" />
-                                                        <TextField disabled={this.state.queryProcessing || !this.state.showColumns.includes('benchmarks')} 
+                                                        <TextField disabled={this.state.queryProcessing || !this.state.showColumns.includes('benchmarks')}
                                                             defaultValue={this.state.platformFilter} color="secondary" label="Platform" variant="outlined"
                                                             onChange={e => {
                                                                 clearTimeout(this.platformFilterTimeout);
@@ -816,10 +820,7 @@ WHERE
                                                 </AccordionDetails>
                                             </Accordion>
                                         </Grid>
-                                        <Grid item>
-                                            <SchemeCheckboxList list={this.state.schemesList} checked_list={this.state.checkedSchemes}
-                                                onChange={(newChecked) => this.setFilterState({ checkedSchemes: newChecked })} />
-                                        </Grid>
+
                                     </Grid>
                                 </Box>
                                 <Link component={RouterLink} to={`/raw_sql?query=${encodeURIComponent(expandedQuery)}`}>View this query as SQL</Link>
@@ -831,7 +832,9 @@ WHERE
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable key={this.state.tableKey} queryResult={this.queryResult} formatFunctions={this.getFormatFunctions(this.queryResult)} />
+                                <QueryTable onChangeOrder={(order, orderBy) => this.setState({ order: order, orderBy: orderBy })}
+                                    order={this.state.order} orderBy={this.state.orderBy} queryResult={this.state.queryResult}
+                                    formatFunctions={this.getFormatFunctions(this.queryResult)} />
                             </Box>
                         </Paper>
                     </Container>
@@ -852,15 +855,17 @@ function DatabaseDiagram() {
 
 class CustomSQLQuery extends React.Component {
     constructor(props) {
-        super(props);
+        super();
         this.db = props.db;
-        this.params = qs.parse(this.props.history.location.search);
+        this.params = qs.parse(props.history.location.search);
         this.runningQueryHandler = null;
         var sqlInput = ('query' in this.params) ? this.params['query'] : '';
 
         this.state = {
             sqlInput: sqlInput,
             executedSqlQuery: '',
+            order: null,
+            orderBy: 'asc',
             queryResult: null,
             error: null,
             queryProcessing: false
@@ -944,7 +949,8 @@ class CustomSQLQuery extends React.Component {
                     <Container maxWidth={false} disableGutters={true}>
                         <Paper>
                             <Box p={2} display='flex' justifyContent="center">
-                                <QueryTable key={md5(this.state.executedSqlQuery)} queryResult={this.state.queryResult} />
+                                <QueryTable queryResult={this.state.queryResult} order={this.state.order} orderBy={this.state.orderBy}
+                                    onChangeOrder={(order, orderBy) => this.setState({ order: order, orderBy: orderBy })} />
                             </Box>
                         </Paper>
                     </Container>
