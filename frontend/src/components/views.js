@@ -286,9 +286,11 @@ function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
 
-function SchemeCheckboxList(props) {
-    let { list } = props;
-    const [checked, setChecked] = useState([]);
+export default function SchemeCheckboxList(props) {
+    let { list, checked_list, onChange} = props;
+
+    // const [checked, setChecked] = useState(checked_list);
+    let checked = checked_list;
 
     const handleSchemeToggle = (scheme) => () => {
         const currentIndex = checked.indexOf(scheme);
@@ -299,16 +301,20 @@ function SchemeCheckboxList(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        setChecked(newChecked);
+        // setChecked(newChecked);
+        onChange(newChecked);
     };
     const numberOfChecked = (items) => intersection(checked, items).length;
 
     const handleToggleAll = (items) => () => {
+      var newChecked;
       if (numberOfChecked(items) === items.length) {
-        setChecked(not(checked, items));
+        newChecked = not(checked, items);
       } else {
-        setChecked(union(checked, items));
+        newChecked = union(checked, items);
       }
+    //   setChecked(newChecked);
+      onChange(newChecked);
     };
 
     return (
@@ -324,10 +330,10 @@ function SchemeCheckboxList(props) {
           title={"Schemes"}
         />
         <Divider />
-        <List dense component="div" role="list">
+        <List dense >
             {list.map((value) => {
                 return (
-                    <ListItem key={value} role="listitem" button onClick={handleSchemeToggle(value)}>
+                    <ListItem key={value} button onClick={handleSchemeToggle(value)}>
                         <ListItemIcon>
                             <Checkbox 
                               checked={checked.indexOf(value) !== -1}
@@ -484,18 +490,28 @@ function humanReadableSize(size, baseUnit) {
     return `${(size / Math.pow(1000, i)).toFixed(2) * 1} ${['', 'k', 'M', 'G', 'T'][i]}${baseUnit}`;
 };
 
+function schemesListQueryDB(db, type, nistRound, nonNist) {
+    var schemes_list_query = `
+        SELECT id_text FROM scheme 
+        WHERE 
+            type = ?
+            AND (nist_round BETWEEN ? AND '3f' ${(nonNist)? "OR nist_round = 'none'" : ""})`;
+    var schemes_list = queryAll(db, schemes_list_query, [type, nistRound]);
+    return schemes_list.map(row => row.id_text);
+}
+
 class SchemeComparison extends React.Component {
     constructor(props) {
         super(props);
         this.db = props.db;
         this.platformFilterTimeout = null;
-        this.state = { queryProcessing: true, tableKey: "0" };
+        this.state = { queryProcessing: true, tableKey: "0" , schemesList: []};
         this.query = "null";
         this.queryResult = undefined;
         this.defaultState = {
             showColumns: ['benchmarks', 'hw_features', 'nist_category'], // not shown: 'storage', 'security_levels', 'nist_round'
             schemeType: 'sig', platformFilter: '', sliderValue: 128, securityLevel: 128, securityQuantum: 0,
-            showRef: false, nistRound: '3a', showNonNistSchemes: false
+            showRef: false, nistRound: '3a', showNonNistSchemes: false, checkedSchemes: [] 
         };
         Object.assign(this.state, this.defaultState);
         var params = qs.parse(this.props.history.location.search);
@@ -549,6 +565,7 @@ FROM
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
+    AND s.id_text IN (${JSON.stringify(state.checkedSchemes).slice(1,-1)})
     AND (
         s.nist_round BETWEEN ? AND '3f'` +
             ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
@@ -627,20 +644,26 @@ WHERE
         return formatFunctions;
     }
 
-    updateResult() {
+    updateResult(resetChecked) {
         this.query = this.buildQuery(this.state);
         this.queryResult = this.computeResult(this.state, this.query);
-        this.setState({ queryProcessing: false, tableKey: this.tableKey() });
+        var schemesList = schemesListQueryDB(this.db, this.state.schemeType, this.state.nistRound, this.state.showNonNistSchemes);
+        var change = { queryProcessing: false, tableKey: this.tableKey(), schemesList: schemesList };
+        if (resetChecked) {
+            change.checkedSchemes = schemesList;
+        }
+        console.log(change)
+        this.setState(change);
     }
 
     componentDidMount() {
-        this.updateResult();
+        this.updateResult(true);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.queryProcessing) {
             var searchParam = {};
-
+            const resetChecked = prevState.schemeType !== this.state.schemeType;
             Object.keys(this.defaultState).forEach(key => {
                 if (JSON.stringify(this.state[key]) !== JSON.stringify(this.defaultState[key]))
                     searchParam[key] = this.state[key];
@@ -648,9 +671,7 @@ WHERE
             const searchParamStr = JSON.stringify(searchParam);
             window.history.pushState(null, null, (searchParamStr === '{}') ? '?' : `?${qs.stringify({ state: searchParamStr })}`);
             setTimeout(() => {
-                console.log(this.state);
-                this.updateResult();
-                this.setState({ queryProcessing: false });
+                this.updateResult(resetChecked);
             }, 300);
         }
     }
@@ -663,7 +684,6 @@ WHERE
         var key = Object.assign({}, this.state);
         delete key.queryProcessing;
         delete key.tableKey;
-        console.log(md5(JSON.stringify(key)));
         return md5(JSON.stringify(key));
     }
 
@@ -797,7 +817,8 @@ WHERE
                                             </Accordion>
                                         </Grid>
                                         <Grid item>
-                                            <SchemeCheckboxList list={["Kyber", "SIKE"]} />
+                                            <SchemeCheckboxList list={this.state.schemesList} checked_list={this.state.checkedSchemes}
+                                                onChange={(newChecked) => this.setFilterState({ checkedSchemes: newChecked })} />
                                         </Grid>
                                     </Grid>
                                 </Box>
