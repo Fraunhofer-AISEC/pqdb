@@ -285,10 +285,8 @@ function not(a, b) {
 }
 
 export default function SchemeCheckboxList(props) {
-    let { list, checked_list, onChange } = props;
-
-    // const [checked, setChecked] = useState(checked_list);
-    let checked = checked_list;
+    let { list, checkedList, onChange } = props;
+    let checked = checkedList ?? [];
 
     const handleSchemeToggle = (scheme) => () => {
         const currentIndex = checked.indexOf(scheme);
@@ -299,7 +297,6 @@ export default function SchemeCheckboxList(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        // setChecked(newChecked);
         onChange(newChecked);
     };
     const numberOfChecked = (items) => intersection(checked, items).length;
@@ -311,7 +308,6 @@ export default function SchemeCheckboxList(props) {
         } else {
             newChecked = union(checked, items);
         }
-        //   setChecked(newChecked);
         onChange(newChecked);
     };
 
@@ -492,11 +488,16 @@ class SchemeComparison extends React.Component {
         super(props);
         this.db = props.db;
         this.platformFilterTimeout = null;
+        this.fullSchemeLists = {
+            'enc': schemesListQueryDB(this.db, 'enc', '0', true),
+            'sig': schemesListQueryDB(this.db, 'sig', '0', true)
+        };
         this.state = { queryProcessing: true, queryResult: undefined, schemesList: [], query: "null" };
+
         this.defaultState = {
             showColumns: ['benchmarks', 'hw_features', 'nist_category'], // not shown: 'storage', 'security_levels', 'nist_round'
             schemeType: 'sig', platformFilter: '', sliderValue: 128, securityLevel: 128, securityQuantum: 0,
-            showRef: false, nistRound: '3a', showNonNistSchemes: false, order: null, orderBy: null, checkedSchemes: []
+            showRef: false, nistRound: '3a', showNonNistSchemes: false, order: 'asc', orderBy: null, checkedSchemes: null
         };
         Object.assign(this.state, this.defaultState);
         var params = qs.parse(this.props.history.location.search);
@@ -508,6 +509,8 @@ class SchemeComparison extends React.Component {
                 // JSON state was invalid -> ignore
             }
         }
+        if (!this.state.checkedSchemes)
+            this.state.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
     }
 
     buildQuery(state) {
@@ -550,7 +553,7 @@ FROM
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
-    AND s.id_text IN (${JSON.stringify(state.checkedSchemes).slice(1, -1)})
+    AND s.id_text IN (${JSON.stringify(state.checkedSchemes?? []).slice(1, -1)})
     AND (
         s.nist_round BETWEEN ? AND '3f'` +
             ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
@@ -632,24 +635,26 @@ WHERE
     updateResult(resetChecked, resetOrder) {
         var queryState = Object.assign({}, this.state);
         var schemesList = schemesListQueryDB(this.db, this.state.schemeType, this.state.nistRound, this.state.showNonNistSchemes);
-        if (resetChecked) queryState.checkedSchemes = schemesList;
+        if (resetChecked) queryState.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         var query = this.buildQuery(queryState);
         var queryResult = this.computeResult(queryState, query);
         var change = { queryProcessing: false, queryResult: queryResult, schemesList: schemesList, query: query };
-        if (resetChecked) change.checkedSchemes = schemesList;
+        if (resetChecked) change.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         if (resetOrder) change = Object.assign(change, { order: 'asc', orderBy: null });
         this.setState(change);
     }
 
     componentDidMount() {
-        this.updateResult(true, false);
+        this.updateResult(!this.state.checkedSchemes, false);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.queryProcessing) {
             const resetChecked = prevState.schemeType !== this.state.schemeType;
-            this.updateSearchParams(false);
-            setTimeout(() => this.updateResult(resetChecked, true), 300);
+            setTimeout(() => {
+                this.updateResult(resetChecked, true);
+                this.updateSearchParams(false);
+            }, 300);
         } else if (prevState.order !== this.state.order || prevState.orderBy !== this.state.orderBy) {
             this.updateSearchParams(true);
         }
@@ -657,8 +662,12 @@ WHERE
 
     updateSearchParams(replace) {
         var searchParam = {};
+        this.defaultState.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         Object.keys(this.defaultState).forEach(key => {
-            if (JSON.stringify(this.state[key]) !== JSON.stringify(this.defaultState[key]))
+            if (Array.isArray(this.defaultState[key]) && Array.isArray(this.state[key])){
+                if (not(this.defaultState[key], this.state[key]).length > 0 || not(this.state[key], this.defaultState[key]).length > 0)
+                searchParam[key] = this.state[key];
+            } else if (this.state[key] !== this.defaultState[key])
                 searchParam[key] = this.state[key];
         });
         const searchParamStr = JSON.stringify(searchParam);
@@ -671,7 +680,6 @@ WHERE
     }
 
     render() {
-        console.log(this.state.orderBy);
         const expandedQuery = this.expandQuery();
         return (
             <Grid container direction="column" spacing={2} >
@@ -788,7 +796,7 @@ WHERE
                                                             </Grid>
                                                         </Grid>
                                                         <Grid item>
-                                                            <SchemeCheckboxList list={this.state.schemesList} checked_list={this.state.checkedSchemes}
+                                                            <SchemeCheckboxList list={this.state.schemesList} checkedList={this.state.checkedSchemes}
                                                                 onChange={(newChecked) => this.setFilterState({ checkedSchemes: newChecked })} />
                                                         </Grid>
                                                     </Grid>
