@@ -28,6 +28,7 @@ import { GlassMagnifier } from "react-image-magnifiers";
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 import diagramImage from '../tables.svg';
@@ -283,6 +284,17 @@ function union(a, b) {
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
+const useStyles = makeStyles((theme) => ({
+    root: {
+        minWidth: 240,
+        maxWidth: 300,
+        overflow: 'auto',
+        maxHeight: 200,
+    },
+    listItem: {
+        padding: 1,
+    }
+}))
 
 export default function SchemeCheckboxList(props) {
     let { list, checkedList, onChange } = props;
@@ -311,23 +323,28 @@ export default function SchemeCheckboxList(props) {
         onChange(newChecked);
     };
 
+    const classes = useStyles();
+
     return (
         <Card>
-            <CardHeader
-                avatar={
+            <List>
+                <ListItem dense className={classes.listItem} button onClick={handleToggleAll(list)}>
+                    <ListItemIcon>
                     <Checkbox
-                        onClick={handleToggleAll(list)}
                         checked={numberOfChecked(list) === list.length && list.length !== 0}
                         indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
+                        tabIndex={-1}
+                        disableRipple
                     />
-                }
-                title={"Schemes"}
-            />
+                    </ListItemIcon>
+                    <ListItemText primary="Schemes" />
+                </ListItem>
+            </List>
             <Divider />
-            <List dense width={100}>
+            <List className={classes.root}>
                 {list.map((value) => {
                     return (
-                        <ListItem key={value} button onClick={handleSchemeToggle(value)}>
+                        <ListItem dense className={classes.listItem} key={value} button onClick={handleSchemeToggle(value)}>
                             <ListItemIcon>
                                 <Checkbox
                                     checked={checked.indexOf(value) !== -1}
@@ -615,7 +632,7 @@ WHERE
         }
 
         const sqlQuery = this.state.query.replaceAll('?', replacer);
-        if (error || params.length > 0) {
+        if (error && params.length > 0) {
             console.error("expandQuery called with number of `?`s not matching the number of params");
         } else {
             return sqlQuery;
@@ -693,7 +710,7 @@ WHERE
                                     </Grid>
                                     <Grid item>
                                         <ToggleButtonGroup value={this.state.schemeType} exclusive
-                                            size="medium" onChange={(_event, value) => this.setFilterState({ schemeType: value })}>
+                                            size="medium" onChange={(_event, value) => {if (value !== null) this.setFilterState({ schemeType: value });}}>
                                             <ToggleButton disabled={this.state.queryProcessing} value="sig">
                                                 Signature
                                             </ToggleButton>
