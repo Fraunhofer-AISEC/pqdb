@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, Route, Switch, Redirect, useParams } from 'react-router-dom';
 import {
     Grid, Box, Paper, TextField, Button, Typography, Link, Container, List, ListItem, ListItemText, ListItemIcon,
@@ -346,6 +346,10 @@ class Welcome extends React.Component {
         this.db = props.db;
     }
 
+    componentDidMount() {
+        document.title = 'Welcome - pqdb';
+    }
+
     render() {
         return (
             <Container maxWidth="md">
@@ -568,6 +572,10 @@ WHERE
         }
     }
 
+    componentDidMount() {
+        document.title = 'Scheme Comparison - pqdb';
+    }
+
     changeFilterState(change) {
         this.newFilterState = Object.assign({}, this.filterState);
         this.newFilterState.focusPlatformFilter = false;
@@ -731,6 +739,7 @@ class CustomSQLQuery extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Custom SQL Query - pqdb';
         if (this.state.sqlInput === '') return;
 
         var sqlQuery = this.state.sqlInput;
@@ -829,6 +838,10 @@ function SchemeDetailSwitch(props) {
 }
 
 function SchemeOverview(props) {
+    useEffect(() => {
+        document.title = 'Scheme Overview - pqdb';
+    }, []);
+
     return (
         <Container maxWidth="md">
             <Grid container justify="center" spacing={2}>
@@ -850,18 +863,41 @@ function SchemeDetail(props) {
     let db = props.db;
     let { schemeId } = useParams();
 
-    const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
-    if (s === undefined) {
+    const [scheme, setScheme] = useState(null);
+    const [authors, setAuthors] = useState(undefined);
+    const [problems, setProblems] = useState(undefined);
+    const [sources, setSources] = useState(undefined);
+    const [links, setLinks] = useState(undefined);
+    const [flavors, setFlavors] = useState(undefined);
+
+    useEffect(() => {
+        const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
+        if (s === undefined) {
+            document.title = 'Unknown - Scheme Details - pqdb';
+            setScheme(s);
+        } else {
+            document.title = `${s.name} - Scheme Details - pqdb`;
+            const authors = queryAll(db, "SELECT * FROM scheme_author WHERE scheme_id=?", [s.id]);
+            const problems = queryAll(db, "SELECT * FROM scheme_problem WHERE scheme_id=?", [s.id]);
+            const links = queryAll(db, "SELECT * FROM scheme_link WHERE scheme_id=?", [s.id]);
+            const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [s.id]);
+            const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [s.id]);
+            setScheme(s);
+            setAuthors(authors);
+            setProblems(problems);
+            setLinks(links);
+            setSources(sources);
+            setFlavors(flavors);
+        }
+    }, [db, schemeId]);
+
+    if (scheme === null) return null;
+
+    if (scheme === undefined) {
         return <Container><Paper>No such scheme.</Paper></Container>;
     }
 
-    const authors = queryAll(db, "SELECT * FROM scheme_author WHERE scheme_id=?", [s.id]);
-    const problems = queryAll(db, "SELECT * FROM scheme_problem WHERE scheme_id=?", [s.id]);
-    const links = queryAll(db, "SELECT * FROM scheme_link WHERE scheme_id=?", [s.id]);
-    const sources = queryAll(db, "SELECT * FROM scheme_source WHERE scheme_id=?", [s.id]);
-    const flavors = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=?", [s.id]);
-
-    let TypeIcon = SCHEME_TYPES[s.type].icon;
+    let TypeIcon = SCHEME_TYPES[scheme.type].icon;
     return (
         <Container maxWidth="md">
             <Paper>
@@ -870,42 +906,42 @@ function SchemeDetail(props) {
                         <ListItem key="head" alignItems="flex-start">
                             <ListItemText>
                                 <Typography component="h1" variant="h2">
-                                    {s.name}
+                                    {scheme.name}
                                     {"  "}
-                                    <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
-                                        <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
+                                    <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
+                                        <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
                                     </Tooltip>
                                 </Typography>
-                                {s.description && <div>{s.description}</div>}
-                                {s.comment && <div><TextComment>{s.comment}</TextComment></div>}
+                                {scheme.description && <div>{scheme.description}</div>}
+                                {scheme.comment && <div><TextComment>{scheme.comment}</TextComment></div>}
                             </ListItemText>
                         </ListItem>
 
                         <PropItem k="category" title="Category" icon={CategoryIcon}>
-                            {s.category} based <Comment title={s.category_comment} />
+                            {scheme.category} based <Comment title={scheme.category_comment} />
                         </PropItem>
 
-                        {(s.stateful || s.stateful_comment) && (
+                        {(scheme.stateful || scheme.stateful_comment) && (
                             <PropItem k="stateful" title="Statefulness" icon={SaveIcon}>
-                                {s.stateful ? 'stateful' : 'stateless' /* stateless only shown if there's a comment */}
-                                <Comment title={s.stateful_comment} />
+                                {scheme.stateful ? 'stateful' : 'stateless' /* stateless only shown if there's a comment */}
+                                <Comment title={scheme.stateful_comment} />
                             </PropItem>)
                         }
                         <PropItem k="nist_round" title="NIST standardization" icon={PodiumIcon}>
-                            {NIST_ROUNDS[s.nist_round].long}
+                            {NIST_ROUNDS[scheme.nist_round].long}
                         </PropItem>
 
                         <PropItem k="year" title="Year" icon={EventIcon}>
                             {
                                 [
-                                    s.year_paper === null ? [] :
-                                        [s.year_paper, <span style={{ opacity: .5 }}> (paper)</span>],
-                                    s.year_candidate === null ? [] :
-                                        [s.year_candidate, <span style={{ opacity: .5 }}> (NIST candidate)</span>],
-                                    s.year_standardization === null ? [] :
-                                        [s.year_standardization, <span style={{ opacity: .5 }}> (standardization)</span>],
-                                    s.year_comment === null ? [] :
-                                        <em>{s.year_comment}</em>,
+                                    scheme.year_paper === null ? [] :
+                                        [scheme.year_paper, <span style={{ opacity: .5 }}> (paper)</span>],
+                                    scheme.year_candidate === null ? [] :
+                                        [scheme.year_candidate, <span style={{ opacity: .5 }}> (NIST candidate)</span>],
+                                    scheme.year_standardization === null ? [] :
+                                        [scheme.year_standardization, <span style={{ opacity: .5 }}> (standardization)</span>],
+                                    scheme.year_comment === null ? [] :
+                                        <em>{scheme.year_comment}</em>,
                                 ].reduce((accu, elem) => { /* join(), but skipping empty entries */
                                     return !elem.length ? accu : !accu.length ? [elem] :
                                         [...accu, " \u2022 ", elem]
@@ -916,13 +952,13 @@ function SchemeDetail(props) {
 
                         <PropItem k="problems_trust" title="Security Properties" icon={SecurityIcon}>
                             {[
-                                s.trust_comment && [
+                                scheme.trust_comment && [
                                     <div><strong>Trust: </strong></div>,
-                                    <div style={{ marginBottom: ".6em" }}>{s.trust_comment}</div>
+                                    <div style={{ marginBottom: ".6em" }}>{scheme.trust_comment}</div>
                                 ],
-                                (problems.length > 0 || s.problems_comment) && [
+                                (problems.length > 0 || scheme.problems_comment) && [
                                     <div><strong>Problems:</strong></div>,
-                                    s.problems_comment && <div><TextComment>{s.problems_comment}</TextComment></div>,
+                                    scheme.problems_comment && <div><TextComment>{scheme.problems_comment}</TextComment></div>,
                                     problems.map(p => <div>{p.assumption} <Comment title={p.comment} /></div>),
                                 ]
                             ]}
@@ -954,7 +990,7 @@ function SchemeDetail(props) {
                             return [
                                 <ListItem key={`flavor-${f.id}-head`} style={{ display: "block" }}>
                                     <Typography component="h3" variant="h5">
-                                        <Link component={RouterLink} to={detailLink(s.id_text, f.id_text)}>{f.name}</Link>
+                                        <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>{f.name}</Link>
                                     </Typography>
                                     {f.description && <div>{f.description}</div>}
                                     {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
@@ -1004,20 +1040,45 @@ function FlavorDetail(props) {
     let db = props.db;
     let { schemeId, flavorId } = useParams();
 
-    const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
-    if (s === undefined) {
+    const [scheme, setScheme] = useState(null);
+    const [flavor, setFlavor] = useState(undefined);
+    const [paramsets, setParamsets] = useState(undefined);
+    const [implementations, setImplementations] = useState(undefined);
+    const [links, setLinks] = useState(undefined);
+    const [sources, setSources] = useState(undefined);
+
+    useEffect(() => {
+        const s = queryAll(db, "SELECT * FROM scheme WHERE id_text=?", [schemeId])[0];
+        const f = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=? AND id_text=?", [s.id, flavorId])[0];
+        if (s === undefined || f === undefined) {
+            document.title = 'Unknown - Flavor Details - pqdb';
+            setScheme(s);
+        } else {
+            document.title = `${f.name} - Flavor Details - pqdb`;
+            const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
+            const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
+            const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
+            const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
+            setScheme(s);
+            setFlavor(f);
+            setParamsets(paramsets);
+            setImplementations(implementations);
+            setLinks(links);
+            setSources(sources);
+        }
+
+    }, [db, schemeId, flavorId]);
+
+    if (scheme === null) return null;
+
+    if (scheme === undefined) {
         return <Container><Paper>No such scheme.</Paper></Container>;
     }
-    const f = queryAll(db, "SELECT * FROM flavor WHERE scheme_id=? AND id_text=?", [s.id, flavorId])[0];
-    if (f === undefined) {
+    if (flavor === undefined) {
         return <Container><Paper>No such flavor.</Paper></Container>;
     }
-    const paramsets = queryAll(db, "SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC", [f.id]);
-    const implementations = queryAll(db, "SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC", [f.id]); // reference before optimized
-    const links = queryAll(db, "SELECT * FROM flavor_link WHERE flavor_id=?", [f.id]);
-    const sources = queryAll(db, "SELECT * FROM flavor_source WHERE flavor_id=?", [f.id]);
 
-    let TypeIcon = SCHEME_TYPES[s.type].icon;
+    let TypeIcon = SCHEME_TYPES[scheme.type].icon;
     return (
         <Container maxWidth="md">
             <Paper>
@@ -1026,22 +1087,22 @@ function FlavorDetail(props) {
                         <ListItem key="scheme-head" alignItems="flex-start">
                             <ListItemText>
                                 <Typography variant="h6">
-                                    <Link component={RouterLink} to={detailLink(s.id_text)}>
+                                    <Link component={RouterLink} to={detailLink(scheme.id_text)}>
                                         <ArrowBackIcon fontSize="inherit" />
                                         {[" "]}
-                                        {s.name}
+                                        {scheme.name}
                                     </Link>
                                     {" "}
-                                    <Tooltip title={SCHEME_TYPES[s.type].name} arrow>
-                                        <TypeIcon fontSize="inherit" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[s.type].name} aria-describedby={null} />
+                                    <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
+                                        <TypeIcon fontSize="inherit" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
                                     </Tooltip>
                                     {" "}
                                     <span style={{ fontWeight: "normal", marginLeft: ".4em" }}>
-                                        {s.category} <Comment title={s.category_comment} />
-                                        {s.stateful ?
-                                            [" \u2022 stateful", <Comment title={s.stateful_comment} />] : null}
-                                        {s.nist_round > 0 &&
-                                            [` \u2022 round ${s.nist_round}`, <Comment title={s.nist_round_comment} />]}
+                                        {scheme.category} <Comment title={scheme.category_comment} />
+                                        {scheme.stateful ?
+                                            [" \u2022 stateful", <Comment title={scheme.stateful_comment} />] : null}
+                                        {scheme.nist_round > 0 &&
+                                            [` \u2022 round ${scheme.nist_round}`, <Comment title={scheme.nist_round_comment} />]}
                                     </span>
                                 </Typography>
                             </ListItemText>
@@ -1050,28 +1111,28 @@ function FlavorDetail(props) {
                         <ListItem key="flavor-head" alignItems="flex-start">
                             <ListItemText>
                                 <Typography variant="h3">
-                                    {f.name}
+                                    {flavor.name}
                                 </Typography>
-                                {f.description && <div>{f.description}</div>}
-                                {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
+                                {flavor.description && <div>{flavor.description}</div>}
+                                {flavor.comment && <div><TextComment>{flavor.comment}</TextComment></div>}
                             </ListItemText>
                         </ListItem>
 
                         <PropItem k="type" title="API Type" icon={CategoryIcon}>
-                            {f.type} <Comment title={f.type_comment} />
+                            {flavor.type} <Comment title={flavor.type_comment} />
                         </PropItem>
 
                         <PropItem k="securitynotion" title="Security Notion" icon={SecurityIcon}>
-                            <Tooltip title={SEC_NOTIONS[f.security_notion]}>
-                                <span>{f.security_notion}</span>
+                            <Tooltip title={SEC_NOTIONS[flavor.security_notion]}>
+                                <span>{flavor.security_notion}</span>
                             </Tooltip>
-                            <Comment title={f.security_notion_comment} />
+                            <Comment title={flavor.security_notion_comment} />
                         </PropItem>
 
-                        {f.dh_ness &&
+                        {flavor.dh_ness &&
                             <PropItem k="dhness" title="Diffie-Hellman-Ness" icon={DiffieHellmanIcon}>
                                 <strong>Diffie-Hellman-Ness: </strong>
-                                {f.dh_ness}
+                                {flavor.dh_ness}
                             </PropItem>}
 
                         {links.length > 0 &&
@@ -1116,7 +1177,7 @@ function FlavorDetail(props) {
                                         <div><TextComment>{p.security_level_comment}</TextComment></div>}
                                 </PropItem>,
 
-                                (s.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment) &&
+                                (scheme.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment) &&
                                 <PropItem k={`p-${p.id}-failureprob`} title="Failure Probability" icon={BottomIcon}>
                                     {p.failure_probability === 0
                                         ? "0"
@@ -1136,7 +1197,7 @@ function FlavorDetail(props) {
                                     <div>
                                         sk: {p.sizes_sk} {" \u2022 "}
                                     pk: {p.sizes_pk} {" \u2022 "}
-                                        {SCHEME_TYPES[s.type].ctsig}: {p.sizes_ct_sig}
+                                        {SCHEME_TYPES[scheme.type].ctsig}: {p.sizes_ct_sig}
                                     </div>
                                     {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
                                 </PropItem>,
@@ -1227,7 +1288,7 @@ function FlavorDetail(props) {
                         <ListItem key="benchmarks">
                             <ListItemText>
                                 <Typography component="h3" variant="h4">Benchmarks</Typography>
-                                <div><Link component={RouterLink} to={`/raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D${f.id}`}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */}
+                                <div><Link component={RouterLink} to={`/raw_sql?query=SELECT p.name AS 'Parameter Set'%2C i.name AS Implementation%2C b.platform AS Platform%2C b.comment AS '🛈'%2C b.timings_unit%2C b.timings_gen%2C b.timings_enc_sign%2C b.timings_dec_vrfy%2C b.timings_comment AS '🛈'%2C b.memory_requirements_gen%2C b.memory_requirements_enc_sign%2C b.memory_requirements_dec_vrfy%2C b.memory_requirements_comment AS '🛈' FROM benchmark b%2C paramset p%2C implementation i WHERE p.id%3Db.paramset_id AND i.id%3Db.implementation_id AND p.flavor_id%3D${flavor.id}`}>Show all benchmarks for this flavor</Link></div> { /* TODO: include this right here as a table */}
                             </ListItemText>
                         </ListItem>
                     </List>
