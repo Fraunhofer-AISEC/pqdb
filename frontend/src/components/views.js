@@ -26,7 +26,6 @@ import qs from 'query-string';
 import genCSV from 'csv-stringify';
 import { GlassMagnifier } from "react-image-magnifiers";
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 
