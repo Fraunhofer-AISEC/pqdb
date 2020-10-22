@@ -330,12 +330,12 @@ export default function SchemeCheckboxList(props) {
             <List>
                 <ListItem dense className={classes.listItem} button onClick={handleToggleAll(list)}>
                     <ListItemIcon>
-                    <Checkbox
-                        checked={numberOfChecked(list) === list.length && list.length !== 0}
-                        indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
-                        tabIndex={-1}
-                        disableRipple
-                    />
+                        <Checkbox
+                            checked={numberOfChecked(list) === list.length && list.length !== 0}
+                            indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
+                            tabIndex={-1}
+                            disableRipple
+                        />
                     </ListItemIcon>
                     <ListItemText primary="Schemes" />
                 </ListItem>
@@ -570,7 +570,7 @@ FROM
     LEFT JOIN implementation i ON i.id = b.implementation_id` : ''}
 WHERE
     s.type = ?
-    AND s.id_text IN (${JSON.stringify(state.checkedSchemes?? []).slice(1, -1)})
+    AND s.id_text IN (${JSON.stringify(state.checkedSchemes ?? []).slice(1, -1)})
     AND (
         s.nist_round BETWEEN ? AND '3f'` +
             ((state.showNonNistSchemes) ? "\n        OR s.nist_round = 'none'" : '') + `
@@ -681,9 +681,9 @@ WHERE
         var searchParam = {};
         this.defaultState.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         Object.keys(this.defaultState).forEach(key => {
-            if (Array.isArray(this.defaultState[key]) && Array.isArray(this.state[key])){
+            if (Array.isArray(this.defaultState[key]) && Array.isArray(this.state[key])) {
                 if (not(this.defaultState[key], this.state[key]).length > 0 || not(this.state[key], this.defaultState[key]).length > 0)
-                searchParam[key] = this.state[key];
+                    searchParam[key] = this.state[key];
             } else if (this.state[key] !== this.defaultState[key])
                 searchParam[key] = this.state[key];
         });
@@ -710,7 +710,7 @@ WHERE
                                     </Grid>
                                     <Grid item>
                                         <ToggleButtonGroup value={this.state.schemeType} exclusive
-                                            size="medium" onChange={(_event, value) => {if (value !== null) this.setFilterState({ schemeType: value });}}>
+                                            size="medium" onChange={(_event, value) => { if (value !== null) this.setFilterState({ schemeType: value }); }}>
                                             <ToggleButton disabled={this.state.queryProcessing} value="sig">
                                                 Signature
                                             </ToggleButton>
@@ -859,7 +859,7 @@ WHERE
                             <Box p={2} display='flex' justifyContent="center">
                                 <QueryTable onChangeOrder={(order, orderBy) => this.setState({ order: order, orderBy: orderBy })}
                                     order={this.state.order} orderBy={this.state.orderBy} queryResult={this.state.queryResult}
-                                    formatFunctions={this.getFormatFunctions(this.queryResult)} />
+                                    formatFunctions={this.getFormatFunctions(this.state.queryResult)} />
                             </Box>
                         </Paper>
                     </Container>
