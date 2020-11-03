@@ -359,6 +359,9 @@ export default function SchemeCheckboxList(props) {
         </Card>
     );
 }
+// Variables for coloring properly
+var sizes = [];
+var headers = [];
 
 class QueryTable extends React.Component {
     handleRequestSort(property) {
@@ -368,7 +371,85 @@ class QueryTable extends React.Component {
         this.props.onChangeOrder(isAsc ? 'desc' : 'asc', property);
     }
 
-    render() {
+    createHeaderSections(array){
+        if(array[0] !== "Parameter Set"){
+            headers = [];
+            sizes = [];
+            return;
+        }
+        headers = [];
+        sizes = [];
+        headers.push("Parameter Set");
+        sizes.push(0);
+        if(array.includes("Communication Size")){
+            headers.push("Size");
+            sizes.push(4);
+        } 
+        if (array.length > 6 && array[array.length -1] === "Total (kCycles)") {
+            headers.push("Implementation");
+            sizes.push(1);
+            if(array.includes("Hardware Features")) {
+                sizes[sizes.length-1] += 1; 
+            }
+            headers.push("Benchmark");
+            sizes.push(5);
+        }
+        var sum = 0;
+        for(var i = 1; i < sizes.length;i++){
+            sum += sizes[i];
+        }
+        sizes[0] = array.length - sum;
+        return(
+            <TableRow>
+                {headers.map((name,idx) =>
+                
+                    <TableCell key={name} align="center" colSpan={sizes[idx]} style={{backgroundColor: (idx % 2 == 1)? "#dad8d8":'#f5f5f5'}}>
+                        {name}
+                    </TableCell>
+                ) 
+                }  
+            </TableRow>
+                
+        );
+    }
+    colorColumn(column,idx){
+        if(headers.length < 1) return false;
+        var counter = 0;
+        while(idx >= sizes[counter]){
+            counter++;
+            idx -= sizes[counter-1];
+        }
+        if (counter % 2 == 1){
+                return true;
+        }
+        return false; 
+    }
+    colorBody(j){
+        if(headers.length <= 1) return false;
+        if(j < sizes[0]) return false;
+        if(sizes.length > 2 && j - sizes[0] >= sizes[1] && j - sizes[0] - sizes[1]< sizes[2]) return false;
+        
+        return true;
+    }
+    colorColumnAlternate(row_number,j,row,val){
+        var isEven = true;
+        if(row_number % 2 === 1) isEven = false; 
+        return isEven?
+        <TableCell key={j} style={{backgroundColor: this.colorBody(j)? "#eeeeee" : "white"}}>{val}</TableCell>
+        :
+        <TableCell key={j} style={{backgroundColor: this.colorBody(j)? "#e0e0e0" : "#f5f5f5"}}>{val}</TableCell>
+        
+    }
+    colorColumnAlternateFormated(row_number,j,row,val){
+        var isEven = true;
+        if(row_number % 2 === 1) isEven = false; 
+        return isEven?
+        <TableCell key={j} style={{backgroundColor: this.colorBody(j)? "#eeeeee" : "white"}}>{this.props.formatFunctions[j](val)} </TableCell>
+        :
+        <TableCell key={j} style={{backgroundColor: this.colorBody(j)? "#e0e0e0" : "#f5f5f5"}}>{this.props.formatFunctions[j](val)} </TableCell>
+
+    }
+    render() {       
         const { queryResult, formatFunctions, orderBy } = this.props;
         const order = this.props.order ?? 'asc';
         if (queryResult === undefined) return <Typography>No results</Typography>;
@@ -376,25 +457,26 @@ class QueryTable extends React.Component {
         return (
             <Grid direction='column' alignItems='flex-end' spacing={1} container>
                 <Grid container item>
-                    <TableContainer component={Paper}>
-                        <Table stickyHeader size="small">
+                    <TableContainer component={Paper} style={{maxHeight:850}}>
+                        <Table stickyHeader aria-label="sticky table">
                             <TableHead>
+                                {this.createHeaderSections(queryResult.columns)}
                                 <TableRow>
-                                    {
+                                    {   
                                         queryResult.columns.map((column, idx) =>
-                                            <TableCell key={idx}>
+                                            <TableCell key={idx} style={{backgroundColor: this.colorColumn(column,idx)? "#dad8d8" : "#f5f5f5", top: headers.length > 0? 57: 0}}>
                                                 <TableSortLabel
                                                     active={orderBy === idx}
                                                     direction={orderBy === idx ? order : 'asc'}
                                                     onClick={(e) => this.handleRequestSort(idx)}>
-                                                    {column}
+                                                    {column === "Parameter Set" || column === "Implementation Name"? "Name": column}
                                                 </TableSortLabel>
                                             </TableCell>
                                         )
                                     }
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody >
                                 {
                                     sortedRows(queryResult.values, orderBy, order === 'asc').map(
                                         (row) => (
@@ -402,10 +484,10 @@ class QueryTable extends React.Component {
                                                 {
                                                     row[0].map((val, j) =>
                                                         (formatFunctions && formatFunctions[j]) ?
-                                                            <TableCell key={j}>{formatFunctions[j](val)}</TableCell>
+                                                            this.colorColumnAlternateFormated(row[1],j,row,val)
                                                             :
-                                                            <TableCell key={j}>{val}</TableCell>
-                                                    )
+                                                            this.colorColumnAlternate(row[1],j,row,val)
+                                                            )
                                                 }
                                             </TableRow>
                                         )
@@ -596,7 +678,7 @@ WHERE
         if (state.showColumns.includes('benchmarks') && state.platformFilter !== '') params.push(state.platformFilter);
         return params;
     }
-
+    
 
     computeResult(state, sqlQuery) {
         var params = this.prepareParams(state);
