@@ -1,0 +1,11 @@
+name: Dilithium 5
+security level:
+  classical: 285
+  quantum: 187
+  nist category: 5
+failure probability: 0
+sizes:
+  sk: 4400
+  pk: 2592
+  ct|sig: 4595
+number of operations: inf
