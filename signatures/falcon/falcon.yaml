@@ -1,7 +1,9 @@
 name: FALCON
-description: Hash-and-sign scheme over NTRU-lattice that relies on trapdoor sampler (Fast Fourier sampler).
+description: >-
+  Hash-and-sign scheme over NTRU-lattice that relies on trapdoor sampler (Fast
+  Fourier sampler).
 year:
-    candidate: 2017
+  candidate: 2017
 category: lattice
 authors:
   - Pierre-Alain Fouque
@@ -15,8 +17,12 @@ authors:
   - William Whyte
   - Zhenfei Zhang
 problems:
-    - assumption: SIS over NTRU lattices
+  - assumption: SIS over NTRU lattices
 stateful: false
-nist round: '3f'
+nist round: 3f
 sources:
-  - "NIST Submission Paper, Round 2, Version 1.1 ( https://web.archive.org/web/20200604142604/https://tprest.github.io/pdf/pub/falcon.pdf )"
+  - >-
+    NIST Submission Paper, Round 3, Version 1.2 (
+    https://falcon-sign.info/falcon.pdf )
+  - 'https://falcon-sign.info/'
+last_updated: '2020-11-06'
