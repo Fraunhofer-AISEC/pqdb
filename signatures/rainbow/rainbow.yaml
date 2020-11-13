@@ -21,8 +21,8 @@ authors:
   - Jacques Patarin
 sources:
   - >-
-    Updated parameters
-    http://by.iis.sinica.edu.tw/by-publ/recent/rainbow-pars.pdf
+    NIST Submission Round3
+    (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Rainbow-Round3.zip)
 description: >-
   Rainbow is a multivariate-based public key signature scheme which can be seen
   as a multi-layer variant of the Oil-Vinegar signature scheme.
