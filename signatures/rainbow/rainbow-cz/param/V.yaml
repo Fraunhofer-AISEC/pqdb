@@ -6,7 +6,7 @@ security level:
   nist category: 5
 failure probability: 0
 sizes:
-  sk: 60
+  sk: 1375700
   pk: 523600
   ct|sig: 212
 number of operations: inf

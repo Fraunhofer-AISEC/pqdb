@@ -7,6 +7,6 @@ security level:
 failure probability: 0
 sizes:
   sk: 101200
-  pk: 58800
+  pk: 157800
   ct|sig: 66
 number of operations: inf

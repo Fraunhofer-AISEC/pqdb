@@ -10,4 +10,3 @@ memory requirements:
   gen: 12830000
   enc|sign: 12840000
   dec|vrfy: 12830000
-  comment: ''
