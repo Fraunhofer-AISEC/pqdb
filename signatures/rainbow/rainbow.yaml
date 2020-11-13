@@ -17,6 +17,8 @@ authors:
   - Albrecht Petzoldt
   - Dieter Schmidt
   - Bo-Yin Yang
+  - Matthias Kannwischer
+  - Jacques Patarin
 sources:
   - >-
     Updated parameters
@@ -24,4 +26,4 @@ sources:
 description: >-
   Rainbow is a multivariate-based public key signature scheme which can be seen
   as a multi-layer variant of the Oil-Vinegar signature scheme.
-last_updated: '2020-06-22'
+last_updated: '2020-11-12'
