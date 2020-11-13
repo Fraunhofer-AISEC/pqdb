@@ -9,6 +9,4 @@ timings:
   comment: Expanded keys are used.
 memory requirements:
   gen: 14336
-  enc|sign: !<tag:yaml.org,2002:js/undefined> ''
-  dec|vrfy: !<tag:yaml.org,2002:js/undefined> ''
   comment: Expanded keys are used.
