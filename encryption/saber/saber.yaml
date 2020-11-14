@@ -9,13 +9,13 @@ authors:
   - Angshuman Karmakar
   - Sujoy Sinha Roy
   - Frederik Vercauteren
+  - Andrea Basso
+  - Jose Maria Bermudo Mera
+  - Michiel Van Beirendonck
 problems:
   - assumption: Mod-LWR
 sources:
-  - >-
-    Submission package (
-    https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/SABER_KEM_Round_2.zip
-    )
+  - 'https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf'
 links:
   - 'Homepage ( https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html )'
-nist round: '3f'
+nist round: 3f
