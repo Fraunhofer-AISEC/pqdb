@@ -1,6 +1,5 @@
-name: AVX2, using AES from OpenSSL
+name: 'AVX2, using AES from OpenSSL'
 platform: c
 type: optimized
 hardware features:
   - avx2
-  - aes-ni

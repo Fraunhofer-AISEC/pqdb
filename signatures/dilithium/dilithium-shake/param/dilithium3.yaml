@@ -1,7 +1,7 @@
 name: Dilithium 3
 security level:
-  classical: 216
-  quantum: 138
+  classical: 182
+  quantum: 165
   nist category: 3
 failure probability: 0
 sizes:
