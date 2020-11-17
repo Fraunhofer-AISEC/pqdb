@@ -1,5 +1,5 @@
 timings:
-  gen: 438217685
+  gen: 246508730
   enc|sign: 161224
   dec|vrfy: 301480
   unit: cycles

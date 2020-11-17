@@ -18,8 +18,15 @@ authors:
   - Nicolas Sendrier
   - Jakub Szefer
   - Wen Wang
+  - Martin R. Albrecht
+  - Carlos Cid
+  - Jan Gilcher
+  - Varun Maram
+  - Kenneth G. Paterson
+  - Cen Jung Tjhai
+  - Martin Tomlinson
 sources:
-  - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf'
+  - 'https://classic.mceliece.org/nist/mceliece-20201010.pdf'
   - >-
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/official-comments/Classic-McEliece-round2-official-comment.pdf
 links:
@@ -27,5 +34,6 @@ links:
 problems:
   - assumption: Computational Syndrome Decoding
 description: >-
-  Built conservatively from Niederreiter’s dual version of McEliece’s PKE
-  using binary Goppa codes.
+  Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
+  binary Goppa codes.
+last_updated: '2020-11-10'

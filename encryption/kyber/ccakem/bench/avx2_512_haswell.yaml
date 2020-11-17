@@ -1,7 +1,7 @@
 platform: Intel Core i7-4770K (Haswell)
 timings:
   unit: cycles
-  gen: 33428
-  enc|sign: 49184
-  dec|vrfy: 40564
-  comment: "with compressed `sk`, `dec` takes 62292"
+  gen: 33856
+  enc|sign: 45200
+  dec|vrfy: 34572
+  comment: 'with compressed `sk`, `dec` takes 59088'
