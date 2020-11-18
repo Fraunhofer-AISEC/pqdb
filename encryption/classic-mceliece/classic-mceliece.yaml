@@ -24,7 +24,7 @@ authors:
   - Varun Maram
   - Kenneth G. Paterson
   - Cen Jung Tjhai
-  - 'Martin Tomlinson,'
+  - Martin Tomlinson
 sources:
   - 'https://classic.mceliece.org/nist/mceliece-20201010.pdf'
   - >-
@@ -36,3 +36,4 @@ problems:
 description: >-
   Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
   binary Goppa codes.
+last_updated: '2020-11-10'

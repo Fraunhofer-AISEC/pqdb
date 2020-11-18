@@ -1,0 +1,7 @@
+timings:
+  unit: cycles
+  gen: 284584602
+  enc|sign: 151721
+  dec|vrfy: 323957
+  comment: average
+platform: 'Intel Xeon E3-1275 v3, 3.50GHz'
