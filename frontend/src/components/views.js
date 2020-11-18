@@ -426,7 +426,7 @@ class QueryTable extends React.Component {
                                     }
                                 </TableRow>
                             </TableHead>
-                            <TableBody >
+                            <TableBody>
                                 {
                                     sortedRows(queryResult.values, orderBy, order === 'asc').map(
                                         (row) => (
@@ -759,7 +759,6 @@ WHERE
 
     render() {
         const expandedQuery = this.expandQuery();
-
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
