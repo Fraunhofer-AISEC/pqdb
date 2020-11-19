@@ -32,7 +32,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import diagramImage from '../tables.svg';
 
-import { queryAll, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
+import { queryAll, queryAllAsArray, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
 const SCHEME_TYPES = {
     enc: {
@@ -359,6 +359,9 @@ export default function SchemeCheckboxList(props) {
         </Card>
     );
 }
+// Variables for coloring properly
+const headerBgColors = ["#f5f5f5", "#dad8d8"];
+const cellBgColors = [["#ffffff", "#eeeeee"], ["#f5f5f5", "#e0e0e0"]];
 
 class QueryTable extends React.Component {
     handleRequestSort(property) {
@@ -368,21 +371,50 @@ class QueryTable extends React.Component {
         this.props.onChangeOrder(isAsc ? 'desc' : 'asc', property);
     }
 
+    headerModVal(headerPositions, idx) {
+        if (headerPositions.length < 1)
+            return 0;
+        return (headerPositions.findIndex(e => idx < e) - 1) % 2;
+    }
+
     render() {
         const { queryResult, formatFunctions, orderBy } = this.props;
         const order = this.props.order ?? 'asc';
+        const headers = this.props.headers ?? [];
+        const headerSpans = this.props.headerSpans ?? [];
+        if (headerSpans.length !== headers.length)
+            throw new Error("A span needs to be specified for each header.");
+        const headerPositions = [0, ...headerSpans].map((sum => value => sum += value)(0));
         if (queryResult === undefined) return <Typography>No results</Typography>;
         if (!queryResult) return null;
         return (
             <Grid direction='column' alignItems='flex-end' spacing={1} container>
                 <Grid container item>
-                    <TableContainer component={Paper}>
-                        <Table stickyHeader size="small">
+                    <TableContainer component={Paper} style={{ maxHeight: 850 }}>
+                        <Table stickyHeader aria-label="sticky table">
                             <TableHead>
+                                {
+                                    (headers.length > 0) ?
+                                        <TableRow>
+                                            {
+                                                headers.map((name, idx) =>
+                                                    <TableCell key={name} align="center" colSpan={headerSpans[idx]}
+                                                        style={{ backgroundColor: headerBgColors[idx % 2] }}>
+                                                        {name}
+                                                    </TableCell>
+                                                )
+                                            }
+                                        </TableRow>
+                                        :
+                                        null
+                                }
                                 <TableRow>
                                     {
                                         queryResult.columns.map((column, idx) =>
-                                            <TableCell key={idx}>
+                                            <TableCell key={idx} style={{
+                                                backgroundColor: headerBgColors[this.headerModVal(headerPositions, idx)],
+                                                top: headers.length > 0 ? 57 : 0 // So headers don't collapse on scroll
+                                            }}>
                                                 <TableSortLabel
                                                     active={orderBy === idx}
                                                     direction={orderBy === idx ? order : 'asc'}
@@ -400,11 +432,12 @@ class QueryTable extends React.Component {
                                         (row) => (
                                             <TableRow key={row[1]}>
                                                 {
-                                                    row[0].map((val, j) =>
-                                                        (formatFunctions && formatFunctions[j]) ?
-                                                            <TableCell key={j}>{formatFunctions[j](val)}</TableCell>
-                                                            :
-                                                            <TableCell key={j}>{val}</TableCell>
+                                                    row[0].map(
+                                                        (val, j) => {
+                                                            if (formatFunctions && formatFunctions[j]) val = formatFunctions[j](val)
+                                                            const bgColor = cellBgColors[row[1] % 2][this.headerModVal(headerPositions, j)];
+                                                            return <TableCell key={j} style={{ backgroundColor: bgColor }}>{val}</TableCell>
+                                                        }
                                                     )
                                                 }
                                             </TableRow>
@@ -512,7 +545,7 @@ class SchemeComparison extends React.Component {
             'enc': schemesListQueryDB(this.db, 'enc', '0', true),
             'sig': schemesListQueryDB(this.db, 'sig', '0', true)
         };
-        this.state = { queryProcessing: true, queryResult: undefined, schemesList: [], query: "null" };
+        this.state = { queryProcessing: true, queryResult: undefined, schemesList: [], query: "null", headers: null, headerSpans: null };
 
         this.defaultState = {
             showColumns: ['benchmarks', 'hw_features', 'nist_category'], // not shown: 'storage', 'security_levels', 'nist_round'
@@ -540,7 +573,7 @@ class SchemeComparison extends React.Component {
         s.stateful
         WHEN 0 THEN ''
         ELSE ' (Stateful)'
-    END AS 'Parameter Set'` +
+    END AS 'Name'` +
             ((state.showColumns.includes('nist_round')) ? ",\n   s.nist_round AS 'NIST Round'" : '') +
             ((state.showColumns.includes('security_levels')) ? ",\n    p.security_level_classical AS 'Security Level (classical)'" : '') +
             ((state.showColumns.includes('security_levels')) ? ",\n    p.security_level_quantum AS 'Security Level (quantum)'" : '') +
@@ -550,7 +583,7 @@ class SchemeComparison extends React.Component {
     p.sizes_pk AS 'Public Key Size',
     p.sizes_ct_sig AS '${SCHEME_TYPES[state.schemeType].ct_sig} Size',
     (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : '') + ((state.showColumns.includes('benchmarks')) ? `,
-    i.name AS 'Implementation Name'${(state.showColumns.includes('hw_features')) ? `,
+    i.name AS 'Name'${(state.showColumns.includes('hw_features')) ? `,
     (
         SELECT
             GROUP_CONCAT(hf.feature, ", ")
@@ -597,20 +630,17 @@ WHERE
         return params;
     }
 
-
     computeResult(state, sqlQuery) {
         var params = this.prepareParams(state);
-        var results = queryAll(this.db, sqlQuery, params);
-        if (results.length === 0) return undefined;
-        results.forEach(res => {
-            res['Parameter Set'] = <Link component={RouterLink} to={detailLink(res.ID)}>{res['Parameter Set']}</Link>;
-            delete res.ID;
+        var results = queryAllAsArray(this.db, sqlQuery, params);
+        if (results.values.length === 0) return undefined;
+        results.columns.shift(); // Remove the 'ID' column name
+        results.values.forEach(res => {
+            res[1] = <Link component={RouterLink} to={detailLink(res[0])}>{res[1]}</Link>;
+            res.shift(); // Remove the 'ID' entry
         });
 
-        return {
-            columns: Object.keys(results[0]),
-            values: results.map(row => Object.keys(row).map(k => row[k]))
-        };
+        return results;
     }
 
     expandQuery() {
@@ -642,6 +672,32 @@ WHERE
         }
     }
 
+    createHeaderSections(state) {
+        var headers = [];
+        var headerSpans = [];
+        headers.push("Parameter Set");
+        headerSpans.push(1);
+        if (state.showColumns.includes('security_levels'))
+            headerSpans[headerSpans.length - 1] += 2;
+        if (state.showColumns.includes('nist_category'))
+            headerSpans[headerSpans.length - 1] += 1;
+        if (state.showColumns.includes('nist_round'))
+            headerSpans[headerSpans.length - 1] += 1;
+        if (state.showColumns.includes('storage')) {
+            headers.push("Size");
+            headerSpans.push(4);
+        }
+        if (state.showColumns.includes('benchmarks')) {
+            headers.push("Implementation");
+            headerSpans.push(1);
+            if (state.showColumns.includes('hw_features'))
+                headerSpans[headerSpans.length - 1] += 1;
+            headers.push("Benchmark");
+            headerSpans.push(5);
+        }
+        return { headers: headers, headerSpans: headerSpans };
+    }
+
     getFormatFunctions(results) {
         if (results === undefined) return undefined;
         var formatFunctions = Array(results.columns.length).fill(undefined);
@@ -658,7 +714,8 @@ WHERE
         if (resetChecked) queryState.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         var query = this.buildQuery(queryState);
         var queryResult = this.computeResult(queryState, query);
-        var change = { queryProcessing: false, queryResult: queryResult, schemesList: schemesList, query: query };
+        var change = Object.assign(this.createHeaderSections(queryState),
+            { queryProcessing: false, queryResult: queryResult, schemesList: schemesList, query: query });
         if (resetChecked) change.checkedSchemes = this.fullSchemeLists[this.state.schemeType];
         if (resetOrder) change = Object.assign(change, { order: 'asc', orderBy: null });
         this.setState(change);
@@ -863,7 +920,8 @@ WHERE
                             <Box p={2} display='flex' justifyContent="center">
                                 <QueryTable onChangeOrder={(order, orderBy) => this.setState({ order: order, orderBy: orderBy })}
                                     order={this.state.order} orderBy={this.state.orderBy} queryResult={this.state.queryResult}
-                                    formatFunctions={this.getFormatFunctions(this.state.queryResult)} />
+                                    formatFunctions={this.getFormatFunctions(this.state.queryResult)} headers={this.state.headers}
+                                    headerSpans={this.state.headerSpans} />
                             </Box>
                         </Paper>
                     </Container>
