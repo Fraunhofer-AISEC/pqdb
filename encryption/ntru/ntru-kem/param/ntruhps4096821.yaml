@@ -14,3 +14,4 @@ sizes:
   ct|sig: 1230
 failure probability: -433
 number of operations: inf
+failure probability comment: Only nonzero when using the 'improper-key variant'
