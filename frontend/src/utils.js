@@ -4,16 +4,27 @@ import { SvgIcon } from '@material-ui/core';
 function queryAll(db, query, params) {
     let stmt = db.prepare(query, params);
     let result = [];
-    while ( stmt.step() ) {
-        result.push( stmt.getAsObject() );
+    while (stmt.step()) {
+        result.push(stmt.getAsObject());
     }
+    stmt.free();
     return result;
 }
 
-function makeSvgIcon (code) {
+function queryAllAsArray(db, query, params) {
+    let stmt = db.prepare(query, params);
+    let result = { columns: stmt.getColumnNames(), values: [] };
+    while (stmt.step()) {
+        result.values.push(stmt.get());
+    }
+    stmt.free();
+    return result;
+}
+
+function makeSvgIcon(code) {
     return React.forwardRef((props, ref) => {
         return <SvgIcon ref={ref} {...props}>
-            { code }
+            {code}
         </SvgIcon>
     });
 }
@@ -63,4 +74,4 @@ const CastleIcon = makeSvgIcon(
     <path fill="currentColor" stroke="none" d="M 19.680622,2 H 17.96553 C 17.6424,2 17.368979,2.25096 17.368979,2.57721 v 0.70261 c 0,0.82813 -1.640521,0.82813 -1.640521,0 V 2.57721 C 15.728458,2.25104 15.455036,2 15.131904,2 h -1.71509 c -0.323133,0 -0.571696,0.25096 -0.571696,0.57721 v 0.70261 c 0,0.82813 -1.665379,0.82813 -1.665379,0 V 2.57721 C 11.179739,2.25104 10.931168,2 10.608043,2 H 8.8680958 C 8.5449659,2 8.2963995,2.25096 8.2963995,2.57721 v 0.70261 c 0,0.85319 -1.6405217,0.82813 -1.6405217,0 V 2.57721 C 6.6558778,2.25104 6.3824561,2 6.0593244,2 H 4.3442346 C 4.021101,2 3.7476811,2.25096 3.7476811,2.57721 v 3.36256 c 0,0.82813 0.6462648,1.4304 1.4416712,1.4304 V 22 h 5.2944087 v -2.30868 c 0,-2.03262 3.032479,-2.03262 3.032479,0 V 22 h 5.294408 V 7.37017 c 0.795403,0 1.441671,-0.62737 1.441671,-1.4304 V 2.57721 C 20.252319,2.25104 20.003747,2 19.680622,2 Z M 10.110914,16.17822 H 7.9484098 v -1.40534 c 0,-1.43039 2.1625042,-1.43039 2.1625042,0 z m 0,-5.34507 H 7.9484098 V 9.42789 c 0,-1.4304 2.1625042,-1.4304 2.1625042,0 z m 5.940676,5.34507 h -2.162504 v -1.40534 c 0,-1.43039 2.162504,-1.43039 2.162504,0 z m 0,-5.34507 H 13.889086 V 9.42789 c 0,-1.4304 2.162504,-1.4304 2.162504,0 z" />
 )
 
-export { queryAll, BookIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon };
+export { queryAll, queryAllAsArray, BookIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon };

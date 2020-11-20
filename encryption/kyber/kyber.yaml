@@ -1,7 +1,7 @@
 name: Kyber
-description: Based on Module LWE, using the Lindner-Peikert approach.
+description: 'Based on Module LWE, using the Lindner-Peikert approach.'
 year:
-    candidate: 2017
+  candidate: 2017
 category: lattice
 authors:
   - Roberto Avanzi
@@ -15,9 +15,12 @@ authors:
   - Gregor Seiler
   - Damien Stehlé
 problems:
-    - assumption: M-LWE
-      comment: tight ROM reduction, no-tight QROM reduction
+  - assumption: M-LWE
+    comment: 'tight ROM reduction, no-tight QROM reduction'
 stateful: false
-nist round: '3f'
+nist round: 3f
 sources:
-  - NIST Submission Paper, version 2.0 from 2019-04-01 ( https://pq-crystals.org/kyber/data/kyber-specification-round2.pdf )
+  - >-
+    NIST Submission Paper, version 3.0 from 2020-10-01 (
+    https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
+last_updated: '2020-11-05'
