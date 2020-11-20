@@ -22,7 +22,8 @@ stateful: false
 nist round: 3f
 sources:
   - >-
-    NIST Submission Paper, Round 3, Version 1.2 (
-    https://ia601501.us.archive.org/1/items/falcon_202011/falcon.pdf)
-  - 'https://falcon-sign.info/'
+    NIST Submission Paper, Round 3, Version 1.2
+    (https://web.archive.org/web/20201120101856/https://falcon-sign.info/falcon.pdf)
 last_updated: '2020-11-06'
+links:
+  - 'https://falcon-sign.info/'
