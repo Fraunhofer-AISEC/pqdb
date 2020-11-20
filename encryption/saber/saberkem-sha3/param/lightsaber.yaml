@@ -12,4 +12,5 @@ sizes:
   ct|sig: 736
 number of operations: inf
 sources:
-- https://groups.google.com/a/list.nist.gov/forum/#!topic/pqc-forum/YCCJ6xPgV9s
+  - >-
+    https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf#subsection.3.2
