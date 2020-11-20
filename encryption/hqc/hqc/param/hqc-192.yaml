@@ -4,10 +4,13 @@ security level:
   nist category: 3
   classical: 191
 failure probability: -192
-failure probability comment: < 2^ -192
+failure probability comment: ''
 sizes:
-  pk: 5690
+  pk: 4522
   sk: 40
-  ct|sig: 11364
-  comment: 'Sessionkey: 64'
+  ct|sig: 9026
+  comment: ''
+  msg: 64
 number of operations: todo
+sources:
+  - 'http://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf#subsubsection.2.7.1'
