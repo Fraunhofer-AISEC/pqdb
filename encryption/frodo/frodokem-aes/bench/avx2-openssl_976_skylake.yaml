@@ -1,6 +1,8 @@
-platform: Intel Core i7-6700 (Skylake) 3.4GHZ
+platform: >-
+  Intel Core i7-6700 (Skylake) 3.4GHZ,GCC version 7.2.0 using flags-O3
+  -march=native
 timings:
   unit: cycles
-  gen: 2885000
-  enc|sign: 3553000
-  dec|vrfy: 3407000
+  gen: 2896000
+  enc|sign: 3563000
+  dec|vrfy: 3399000
