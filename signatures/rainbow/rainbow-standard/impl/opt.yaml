@@ -1,8 +1,0 @@
-name: Optimized
-type: optimized
-platform: c
-side channel guarding:
-  timing: true
-  branching: true
-hardware features:
-  - avx2

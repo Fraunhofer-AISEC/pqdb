@@ -1,9 +1,9 @@
-name: 'Rainbow-Ia(36, 32, 32)'
+name: Rainbow-I
 comment: '(GF(16), 36, 32, 32)'
 security level:
   classical: 147
   quantum: 86
-  nist category: 1
+  nist category: 2
 failure probability: 0
 sizes:
   sk: 101200

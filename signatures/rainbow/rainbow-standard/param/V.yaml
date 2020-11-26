@@ -1,12 +1,12 @@
-name: 'Rainbow-Vc(96, 36, 64)'
+name: Rainbow-V
 comment: '(q, v1, o1, o2) = (GF(256), 96, 36, 64)'
 security level:
-  classical: 281
-  quantum: 243
+  classical: 285
+  quantum: 281
   nist category: 5
 failure probability: 0
 sizes:
   sk: 1375700
   pk: 1885400
-  ct|sig: 204
+  ct|sig: 212
 number of operations: inf
