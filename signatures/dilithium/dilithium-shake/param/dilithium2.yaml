@@ -7,5 +7,6 @@ number of operations: inf
 failure probability: 0
 security level:
   nist category: 2
-  classical: 123
-  quantum: 112
+  classical: 121
+  quantum: 110
+  comment: security level for SUF-CMA
