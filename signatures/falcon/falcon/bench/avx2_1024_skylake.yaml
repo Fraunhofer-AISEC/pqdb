@@ -1,12 +1,12 @@
-platform: Intel Core i7-6567 (Skylake) 3.3 GHZ
+platform: >-
+  Intel Core i5-8259U(" Coffee Lake") 2.3 GHZ ,Clang version 10.0 flags: -O3
+  -march=skylake
 timings:
   unit: cycles
-  gen:  79164000
-  enc|sign: 1068408
-  dec|vrfy: 285552
-  comment: Results marked with(tree,ct). Expanded keys are used.
+  gen: 63135000
+  enc|sign: 789564
+  dec|vrfy: 168498
+  comment: Expanded keys are used.
 memory requirements:
-  gen: 31751
-  enc|sign: 51207
-  dec|vrfy: 8193
+  gen: 28672
   comment: Expanded keys are used.
