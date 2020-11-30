@@ -1,4 +1,4 @@
-name: 'AVX2, using AES from OpenSSL'
+name: AVX2, vectorized SHAKE
 platform: c
 type: optimized
 hardware features:
