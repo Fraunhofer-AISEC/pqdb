@@ -6,7 +6,7 @@ security level:
   comment: security level for SUF-CMA
 failure probability: 0
 sizes:
-  sk: 4400
+  sk: 4880
   pk: 2592
   ct|sig: 4595
 number of operations: inf
