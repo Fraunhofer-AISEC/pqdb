@@ -1,0 +1,11 @@
+name: WhiteGeMSS256
+security level:
+  classical: 256
+  quantum: 149
+  nist category: 5
+failure probability: -13306513097844322000
+number of operations: inf
+sizes:
+  sk: 256
+  pk: 3222690
+  ct|sig: 513

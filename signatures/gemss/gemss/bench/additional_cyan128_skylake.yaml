@@ -3,6 +3,6 @@ platform: >-
   16.04.5 LTS, gcc -O4 -mavx2 -mpclmul -mpopcnt -funroll-loops
 timings:
   unit: cycles
-  gen: 915000000
-  enc|sign: 5300000000
-  dec|vrfy: 1120000
+  gen: 54400000
+  enc|sign: 119000000
+  dec|vrfy: 116000
