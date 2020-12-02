@@ -24,6 +24,7 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import {
+  NIST_ROUNDS,
   SCHEME_TYPES,
   SEC_NOTIONS,
 } from '../constants';
@@ -133,7 +134,7 @@ class FlavorDetail extends React.Component {
                       {scheme.category}
                       {' '}
                       <Comment title={scheme.category_comment} />
-                      {scheme.stateful
+                      {(scheme.stateful === true)
                       && (
                       <>
                         {' \u2022'}
@@ -143,14 +144,12 @@ class FlavorDetail extends React.Component {
                         <Comment title={scheme.stateful_comment} />
                       </>
                       )}
-                      {scheme.nist_round > 0
+                      {(scheme.nist_round !== 'none')
                       && (
                       <>
                         {' \u2022'}
                         {' '}
-                        round
-                        {' '}
-                        {scheme.nist_round}
+                        {NIST_ROUNDS[scheme.nist_round].short}
                         <Comment title={scheme.nist_round_comment} />
                       </>
                       )}
@@ -278,7 +277,7 @@ class FlavorDetail extends React.Component {
                         {' '}
                         {' \u2022 '}
                         {SCHEME_TYPES[scheme.type].ctsig}
-                        :
+                        {': '}
                         {p.sizes_ct_sig}
                       </div>
                       {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
