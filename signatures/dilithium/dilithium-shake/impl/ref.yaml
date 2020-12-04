@@ -1,6 +1,0 @@
-name: Reference
-side channel guarding:
-  timing: true
-  branching: true
-type: reference
-platform: c
