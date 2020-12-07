@@ -6,4 +6,7 @@ side channel guarding:
   timing: false
 hardware features:
   - avx2
-comment: link of the implementation paper https://sphincs.org/data/sphincs+-paper.pdf
+  - AES-NI
+comment: ''
+sources:
+  - 'https://sphincs.org/data/sphincs+-round3-specification.pdf#section.10'

@@ -1,6 +1,6 @@
-platform:  Intel Xeon E3-1275 V3 (Haswell) 3.5GHz
+platform: 'Intel Xeon E3-1220 (Haswell)  3.1 GHz, OS: Ubuntu 18.04, gcc -03'
 timings:
   unit: cycles
-  gen: 7851034
-  enc|sign:  245065142
-  dec|vrfy: 18993432
+  gen: 4272402
+  enc|sign: 106032762
+  dec|vrfy: 6677094
