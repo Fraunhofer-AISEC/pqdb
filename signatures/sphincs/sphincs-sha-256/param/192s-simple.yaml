@@ -1,7 +1,7 @@
 name: SPHINCS+-SHA-256-192s-simple
 security level:
-  classical: 196
-  quantum: 98
+  classical: 193
+  quantum: 97
   nist category: 3
 failure probability: 0
 number of operations: inf

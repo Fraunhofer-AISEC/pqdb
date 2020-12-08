@@ -7,6 +7,5 @@ side channel guarding:
 hardware features:
   - avx2
   - AES-NI
-comment: ''
 sources:
   - 'https://sphincs.org/data/sphincs+-round3-specification.pdf#section.10'

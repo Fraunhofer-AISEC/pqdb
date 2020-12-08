@@ -1,7 +1,7 @@
 name: SPHINCS+-Haraka-192s-robust
 security level:
-  classical: 196
-  quantum: 98
+  classical: 193
+  quantum: 97
   nist category: 2
 failure probability: 0
 number of operations: inf

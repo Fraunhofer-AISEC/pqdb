@@ -1,7 +1,7 @@
 name: SPHINCS+-SHAKE256-256f-robust
 security level:
-  classical: 254
-  quantum: 127
+  classical: 255
+  quantum: 128
   nist category: 5
 failure probability: 0
 number of operations: inf

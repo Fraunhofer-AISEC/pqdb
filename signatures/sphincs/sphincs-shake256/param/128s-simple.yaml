@@ -1,7 +1,7 @@
 name: SPHINCS+-SHAKE256-128s-simple
 security level:
   classical: 133
-  quantum: 64
+  quantum: 67
   nist category: 1
 failure probability: 0
 number of operations: inf
