@@ -1,9 +1,0 @@
-name: Reference
-type: reference
-platform: c
-dependencies:
-  - OpenSSL
-side channel guarding:
-  branching: true
-hardware features:
-  - aes-ni

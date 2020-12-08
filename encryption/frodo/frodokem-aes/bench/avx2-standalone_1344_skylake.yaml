@@ -2,12 +2,12 @@ platform: >-
   Intel Core i7-6700 (Skylake) 3.4GHZ, GCC version 7.2.0 using flags-O3
   -march=native
 timings:
+  gen: 4784000
+  enc|sign: 6061000
+  dec|vrfy: 5798000
   unit: cycles
-  gen: 15191000
-  enc|sign: 16357000
-  dec|vrfy: 16148000
 memory requirements:
-  gen: 144856
-  enc|sign: 169752
-  dec|vrfy: 211528
+  gen: 151496
+  enc|sign: 216696
+  dec|vrfy: 259258
   comment: Peak usage of stack memory
