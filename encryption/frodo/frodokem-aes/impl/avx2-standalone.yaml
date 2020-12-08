@@ -1,8 +1,6 @@
 name: Optimized plus AVX2
 type: optimized
 platform: c
-dependencies:
-  - OpenSSL
 side channel guarding:
   branching: true
 hardware features:
