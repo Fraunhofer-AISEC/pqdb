@@ -1,0 +1,12 @@
+name: Dilithium 3
+security level:
+  classical: 176
+  quantum: 159
+  nist category: 3
+  comment: security level for SUF-CMA
+failure probability: 0
+sizes:
+  ct|sig: 3293
+  pk: 1952
+  sk: 4016
+number of operations: inf

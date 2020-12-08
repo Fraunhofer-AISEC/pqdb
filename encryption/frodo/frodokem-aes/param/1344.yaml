@@ -1,12 +1,12 @@
 name: FrodoKEM-AES-1344
 security level:
-    classical: 274
-    quantum: 196
-    nist category: 5
+  classical: 268
+  quantum: 250
+  nist category: 5
 failure probability: -252.5
 number of operations: inf
 sizes:
-    sk: 43088
-    pk: 21520
-    ct|sig: 21632
-    msg: 32
+  sk: 43088
+  pk: 21520
+  ct|sig: 21632
+  msg: 32
