@@ -31,6 +31,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import diagramImage from '../tables.svg';
+import menuArrow from '../res/menu-arrow.svg';
 
 import { queryAll, queryAllAsArray, BookIcon as SourceIcon, BottomIcon, CastleIcon, CounterIcon, MeasureIcon, PodiumIcon, SealIcon as SignatureIcon } from '../utils';
 
@@ -468,6 +469,7 @@ class Welcome extends React.Component {
     render() {
         return (
             <Container maxWidth="md">
+                <img src={menuArrow} style={{position:'absolute', left:15, top:50, opacity:.54, transform:'scale(.8)', transformOrigin:'left top'}} />
                 <Paper>
                     <Box p={4}>
                         <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
