@@ -14,7 +14,9 @@ import {
   BrightnessHigh as LightIcon,
   Menu as MenuIcon,
 } from '@material-ui/icons';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {
+  Link, Redirect, Route, Switch,
+} from 'react-router-dom';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -162,7 +164,9 @@ class App extends React.Component {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <Box display="flex" justifyContent="center">
-                <img src={logo} width="500em" height="192.5em" alt="Logo" />
+                <Link to="/">
+                  <img src={logo} width="500em" height="192.5em" alt="Logo" />
+                </Link>
               </Box>
             </Grid>
             {content}
