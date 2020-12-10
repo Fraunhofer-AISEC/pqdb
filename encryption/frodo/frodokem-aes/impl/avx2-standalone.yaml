@@ -1,5 +1,8 @@
-name: Optimized, using plain C AES
+name: Optimized plus AVX2
 type: optimized
 platform: c
 side channel guarding:
   branching: true
+hardware features:
+  - aes-ni
+  - avx2

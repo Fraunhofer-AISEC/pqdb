@@ -1,0 +1,12 @@
+name: Dilithium 2
+sizes:
+  pk: 1312
+  ct|sig: 2420
+  sk: 2544
+number of operations: inf
+failure probability: 0
+security level:
+  nist category: 2
+  classical: 121
+  quantum: 110
+  comment: security level for SUF-CMA
