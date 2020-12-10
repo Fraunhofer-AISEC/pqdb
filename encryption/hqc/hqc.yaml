@@ -13,19 +13,21 @@ authors:
   - Olivier Blazy
   - Jurjen Bos
   - Jean-Christophe Deneuville
+  - Arnaud Dion
   - Philippe Gaborit
+  - Jérôme Lacan
   - Edoardo Persichetti
   - Jean-Marc Robert
   - Pascal Véron
   - Gilles Zémor
-  - Arnaud Dion
-  - Jérôme Lacan
-links: []
-sources:
-  - pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf
+links:
   - 'https://pqc-hqc.org/index.html'
+sources:
+  - >-
+    NIST Submission Paper (
+    https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf )
 problems:
   - assumption: Decisional 2-/ 3-QCSD Problem
     comment: quasi-cyclic codes
 description: Based on Syndrome Decoding.
-last_updated: '2020-11-20'
+last_updated: '2020-12-10'
