@@ -1,4 +1,0 @@
-name: aarch64
-sources:
-  - 'https://bench.cr.yp.to/results-kem.html'
-platform: C
