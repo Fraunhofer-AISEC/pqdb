@@ -1,4 +1,4 @@
-# ![PQDB Logo](misc/logo/pqdb-transparent.svg =322×)  
+# ![PQDB Logo](misc/logo/pqdb-transparent.svg)  
 A comprehensive list of post-quantum crypto schemes and their properties.
 
 [Query Frontend](https://cryptoeng.github.io/pqdb/)
