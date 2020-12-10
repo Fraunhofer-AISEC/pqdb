@@ -1,4 +1,0 @@
-name: HQC-RMRS
-type: KTM
-security notion: IND-CCA
-description: HQC with concatenated Reed-Muller and Reed-Solomon codes
