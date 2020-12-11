@@ -2,7 +2,7 @@ platform: >-
   Intel Core i7-6600U (Skylake) 2.6 GHz (Turboboost off), 32GB RAM, Ubuntu
   16.04.5 LTS, gcc -O2 -msse2 -msse3 -mssse3 -msse4.1 -mpclmul
 timings:
+  gen: 92400000
+  enc|sign: 37000000
+  dec|vrfy: 170000
   unit: cycles
-  gen: 600000000
-  enc|sign: 6310000000
-  dec|vrfy: 591000
