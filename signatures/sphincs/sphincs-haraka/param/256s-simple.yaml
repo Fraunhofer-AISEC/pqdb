@@ -1,8 +1,8 @@
 name: SPHINCS+-Haraka-256s-simple
 security level:
-  classical:  255
-  quantum:  128
-  nist category: 5
+  classical: 255
+  quantum: 128
+  nist category: 2
 failure probability: 0
 number of operations: inf
 sizes:
