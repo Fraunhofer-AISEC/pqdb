@@ -1,15 +1,14 @@
 name: HQC-128
 security level:
-  quantum: 127
+  quantum: 64
   nist category: 1
   classical: 128
 failure probability: -128
-failure probability comment: < 2^(−128)
 sizes:
   sk: 40
-  pk: 3024
-  ct|sig: 6017
-  comment: 'Sessionkey: 64'
+  pk: 2249
+  ct|sig: 4481
+  msg: 64
 number of operations: Todo
 sources:
-  - 'https://pqc-hqc.org/doc/hqc-specification_2020-05-29.pdf'
+  - 'https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf#subsubsection.2.7.1'

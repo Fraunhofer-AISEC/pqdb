@@ -1,7 +1,7 @@
 stateful: false
 name: HQC
 category: code
-nist round: '3a'
+nist round: 3a
 year:
   paper: 2017
   candidate: 2017
@@ -13,17 +13,21 @@ authors:
   - Olivier Blazy
   - Jurjen Bos
   - Jean-Christophe Deneuville
+  - Arnaud Dion
   - Philippe Gaborit
+  - Jérôme Lacan
   - Edoardo Persichetti
   - Jean-Marc Robert
   - Pascal Véron
   - Gilles Zémor
-links: []
-sources:
-  - 'http://pqc-hqc.org/doc/hqc-nist-conference_2019-08-24.pdf'
+links:
   - 'https://pqc-hqc.org/index.html'
-  - 'https://pqc-hqc.org/doc/hqc-specification_2020-05-29.pdf'
+sources:
+  - >-
+    NIST Submission Paper (
+    https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf )
 problems:
   - assumption: Decisional 2-/ 3-QCSD Problem
     comment: quasi-cyclic codes
 description: Based on Syndrome Decoding.
+last_updated: '2020-12-10'

@@ -1,0 +1,37 @@
+name: Frontend Build and Codestyle Check
+
+on:
+  push:
+    paths:
+      - frontend/**
+    branches-ignore:
+      - master
+  pull_request:
+    paths:
+      - frontend/**
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+    env:
+      frontend-dir: frontend
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install Validation Dependencies
+      working-directory: tools/validation
+      run: npm install
+    - name: Create PQDB SQLite-File
+      run: node tools/validation/validate.js frontend/public/pqdb.sqlite frontend/src/tables.svg
+    - name: Install dependencies
+      run: yarn install
+      working-directory: ${{ env.frontend-dir }}
+    - name: Build
+      run: yarn build
+      working-directory: ${{ env.frontend-dir }}
+    - name: Check codestyle
+      run: yarn run eslint --ext .js,.jsx ./src
+      working-directory: ${{ env.frontend-dir }}
