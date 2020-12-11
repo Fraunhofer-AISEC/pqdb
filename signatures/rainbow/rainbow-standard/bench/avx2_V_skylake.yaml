@@ -1,0 +1,10 @@
+platform: 'Intel Xeon E3-1275 v5 3.60GHz Skylake, Linux 4.8.15, GCC compiler version 9.3'
+timings:
+  gen: 192000000
+  enc|sign: 739000
+  dec|vrfy: 392000
+  unit: cycles
+memory requirements:
+  gen: 21110000
+  enc|sign: 17050000
+  dec|vrfy: 17550000
