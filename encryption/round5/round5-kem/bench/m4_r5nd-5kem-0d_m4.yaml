@@ -1,0 +1,8 @@
+platform: Cortex M4
+timings:
+  gen: 1429000
+  enc|sign: 1951000
+  dec|vrfy: 693000
+  unit: cycles
+sources:
+  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.22'

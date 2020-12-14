@@ -1,0 +1,6 @@
+timings:
+  gen: 126220
+  enc|sign: 153832
+  dec|vrfy: 155700
+  unit: cycles
+platform: 'Intel Xeon E3-1220  v3 Haswell, 3100  MHz'

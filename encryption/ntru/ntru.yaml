@@ -1,7 +1,9 @@
 name: NTRU
-description: Based rather closely on the original NTRU from 1998, but with perfect correctness
+description: >-
+  Based rather closely on the original NTRU from 1998, but with perfect
+  correctness.
 category: lattice
-nist round: '3f'
+nist round: 3f
 authors:
   - Cong Chen
   - Oussama Danba
@@ -19,7 +21,9 @@ problems:
   - assumption: SVP
 stateful: false
 links:
-  - https://ntru.org/
+  - 'https://ntru.org/'
 sources:
-  - 'NIST Submission, Round 2 ( https://ntru.org/f/ntru-20190330.pdf )'
+  - >-
+    NIST Submission, Round 3
+    (https://ntru.org/release/NIST-PQ-Submission-NTRU-20201016.tar.gz)
 last_updated: '2020-05-11'

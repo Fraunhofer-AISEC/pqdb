@@ -4,24 +4,34 @@
   "private": true,
   "homepage": "https://cryptoeng.github.io/pqdb",
   "dependencies": {
-    "@material-ui/core": "4.10.2",
-    "@material-ui/icons": "^4.9.1",
-    "csv-stringify": "^5.5.0",
-    "query-string": "6.13.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-image-magnifiers": "^1.3.2",
+    "@material-ui/core": "4.11.2",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "copy-webpack-plugin": "6.4.0",
+    "csv-stringify": "^5.5.3",
+    "md5": "^2.3.0",
+    "prop-types": "^15.7.2",
+    "query-string": "^6.13.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-image-magnifiers": "^1.4.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "sql.js": "^1.2.2"
+    "react-scripts": "4.0.1",
+    "sql.js": "^1.4.0"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "6.0.2",
-    "react-app-rewired": "^2.1.5"
+    "eslint": "7.15.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4",
+    "react-app-rewired": "2.1.8",
+    "typescript": "4.1.3"
   },
   "scripts": {
     "start": "HOST=localhost react-app-rewired start",
-    "build": "react-app-rewired build && cp build/index.html build/404.html",
+    "build": "react-app-rewired build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

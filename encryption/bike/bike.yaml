@@ -34,4 +34,4 @@ sources:
     NIST submission paper, round 3 consideration
     https://bikesuite.org/files/v4.0/BIKE_Spec.2020.05.03.1.pdf
 description: >-
-  based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, decoding uses bit flipping
+  Based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, decoding uses bit flipping.

@@ -1,7 +1,7 @@
 name: FireSABER
 security level:
-  classical: 283
-  quantum: 257
+  classical: 260
+  quantum: 236
   nist category: 5
 failure probability: -165
 sizes:
@@ -11,3 +11,6 @@ sizes:
   ct|sig: 1472
   comment: 'Compressed sk size: 1760'
 number of operations: inf
+sources:
+  - >-
+    https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf#section.3.2

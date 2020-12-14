@@ -2,7 +2,7 @@
 links:
 - https://github.com/mupq/pqm4/#benchmarks
 sources:
-- https://github.com/mupq/pqm4/blob/28eb2d8/benchmarks.csv
+- https://github.com/mupq/pqm4/blob/cb2caa2/benchmarks.csv
 platform: M4, at 24MHz, using arm-none-eabi-gcc 10.1.0
 timings:
   gen: 11392072

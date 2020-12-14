@@ -24,124 +24,76 @@ _schemename_replace = re.compile('^([-A-Za-z0-9]+) \(([\d]+) executions\)$')
 # to create a list, run this from `/encryption` or `/signatures`:
 # printf '%s\n' */*/param/*.yaml | sed 's|param/||; s|\.yaml$||; y|/| |' | column -t
 _scheme_to_paramset = '''
-    babybear            three-bears ccakem-cshake256  baby-bear
-    babybear-ephem      three-bears cpakem-cshake256  baby-bear
-    firesaber
-    frodokem640aes      frodo       frodokem-aes    640
-    frodokem640shake    frodo       frodokem-shake  640
-    kyber1024           kyber       ccakem          1024
-    kyber1024-90s       kyber       ccakem-90s      1024
-    kyber512            kyber       ccakem          512
-    kyber512-90s        kyber       ccakem-90s      512
-    kyber768            kyber       ccakem          768
-    kyber768-90s        kyber       ccakem-90s      768
-    lac-128-v3a
-    lac-128-v3b
-    lac-192-v3a
-    lac-192-v3b
-    lac-256-v3a
-    lac-256-v3b
-    lac-light-v3a
-    lac-light-v3b
-    lightsaber
-    mamabear            three-bears ccakem-cshake256  mama-bear
-    mamabear-ephem      three-bears cpakem-cshake256  mama-bear
-    newhope1024cca      newhope     ccakem          1024
-    newhope1024cpa
-    newhope512cca       newhope     ccakem          512
-    newhope512cpa
-    ntruhps2048509      ntru        ntru-kem        ntruhps2048509
-    ntruhps2048677      ntru        ntru-kem        ntruhps2048677
-    ntruhps4096821      ntru        ntru-kem        ntruhps4096821
-    ntruhrss701         ntru        ntru-kem        ntruhrss701
-    ntrulpr653          ntru-prime  lprime          ntrulpr653
-    ntrulpr761          ntru-prime  lprime          ntrulpr761
-    ntrulpr857          ntru-prime  lprime          ntrulpr857
-    papabear            three-bears ccakem-cshake256  papa-bear
-    papabear-ephem      three-bears cpakem-cshake256  papa-bear
-    r5n1-1cca-0d
-    r5n1-1cpa-0d
-    r5n1-3cca-0d
-    r5n1-3cpa-0d
-    r5n1-5cca-0d
-    r5n1-5cpa-0d
-    r5nd-1cca-0d
-    r5nd-1cca-5d
-    r5nd-1cpa-0d
-    r5nd-1cpa-5d
-    r5nd-3cca-0d
-    r5nd-3cca-5d
-    r5nd-3cpa-0d
-    r5nd-3cpa-5d
-    r5nd-5cca-0d
-    r5nd-5cca-5d
-    r5nd-5cpa-0d
-    r5nd-5cpa-5d
-    rollo-I-128
-    rollo-I-192
-    rollo-I-256
-    rollo-II-128
-    rollo-II-192
-    rollo-II-256
-    rqc128
-    rqc192
-    saber
-    sikep434            sike        sike-shake256   p434
-    sikep503            sike        sike-shake256   p503
-    sikep610            sike        sike-shake256   p610
-    sikep751            sike        sike-shake256   p751
-    sntrup653           ntru-prime  streamlined     sntrup653
-    sntrup761           ntru-prime  streamlined     sntrup761
-    sntrup857           ntru-prime  streamlined     sntrup857
+    firesaber           saber             saberkem-sha3         firesaber
+    frodokem640aes      frodo             frodokem-aes          640
+    frodokem640shake    frodo             frodokem-shake        640
+    kyber1024           kyber             ccakem                1024
+    kyber1024-90s       kyber             ccakem-90s            1024
+    kyber512            kyber             ccakem                512
+    kyber512-90s        kyber             ccakem-90s            512
+    kyber768            kyber             ccakem                768
+    kyber768-90s        kyber             ccakem-90s            768
+    lightsaber          saber             saberkem-sha3         lightsaber
+    ntruhps2048509      ntru              ntru-kem              ntruhps2048509
+    ntruhps2048677      ntru              ntru-kem              ntruhps2048677
+    ntruhps4096821      ntru              ntru-kem              ntruhps4096821
+    ntruhrss701         ntru              ntru-kem              ntruhrss701
+    ntrulpr761          ntru-prime        lprime                ntrulpr761
+    saber               saber             saberkem-sha3         saber
+    sikep434            sike              sike-shake256         p434
+    sikep503            sike              sike-shake256         p503
+    sikep610            sike              sike-shake256         p610
+    sikep751            sike              sike-shake256         p751
+    sntrup761           ntru-prime        streamlined           sntrup761
 
-    dilithium2                  dilithium  dilithium-shake  medium
-    dilithium3                  dilithium  dilithium-shake  recommended
-    dilithium4                  dilithium  dilithium-shake  very-high
-    falcon-1024                 FALCON     FALCON           1024
-    falcon-512                  FALCON     FALCON           512
+    dilithium2                   dilithium  dilithium-shake  medium
+    dilithium3                   dilithium  dilithium-shake  recommended
+    dilithium4                   dilithium  dilithium-shake  very-high
+    falcon-1024                  falcon     falcon           1024
+    falcon-512                   falcon     falcon           512
     falcon-512-tree
-    luov-47-42-182-chacha
-    luov-47-42-182-keccak
-    luov-61-60-261-chacha
-    luov-61-60-261-keccak
-    luov-7-57-197-chacha
-    luov-7-57-197-keccak
-    sphincs-haraka-128f-robust
-    sphincs-haraka-128f-simple
-    sphincs-haraka-128s-robust
-    sphincs-haraka-128s-simple
-    sphincs-haraka-192f-robust
-    sphincs-haraka-192f-simple
-    sphincs-haraka-192s-robust
-    sphincs-haraka-192s-simple
-    sphincs-haraka-256f-robust
-    sphincs-haraka-256f-simple
-    sphincs-haraka-256s-robust
-    sphincs-haraka-256s-simple
-    sphincs-sha256-128f-robust
-    sphincs-sha256-128f-simple
-    sphincs-sha256-128s-robust
-    sphincs-sha256-128s-simple
-    sphincs-sha256-192f-robust
-    sphincs-sha256-192f-simple
-    sphincs-sha256-192s-robust
-    sphincs-sha256-192s-simple
-    sphincs-sha256-256f-robust
-    sphincs-sha256-256f-simple
-    sphincs-sha256-256s-robust
-    sphincs-sha256-256s-simple
-    sphincs-shake256-128f-robust
-    sphincs-shake256-128f-simple
-    sphincs-shake256-128s-robust
-    sphincs-shake256-128s-simple
-    sphincs-shake256-192f-robust
-    sphincs-shake256-192f-simple
-    sphincs-shake256-192s-robust
-    sphincs-shake256-192s-simple
-    sphincs-shake256-256f-robust
-    sphincs-shake256-256f-simple
-    sphincs-shake256-256s-robust
-    sphincs-shake256-256s-simple
+    luov-47-42-182-chacha        luov       luov-chacha8      luov-47-42-182
+    luov-47-42-182-keccak        luov       luov-keccak       luov-47-42-182
+    luov-61-60-261-chacha        luov       luov-chacha8      luov-61-60-261
+    luov-61-60-261-keccak        luov       luov-keccak       luov-61-60-261
+    luov-7-57-197-chacha         luov       luov-chacha8      luov-7-57-197
+    luov-7-57-197-keccak         luov       luov-keccak       luov-7-57-197
+    sphincs-haraka-128f-robust   sphincs+   sphincs-haraka    128f-robust
+    sphincs-haraka-128f-simple   sphincs+   sphincs-haraka    128f-simple
+    sphincs-haraka-128s-robust   sphincs+   sphincs-haraka    128s-robust
+    sphincs-haraka-128s-simple   sphincs+   sphincs-haraka    128s-simple
+    sphincs-haraka-192f-robust   sphincs+   sphincs-haraka    192f-robust
+    sphincs-haraka-192f-simple   sphincs+   sphincs-haraka    192f-simple
+    sphincs-haraka-192s-robust   sphincs+   sphincs-haraka    192s-robust
+    sphincs-haraka-192s-simple   sphincs+   sphincs-haraka    192s-simple
+    sphincs-haraka-256f-robust   sphincs+   sphincs-haraka    256f-robust
+    sphincs-haraka-256f-simple   sphincs+   sphincs-haraka    256f-simple
+    sphincs-haraka-256s-robust   sphincs+   sphincs-haraka    256s-robust
+    sphincs-haraka-256s-simple   sphincs+   sphincs-haraka    256s-simple
+    sphincs-sha256-128f-robust   sphincs+   sphincs-sha-256   128f-robust
+    sphincs-sha256-128f-simple   sphincs+   sphincs-sha-256   128f-simple
+    sphincs-sha256-128s-robust   sphincs+   sphincs-sha-256   128s-robust
+    sphincs-sha256-128s-simple   sphincs+   sphincs-sha-256   128s-simple
+    sphincs-sha256-192f-robust   sphincs+   sphincs-sha-256   192f-robust
+    sphincs-sha256-192f-simple   sphincs+   sphincs-sha-256   192f-simple
+    sphincs-sha256-192s-robust   sphincs+   sphincs-sha-256   192s-robust
+    sphincs-sha256-192s-simple   sphincs+   sphincs-sha-256   192s-simple
+    sphincs-sha256-256f-robust   sphincs+   sphincs-sha-256   256f-robust
+    sphincs-sha256-256f-simple   sphincs+   sphincs-sha-256   256f-simple
+    sphincs-sha256-256s-robust   sphincs+   sphincs-sha-256   256s-robust
+    sphincs-sha256-256s-simple   sphincs+   sphincs-sha-256   256s-simple
+    sphincs-shake256-128f-robust sphincs+   sphincs-shake256  128f-robust
+    sphincs-shake256-128f-simple sphincs+   sphincs-shake256  128f-simple
+    sphincs-shake256-128s-robust sphincs+   sphincs-shake256  128s-robust
+    sphincs-shake256-128s-simple sphincs+   sphincs-shake256  128s-simple
+    sphincs-shake256-192f-robust sphincs+   sphincs-shake256  192f-robust
+    sphincs-shake256-192f-simple sphincs+   sphincs-shake256  192f-simple
+    sphincs-shake256-192s-robust sphincs+   sphincs-shake256  192s-robust
+    sphincs-shake256-192s-simple sphincs+   sphincs-shake256  192s-simple
+    sphincs-shake256-256f-robust sphincs+   sphincs-shake256  256f-robust
+    sphincs-shake256-256f-simple sphincs+   sphincs-shake256  256f-simple
+    sphincs-shake256-256s-robust sphincs+   sphincs-shake256  256s-robust
+    sphincs-shake256-256s-simple sphincs+   sphincs-shake256  256s-simple
 '''
 scheme_to_paramset = dict(
         (l.strip().split(' ')[0], re.split(' +', l.strip())[1:] or None)

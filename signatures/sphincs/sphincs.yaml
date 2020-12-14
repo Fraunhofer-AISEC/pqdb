@@ -1,6 +1,6 @@
 name: SPHINCS+
 description: >-
-  stateless hash-based using Merkle's tree approach with a new few-time
+  Stateless hash-based using Merkle's tree approach with a new few-time
   signature scheme (FORS).
 year:
   candidate: 2017
@@ -26,8 +26,9 @@ authors:
 problems:
   - assumption: resistance of second preimage cryptographic hash function
 stateful: false
-nist round: '3a'
+nist round: 3a
 sources:
   - >-
     NIST Submission Paper (
-    https://sphincs.org/data/sphincs+-round2-specification.pdf )
+    https://sphincs.org/data/sphincs+-round3-specification.pdf )
+last_updated: '2020-12-03'
