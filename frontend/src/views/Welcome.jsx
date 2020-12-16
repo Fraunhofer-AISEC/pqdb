@@ -25,7 +25,19 @@ function Welcome({ db }) {
 
   return (
     <Container maxWidth="md">
-      <img src={menuArrow} style={{position:'absolute', left:15, top:50, opacity:.54, transform:'scale(.8)', transformOrigin:'left top'}} />
+      <img
+        style={{
+          position: 'absolute',
+          left: 15,
+          top: 50,
+          opacity: 0.54,
+          transform: 'scale(.8)',
+          transformOrigin: 'left top',
+        }}
+        src={menuArrow}
+        alt=""
+      />
+
       <Paper>
         <Box p={4}>
           <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
