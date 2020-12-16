@@ -1,6 +1,11 @@
 platform: Intel Core i7-6700 (Skylake) 3.4GHZ
 timings:
   unit: cycles
-  gen: 2820000
-  enc|sign: 3559000
-  dec|vrfy: 3400000
+  gen: 2836000
+  enc|sign: 3560000
+  dec|vrfy: 33980000
+memory requirements:
+  gen: 111424
+  enc|sign: 158944
+  dec|vrfy: 189080
+  comment: Peak usage of stack memory

@@ -1,5 +1,0 @@
-name: AVX2
-type: optimized
-platform: C
-hardware features:
-  - avx2

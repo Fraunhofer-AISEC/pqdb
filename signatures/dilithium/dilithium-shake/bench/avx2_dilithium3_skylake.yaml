@@ -1,0 +1,7 @@
+timings:
+  gen: 256403
+  enc|sign: 428587
+  dec|vrfy: 179424
+  unit: cycles
+  comment: 'median, sign in average: 519106'
+platform: 'Intel Core i7-6600U CPU Skylake 2600 Mhz, gcc 7.3.0'
