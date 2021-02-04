@@ -2,8 +2,8 @@ name: SIKE
 description: Based on pseudo-random walks in supersingular isogeny graphs.
 category: isogeny
 year:
-  paper: 2011
-  candidate: 2017
+    paper: 2011
+    candidate: 2017
 authors:
   - David Jao
   - Reza Azarderakhsh
@@ -21,12 +21,8 @@ authors:
   - Vladimir Soukharev
   - David Urbanik
 stateful: false
-nist round: 3a
+nist round: '3a'
 problems:
-  - assumption: hardness of isogeny computation on supersingular elliptic curves
+    - assumption: hardness of isogeny computation on supersingular elliptic curves
 sources:
-  - >-
-    NIST submission paper, round 2 version from 2020-04-16 (
-    https://web.archive.org/web/20200422113006/https://sike.org/files/SIDH-spec.pdf
-    )
-last_updated: '2020-11-26'
+  - 'NIST submission paper, round 2 version from 2020-04-16 ( https://web.archive.org/web/20200422113006/https://sike.org/files/SIDH-spec.pdf )'
