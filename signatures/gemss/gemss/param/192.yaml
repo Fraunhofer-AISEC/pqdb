@@ -3,9 +3,10 @@ security level:
   classical: 192
   quantum: 112
   nist category: 3
-failure probability: -6345039891167
+failure probability: 0
 number of operations: inf
 sizes:
   sk: 24
   pk: 1237964
   ct|sig: 52
+failure probability comment: TODO
