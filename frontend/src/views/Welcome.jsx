@@ -10,6 +10,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import SchemeList from '../components/SchemeList';
+import menuArrow from '../res/menu-arrow.svg';
 
 const propTypes = {
   db: PropTypes.shape({
@@ -24,6 +25,19 @@ function Welcome({ db }) {
 
   return (
     <Container maxWidth="md">
+      <img
+        style={{
+          position: 'absolute',
+          left: 15,
+          top: 50,
+          opacity: 0.54,
+          transform: 'scale(.8)',
+          transformOrigin: 'left top',
+        }}
+        src={menuArrow}
+        alt=""
+      />
+
       <Paper>
         <Box p={4}>
           <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
