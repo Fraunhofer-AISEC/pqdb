@@ -24,6 +24,7 @@ _schemename_replace = re.compile('^([-A-Za-z0-9]+) \(([\d]+) executions\)$')
 # to create a list, run this from `/encryption` or `/signatures`:
 # printf '%s\n' */*/param/*.yaml | sed 's|param/||; s|\.yaml$||; y|/| |' | column -t
 _scheme_to_paramset = '''
+    bikel1              bike              bike                  level-1
     firesaber           saber             saberkem-sha3         firesaber
     frodokem640aes      frodo             frodokem-aes          640
     frodokem640shake    frodo             frodokem-shake        640
