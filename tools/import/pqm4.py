@@ -161,12 +161,13 @@ def import_benchmarks(csvdata, type, source):
     skipcounter = Counter()
 
     for name, impl in sorted(speed.keys() | mem.keys()):
+        namecolon = '{:20}'.format(name + ':')
 
         if not impl.startswith('m4'):
             skipcounter.update((impl,))
             continue
         if scheme_to_paramset.get(name) is None:
-            print('{}: Skipping: no mapping defined'.format(name))
+            print('{} Skipping: no mapping defined'.format(namecolon))
             continue
 
         s, f, p = scheme_to_paramset[name]
@@ -177,29 +178,29 @@ def import_benchmarks(csvdata, type, source):
         if os.path.exists(bpath):
             with open(bpath) as f:
                 if f.readline().strip() != _firstlinemarker:
-                    print('{}: Warning: File already exists (and not created '
-                          'by us), skipping: {}'.format(name, bpath))
+                    print('{} Warning: File already exists (and not created '
+                          'by us), skipping: {}'.format(namecolon, bpath))
                     continue
                 else:
                     overwrite = True
         if os.path.exists(ipath):
             with open(ipath) as f:
                 if f.readline().strip() != _firstlinemarker:
-                    print('{}: Warning: File already exists (and not created '
-                          'by us), skipping: {}'.format(name, ipath))
+                    print('{} Warning: File already exists (and not created '
+                          'by us), skipping: {}'.format(namecolon, ipath))
                     continue
                 else:
                     overwrite = True
 
         timings = getcolumns(speed, type, 'speed', name, impl)
         if not timings:
-            print('{}: info: No timing information available'.format(name))
+            print('{} info: No timing information available'.format(namecolon))
         else:
             timings['unit'] = 'cycles'
 
         memoryreq = getcolumns(mem, type, 'mem', name, impl)
-        if not timings:
-            print('{}: info: No memory information available'.format(name))
+        if not memoryreq:
+            print('{} info: No memory information available'.format(namecolon))
 
         data = {
             'links': ['https://github.com/mupq/pqm4/#benchmarks'],
@@ -214,7 +215,7 @@ def import_benchmarks(csvdata, type, source):
         with open(bpath, 'w') as f:
             f.write(_firstlinemarker + '\n')
             yaml_dump(data, f, sort_keys=False)
-            print('{}: bench data written to {}'.format(name, bpath))
+            print('{} bench data written to {}'.format(namecolon, bpath))
 
         idata = {
             'name': '{} for {} from pqm4'.format(impl, name),
@@ -229,7 +230,7 @@ def import_benchmarks(csvdata, type, source):
         with open(ipath, 'w') as f:
             f.write(_firstlinemarker + '\n')
             yaml_dump(idata, f, sort_keys=False)
-            print('{}: impl data written to {}'.format(name, ipath))
+            print('{} impl  data written to {}'.format(namecolon, ipath))
 
     print('Additionally, these implementations were skipped:', dict(skipcounter))
 
