@@ -47,8 +47,8 @@ _scheme_to_paramset = '''
     sikep751            sike              sike-shake256         p751
     sntrup761           ntru-prime        streamlined           sntrup761
 
-    dilithium2                   dilithium  dilithium-shake  medium
-    dilithium3                   dilithium  dilithium-shake  recommended
+    dilithium2                   dilithium  dilithium-shake  dilithium2
+    dilithium3                   dilithium  dilithium-shake  dilithium3
     dilithium4                   dilithium  dilithium-shake  very-high
     falcon-1024                  falcon     falcon           1024
     falcon-512                   falcon     falcon           512
