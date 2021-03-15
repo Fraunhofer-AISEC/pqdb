@@ -3,6 +3,6 @@ platform: >-
   Linux 7 (Core), gcc -O4 -mavx2 -mpclmul -mpopcnt -funroll-loops
 timings:
   gen: 844000000
-  enc|sign: 44000000000
+  enc|sign: 4400000000
   dec|vrfy: 819000
   unit: cycles

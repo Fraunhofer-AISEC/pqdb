@@ -4,5 +4,5 @@ platform: >-
 timings:
   gen: 281000000
   enc|sign: 370000000
-  dec|vrfy: 364000000
+  dec|vrfy: 364000
   unit: cycles

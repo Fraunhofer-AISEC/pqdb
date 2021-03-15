@@ -6,7 +6,7 @@ security level:
 failure probability: 0
 number of operations: inf
 sizes:
-  sk: 256
+  sk: 32
   pk: 3272020
-  ct|sig: 522
+  ct|sig: 66
 failure probability comment: TODO
