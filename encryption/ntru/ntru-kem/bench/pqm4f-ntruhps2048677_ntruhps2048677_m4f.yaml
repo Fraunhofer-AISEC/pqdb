@@ -5,11 +5,11 @@ sources:
 - https://github.com/mupq/pqm4/blob/27c7089/benchmarks.csv
 platform: M4, at 24MHz, using arm-none-eabi-gcc 10.1.0
 timings:
-  gen: 119480622
-  enc|sign: 219632058
-  dec|vrfy: 221029700
+  gen: 143734184
+  enc|sign: 821524
+  dec|vrfy: 815516
   unit: cycles
 memory requirements:
-  gen: 10504
-  enc|sign: 10904
-  dec|vrfy: 11368
+  gen: 28504
+  enc|sign: 9036
+  dec|vrfy: 19728
