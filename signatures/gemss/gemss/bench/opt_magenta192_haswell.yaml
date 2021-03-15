@@ -1,0 +1,8 @@
+platform: >-
+  Intel Xeon E3-1275 v3 (Haswell) 3.5 GHz (Turboboost off), 32GB RAM, CentOS
+  Linux 7 (Core), gcc -O4 -mavx2 -mpclmul -mpopcnt -funroll-loops
+timings:
+  gen: 231000000
+  enc|sign: 9930000
+  dec|vrfy: 368000
+  unit: cycles

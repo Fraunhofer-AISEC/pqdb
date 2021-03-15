@@ -1,0 +1,12 @@
+name: CyanGeMSS192
+security level:
+  classical: 192
+  quantum: 112
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 24
+  pk: 1320800
+  ct|sig: 48
+failure probability comment: TODO

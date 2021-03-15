@@ -1,0 +1,12 @@
+name: WhiteGeMSS192
+security level:
+  classical: 192
+  quantum: 112
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 24
+  pk: 1293850
+  ct|sig: 47
+failure probability comment: TODO

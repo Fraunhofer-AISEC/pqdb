@@ -1,0 +1,12 @@
+name: MagentaGeMSS256
+security level:
+  classical: 256
+  quantum: 149
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 32
+  pk: 3321720
+  ct|sig: 67
+failure probability comment: TODO
