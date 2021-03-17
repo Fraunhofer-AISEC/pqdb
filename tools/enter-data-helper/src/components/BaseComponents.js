@@ -14,7 +14,7 @@ import { showAlert, getUserConfirmation } from './Tools';
 import { Prompt } from 'react-router'
 const yaml = require('js-yaml');
 const fs = window.require('fs');
-const remote = window.require('electron').remote;
+const remote = window.require('@electron/remote');
 
 class TooltipWrapper extends React.Component {
     constructor(props) {

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 const fs = window.require('fs');
 const path = require('path');
 
-var argv = window.require('electron').remote.process.argv;
+var argv = window.require('@electron/remote').process.argv;
 
 var ROOT_DIR = path.join('..', '..');
 if (argv.length === 2 || argv.length === 3) {
