@@ -92,6 +92,10 @@ function buildQuery(state) {
   round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
   round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
   round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
+  ${(state.showColumns.includes('memory_req')) ? `,
+  b.memory_requirements_gen AS 'KeyGen Memory Req.',
+  b.memory_requirements_enc_sign AS '${SCHEME_TYPES[state.schemeType].enc_sign} Memory Req.',
+  b.memory_requirements_dec_vrfy AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} Memory Req.' ` : ''}
 ` : ''}
 FROM
   scheme s
@@ -136,6 +140,7 @@ function createHeaderSections(state) {
     if (state.showColumns.includes('hw_features')) { headerSpans[headerSpans.length - 1] += 1; }
     headers.push('Benchmark');
     headerSpans.push(5);
+    if (state.showColumns.includes('memory_req')) { headerSpans[headerSpans.length - 1] += 3; }
   }
   return { headers, headerSpans };
 }
@@ -154,6 +159,7 @@ function getFormatFunctions(results) {
   results.columns.forEach((col, idx) => {
     if (col.endsWith('(kCycles)')) formatFunctions[idx] = (val) => val?.toLocaleString();
     if (col.endsWith('Size')) formatFunctions[idx] = (val) => humanReadableSize(val, 'B');
+    if (col.endsWith('Memory Req.')) formatFunctions[idx] = (val) => humanReadableSize(val, 'B');
   });
   return formatFunctions;
 }
@@ -177,7 +183,7 @@ class SchemeComparison extends React.Component {
     };
 
     this.defaultState = {
-      // not shown: 'storage', 'security_levels', 'nist_round'
+      // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req'
       showColumns: ['benchmarks', 'hw_features', 'nist_category'],
       schemeType: 'sig',
       platformFilter: '',
@@ -376,6 +382,14 @@ class SchemeComparison extends React.Component {
                           >
                             <Tooltip title="Hardware features required by the implementation">
                               <div>Hardware Features</div>
+                            </Tooltip>
+                          </ToggleButton>
+                          <ToggleButton
+                            disabled={queryProcessing || !showColumns.includes('benchmarks')}
+                            value="memory_req"
+                          >
+                            <Tooltip title="Memory used by the functions at runtime">
+                              <div>Memory Requirements</div>
                             </Tooltip>
                           </ToggleButton>
                           <ToggleButton disabled={queryProcessing} value="security_levels">
