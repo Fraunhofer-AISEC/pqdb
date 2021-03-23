@@ -158,9 +158,10 @@ def import_benchmarks(csvdata, type, source):
     data = preparse(csvdata)
     speed = data['Speed Evaluation'][type]
     mem = data['Memory Evaluation'][type]
+    size = data['Size Evaluation'][type]
     skipcounter = Counter()
 
-    for name, impl in sorted(speed.keys() | mem.keys()):
+    for name, impl in sorted(speed.keys() | mem.keys() | size.keys()):
         namecolon = '{:20}'.format(name + ':')
 
         if not impl.startswith('m4'):
@@ -216,6 +217,10 @@ def import_benchmarks(csvdata, type, source):
             f.write(_firstlinemarker + '\n')
             yaml_dump(data, f, sort_keys=False)
             print('{} bench data written to {}'.format(namecolon, bpath))
+        
+        sizereq = getcolumns(size, type, 'size', name, impl)
+        if not sizereq:
+            print('{} info: No code size information available'.format(namecolon))
 
         idata = {
             'name': '{} for {} from pqm4'.format(impl, name),
@@ -226,6 +231,9 @@ def import_benchmarks(csvdata, type, source):
         }
         if impl == 'm4f':
             idata.setdefault('hardware features', []).append('FPU')
+        if sizereq:
+            sizereq['comment'] = 'The code-size measurements only include the code that is provided by the scheme implementation, i.e., exclude common code like hashing or C standard library functions.'
+            idata['code size'] = sizereq
 
         with open(ipath, 'w') as f:
             f.write(_firstlinemarker + '\n')
@@ -256,6 +264,8 @@ def getcolumns(data, type, cat, name, impl):
             ('Key Generation [bytes]', 'gen'),
             ('Sign [bytes]', 'enc|sign'),
             ('Verify [bytes]', 'dec|vrfy')],
+        (ENC, 'size'): [('Total [bytes]', 'overall')],
+        (SIG, 'size'): [('Total [bytes]', 'overall')],
     }
 
     return dict((yamlkey, int(data[name, impl][datakey]))

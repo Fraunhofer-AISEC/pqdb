@@ -6,3 +6,8 @@ platform: m4
 type: optimized
 hardware features:
 - FPU
+code size:
+  overall: 9556
+  comment: The code-size measurements only include the code that is provided by the
+    scheme implementation, i.e., exclude common code like hashing or C standard library
+    functions.
