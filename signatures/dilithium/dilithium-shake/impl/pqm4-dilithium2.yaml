@@ -4,3 +4,8 @@ links:
 - https://github.com/mupq/pqm4/tree/master/crypto_sig/dilithium2/m4
 platform: m4
 type: optimized
+code size:
+  overall: 10576
+  comment: The code-size measurements only include the code that is provided by the
+    scheme implementation, i.e., exclude common code like hashing or C standard library
+    functions.
