@@ -87,6 +87,11 @@ function buildQuery(state) {
       WHERE
           hf.implementation_id = i.id
   ) AS 'Hardware Features'` : ''},
+  ${(state.showColumns.includes('code_size')) ? `
+  i.code_size_overall AS 'Overall Code Size',
+  i.code_size_gen AS 'KeyGen Code Size',
+  i.code_size_enc_sign AS '${SCHEME_TYPES[state.schemeType].enc_sign} Code Size',
+  i.code_size_dec_vrfy AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} Code Size',` : ''}
   b.platform AS 'Platform',
   round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
   round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
@@ -138,6 +143,7 @@ function createHeaderSections(state) {
     headers.push('Implementation');
     headerSpans.push(1);
     if (state.showColumns.includes('hw_features')) { headerSpans[headerSpans.length - 1] += 1; }
+    if (state.showColumns.includes('code_size')) { headerSpans[headerSpans.length - 1] += 4; }
     headers.push('Benchmark');
     headerSpans.push(5);
     if (state.showColumns.includes('memory_req')) { headerSpans[headerSpans.length - 1] += 3; }
@@ -183,7 +189,7 @@ class SchemeComparison extends React.Component {
     };
 
     this.defaultState = {
-      // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req'
+      // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req', 'code_size'
       showColumns: ['benchmarks', 'hw_features', 'nist_category'],
       schemeType: 'sig',
       platformFilter: '',
@@ -382,6 +388,14 @@ class SchemeComparison extends React.Component {
                           >
                             <Tooltip title="Hardware features required by the implementation">
                               <div>Hardware Features</div>
+                            </Tooltip>
+                          </ToggleButton>
+                          <ToggleButton
+                            disabled={queryProcessing || !showColumns.includes('benchmarks')}
+                            value="code_size"
+                          >
+                            <Tooltip title="Code size required by the implementation">
+                              <div>Code Size</div>
                             </Tooltip>
                           </ToggleButton>
                           <ToggleButton
