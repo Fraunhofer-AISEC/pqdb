@@ -19,8 +19,10 @@ problems:
     comment: 'tight ROM reduction, no-tight QROM reduction'
 stateful: false
 nist round: 3f
+website: https://pq-crystals.org/kyber/
+links:
+  - Specification, version 3.01 (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
 sources:
   - >-
-    NIST Submission Paper, version 3.0 from 2020-10-01 (
-    https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
+    NIST Submission Paper, version 3.0 from 2020-10-01 (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
 last_updated: '2020-11-05'

@@ -29,8 +29,7 @@ sources:
   - 'https://classic.mceliece.org/nist/mceliece-20201010.pdf'
   - >-
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/official-comments/Classic-McEliece-round2-official-comment.pdf
-links:
-  - 'https://classic.mceliece.org/'
+website: https://classic.mceliece.org/
 problems:
   - assumption: Computational Syndrome Decoding
 description: >-

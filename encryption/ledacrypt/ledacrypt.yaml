@@ -14,7 +14,6 @@ year:
 stateful: false
 sources:
   - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf'
-links:
-  - 'https://www.ledacrypt.org/'
+website: https://www.ledacrypt.org/
 problems:
   - assumption: Syndrome decoding for QC-LDPC codes (Quasi-cyclic low-density parity-check)

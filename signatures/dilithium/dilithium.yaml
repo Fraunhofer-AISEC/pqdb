@@ -21,11 +21,16 @@ problems:
     comment: >-
       The security reductions uses this custom assumption, which is a
       combination of MSIS and the hash function H.
+website: https://pq-crystals.org/dilithium/
+links:
+  - Initial paper (https://eprint.iacr.org/2017/633)
 sources:
-  - 'https://eprint.iacr.org/2017/633'
   - >-
     https://web.archive.org/web/20200423102237/https://pq-crystals.org/dilithium/data/dilithium-specification-round2.pdf
   - 'https://github.com/pq-crystals/dilithium/tree/round2'
+  - >-
+    NIST Round 3 Specification
+    (https://pq-crystals.org/dilithium/data/dilithium-specification-round3-20210208.pdf)
   - >-
     NIST Round 3 submission
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Dilithium-Round3.zip)

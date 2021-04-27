@@ -15,8 +15,7 @@ authors:
 problems:
   - assumption: Mod-LWR
 sources:
-  - 'https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf'
-links:
-  - 'Homepage ( https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html )'
+  - 'Round 3 Specification (https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf)'
+website: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html
 nist round: 3f
 last_updated: '2020-11-14'

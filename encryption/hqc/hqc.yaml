@@ -20,12 +20,10 @@ authors:
   - Jean-Marc Robert
   - Pascal Véron
   - Gilles Zémor
-links:
-  - 'https://pqc-hqc.org/index.html'
+website: https://pqc-hqc.org/
 sources:
   - >-
-    NIST Submission Paper (
-    https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf )
+    NIST Submission Paper (https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf)
 problems:
   - assumption: Decisional 2-/ 3-QCSD Problem
     comment: quasi-cyclic codes
