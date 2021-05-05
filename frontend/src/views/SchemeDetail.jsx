@@ -180,9 +180,21 @@ class SchemeDetail extends React.Component {
                 {authors.map((a) => <div key={a.name}>{a.name}</div>)}
               </PropItem>
 
-              {links.length > 0
+              {(scheme.website || links.length > 0)
                 && (
                 <PropItem key="links" title="Links" Icon={LinkIcon}>
+                  {
+                    scheme.website
+                    && (
+                    <div key={scheme.website}>
+                      <Link href={scheme.website}>
+                        Website (
+                        {scheme.website}
+                        )
+                      </Link>
+                    </div>
+                    )
+                  }
                   {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
                 </PropItem>
                 )}

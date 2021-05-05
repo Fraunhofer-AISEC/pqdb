@@ -14,6 +14,7 @@ import {
   NIST_ROUNDS,
   SCHEME_TYPES,
 } from '../constants';
+import ExternalLinkIcon from '../icons/ExternalLink';
 import detailLink from '../utils/detailLink';
 import queryAll from '../utils/queryAll';
 
@@ -37,7 +38,7 @@ function SchemeList(props) {
         {type.name}
         s
         {'  '}
-        <type.icon fontSize="inherit" />
+        <type.icon fontSize="inherit" style={{ marginBottom: -3 }} />
       </Typography>
       <List>
         {queryAll(db, stmt, [typeKey]).map((s) => (
@@ -47,6 +48,17 @@ function SchemeList(props) {
                 <Link component={RouterLink} to={detailLink(s.id_text)}>
                   {s.name}
                 </Link>
+                { s.website && [
+                  ' ',
+                  <Link
+                    href={s.website}
+                    target="_blank"
+                    rel="noopener"
+                    title="Website"
+                  >
+                    <ExternalLinkIcon style={{ fontSize: '.8em', marginBottom: -2, marginLeft: '.2em' }} />
+                  </Link>,
+                ]}
               </Typography>
               <small style={{ lineHeight: 1 }}>
                 <MaybeTooltip title={s.category_comment}>
