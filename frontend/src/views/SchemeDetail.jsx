@@ -254,13 +254,16 @@ class SchemeDetail extends React.Component {
                         <div key={p.name}>
                           {p.name}
                           {' '}
-                          <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
-                            <span>
-                              (
-                              {romanCat(p.security_level_nist_category)}
-                              )
-                            </span>
-                          </Tooltip>
+                          {(p.security_level_nist_category ?? 0) > 0 && (
+
+                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
+                              <span>
+                                (
+                                {romanCat(p.security_level_nist_category)}
+                                )
+                              </span>
+                            </Tooltip>
+                          )}
                         </div>
                       ))}
                     </PropItem>
