@@ -25,5 +25,4 @@ sources:
     NIST Submission Paper, Round 3, Version 1.2
     (https://web.archive.org/web/20201120101856/https://falcon-sign.info/falcon.pdf)
 last_updated: '2020-11-06'
-links:
-  - 'https://falcon-sign.info/'
+website: https://falcon-sign.info/

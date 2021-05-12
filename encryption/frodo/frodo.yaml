@@ -19,8 +19,8 @@ authors:
   - Chris Peikert
   - Ananth Raghunathan
   - Douglas Stebila
+website: https://frodokem.org/
 sources:
   - >-
-    NIST Submission Paper (
-    https://frodokem.org/files/FrodoKEM-specification-20200930.pdf )
+    NIST Submission Paper (https://frodokem.org/files/FrodoKEM-specification-20200930.pdf)
 last_updated: '2020-11-22'

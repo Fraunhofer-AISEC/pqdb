@@ -20,5 +20,6 @@ problems:
     - assumption: R-LWE
 stateful: false
 nist round: '2'
+website: https://qtesla.org/
 sources:
-  - NIST Submission Paper ( https://qtesla.org/wp-content/uploads/2020/04/qTESLA_round2_14.04.2020.pdf )
+  - NIST Submission Paper (https://qtesla.org/wp-content/uploads/2020/04/qTESLA_round2_14.04.2020.pdf)

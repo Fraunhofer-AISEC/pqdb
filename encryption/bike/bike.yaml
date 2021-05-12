@@ -27,8 +27,7 @@ problems:
     comment: Quasi-cyclic Codes Syndrome Decoding
   - assumption: QCCF
     comment: Quasi-cyclic Codes Codeword Finding
-links:
-  - 'https://bikesuite.org/'
+website: https://bikesuite.org/
 sources:
   - >-
     NIST submission paper, round 3 consideration

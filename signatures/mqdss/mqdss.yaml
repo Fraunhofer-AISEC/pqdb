@@ -14,7 +14,8 @@ authors:
   - Joost Rijneveld
   - Simona Samardjiska
   - Peter Schwabe
+website: http://mqdss.org/
 sources:
-  - NIST Submission Paper ( http://mqdss.org/files/mqdssVer2point1.pdf )
+  - NIST Submission Paper (http://mqdss.org/files/mqdssVer2point1.pdf)
   - http://mqdss.org/
 description: Based on the hardness of the multivariate quadratic problem.

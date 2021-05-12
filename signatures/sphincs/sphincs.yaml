@@ -27,8 +27,8 @@ problems:
   - assumption: resistance of second preimage cryptographic hash function
 stateful: false
 nist round: 3a
+website: https://sphincs.org/
 sources:
   - >-
-    NIST Submission Paper (
-    https://sphincs.org/data/sphincs+-round3-specification.pdf )
+    NIST Round 3 Submission Paper (https://sphincs.org/data/sphincs+-round3-specification.pdf)
 last_updated: '2020-12-03'

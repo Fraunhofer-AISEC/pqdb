@@ -180,9 +180,21 @@ class SchemeDetail extends React.Component {
                 {authors.map((a) => <div key={a.name}>{a.name}</div>)}
               </PropItem>
 
-              {links.length > 0
+              {(scheme.website || links.length > 0)
                 && (
                 <PropItem key="links" title="Links" Icon={LinkIcon}>
+                  {
+                    scheme.website
+                    && (
+                    <div key={scheme.website}>
+                      <Link href={scheme.website}>
+                        Website (
+                        {scheme.website}
+                        )
+                      </Link>
+                    </div>
+                    )
+                  }
                   {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
                 </PropItem>
                 )}
@@ -242,13 +254,16 @@ class SchemeDetail extends React.Component {
                         <div key={p.name}>
                           {p.name}
                           {' '}
-                          <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
-                            <span>
-                              (
-                              {romanCat(p.security_level_nist_category)}
-                              )
-                            </span>
-                          </Tooltip>
+                          {(p.security_level_nist_category ?? 0) > 0 && (
+
+                            <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
+                              <span>
+                                (
+                                {romanCat(p.security_level_nist_category)}
+                                )
+                              </span>
+                            </Tooltip>
+                          )}
                         </div>
                       ))}
                     </PropItem>

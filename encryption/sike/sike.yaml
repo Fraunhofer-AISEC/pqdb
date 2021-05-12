@@ -24,5 +24,6 @@ stateful: false
 nist round: '3a'
 problems:
     - assumption: hardness of isogeny computation on supersingular elliptic curves
+website: https://sike.org/
 sources:
-  - 'NIST submission paper, round 2 version from 2020-04-16 ( https://web.archive.org/web/20200422113006/https://sike.org/files/SIDH-spec.pdf )'
+  - 'NIST submission paper, round 2 version from 2020-04-16 (https://web.archive.org/web/20200422113006/https://sike.org/files/SIDH-spec.pdf)'

@@ -19,8 +19,7 @@ authors:
   - Olivier Ruatta
   - Jean-Pierre Tillich
   - Gilles Zémor
-links:
-  - 'https://pqc-rollo.org/'
+website: https://pqc-rollo.org/
 sources:
   - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf'
 problems:
