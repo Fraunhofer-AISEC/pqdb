@@ -178,7 +178,7 @@ class QueryTable extends React.Component {
               <TableBody>
                 {
                   sortedRows(queryResult.values, orderBy, order === 'asc').map(
-                    (row) => (
+                    (row, idx) => (
                       <TableRow key={this.createKey(row[1])}>
                         {
                           row[0].map(
@@ -187,7 +187,7 @@ class QueryTable extends React.Component {
                               if (formatFunctions && formatFunctions[j]) {
                                 value = formatFunctions[j](val);
                               }
-                              const StyledTableCell = styledCells[row[1] % 2][this.headerModVal(j)];
+                              const StyledTableCell = styledCells[idx % 2][this.headerModVal(j)];
                               return (
                                 <StyledTableCell
                                   key={this.createKey(`${row[1]}-${j}`)}
