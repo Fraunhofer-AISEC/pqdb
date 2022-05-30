@@ -19,10 +19,37 @@ problems:
     comment: 'tight ROM reduction, no-tight QROM reduction'
 stateful: false
 nist round: 3f
-website: https://pq-crystals.org/kyber/
+website: 'https://pq-crystals.org/kyber/'
 links:
-  - Specification, version 3.01 (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
+  - >-
+    Specification, version 3.01
+    (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
 sources:
   - >-
-    NIST Submission Paper, version 3.0 from 2020-10-01 (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
+    NIST Submission Paper, version 3.0 from 2020-10-01
+    (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
 last_updated: '2020-11-05'
+patents: >-
+  Patent US9094189: The patent holder claims that the patent applies to "one or
+  more proposals" that were submitted to the NIST PQC standardization process
+  [1]. Damien Stehlé and Vadim Lyubashevsky released an analysis followed by the
+  claim that this patent does not apply to Kyber and SABER [2] which was
+  subsequently discussed by peers [3]. Patents CN108173643 and CN107566121:
+  According to the patent holder, Kyber falls into their AKCN mechanism for LWE
+  schemes. The inventor issued an informal statement in 2022 that they want to
+  give up these patents and they do not hold them for economic reasons [4]. More
+  patent discussions can be found in [5].
+patents links:
+  - >-
+    [1]
+    https://web.archive.org/web/20220318084318/https://www.cnrsinnovation.com/?lang=en
+  - '[2] https://eprint.iacr.org/2021/1364.pdf'
+  - >-
+    [3]
+    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2Xv0mrF9IVo/m/e0oKQhllBwAJ
+  - >-
+    [4]
+    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
+  - >-
+    [5]
+    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ
