@@ -5,7 +5,9 @@ const path = require('path');
 const yaml = require('js-yaml');
 const Database = require('better-sqlite3');
 const Ajv = require('ajv');
+const addFormats = require("ajv-formats");
 const ajv = new Ajv();
+addFormats(ajv);
 
 if (!exists('schema')) {
     console.error('Schema folder could not be found. Did you run the script from the root directory?');
