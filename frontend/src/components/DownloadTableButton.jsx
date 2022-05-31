@@ -7,7 +7,7 @@ import {
   MenuList,
   Paper,
   Popper,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import genCSV from 'csv-stringify';
@@ -48,12 +48,13 @@ function DownloadTableButton(props) {
   };
 
   const handleMenuItemClick = (event, index) => {
+    const { queryResult } = props;
     if (index === 0) {
-      genCSV([props.queryResult.columns, ...props.queryResult.values], (err, output) => {
+      genCSV([queryResult.columns, ...queryResult.values], (err, output) => {
         startDownload(output, 'data.csv');
       });
     } else if (index === 1) {
-      startDownload(JSON.stringify(props.queryResult, null, 2), 'data.json');
+      startDownload(JSON.stringify(queryResult, null, 2), 'data.json');
     }
     setOpen(false);
   };

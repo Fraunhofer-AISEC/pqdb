@@ -5,7 +5,7 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';

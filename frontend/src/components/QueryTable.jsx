@@ -9,11 +9,11 @@ import {
   TableRow,
   TableSortLabel,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import md5 from 'md5';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
 import DownloadTableButton from './DownloadTableButton';
 
@@ -43,7 +43,7 @@ const defaultProps = {
 // Variables for coloring properly
 function styleTableCell(a, b) {
   return withStyles((theme) => {
-    const cellBgColors = (theme.palette.type === 'dark') ? [
+    const cellBgColors = (theme.palette.mode === 'dark') ? [
       ['#303030', '#414141'],
       ['#3a3a3a', '#575757'],
     ] : [
@@ -113,7 +113,8 @@ class QueryTable extends React.Component {
     const { headerSpans } = this.props;
     if (!headerSpans.length) return 0;
     const headerPositions = headerSpans.reduce(
-      (prev, cur) => prev.concat([cur + prev[prev.length - 1]]), [0],
+      (prev, cur) => prev.concat([cur + prev[prev.length - 1]]),
+      [0],
     );
     return (headerPositions.findIndex((e) => idx < e) - 1) % 2;
   }
