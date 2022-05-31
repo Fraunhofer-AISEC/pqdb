@@ -26,7 +26,7 @@ const BASIC_TYPES = ["boolean", "integer", "number", "string"];
 
 const ARRAY_COLUMN_NAMES = {
     "authors": "name", "links": "url", "sources": "url", "hardware features": "feature",
-    "dependencies": "dependency"
+    "dependencies": "dependency", "patents links": "url"
 };
 const SINGULAR = { "dependencies": "dependency" };
 
@@ -190,6 +190,7 @@ function isValidSchemeDir(rootDirectory, directory) {
     data.push(directory);
     var schemeID = insertColData("scheme", columns, data);
     var arrayColData = extractArrayColData(scheme, "scheme", schemeID);
+
     for (var tableName in arrayColData)
         for (var [columns, data] of arrayColData[tableName])
             insertColData(tableName, columns, data);
