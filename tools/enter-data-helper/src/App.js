@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route, withRouter } from 'react-router-dom';
 import { Container, Snackbar, CssBaseline } from '@material-ui/core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 import SelectScheme from './components/SelectScheme';
 import SchemeOverview from './components/SchemeOverview';
@@ -13,7 +13,7 @@ import './App.css';
 const NavBarRouter = withRouter(props => <NavBar {...props} />);
 
 function getTheme(type) {
-  return createMuiTheme({
+  return createTheme({
     palette: {
       type: type
     },
