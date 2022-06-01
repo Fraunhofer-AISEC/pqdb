@@ -23,8 +23,12 @@ function MaybeTooltip({ title, children }) {
 }
 
 MaybeTooltip.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   children: PropTypes.node.isRequired,
+};
+
+MaybeTooltip.defaultProps = {
+  title: '',
 };
 
 function SchemeList(props) {
