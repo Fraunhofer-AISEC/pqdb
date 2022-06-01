@@ -70,6 +70,7 @@ function Progress() {
 
 const propTypes = {
   history: PropTypes.shape({
+    listen: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     location: PropTypes.shape({
       search: PropTypes.string.isRequired,
@@ -85,6 +86,7 @@ class App extends React.Component {
       db: null,
       drawerOpen: false,
     };
+    this.unlisten = null;
   }
 
   componentDidMount() {
@@ -94,9 +96,16 @@ class App extends React.Component {
     initSqlJs()
       .then((SQL) => this.loadDatabase(SQL))
       .catch((err) => this.setState({ error: err }));
+
+    const { history } = this.props;
+
+    this.unlisten = history.listen(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   componentWillUnmount() {
+    this.unlisten();
     const { db } = this.state;
     db.close();
   }
