@@ -26,7 +26,7 @@ const BASIC_TYPES = ["boolean", "integer", "number", "string"];
 
 const ARRAY_COLUMN_NAMES = {
     "authors": "name", "links": "url", "sources": "url", "hardware features": "feature",
-    "dependencies": "dependency", "patents links": "url"
+    "dependencies": "dependency", "patents sources": "url"
 };
 const SINGULAR = { "dependencies": "dependency" };
 

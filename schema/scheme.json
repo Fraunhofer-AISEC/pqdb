@@ -125,7 +125,7 @@
         "patents": {
             "type": "string"
         },
-        "patents links": {
+        "patents sources": {
             "type": "array",
             "items": {
                 "type": "string"
