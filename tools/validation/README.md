@@ -1,5 +1,5 @@
 ## Schema Validation
-All data is stored in .yaml files which are validated using JSON Schema. The following steps describe how to the validation script can be executed locally. [Node.js](https://nodejs.org/) is required to run the validation (tested with version 12.x). Currently, we don't recommend the snap package since there have been issues with the dependencies.
+All data is stored in .yaml files which are validated using JSON Schema. The following steps describe how to the validation script can be executed locally. [Node.js](https://nodejs.org/) is required to run the validation (tested with version 16).
 
 ### Install Dependencies
 
