@@ -5,7 +5,7 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -23,8 +23,12 @@ function MaybeTooltip({ title, children }) {
 }
 
 MaybeTooltip.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   children: PropTypes.node.isRequired,
+};
+
+MaybeTooltip.defaultProps = {
+  title: '',
 };
 
 function SchemeList(props) {

@@ -8,8 +8,8 @@ import {
   Grid,
   Paper,
   TextField,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GlassMagnifier } from 'react-image-magnifiers';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -51,7 +51,6 @@ class CustomSQLQuery extends React.Component {
     super();
     this.db = props.db;
     this.params = qs.parse(props.history.location.search);
-    this.runningQueryHandler = null;
     const sqlInput = ('query' in this.params) ? this.params.query : '';
 
     this.state = {
@@ -79,7 +78,8 @@ class CustomSQLQuery extends React.Component {
         } catch (error) {
           this.setState({ queryResult: null, error, queryProcessing: false });
         }
-      }, 0,
+      },
+      0,
     );
   }
 

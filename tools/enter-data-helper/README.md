@@ -48,7 +48,7 @@ If not done already, switch to the `tools/enter-data-helper` directory.
 ### Requirements
 
 * node.js (For installation instructions see [here](/tools/validation/README.md))
-* Yarn (Installs with the above, if you use the snap package. Otherwise see [here](https://classic.yarnpkg.com/en/docs/install/))
+* Yarn (Installs with the above, if you use the snap package. Otherwise see [here](https://yarnpkg.com/getting-started/install))
 
 ### Installation
 

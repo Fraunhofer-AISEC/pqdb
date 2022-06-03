@@ -2,7 +2,7 @@ import {
   List,
   ListItem,
   ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -19,17 +19,19 @@ const propTypes = {
   }),
 };
 
-const DrawerList = ({ views, onClick }) => (
-  <List>
-    {
-      Object.keys(views).map((key) => (
-        <ListItem key={key} button onClick={() => onClick(key)}>
-          <ListItemText primary={views[key].name} secondary={views[key].description} />
-        </ListItem>
-      ))
-    }
-  </List>
-);
+function DrawerList({ views, onClick }) {
+  return (
+    <List>
+      {
+        Object.keys(views).map((key) => (
+          <ListItem key={key} button onClick={() => onClick(key)}>
+            <ListItemText primary={views[key].name} secondary={views[key].description} />
+          </ListItem>
+        ))
+      }
+    </List>
+  );
+}
 
 DrawerList.defaultProps = defaultProps;
 DrawerList.propTypes = propTypes;

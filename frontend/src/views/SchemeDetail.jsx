@@ -8,7 +8,7 @@ import {
   Paper,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Category as CategoryIcon,
   Code as CodeIcon,
@@ -19,7 +19,7 @@ import {
   PeopleAlt as PeopleIcon,
   Save as SaveIcon,
   Security as SecurityIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import EncryptionIcon from '@material-ui/icons/LockOutlined';
+import EncryptionIcon from '@mui/icons-material/LockOutlined';
 import SealIcon from './icons/Seal';
 
 const NIST_ROUNDS = {

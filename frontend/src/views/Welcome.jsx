@@ -5,7 +5,7 @@ import {
   Link,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -71,12 +71,12 @@ function Welcome({ db }) {
 
           <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
           <Grid container>
-            <Grid item xs px={4} key="enc">
+            <Grid item xs key="enc">
               <Box p={4}>
                 <SchemeList db={db} typeKey="enc" />
               </Box>
             </Grid>
-            <Grid item xs px={4} key="sig">
+            <Grid item xs key="sig">
               <Box p={4}>
                 <SchemeList db={db} typeKey="sig" />
               </Box>

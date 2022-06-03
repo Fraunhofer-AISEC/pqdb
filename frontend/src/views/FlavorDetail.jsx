@@ -7,7 +7,7 @@ import {
   Translate as LanguageIcon,
   Link as LinkIcon,
   Security as SecurityIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {
   Box,
   Container,
@@ -18,7 +18,7 @@ import {
   Paper,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';

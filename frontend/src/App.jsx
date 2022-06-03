@@ -8,16 +8,16 @@ import {
 
   Paper,
   Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Brightness4 as DarkIcon,
   BrightnessHigh as LightIcon,
   Menu as MenuIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {
   Link, Redirect, Route, Switch,
 } from 'react-router-dom';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { StyledEngineProvider, ThemeProvider, createTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import initSqlJs from 'sql.js';
@@ -29,10 +29,22 @@ import SchemeDetailSwitch from './views/SchemeDetailSwitch';
 import Welcome from './views/Welcome';
 import logo from './pqdb.svg';
 
+const defaultTheme = createTheme();
 function getTheme(type) {
-  return createMuiTheme({
+  return createTheme({
+    components: {
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            '&.Mui-disabled': {
+              color: defaultTheme.palette.action.disabled,
+            },
+          },
+        },
+      },
+    },
     palette: {
-      type,
+      mode: type,
     },
   });
 }
@@ -64,10 +76,13 @@ const views = {
   },
 };
 
-const Progress = () => <Box display="flex" justifyContent="center"><CircularProgress /></Box>;
+function Progress() {
+  return <Box display="flex" justifyContent="center"><CircularProgress /></Box>;
+}
 
 const propTypes = {
   history: PropTypes.shape({
+    listen: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     location: PropTypes.shape({
       search: PropTypes.string.isRequired,
@@ -83,6 +98,7 @@ class App extends React.Component {
       db: null,
       drawerOpen: false,
     };
+    this.unlisten = null;
   }
 
   componentDidMount() {
@@ -92,9 +108,16 @@ class App extends React.Component {
     initSqlJs()
       .then((SQL) => this.loadDatabase(SQL))
       .catch((err) => this.setState({ error: err }));
+
+    const { history } = this.props;
+
+    this.unlisten = history.listen(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   componentWillUnmount() {
+    this.unlisten();
     const { db } = this.state;
     db.close();
   }
@@ -158,40 +181,46 @@ class App extends React.Component {
       content = <Progress />;
     }
     return (
-      <ThemeProvider theme={getTheme(themeId)}>
-        <CssBaseline />
-        <Box p={2}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Box display="flex" justifyContent="center">
-                <Link to="/">
-                  <img src={logo} width="500em" height="192.5em" alt="Logo" />
-                </Link>
-              </Box>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={getTheme(themeId)}>
+          <CssBaseline />
+          <Box p={2}>
+            <Grid container direction="column" spacing={2}>
+              <Grid item>
+                <Box display="flex" justifyContent="center">
+                  <Link to="/">
+                    <img src={logo} width="500em" height="192.5em" alt="Logo" />
+                  </Link>
+                </Box>
+              </Grid>
+              {content}
+              <Grid item>
+                <Container maxWidth="lg">
+                  <Paper>
+                    <Box p={1} display="flex" alignItems="center" justifyContent="center">
+                      <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
+                        <IconButton onClick={() => this.toggleTheme()} size="large">
+                          {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Paper>
+                </Container>
+              </Grid>
             </Grid>
-            {content}
-            <Grid item>
-              <Container maxWidth="md">
-                <Paper>
-                  <Box p={1} display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
-                      <IconButton onClick={() => this.toggleTheme()}>
-                        {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </Paper>
-              </Container>
-            </Grid>
-          </Grid>
-          <IconButton style={{ position: 'absolute', top: 0, left: 0 }} onClick={() => this.setState({ drawerOpen: true })}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
-        <Drawer anchor="left" open={drawerOpen} onClose={() => this.setState({ drawerOpen: false })}>
-          <DrawerList onClick={(view) => this.switchView(view)} views={views} />
-        </Drawer>
-      </ThemeProvider>
+            <IconButton
+              style={{ position: 'absolute', top: 0, left: 0 }}
+              onClick={() => this.setState({ drawerOpen: true })}
+              size="large"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+          <Drawer anchor="left" open={drawerOpen} onClose={() => this.setState({ drawerOpen: false })}>
+            <DrawerList onClick={(view) => this.switchView(view)} views={views} />
+          </Drawer>
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
   }
 }
