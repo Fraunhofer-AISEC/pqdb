@@ -29,8 +29,20 @@ import SchemeDetailSwitch from './views/SchemeDetailSwitch';
 import Welcome from './views/Welcome';
 import logo from './pqdb.svg';
 
+const defaultTheme = createTheme();
 function getTheme(type) {
   return createTheme({
+    components: {
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            '&.Mui-disabled': {
+              color: defaultTheme.palette.action.disabled,
+            },
+          },
+        },
+      },
+    },
     palette: {
       mode: type,
     },
