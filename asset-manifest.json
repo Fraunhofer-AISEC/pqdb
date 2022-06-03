@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/pqdb/static/js/main.0106ec0c.chunk.js",
-    "main.js.map": "/pqdb/static/js/main.0106ec0c.chunk.js.map",
-    "runtime-main.js": "/pqdb/static/js/runtime-main.74027e73.js",
-    "runtime-main.js.map": "/pqdb/static/js/runtime-main.74027e73.js.map",
-    "static/js/2.a8b476e8.chunk.js": "/pqdb/static/js/2.a8b476e8.chunk.js",
-    "static/js/2.a8b476e8.chunk.js.map": "/pqdb/static/js/2.a8b476e8.chunk.js.map",
+    "main.js": "/pqdb/static/js/main.b46e1990.chunk.js",
+    "main.js.map": "/pqdb/static/js/main.b46e1990.chunk.js.map",
+    "runtime-main.js": "/pqdb/static/js/runtime-main.7e89fbaa.js",
+    "runtime-main.js.map": "/pqdb/static/js/runtime-main.7e89fbaa.js.map",
+    "static/js/2.1725e1d5.chunk.js": "/pqdb/static/js/2.1725e1d5.chunk.js",
+    "static/js/2.1725e1d5.chunk.js.map": "/pqdb/static/js/2.1725e1d5.chunk.js.map",
     "index.html": "/pqdb/index.html",
-    "static/js/2.a8b476e8.chunk.js.LICENSE.txt": "/pqdb/static/js/2.a8b476e8.chunk.js.LICENSE.txt",
+    "static/js/2.1725e1d5.chunk.js.LICENSE.txt": "/pqdb/static/js/2.1725e1d5.chunk.js.LICENSE.txt",
     "static/js/sql-wasm.wasm": "/pqdb/static/js/sql-wasm.wasm",
     "static/media/menu-arrow.91d51d4a.svg": "/pqdb/static/media/menu-arrow.91d51d4a.svg",
     "static/media/pqdb.03d23b89.svg": "/pqdb/static/media/pqdb.03d23b89.svg",
     "static/media/tables.eedb64ce.svg": "/pqdb/static/media/tables.eedb64ce.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.74027e73.js",
-    "static/js/2.a8b476e8.chunk.js",
-    "static/js/main.0106ec0c.chunk.js"
+    "static/js/runtime-main.7e89fbaa.js",
+    "static/js/2.1725e1d5.chunk.js",
+    "static/js/main.b46e1990.chunk.js"
   ]
 }
