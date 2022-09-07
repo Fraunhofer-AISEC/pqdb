@@ -12,11 +12,12 @@ import {
   Paper,
   Slider,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -34,7 +35,7 @@ import queryAllAsArray from '../utils/queryAllAsArray';
 function schemesListQueryDB(db, type, nistRound, nonNist) {
   const schemesListQuery = `
     SELECT id_text FROM scheme
-    WHERE 
+    WHERE
       type = ?
       AND (nist_round BETWEEN ? AND '3f' ${(nonNist) ? 'OR nist_round = \'none\'' : ''})
   `;
@@ -338,7 +339,7 @@ class SchemeComparison extends React.Component {
           <Container maxWidth="md">
             <Paper>
               <Box p={2}>
-                <Grid justify="space-between" spacing={2} container direction="row">
+                <Grid justifyContent="space-between" container direction="row">
                   <Grid item>
                     <Typography variant="h4">Scheme Comparison</Typography>
                   </Grid>

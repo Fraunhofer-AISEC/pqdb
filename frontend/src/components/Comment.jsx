@@ -1,7 +1,7 @@
-import { InfoOutlined as InfoIcon } from '@material-ui/icons';
+import { InfoOutlined as InfoIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 
 const propTypes = {
   title: PropTypes.string,

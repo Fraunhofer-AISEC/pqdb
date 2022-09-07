@@ -3,7 +3,7 @@ import {
   Container,
   Grid,
   Paper,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { SCHEME_TYPES } from '../constants';
@@ -20,6 +20,7 @@ function SchemeOverview(props) {
     document.title = 'Scheme Overview - pqdb';
   }, []);
 
+  const { db } = props;
   return (
     <Container maxWidth="md">
       <Grid container justify="center" spacing={2}>
@@ -27,7 +28,7 @@ function SchemeOverview(props) {
           <Grid key={typeKey} item xs>
             <Paper>
               <Box p={2}>
-                <SchemeList db={props.db} typeKey={typeKey} />
+                <SchemeList db={db} typeKey={typeKey} />
               </Box>
             </Paper>
           </Grid>

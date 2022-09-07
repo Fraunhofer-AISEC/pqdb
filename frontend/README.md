@@ -8,7 +8,7 @@ This is the frontend for displaying data from pqdb. The latest deployment of the
 ### Requirements
 
 * Working schema validation script (For install instructions see [here](/tools/validation/README.md))
-* Yarn (Installs with node.js, if you use the snap package. Otherwise see [here](https://classic.yarnpkg.com/en/docs/install/))
+* Yarn (Installs with node.js, if you use the snap package. Otherwise see [here](https://yarnpkg.com/getting-started/install))
 
 Before you can run the frontend locally you need to generate the SQLite database and the database diagram. This can be done by running the following command from the root directory of pqdb.
 ```
