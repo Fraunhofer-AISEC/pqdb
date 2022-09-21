@@ -32,16 +32,8 @@ patents: >-
   give up these patents and they do not hold them for economic reasons [4]. More
   patent discussion can be found in [5].
 patents sources:
-  - >-
-    [1]
-    https://web.archive.org/web/20220318084318/https://www.cnrsinnovation.com/?lang=en
-  - '[2] https://eprint.iacr.org/2021/1364.pdf'
-  - >-
-    [3]
-    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2Xv0mrF9IVo/m/e0oKQhllBwAJ
-  - >-
-    [4]
-    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
-  - >-
-    [5]
-    https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ
+  - https://web.archive.org/web/20220318084318/https://www.cnrsinnovation.com/?lang=en
+  - 'https://eprint.iacr.org/2021/1364.pdf'
+  - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2Xv0mrF9IVo/m/e0oKQhllBwAJ
+  - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
+  - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ

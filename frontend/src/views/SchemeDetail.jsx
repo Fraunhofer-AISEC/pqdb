@@ -16,6 +16,7 @@ import {
   Event as EventIcon,
   Link as LinkIcon,
   Tune as ParamSetIcon,
+  PendingActions as PendingActionsIcon,
   PeopleAlt as PeopleIcon,
   Save as SaveIcon,
   Security as SecurityIcon,
@@ -60,6 +61,7 @@ class SchemeDetail extends React.Component {
       sources: undefined,
       links: undefined,
       flavors: undefined,
+      patentslink: undefined,
     };
   }
 
@@ -76,8 +78,9 @@ class SchemeDetail extends React.Component {
       const links = queryAll(db, 'SELECT * FROM scheme_link WHERE scheme_id=?', [scheme.id]);
       const sources = queryAll(db, 'SELECT * FROM scheme_source WHERE scheme_id=?', [scheme.id]);
       const flavors = queryAll(db, 'SELECT * FROM flavor WHERE scheme_id=?', [scheme.id]);
+      const patentslink = queryAll(db, 'SELECT * FROM scheme_patents_source WHERE scheme_id=?', [scheme.id]);
       this.setState({
-        scheme, authors, problems, links, sources, flavors,
+        scheme, authors, problems, links, sources, flavors, patentslink,
       });
     }
   }
@@ -85,7 +88,7 @@ class SchemeDetail extends React.Component {
   render() {
     const { db } = this.props;
     const {
-      scheme, authors, problems, links, sources, flavors,
+      scheme, authors, problems, links, sources, flavors, patentslink,
     } = this.state;
 
     if (scheme === null) return null;
@@ -95,6 +98,9 @@ class SchemeDetail extends React.Component {
     }
 
     const TypeIcon = SCHEME_TYPES[scheme.type].icon;
+
+    const exp = new RegExp('([[0-9]+])');
+    const patentString = scheme.patents?.split(exp);
     return (
       <Container maxWidth="md">
         <Paper>
@@ -203,6 +209,28 @@ class SchemeDetail extends React.Component {
                 && (
                 <PropItem key="sources" title="Sources" Icon={SourceIcon}>
                   {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
+                </PropItem>
+                )}
+
+              {scheme.patents
+                && (
+                <PropItem key="patents" title="Patents" Icon={PendingActionsIcon}>
+                  <div key={patentString}>
+                    {patentString.map((ps) => {
+                      if (exp.test(ps)) {
+                        const xs = ps.replace('[', '');
+                        const x = xs.replace(']', '');
+                        const plElement = patentslink[x - 1];
+                        const plUrl = plElement.url;
+                        return (
+                          <Link href={plUrl}>
+                            {ps}
+                          </Link>
+                        );
+                      }
+                      return ps;
+                    })}
+                  </div>
                 </PropItem>
                 )}
 
