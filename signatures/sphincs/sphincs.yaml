@@ -26,7 +26,7 @@ authors:
 problems:
   - assumption: resistance of second preimage cryptographic hash function
 stateful: false
-nist round: 3a
+nist round: S3
 website: https://sphincs.org/
 sources:
   - >-

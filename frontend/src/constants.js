@@ -7,6 +7,8 @@ const NIST_ROUNDS = {
   2: { short: 'round 2', long: 'Reached Round 2 of the NIST standardization' },
   '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST standardization' },
   '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST standardization' },
+  4: { short: 'round 4', long: 'Reached Round 4 of the NIST standardization' },
+  S3: { short: 'standardized', long: 'Standardized after Round 3' },
 };
 
 const SEC_NOTIONS = {

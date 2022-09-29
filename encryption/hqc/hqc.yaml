@@ -1,7 +1,7 @@
 stateful: false
 name: HQC
 category: code
-nist round: 3a
+nist round: '4'
 year:
   paper: 2017
   candidate: 2017

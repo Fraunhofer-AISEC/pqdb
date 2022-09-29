@@ -49,9 +49,11 @@
                 "1",
                 "2",
                 "3a",
-                "3f"
+                "3f",
+                "4",
+                "S3"
             ],
-            "$comment": "`3a`/`3f` for round 3 alternate candidates and finalists, respectively. `none` for schemes that were not submitted to the NIST PQC Standardization Process."
+            "$comment": "`3a`/`3f` for round 3 alternate candidates and finalists, respectively. `none` for schemes that were not submitted to the NIST PQC Standardization Process. `S3` for Standardization after Round3."
         },
         "year": {
             "type": "object",
