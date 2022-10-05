@@ -37,7 +37,7 @@ function schemesListQueryDB(db, type, nistRound, nonNist) {
     SELECT id_text FROM scheme
     WHERE
       type = ?
-      AND (nist_round BETWEEN ? AND '3f' ${(nonNist) ? 'OR nist_round = \'none\'' : ''})
+      AND (nist_round BETWEEN ? AND 'S' ${(nonNist) ? 'OR nist_round = \'none\'' : ''})
   `;
   const schemesList = queryAll(db, schemesListQuery, [type, nistRound]);
   return schemesList.map((row) => row.id_text);
@@ -49,7 +49,7 @@ const secLevelMarks = [
 ];
 
 const nistRoundMarks = [
-  { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 },
+  { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 }, { label: '4', value: 5 }, { label: 'S', value: 6 },
 ];
 
 function getNistRoundLabel(v) {
@@ -113,7 +113,7 @@ WHERE
   s.type = ?
   AND s.id_text IN (${JSON.stringify(state.checkedSchemes ?? []).slice(1, -1)})
   AND (
-      s.nist_round BETWEEN ? AND '3f'${
+      s.nist_round BETWEEN ? AND 'S'${
   (state.showNonNistSchemes) ? '\n        OR s.nist_round = \'none\'' : ''}
   )
   AND p.security_level_classical >= ?
@@ -198,7 +198,7 @@ class SchemeComparison extends React.Component {
       securityLevel: 128,
       securityQuantum: 0,
       showRef: false,
-      nistRound: '3a',
+      nistRound: '4',
       showNonNistSchemes: false,
       order: 'asc',
       orderBy: null,
@@ -488,7 +488,7 @@ class SchemeComparison extends React.Component {
                                     defaultValue={getNistRoundValue(nistRound)}
                                     step={null}
                                     min={2}
-                                    max={4}
+                                    max={6}
                                     marks={nistRoundMarks}
                                     track="inverted"
                                     onChangeCommitted={(e, v) => this.setFilterState({

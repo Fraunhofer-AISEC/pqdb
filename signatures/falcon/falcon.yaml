@@ -19,7 +19,7 @@ authors:
 problems:
   - assumption: SIS over NTRU lattices
 stateful: false
-nist round: S3
+nist round: S
 sources:
   - >-
     NIST Submission Paper, Round 3, Version 1.2
