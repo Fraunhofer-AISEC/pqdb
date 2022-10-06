@@ -3,10 +3,10 @@ comment: '(GF(16), 36, 32, 32)'
 security level:
   classical: 147
   quantum: 86
-  nist category: 2
+  nist category: 0
 failure probability: 0
 sizes:
   sk: 101200
   pk: 58800
-  ct|sig: 66
+  ct|sig: 528
 number of operations: inf

@@ -1,15 +1,5 @@
 import {
-  Box,
-  Container,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import {
+  Bolt as BoltIcon,
   Category as CategoryIcon,
   Code as CodeIcon,
   SyncAlt as DiffieHellmanIcon,
@@ -23,6 +13,18 @@ import {
   Save as SaveIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
+import {
+  Box,
+  Container,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -60,6 +62,7 @@ class SchemeDetail extends React.Component {
       problems: undefined,
       sources: undefined,
       links: undefined,
+      attacks: undefined,
       flavors: undefined,
       patentslink: undefined,
     };
@@ -77,10 +80,11 @@ class SchemeDetail extends React.Component {
       const problems = queryAll(db, 'SELECT * FROM scheme_problem WHERE scheme_id=?', [scheme.id]);
       const links = queryAll(db, 'SELECT * FROM scheme_link WHERE scheme_id=?', [scheme.id]);
       const sources = queryAll(db, 'SELECT * FROM scheme_source WHERE scheme_id=?', [scheme.id]);
+      const attacks = queryAll(db, 'SELECT * FROM scheme_attack WHERE scheme_id=?', [scheme.id]);
       const flavors = queryAll(db, 'SELECT * FROM flavor WHERE scheme_id=?', [scheme.id]);
       const patentslink = queryAll(db, 'SELECT * FROM scheme_patents_source WHERE scheme_id=?', [scheme.id]);
       this.setState({
-        scheme, authors, problems, links, sources, flavors, patentslink,
+        scheme, authors, problems, links, sources, attacks, flavors, patentslink,
       });
     }
   }
@@ -88,7 +92,7 @@ class SchemeDetail extends React.Component {
   render() {
     const { db } = this.props;
     const {
-      scheme, authors, problems, links, sources, flavors, patentslink,
+      scheme, authors, problems, links, sources, attacks, flavors, patentslink,
     } = this.state;
 
     if (scheme === null) return null;
@@ -185,6 +189,13 @@ class SchemeDetail extends React.Component {
               <PropItem key="authors" title="Authors" Icon={PeopleIcon}>
                 {authors.map((a) => <div key={a.name}>{a.name}</div>)}
               </PropItem>
+
+              {attacks.length > 0
+                && (
+                <PropItem key="attacks" title="Attacks" Icon={BoltIcon}>
+                  {attacks.map((a) => <div key={a.url}>{linkify(a.url)}</div>)}
+                </PropItem>
+                )}
 
               {(scheme.website || links.length > 0)
                 && (

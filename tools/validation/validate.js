@@ -25,7 +25,7 @@ const TYPE_MAP = { "integer": "INTEGER", "number": "REAL", "string": "TEXT", "bo
 const BASIC_TYPES = ["boolean", "integer", "number", "string"];
 
 const ARRAY_COLUMN_NAMES = {
-    "authors": "name", "links": "url", "sources": "url", "hardware features": "feature",
+    "authors": "name", "links": "url", "sources": "url", "attacks": "url", "hardware features": "feature",
     "dependencies": "dependency", "patents sources": "url"
 };
 const SINGULAR = { "dependencies": "dependency" };

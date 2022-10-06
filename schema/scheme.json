@@ -133,6 +133,12 @@
                 "type": "string"
             }
         },
+        "attacks": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
         "last_updated": {
             "type": "string",
             "format": "date",

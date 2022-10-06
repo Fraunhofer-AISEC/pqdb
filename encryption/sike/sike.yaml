@@ -27,5 +27,6 @@ problems:
 website: https://sike.org/
 sources:
   - 'NIST submission paper, round 4 version from 2022-09-15 (https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/round-4/submissions/SIKE-spec.pdf)'
+attacks:
   - 'The SIKE teams acknowledges that SIKE and SIDH are insecure and should not be used (https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/round-4/submissions/SIKE-spec.pdf)'
 last_updated: '2022-10-05'

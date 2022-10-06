@@ -2,7 +2,7 @@ name: SIKEp434
 security level:
     classical: 128
     quantum: 131
-    nist category: 2
+    nist category: 0
     comment: Classical security level is achieved using 2^80 memory. Quantum security uses a depth of 122 and width of 10.
 failure probability: 0
 number of operations: inf
