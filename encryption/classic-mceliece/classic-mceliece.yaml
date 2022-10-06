@@ -35,4 +35,4 @@ problems:
 description: >-
   Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
   binary Goppa codes.
-last_updated: '2020-11-10'
+last_updated: '2022-10-06'

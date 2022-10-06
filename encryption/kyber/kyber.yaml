@@ -26,9 +26,9 @@ links:
     (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
 sources:
   - >-
-    NIST Submission Paper, version 3.0 from 2020-10-01
+    NIST Standardization Zip File
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
-last_updated: '2020-11-05'
+last_updated: '2022-10-06'
 patents: >-
   Patent US9094189: The patent holder claims that the patent applies to "one or
   more proposals" that were submitted to the NIST PQC standardization process

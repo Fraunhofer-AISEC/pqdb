@@ -31,4 +31,7 @@ website: https://sphincs.org/
 sources:
   - >-
     NIST Round 3 Submission Paper (https://sphincs.org/data/sphincs+-round3-specification.pdf)
-last_updated: '2020-12-03'
+  - >-
+    NIST Standardization Zip File
+    (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/SPHINCS-Round3.zip)
+last_updated: '2022-10-05'

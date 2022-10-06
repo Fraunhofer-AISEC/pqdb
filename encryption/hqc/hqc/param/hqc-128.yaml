@@ -11,4 +11,4 @@ sizes:
   msg: 64
 number of operations: Todo
 sources:
-  - 'https://pqc-hqc.org/doc/hqc-specification_2020-10-01.pdf#subsubsection.2.7.1'
+  - 'http://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1'

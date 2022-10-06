@@ -1,8 +1,0 @@
-platform: >-
-  Intel Core i7-1065G7 (Ice Lake, 1.30GHz), 16 GB RAM, Linux OS (Ubuntu 19.04),
-  GCC 9.2.1
-timings:
-  gen: 600000
-  enc|sign: 220000
-  dec|vrfy: 2220000
-  unit: cycles

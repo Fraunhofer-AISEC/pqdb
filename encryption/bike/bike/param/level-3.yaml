@@ -6,8 +6,8 @@ security level:
 failure probability: -192
 comment: '(r, w, t) = (24659, 206, 199)'
 sizes:
-  sk: 419
-  pk: 3083
-  ct|sig: 3115
+  sk: 3346
+  pk: 24659 
+  ct|sig: 24915
   msg: 32
 number of operations: inf

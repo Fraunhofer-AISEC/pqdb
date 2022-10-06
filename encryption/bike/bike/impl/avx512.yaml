@@ -1,4 +1,5 @@
 name: AVX512
+comment: Optimized for AVX2 and AVX512 instruction sets
 platform: c
 type: optimized
 hardware features:

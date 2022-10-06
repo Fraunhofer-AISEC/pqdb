@@ -1,9 +1,8 @@
 timings:
-  gen: 545000
-  enc|sign: 918000
-  dec|vrfy: 1538000
+  gen: 400000
+  enc|sign: 887000
+  dec|vrfy: 1478000
   unit: cycles
 platform: >-
-  Intel Core i7-7820XCPU 3.6GHz, openssl(version1.1.1g), gcc(version10.1.0)
-  flags: O3 -mavx -mavx2-mpclmul -funroll-all-loops -flto -pedantic -Wall 
-  -Wextra
+  Intel Core i7-7820XCPU 3.6GHz, gcc(version10.1.0)
+  flags: -O3 -std=c99 -funroll-all-loops -flto -mavx -mavx2 -mbmi -mpclmul -pedantic -Wall -Wextra

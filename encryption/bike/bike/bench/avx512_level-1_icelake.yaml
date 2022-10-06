@@ -1,8 +1,7 @@
 platform: >-
-  Intel Core i7-1065G7 (Ice Lake, 1.30GHz), 16 GB RAM, Linux OS (Ubuntu 19.04),
-  GCC 9.2.1
+  Intel Xeon Platinum 8175M CPU @ 2.50GHz, 16 GB RAM, Linux OS (Ubuntu 20.04), clang (version 10.0.0) in 64-bit mode
 timings:
-  gen: 585000
-  enc|sign: 205000
-  dec|vrfy: 1356000
+  gen: 589000
+  enc|sign: 97000
+  dec|vrfy: 1135000
   unit: cycles
