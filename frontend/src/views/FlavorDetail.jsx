@@ -1,9 +1,11 @@
 import {
   ArrowBack as ArrowBackIcon,
+  AutoMode as AutoModeIcon,
   Category as CategoryIcon,
   Memory as ChipIcon,
   Code as CodeIcon,
   SyncAlt as DiffieHellmanIcon,
+  Fort as FortIcon,
   Translate as LanguageIcon,
   Link as LinkIcon,
   Security as SecurityIcon,
@@ -29,9 +31,7 @@ import {
   SEC_NOTIONS,
 } from '../constants';
 import BottomIcon from '../icons/Bottom';
-import CastleIcon from '../icons/Castle';
 import Comment from '../components/Comment';
-import CounterIcon from '../icons/Counter';
 import MeasureIcon from '../icons/Measure';
 import PropItem from '../components/PropItem';
 import SourceIcon from '../icons/Book';
@@ -258,7 +258,7 @@ class FlavorDetail extends React.Component {
                     </PropItem>
                     )}
 
-                    <PropItem key="numop" title="Number of operations" Icon={CounterIcon}>
+                    <PropItem key="numop" title="Number of operations" Icon={AutoModeIcon}>
                       {p.number_of_operations === 'inf'
                         ? 'unlimited'
                         : p.number_of_operations}
@@ -347,7 +347,7 @@ class FlavorDetail extends React.Component {
                     </PropItem>
                     )}
 
-                    <PropItem key={`i-${i.id}-sidechannel`} title="Side Channel Guarding" Icon={CastleIcon}>
+                    <PropItem key={`i-${i.id}-sidechannel`} title="Side Channel Guarding" Icon={FortIcon}>
                       <div>
                         branching:
                         {' '}
