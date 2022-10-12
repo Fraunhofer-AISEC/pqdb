@@ -8,6 +8,7 @@ import {
   Fort as FortIcon,
   Translate as LanguageIcon,
   Link as LinkIcon,
+  MenuBook as MenuBookIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
 import {
@@ -34,7 +35,6 @@ import BottomIcon from '../icons/Bottom';
 import Comment from '../components/Comment';
 import MeasureIcon from '../icons/Measure';
 import PropItem from '../components/PropItem';
-import SourceIcon from '../icons/Book';
 import TextComment from '../components/TextComment';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
@@ -198,7 +198,7 @@ class FlavorDetail extends React.Component {
 
               {sources.length > 0
               && (
-              <PropItem key="sources" title="Sources" Icon={SourceIcon}>
+              <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
                 {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
               </PropItem>
               )}
@@ -292,7 +292,7 @@ class FlavorDetail extends React.Component {
 
                     {paramsetSources.length > 0
                     && (
-                    <PropItem key="sources" title="Sources" Icon={SourceIcon}>
+                    <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
                       {paramsetSources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
                     </PropItem>
                     )}
@@ -375,7 +375,7 @@ class FlavorDetail extends React.Component {
 
                     {implSources.length > 0
                     && (
-                    <PropItem key={`i-${i.id}-sources`} title="Sources" Icon={SourceIcon}>
+                    <PropItem key={`i-${i.id}-sources`} title="Sources" Icon={MenuBookIcon}>
                       {implSources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
                     </PropItem>
                     )}
