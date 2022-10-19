@@ -122,6 +122,15 @@
                 "type": "string"
             }
         },
+        "patents": {
+            "type": "string"
+        },
+        "patents sources": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
         "last_updated": {
             "type": "string",
             "format": "date",
