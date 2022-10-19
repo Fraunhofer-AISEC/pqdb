@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/pqdb/static/js/main.d467b2bb.chunk.js",
-    "main.js.map": "/pqdb/static/js/main.d467b2bb.chunk.js.map",
+    "main.js": "/pqdb/static/js/main.53249094.chunk.js",
+    "main.js.map": "/pqdb/static/js/main.53249094.chunk.js.map",
     "runtime-main.js": "/pqdb/static/js/runtime-main.7e89fbaa.js",
     "runtime-main.js.map": "/pqdb/static/js/runtime-main.7e89fbaa.js.map",
-    "static/js/2.958bfcf9.chunk.js": "/pqdb/static/js/2.958bfcf9.chunk.js",
-    "static/js/2.958bfcf9.chunk.js.map": "/pqdb/static/js/2.958bfcf9.chunk.js.map",
+    "static/js/2.675d08ff.chunk.js": "/pqdb/static/js/2.675d08ff.chunk.js",
+    "static/js/2.675d08ff.chunk.js.map": "/pqdb/static/js/2.675d08ff.chunk.js.map",
     "index.html": "/pqdb/index.html",
-    "static/js/2.958bfcf9.chunk.js.LICENSE.txt": "/pqdb/static/js/2.958bfcf9.chunk.js.LICENSE.txt",
+    "static/js/2.675d08ff.chunk.js.LICENSE.txt": "/pqdb/static/js/2.675d08ff.chunk.js.LICENSE.txt",
     "static/js/sql-wasm.wasm": "/pqdb/static/js/sql-wasm.wasm",
     "static/media/menu-arrow.91d51d4a.svg": "/pqdb/static/media/menu-arrow.91d51d4a.svg",
     "static/media/pqdb.03d23b89.svg": "/pqdb/static/media/pqdb.03d23b89.svg",
-    "static/media/tables.eedb64ce.svg": "/pqdb/static/media/tables.eedb64ce.svg"
+    "static/media/tables.8e422b11.svg": "/pqdb/static/media/tables.8e422b11.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.7e89fbaa.js",
-    "static/js/2.958bfcf9.chunk.js",
-    "static/js/main.d467b2bb.chunk.js"
+    "static/js/2.675d08ff.chunk.js",
+    "static/js/main.53249094.chunk.js"
   ]
 }

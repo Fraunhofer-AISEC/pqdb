@@ -1,0 +1,290 @@
+<svg version="1.1" baseProfile="full" width="2800.5" height="1486" viewbox="0 0 2800.5 1486" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+  <title >PQDB Database Diagram</title>
+  <desc >#title: PQDB Database Diagram
+[scheme|id: INTEGER  🔑;id_text: TEXT ;type: TEXT ;name: TEXT ;description: TEXT ;comment: TEXT ;category: TEXT ;category_comment: TEXT ;stateful: INTEGER ;stateful_comment: TEXT ;nist_round: TEXT ;year_paper: INTEGER ;year_candidate: INTEGER ;year_standardization: INTEGER ;year_comment: TEXT ;problems_comment: TEXT ;trust_comment: TEXT ;website: TEXT ;patents: TEXT ;last_updated: TEXT ;last_updated_comment: TEXT ]
+[scheme_author|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;scheme_id: INTEGER ]
+[scheme_problem|id: INTEGER  🔑;id_text: TEXT ;assumption: TEXT ;comment: TEXT ;scheme_id: INTEGER ]
+[scheme_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+[scheme_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+[scheme_patents_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+[flavor|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;description: TEXT ;comment: TEXT ;type: TEXT ;type_comment: TEXT ;security_notion: TEXT ;security_notion_comment: TEXT ;dh_ness: TEXT ;scheme_id: INTEGER ]
+[flavor_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;flavor_id: INTEGER ]
+[flavor_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;flavor_id: INTEGER ]
+[paramset|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;comment: TEXT ;security_level_classical: INTEGER ;security_level_quantum: INTEGER ;security_level_nist_category: INTEGER ;security_level_comment: TEXT ;failure_probability: REAL ;failure_probability_comment: TEXT ;sizes_sk: INTEGER ;sizes_pk: INTEGER ;sizes_msg: INTEGER ;sizes_ct_sig: INTEGER ;sizes_comment: TEXT ;number_of_operations: TEXT ;flavor_id: INTEGER ]
+[paramset_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;paramset_id: INTEGER ]
+[paramset_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;paramset_id: INTEGER ]
+[implementation|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;comment: TEXT ;platform: TEXT ;type: TEXT ;side_channel_guarding_branching: INTEGER ;side_channel_guarding_timing: INTEGER ;side_channel_guarding_branching_comment: TEXT ;side_channel_guarding_timing_comment: TEXT ;code_size_overall: REAL ;code_size_gen: REAL ;code_size_enc_sign: REAL ;code_size_dec_vrfy: REAL ;code_size_comment: TEXT ;randomness_required_gen: REAL ;randomness_required_enc_sign: REAL ;randomness_required_dec_vrfy: REAL ;randomness_required_comment: TEXT ;flavor_id: INTEGER ]
+[implementation_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;implementation_id: INTEGER ]
+[implementation_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;implementation_id: INTEGER ]
+[implementation_hardware_feature|id: INTEGER  🔑;id_text: TEXT ;feature: TEXT ;implementation_id: INTEGER ]
+[implementation_dependency|id: INTEGER  🔑;id_text: TEXT ;dependency: TEXT ;implementation_id: INTEGER ]
+[benchmark|id: INTEGER  🔑;id_text: TEXT ;comment: TEXT ;platform: TEXT ;timings_gen: REAL ;timings_enc_sign: REAL ;timings_dec_vrfy: REAL ;timings_unit: TEXT ;timings_comment: TEXT ;memory_requirements_gen: INTEGER ;memory_requirements_enc_sign: INTEGER ;memory_requirements_dec_vrfy: INTEGER ;memory_requirements_comment: TEXT ;paramset_id: INTEGER ;implementation_id: INTEGER ]
+[benchmark_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;benchmark_id: INTEGER ]
+[benchmark_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;benchmark_id: INTEGER ]
+[scheme_author] -&gt; [scheme]
+[scheme_problem] -&gt; [scheme]
+[scheme_link] -&gt; [scheme]
+[scheme_source] -&gt; [scheme]
+[scheme_patents_source] -&gt; [scheme]
+[flavor] -&gt; [scheme]
+[flavor_link] -&gt; [flavor]
+[flavor_source] -&gt; [flavor]
+[paramset] -&gt; [flavor]
+[paramset_link] -&gt; [paramset]
+[paramset_source] -&gt; [paramset]
+[implementation] -&gt; [flavor]
+[implementation_link] -&gt; [implementation]
+[implementation_source] -&gt; [implementation]
+[implementation_hardware_feature] -&gt; [implementation]
+[implementation_dependency] -&gt; [implementation]
+[benchmark] -&gt; [implementation]
+[benchmark] -&gt; [paramset]
+[benchmark_link] -&gt; [benchmark]
+[benchmark_source] -&gt; [benchmark]</desc>
+  <rect width="100%" height="100%" fill="white"/>
+  <path d="M107 1019 L107 1091.5 L188 1163.2 L188 1163.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M174.5 1158.4 L183 1158.8 L181.6 1150.4 L188 1163.2 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M334 1026.5 L334 1091.5 L334 1111.5 L334 1111.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M328.7 1098.2 L334 1104.8 L339.3 1098.2 L334 1111.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M561 1019 L561 1091.5 L480 1163.2 L480 1163.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M486.4 1150.4 L485 1158.8 L493.5 1158.4 L480 1163.2 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M788 1019 L788 1091.5 L480 1227.9 L480 1227.9 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M490 1217.6 L486.1 1225.2 L494.4 1227.3 L480 1227.9 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1029.5 1019 L1029.5 1091.5 L480 1250.3 L480 1250.3 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M491.3 1241.5 L486.4 1248.5 L494.3 1251.7 L480 1250.3 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1323.5 1071.5 L1323.5 1091.5 L480 1262.8 L480 1262.8 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M492 1255 L486.5 1261.5 L494.1 1265.4 L480 1262.8 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M919 699.5 L919 839.5 L1177.5 920 L1177.5 920 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1163.2 921.1 L1171.1 918 L1166.4 911 L1177.5 920 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1146 699.5 L1146 839.5 L1177.5 861.9 L1177.5 861.9 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1163.5 858.5 L1172.1 858 L1169.7 849.8 L1177.5 861.9 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1463.5 797 L1463.5 839.5 L1441.3 859.5 L1441.3 859.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1447.6 846.6 L1446.2 855 L1454.8 854.5 L1441.3 859.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M771 350 L771 452.5 L1279.5 594.6 L1279.5 594.6 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1265.2 596.1 L1273.1 592.8 L1268.1 585.9 L1279.5 594.6 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1017 350 L1017 452.5 L1279.5 566.3 L1279.5 566.3 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1265.1 565.9 L1273.4 563.6 L1269.4 556.1 L1279.5 566.3 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M2210.5 819.5 L2210.5 839.5 L1469.5 944.8 L1469.5 944.8 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1482 937.6 L1476.1 943.8 L1483.5 948.2 L1469.5 944.8 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1423 332.8 L1857.3 452.5 L1988.5 524.4 L1988.5 524.4 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1974.2 522.7 L1982.7 521.2 L1979.4 513.3 L1988.5 524.4 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1726 343.7 L2028.8 452.5 L2047.5 472.5 L2047.5 472.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M2034.5 466.4 L2043 467.6 L2042.3 459.1 L2047.5 472.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M2322.6 350 L2309.5 452.5 L2299.3 472.5 L2299.3 472.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M2300.6 458.2 L2302.3 466.6 L2310.1 463.1 L2299.3 472.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M2602.7 350 L2499.8 452.5 L2432.5 497.5 L2432.5 497.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M2440.6 485.6 L2438 493.8 L2446.5 494.5 L2432.5 497.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M2134 345.2 L2539.8 452.5 L2432.5 515.5 L2432.5 515.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M2441.3 504.2 L2438.2 512.2 L2446.7 513.4 L2432.5 515.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1834.3 432.5 L1817.3 452.5 L1647.5 545.4 L1647.5 545.4 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1656.6 534.3 L1653.3 542.2 L1661.8 543.6 L1647.5 545.4 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M1822 120.5 L1822 140.5 L1838.4 160.5 L1838.4 160.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1825.8 153.6 L1834.2 155.3 L1834.1 146.8 L1838.4 160.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M2078 120.5 L2078 140.5 L2061.6 160.5 L2061.6 160.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M2065.9 146.8 L2065.8 155.3 L2074.2 153.6 L2061.6 160.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <rect x="188.5" y="1111.5" height="362" width="292" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="334.5" y="1133" style="fill: #33322E;text-anchor: middle;">scheme</text>
+  <path d="M188.5 1142.5 L480.5 1142.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="196.5" y="1164" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="196.5" y="1179" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="196.5" y="1194" style="fill: #33322E;font-weight:normal;">type: TEXT</text>
+  <text x="196.5" y="1209" style="fill: #33322E;font-weight:normal;">name: TEXT</text>
+  <text x="196.5" y="1224" style="fill: #33322E;font-weight:normal;">description: TEXT</text>
+  <text x="196.5" y="1239" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="196.5" y="1254" style="fill: #33322E;font-weight:normal;">category: TEXT</text>
+  <text x="196.5" y="1269" style="fill: #33322E;font-weight:normal;">category_comment: TEXT</text>
+  <text x="196.5" y="1284" style="fill: #33322E;font-weight:normal;">stateful: INTEGER</text>
+  <text x="196.5" y="1299" style="fill: #33322E;font-weight:normal;">stateful_comment: TEXT</text>
+  <text x="196.5" y="1314" style="fill: #33322E;font-weight:normal;">nist_round: TEXT</text>
+  <text x="196.5" y="1329" style="fill: #33322E;font-weight:normal;">year_paper: INTEGER</text>
+  <text x="196.5" y="1344" style="fill: #33322E;font-weight:normal;">year_candidate: INTEGER</text>
+  <text x="196.5" y="1359" style="fill: #33322E;font-weight:normal;">year_standardization: INTEGER</text>
+  <text x="196.5" y="1374" style="fill: #33322E;font-weight:normal;">year_comment: TEXT</text>
+  <text x="196.5" y="1389" style="fill: #33322E;font-weight:normal;">problems_comment: TEXT</text>
+  <text x="196.5" y="1404" style="fill: #33322E;font-weight:normal;">trust_comment: TEXT</text>
+  <text x="196.5" y="1419" style="fill: #33322E;font-weight:normal;">website: TEXT</text>
+  <text x="196.5" y="1434" style="fill: #33322E;font-weight:normal;">patents: TEXT</text>
+  <text x="196.5" y="1449" style="fill: #33322E;font-weight:normal;">last_updated: TEXT</text>
+  <text x="196.5" y="1464" style="fill: #33322E;font-weight:normal;">last_updated_comment: TEXT</text>
+  <rect x="13.5" y="912.5" height="107" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="107" y="934" style="fill: #33322E;text-anchor: middle;">scheme_author</text>
+  <path d="M13.5 943.5 L200.5 943.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="21.5" y="965" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="21.5" y="980" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="21.5" y="995" style="fill: #33322E;font-weight:normal;">name: TEXT</text>
+  <text x="21.5" y="1010" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="240.5" y="904.5" height="122" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="334" y="926" style="fill: #33322E;text-anchor: middle;">scheme_problem</text>
+  <path d="M240.5 935.5 L427.5 935.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="248.5" y="957" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="248.5" y="972" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="248.5" y="987" style="fill: #33322E;font-weight:normal;">assumption: TEXT</text>
+  <text x="248.5" y="1002" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="248.5" y="1017" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="467.5" y="912.5" height="107" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="561" y="934" style="fill: #33322E;text-anchor: middle;">scheme_link</text>
+  <path d="M467.5 943.5 L654.5 943.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="475.5" y="965" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="475.5" y="980" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="475.5" y="995" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="475.5" y="1010" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="694.5" y="912.5" height="107" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="788" y="934" style="fill: #33322E;text-anchor: middle;">scheme_source</text>
+  <path d="M694.5 943.5 L881.5 943.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="702.5" y="965" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="702.5" y="980" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="702.5" y="995" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="702.5" y="1010" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="921.5" y="912.5" height="107" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1029.5" y="934" style="fill: #33322E;text-anchor: middle;">scheme_patents_source</text>
+  <path d="M921.5 943.5 L1137.5 943.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="929.5" y="965" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="929.5" y="980" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="929.5" y="995" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="929.5" y="1010" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="1177.5" y="859.5" height="212" width="292" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1323.5" y="881" style="fill: #33322E;text-anchor: middle;">flavor</text>
+  <path d="M1177.5 890.5 L1469.5 890.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1185.5" y="912" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1185.5" y="927" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1185.5" y="942" style="fill: #33322E;font-weight:normal;">name: TEXT</text>
+  <text x="1185.5" y="957" style="fill: #33322E;font-weight:normal;">description: TEXT</text>
+  <text x="1185.5" y="972" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="1185.5" y="987" style="fill: #33322E;font-weight:normal;">type: TEXT</text>
+  <text x="1185.5" y="1002" style="fill: #33322E;font-weight:normal;">type_comment: TEXT</text>
+  <text x="1185.5" y="1017" style="fill: #33322E;font-weight:normal;">security_notion: TEXT</text>
+  <text x="1185.5" y="1032" style="fill: #33322E;font-weight:normal;">security_notion_comment: TEXT</text>
+  <text x="1185.5" y="1047" style="fill: #33322E;font-weight:normal;">dh_ness: TEXT</text>
+  <text x="1185.5" y="1062" style="fill: #33322E;font-weight:normal;">scheme_id: INTEGER</text>
+  <rect x="825.5" y="592.5" height="107" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="919" y="614" style="fill: #33322E;text-anchor: middle;">flavor_link</text>
+  <path d="M825.5 623.5 L1012.5 623.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="833.5" y="645" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="833.5" y="660" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="833.5" y="675" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="833.5" y="690" style="fill: #33322E;font-weight:normal;">flavor_id: INTEGER</text>
+  <rect x="1052.5" y="592.5" height="107" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1146" y="614" style="fill: #33322E;text-anchor: middle;">flavor_source</text>
+  <path d="M1052.5 623.5 L1239.5 623.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1060.5" y="645" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1060.5" y="660" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1060.5" y="675" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="1060.5" y="690" style="fill: #33322E;font-weight:normal;">flavor_id: INTEGER</text>
+  <rect x="1279.5" y="495.5" height="302" width="368" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1463.5" y="517" style="fill: #33322E;text-anchor: middle;">paramset</text>
+  <path d="M1279.5 526.5 L1647.5 526.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1287.5" y="548" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1287.5" y="563" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1287.5" y="578" style="fill: #33322E;font-weight:normal;">name: TEXT</text>
+  <text x="1287.5" y="593" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="1287.5" y="608" style="fill: #33322E;font-weight:normal;">security_level_classical: INTEGER</text>
+  <text x="1287.5" y="623" style="fill: #33322E;font-weight:normal;">security_level_quantum: INTEGER</text>
+  <text x="1287.5" y="638" style="fill: #33322E;font-weight:normal;">security_level_nist_category: INTEGER</text>
+  <text x="1287.5" y="653" style="fill: #33322E;font-weight:normal;">security_level_comment: TEXT</text>
+  <text x="1287.5" y="668" style="fill: #33322E;font-weight:normal;">failure_probability: REAL</text>
+  <text x="1287.5" y="683" style="fill: #33322E;font-weight:normal;">failure_probability_comment: TEXT</text>
+  <text x="1287.5" y="698" style="fill: #33322E;font-weight:normal;">sizes_sk: INTEGER</text>
+  <text x="1287.5" y="713" style="fill: #33322E;font-weight:normal;">sizes_pk: INTEGER</text>
+  <text x="1287.5" y="728" style="fill: #33322E;font-weight:normal;">sizes_msg: INTEGER</text>
+  <text x="1287.5" y="743" style="fill: #33322E;font-weight:normal;">sizes_ct_sig: INTEGER</text>
+  <text x="1287.5" y="758" style="fill: #33322E;font-weight:normal;">sizes_comment: TEXT</text>
+  <text x="1287.5" y="773" style="fill: #33322E;font-weight:normal;">number_of_operations: TEXT</text>
+  <text x="1287.5" y="788" style="fill: #33322E;font-weight:normal;">flavor_id: INTEGER</text>
+  <rect x="668.5" y="243.5" height="107" width="206" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="771.5" y="265" style="fill: #33322E;text-anchor: middle;">paramset_link</text>
+  <path d="M668.5 274.5 L874.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="676.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="676.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="676.5" y="326" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="676.5" y="341" style="fill: #33322E;font-weight:normal;">paramset_id: INTEGER</text>
+  <rect x="914.5" y="243.5" height="107" width="206" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1017.5" y="265" style="fill: #33322E;text-anchor: middle;">paramset_source</text>
+  <path d="M914.5 274.5 L1120.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="922.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="922.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="922.5" y="326" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="922.5" y="341" style="fill: #33322E;font-weight:normal;">paramset_id: INTEGER</text>
+  <rect x="1988.5" y="472.5" height="347" width="444" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="2210.5" y="494" style="fill: #33322E;text-anchor: middle;">implementation</text>
+  <path d="M1988.5 503.5 L2432.5 503.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1996.5" y="525" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1996.5" y="540" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1996.5" y="555" style="fill: #33322E;font-weight:normal;">name: TEXT</text>
+  <text x="1996.5" y="570" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="1996.5" y="585" style="fill: #33322E;font-weight:normal;">platform: TEXT</text>
+  <text x="1996.5" y="600" style="fill: #33322E;font-weight:normal;">type: TEXT</text>
+  <text x="1996.5" y="615" style="fill: #33322E;font-weight:normal;">side_channel_guarding_branching: INTEGER</text>
+  <text x="1996.5" y="630" style="fill: #33322E;font-weight:normal;">side_channel_guarding_timing: INTEGER</text>
+  <text x="1996.5" y="645" style="fill: #33322E;font-weight:normal;">side_channel_guarding_branching_comment: TEXT</text>
+  <text x="1996.5" y="660" style="fill: #33322E;font-weight:normal;">side_channel_guarding_timing_comment: TEXT</text>
+  <text x="1996.5" y="675" style="fill: #33322E;font-weight:normal;">code_size_overall: REAL</text>
+  <text x="1996.5" y="690" style="fill: #33322E;font-weight:normal;">code_size_gen: REAL</text>
+  <text x="1996.5" y="705" style="fill: #33322E;font-weight:normal;">code_size_enc_sign: REAL</text>
+  <text x="1996.5" y="720" style="fill: #33322E;font-weight:normal;">code_size_dec_vrfy: REAL</text>
+  <text x="1996.5" y="735" style="fill: #33322E;font-weight:normal;">code_size_comment: TEXT</text>
+  <text x="1996.5" y="750" style="fill: #33322E;font-weight:normal;">randomness_required_gen: REAL</text>
+  <text x="1996.5" y="765" style="fill: #33322E;font-weight:normal;">randomness_required_enc_sign: REAL</text>
+  <text x="1996.5" y="780" style="fill: #33322E;font-weight:normal;">randomness_required_dec_vrfy: REAL</text>
+  <text x="1996.5" y="795" style="fill: #33322E;font-weight:normal;">randomness_required_comment: TEXT</text>
+  <text x="1996.5" y="810" style="fill: #33322E;font-weight:normal;">flavor_id: INTEGER</text>
+  <rect x="1160.5" y="243.5" height="107" width="263" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1292" y="265" style="fill: #33322E;text-anchor: middle;">implementation_link</text>
+  <path d="M1160.5 274.5 L1423.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1168.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1168.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1168.5" y="326" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="1168.5" y="341" style="fill: #33322E;font-weight:normal;">implementation_id: INTEGER</text>
+  <rect x="1463.5" y="243.5" height="107" width="263" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1595" y="265" style="fill: #33322E;text-anchor: middle;">implementation_source</text>
+  <path d="M1463.5 274.5 L1726.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1471.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1471.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1471.5" y="326" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="1471.5" y="341" style="fill: #33322E;font-weight:normal;">implementation_id: INTEGER</text>
+  <rect x="2174.5" y="243.5" height="107" width="311" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="2330" y="265" style="fill: #33322E;text-anchor: middle;">implementation_hardware_feature</text>
+  <path d="M2174.5 274.5 L2485.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="2182.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="2182.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="2182.5" y="326" style="fill: #33322E;font-weight:normal;">feature: TEXT</text>
+  <text x="2182.5" y="341" style="fill: #33322E;font-weight:normal;">implementation_id: INTEGER</text>
+  <rect x="2525.5" y="243.5" height="107" width="263" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="2657" y="265" style="fill: #33322E;text-anchor: middle;">implementation_dependency</text>
+  <path d="M2525.5 274.5 L2788.5 274.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="2533.5" y="296" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="2533.5" y="311" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="2533.5" y="326" style="fill: #33322E;font-weight:normal;">dependency: TEXT</text>
+  <text x="2533.5" y="341" style="fill: #33322E;font-weight:normal;">implementation_id: INTEGER</text>
+  <rect x="1766.5" y="160.5" height="272" width="368" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1950.5" y="182" style="fill: #33322E;text-anchor: middle;">benchmark</text>
+  <path d="M1766.5 191.5 L2134.5 191.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1774.5" y="213" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1774.5" y="228" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1774.5" y="243" style="fill: #33322E;font-weight:normal;">comment: TEXT</text>
+  <text x="1774.5" y="258" style="fill: #33322E;font-weight:normal;">platform: TEXT</text>
+  <text x="1774.5" y="273" style="fill: #33322E;font-weight:normal;">timings_gen: REAL</text>
+  <text x="1774.5" y="288" style="fill: #33322E;font-weight:normal;">timings_enc_sign: REAL</text>
+  <text x="1774.5" y="303" style="fill: #33322E;font-weight:normal;">timings_dec_vrfy: REAL</text>
+  <text x="1774.5" y="318" style="fill: #33322E;font-weight:normal;">timings_unit: TEXT</text>
+  <text x="1774.5" y="333" style="fill: #33322E;font-weight:normal;">timings_comment: TEXT</text>
+  <text x="1774.5" y="348" style="fill: #33322E;font-weight:normal;">memory_requirements_gen: INTEGER</text>
+  <text x="1774.5" y="363" style="fill: #33322E;font-weight:normal;">memory_requirements_enc_sign: INTEGER</text>
+  <text x="1774.5" y="378" style="fill: #33322E;font-weight:normal;">memory_requirements_dec_vrfy: INTEGER</text>
+  <text x="1774.5" y="393" style="fill: #33322E;font-weight:normal;">memory_requirements_comment: TEXT</text>
+  <text x="1774.5" y="408" style="fill: #33322E;font-weight:normal;">paramset_id: INTEGER</text>
+  <text x="1774.5" y="423" style="fill: #33322E;font-weight:normal;">implementation_id: INTEGER</text>
+  <rect x="1714.5" y="13.5" height="107" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1822.5" y="35" style="fill: #33322E;text-anchor: middle;">benchmark_link</text>
+  <path d="M1714.5 44.5 L1930.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1722.5" y="66" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1722.5" y="81" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1722.5" y="96" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="1722.5" y="111" style="fill: #33322E;font-weight:normal;">benchmark_id: INTEGER</text>
+  <rect x="1970.5" y="13.5" height="107" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="2078.5" y="35" style="fill: #33322E;text-anchor: middle;">benchmark_source</text>
+  <path d="M1970.5 44.5 L2186.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1978.5" y="66" style="fill: #33322E;font-weight:normal;">id: INTEGER  🔑</text>
+  <text x="1978.5" y="81" style="fill: #33322E;font-weight:normal;">id_text: TEXT</text>
+  <text x="1978.5" y="96" style="fill: #33322E;font-weight:normal;">url: TEXT</text>
+  <text x="1978.5" y="111" style="fill: #33322E;font-weight:normal;">benchmark_id: INTEGER</text>
+</svg>
