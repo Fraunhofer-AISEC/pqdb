@@ -14,7 +14,9 @@ import {
   Code as CodeIcon,
   SyncAlt as DiffieHellmanIcon,
   Event as EventIcon,
+  Leaderboard as LeaderboardIcon,
   Link as LinkIcon,
+  MenuBook as MenuBookIcon,
   Tune as ParamSetIcon,
   PendingActions as PendingActionsIcon,
   PeopleAlt as PeopleIcon,
@@ -31,9 +33,7 @@ import {
   SEC_NOTIONS,
 } from '../constants';
 import Comment from '../components/Comment';
-import PodiumIcon from '../icons/Podium';
 import PropItem from '../components/PropItem';
-import SourceIcon from '../icons/Book';
 import TextComment from '../components/TextComment';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
@@ -133,7 +133,7 @@ class SchemeDetail extends React.Component {
                 <Comment title={scheme.stateful_comment} />
               </PropItem>
               )}
-              <PropItem key="nist_round" title="NIST standardization" Icon={PodiumIcon}>
+              <PropItem key="nist_round" title="NIST standardization" Icon={LeaderboardIcon}>
                 {NIST_ROUNDS[scheme.nist_round].long}
               </PropItem>
 
@@ -207,7 +207,7 @@ class SchemeDetail extends React.Component {
 
               {sources.length > 0
                 && (
-                <PropItem key="sources" title="Sources" Icon={SourceIcon}>
+                <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
                   {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
                 </PropItem>
                 )}
