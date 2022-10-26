@@ -26,13 +26,12 @@ authors:
   - Cen Jung Tjhai
   - Martin Tomlinson
 sources:
-  - 'https://classic.mceliece.org/nist/mceliece-20201010.pdf'
-  - >-
-    https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/official-comments/Classic-McEliece-round2-official-comment.pdf
+  - 'https://classic.mceliece.org/mceliece-spec-20221023.pdf'
+  - 'https://classic.mceliece.org/nist.html'
 website: https://classic.mceliece.org/
 problems:
   - assumption: Computational Syndrome Decoding
 description: >-
   Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
   binary Goppa codes.
-last_updated: '2022-10-06'
+last_updated: '2022-10-26'

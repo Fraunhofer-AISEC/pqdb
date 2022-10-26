@@ -2,4 +2,4 @@ name: Classic McEliece KEM
 type: KEM
 security notion: IND-CCA
 sources:
-  - 'https://classic.mceliece.org/nist/mceliece-20201010.pdf#section.3'
+  - 'https://classic.mceliece.org/mceliece-spec-20221023.pdf#section.7'
