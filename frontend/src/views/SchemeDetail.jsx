@@ -141,6 +141,13 @@ class SchemeDetail extends React.Component {
                 {NIST_ROUNDS[scheme.nist_round].long}
               </PropItem>
 
+              {attacks.length > 0
+                && (
+                <PropItem key="attacks" title="Attacks" Icon={BoltIcon}>
+                  {attacks.map((a) => <div key={a.url}>{linkify(a.url)}</div>)}
+                </PropItem>
+                )}
+
               <PropItem key="year" title="Year" Icon={EventIcon}>
                 {
                 [
@@ -189,13 +196,6 @@ class SchemeDetail extends React.Component {
               <PropItem key="authors" title="Authors" Icon={PeopleIcon}>
                 {authors.map((a) => <div key={a.name}>{a.name}</div>)}
               </PropItem>
-
-              {attacks.length > 0
-                && (
-                <PropItem key="attacks" title="Attacks" Icon={BoltIcon}>
-                  {attacks.map((a) => <div key={a.url}>{linkify(a.url)}</div>)}
-                </PropItem>
-                )}
 
               {(scheme.website || links.length > 0)
                 && (

@@ -3,7 +3,6 @@ comment: optimized implementation using vector-PCLMULQDQ instructions
 platform: c
 type: optimized
 hardware features:
-  - avx512
   - vector-PCLMULQDQ
 side channel guarding:
   branching: true

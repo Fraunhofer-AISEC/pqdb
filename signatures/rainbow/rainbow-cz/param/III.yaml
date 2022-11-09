@@ -1,12 +1,12 @@
 name: Rainbow-III
 comment: '(q, v1, o1, o2) = (GF(256), 68, 32, 48)'
 security level:
-  classical: 217
+  classical: 157
   quantum: 200
   nist category: 1
 failure probability: 0
 sizes:
   sk: 611300
   pk: 258400
-  ct|sig: 1312
+  ct|sig: 164
 number of operations: inf

@@ -1,12 +1,12 @@
 name: Rainbow-I
 comment: '(GF(16), 36, 32, 32)'
 security level:
-  classical: 147
+  classical: 69
   quantum: 86
   nist category: 0
 failure probability: 0
 sizes:
   sk: 101200
   pk: 58800
-  ct|sig: 528
+  ct|sig: 66
 number of operations: inf

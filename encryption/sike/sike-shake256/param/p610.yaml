@@ -1,9 +1,9 @@
 name: SIKEp610
 security level:
-    classical: 189
+    classical: 9
     quantum: 169
     nist category: 0
-    comment: Classical security level is achieved using 2^80 memory. Quantum security uses a depth of 159 and width of 25.
+    comment: Classical security is estimated using the expected number of calls of the Castryck-Decru attack from https://github.com/jack4818/Castryck-Decru-SageMath. Quantum security uses a depth of 159 and width of 25.
 failure probability: 0
 number of operations: inf
 sizes:

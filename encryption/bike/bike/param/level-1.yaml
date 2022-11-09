@@ -6,8 +6,8 @@ security level:
   classical: 128
 failure probability: -128
 sizes:
-  sk: 2244
-  pk: 12323
-  ct|sig: 12579
+  sk: 281
+  pk: 1541
+  ct|sig: 1573
   msg: 32
 number of operations: inf
