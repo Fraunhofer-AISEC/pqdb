@@ -7,7 +7,7 @@ failure probability: 0
 number of operations: inf
 sizes:
   msg: 32
-  ct|sig: 240
+  ct|sig: 208
   pk: 1044992
   sk: 13892
 comment: semi-systematic

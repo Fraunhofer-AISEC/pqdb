@@ -1,0 +1,8 @@
+timings:
+  gen: 296000
+  enc|sign: 756000
+  dec|vrfy: 1314000
+  unit: cycles
+platform: >-
+  Intel Core i7-7820XCPU 3.6GHz, gcc(version10.1.0)
+  flags: -O3 -std=c99 -funroll-all-loops -flto -pedantic -Wall -Wextra.

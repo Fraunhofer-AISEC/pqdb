@@ -21,9 +21,12 @@ authors:
   - Vladimir Soukharev
   - David Urbanik
 stateful: false
-nist round: '3a'
+nist round: '4'
 problems:
     - assumption: hardness of isogeny computation on supersingular elliptic curves
 website: https://sike.org/
 sources:
-  - 'NIST submission paper, round 2 version from 2020-04-16 (https://web.archive.org/web/20200422113006/https://sike.org/files/SIDH-spec.pdf)'
+  - 'NIST submission paper, round 4 version from 2022-09-15 (https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/round-4/submissions/SIKE-spec.pdf)'
+attacks:
+  - 'The SIKE team acknowledges that SIKE and SIDH are insecure and should not be used (https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/round-4/submissions/SIKE-spec.pdf)'
+last_updated: '2022-10-05'

@@ -27,4 +27,6 @@ sources:
 description: >-
   Rainbow is a multivariate-based public key signature scheme which can be seen
   as a multi-layer variant of the Oil-Vinegar signature scheme.
-last_updated: '2020-11-12'
+attacks:
+  - 'Breaking Rainbow Takes a Weekend on a Laptop (https://eprint.iacr.org/2022/214.pdf)'
+last_updated: '2022-10-06'

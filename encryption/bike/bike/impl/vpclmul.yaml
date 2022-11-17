@@ -2,6 +2,8 @@ name: VPCLMUL
 comment: optimized implementation using vector-PCLMULQDQ instructions
 platform: c
 type: optimized
+hardware features:
+  - vector-PCLMULQDQ
 side channel guarding:
   branching: true
   timing: true

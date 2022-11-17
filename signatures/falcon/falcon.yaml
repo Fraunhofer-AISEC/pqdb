@@ -19,10 +19,13 @@ authors:
 problems:
   - assumption: SIS over NTRU lattices
 stateful: false
-nist round: 3f
+nist round: S
 sources:
   - >-
     NIST Submission Paper, Round 3, Version 1.2
     (https://web.archive.org/web/20201120101856/https://falcon-sign.info/falcon.pdf)
-last_updated: '2020-11-06'
+  - >-
+    NIST Standardization Zip File
+    (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Falcon-Round3.zip)
+last_updated: '2022-10-06'
 website: https://falcon-sign.info/

@@ -1,9 +1,9 @@
 name: SIKEp751
 security level:
-    classical: 272
+    classical: 16
     quantum: 205
-    nist category: 5
-    comment: Quantum security uses a depth of 194 and width of 27.
+    nist category: 0
+    comment: Classical security is estimated using the expected number of calls of the Castryck-Decru attack from https://github.com/jack4818/Castryck-Decru-SageMath. Quantum security uses a depth of 194 and width of 27.
 failure probability: 0
 number of operations: inf
 sizes:

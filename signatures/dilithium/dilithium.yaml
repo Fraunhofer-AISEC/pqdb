@@ -2,7 +2,7 @@ name: Dilithium
 description: 'Based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts.'
 stateful: false
 category: lattice
-nist round: 3f
+nist round: S
 year:
   paper: 2018
   candidate: 2017
@@ -26,12 +26,9 @@ links:
   - Initial paper (https://eprint.iacr.org/2017/633)
 sources:
   - >-
-    https://web.archive.org/web/20200423102237/https://pq-crystals.org/dilithium/data/dilithium-specification-round2.pdf
-  - 'https://github.com/pq-crystals/dilithium/tree/round2'
-  - >-
     NIST Round 3 Specification
     (https://pq-crystals.org/dilithium/data/dilithium-specification-round3-20210208.pdf)
   - >-
-    NIST Round 3 submission
+    NIST Standardization Zip File
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Dilithium-Round3.zip)
-last_updated: '2020-11-26'
+last_updated: '2022-10-06'
