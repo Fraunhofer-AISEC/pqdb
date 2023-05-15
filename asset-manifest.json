@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/pqdb/static/js/main.234c6f88.chunk.js",
-    "main.js.map": "/pqdb/static/js/main.234c6f88.chunk.js.map",
+    "main.js": "/pqdb/static/js/main.56d26568.chunk.js",
+    "main.js.map": "/pqdb/static/js/main.56d26568.chunk.js.map",
     "runtime-main.js": "/pqdb/static/js/runtime-main.7e89fbaa.js",
     "runtime-main.js.map": "/pqdb/static/js/runtime-main.7e89fbaa.js.map",
     "static/js/2.f736a010.chunk.js": "/pqdb/static/js/2.f736a010.chunk.js",
@@ -16,6 +16,6 @@
   "entrypoints": [
     "static/js/runtime-main.7e89fbaa.js",
     "static/js/2.f736a010.chunk.js",
-    "static/js/main.234c6f88.chunk.js"
+    "static/js/main.56d26568.chunk.js"
   ]
 }
