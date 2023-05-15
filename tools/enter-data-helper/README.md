@@ -6,7 +6,7 @@ There are two possible ways of using it:
 
 ## Use Packaged Build (Recommended)
 
-Download a packaged build for your system [here](https://github.com/cryptoeng/pqdb/releases).
+Download a packaged build for your system [here](https://github.com/Fraunhofer-AISEC/pqdb/releases).
 
 ### Linux
 

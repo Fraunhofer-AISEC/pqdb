@@ -1,6 +1,6 @@
 # PQDB Frontend
 
-This is the frontend for displaying data from pqdb. The latest deployment of the frontend can be accessed at https://cryptoeng.github.io/pqdb/.
+This is the frontend for displaying data from pqdb. The latest deployment of the frontend can be accessed at https://www.pqdb.info/.
 
 ## Testing locally
 
@@ -30,4 +30,4 @@ yarn install
 yarn start
 ```
 
-This starts the React app and loads the url (http://localhost:3000/pqdb) in the browser.
+This starts the React app and loads the url (http://localhost:3000/) in the browser.

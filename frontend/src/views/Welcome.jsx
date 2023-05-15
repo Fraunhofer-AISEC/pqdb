@@ -60,7 +60,7 @@ function Welcome({ db }) {
           <Typography paragraph>
             This is the frontend presenting data from
             {' '}
-            <Link href="https://github.com/cryptoeng/pqdb/">https://github.com/cryptoeng/pqdb/</Link>
+            <Link href="https://github.com/Fraunhofer-AISEC/pqdb/">https://github.com/Fraunhofer-AISEC/pqdb</Link>
             . You can select different views by clicking the menu icon in the top left corner.
           </Typography>
           <Typography paragraph>
@@ -80,7 +80,7 @@ function Welcome({ db }) {
           <Typography paragraph>
             Contributions are warmly welcomed, see
             {' '}
-            <Link href="https://github.com/cryptoeng/pqdb#contribute">here</Link>
+            <Link href="https://github.com/Fraunhofer-AISEC/pqdb#contribute">here</Link>
             {' '}
             for details.
           </Typography>

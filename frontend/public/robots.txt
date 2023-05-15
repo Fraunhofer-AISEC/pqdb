@@ -1,1 +1,1 @@
-Sitemap: https://cryptoeng.github.io/pqdb/sitemap.txt
+Sitemap: https://www.pqdb.info/sitemap.txt

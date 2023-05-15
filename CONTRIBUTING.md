@@ -21,7 +21,7 @@ We have configured github hooks that automatically run validation after pushing.
 
 If you think a change to the schema is necessary (for example to add further APIs or security notions), please do so in a separate commit and justify the change.
 
-When you are done, please [create a pull request](https://github.com/cryptoeng/pqdb/compare).
+When you are done, please [create a pull request](https://github.com/Fraunhofer-AISEC/pqdb/compare).
 
 Data Format Overview
 --------------------

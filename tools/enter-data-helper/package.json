@@ -1,11 +1,11 @@
 {
   "name": "enter-data-helper",
-  "author": "CryptoEng",
+  "author": "Fraunhofer AISEC",
   "version": "0.1.4",
   "private": true,
   "homepage": "./",
   "build": {
-    "appId": "de.cryptoeng.enter-data-helper",
+    "appId": "de.aisec.fraunhofer.enter-data-helper",
     "files": [
       "build/**/*",
       "node_modules/**/*",
