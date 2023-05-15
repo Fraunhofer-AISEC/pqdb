@@ -23,7 +23,7 @@ import App from './App';
 const AppWithRouter = withRouter(App);
 ReactDOM.render(
   <React.StrictMode>
-    <Router basename="/pqdb">
+    <Router>
       <AppWithRouter />
     </Router>
   </React.StrictMode>,

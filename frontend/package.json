@@ -2,7 +2,7 @@
   "name": "pqdb-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cryptoeng.github.io/pqdb",
+  "homepage": "https://www.pqdb.info/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
