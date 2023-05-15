@@ -1,4 +1,4 @@
-https://cryptoeng.github.io/pqdb/
-https://cryptoeng.github.io/pqdb/?/raw_sql
-https://cryptoeng.github.io/pqdb/?/detail
-https://cryptoeng.github.io/pqdb/?/comparison
+https://www.pqdb.info/
+https://www.pqdb.info/?/raw_sql
+https://www.pqdb.info/?/detail
+https://www.pqdb.info/?/comparison
