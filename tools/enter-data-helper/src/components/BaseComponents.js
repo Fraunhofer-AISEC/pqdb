@@ -21,10 +21,10 @@ import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 import {
     Tooltip, Grid, Button, AppBar, Toolbar, IconButton, Link, Breadcrumbs, Typography, ButtonGroup, Box,
     List, ListItem, ListItemIcon, ListItemText, Paper
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon, ArrowForward as ForwardIcon
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import { showAlert, getUserConfirmation } from './Tools';
 import { Prompt } from 'react-router'
@@ -104,7 +104,7 @@ class NavBar extends React.Component {
         var last = pathLinks.length - 1;
 
         return (
-            <AppBar position="sticky">
+            <AppBar position="sticky" color="neutral">
                 <Toolbar>
                     {
                         (pathLinks.length > 1) ?
@@ -117,12 +117,12 @@ class NavBar extends React.Component {
                             </IconButton>
                     }
 
-                    <Breadcrumbs>
+                    <Breadcrumbs color="Menu">
                         {pathLinks.slice(0, last).map(x => <LinkRouter key={x[0]} to={x[0]}>{x[1]}</LinkRouter>)}
-                        {<Typography color="textPrimary">{pathLinks[last][1]}</Typography>}
+                        {<Typography>{pathLinks[last][1]}</Typography>}
                     </Breadcrumbs>
                     <Box flex={1} />
-                    <ButtonGroup>
+                    <ButtonGroup color="primary">
                         <Button
                             variant={this.props.theme === 'light' ? "contained" : "outlined"}
                             onClick={() => this.selectTheme('light')}>Light</Button>

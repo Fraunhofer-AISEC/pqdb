@@ -15,11 +15,11 @@
  */
 
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import ReactDOM from 'react-dom';
 
 const fs = window.require('fs');
-const path = require('path');
+const path = window.require('path');
 
 var argv = window.require('@electron/remote').process.argv;
 
