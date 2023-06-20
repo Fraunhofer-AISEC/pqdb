@@ -20,23 +20,19 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect } from 'react';
+
+import { DatabaseContext } from '../components/DatabaseProvider';
 import { SCHEME_TYPES } from '../constants';
 import SchemeList from '../components/SchemeList';
 
-const propTypes = {
-  db: PropTypes.shape({
-    prepare: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
-function SchemeOverview(props) {
+function SchemeOverview() {
   useEffect(() => {
     document.title = 'Scheme Overview - pqdb';
   }, []);
 
-  const { db } = props;
+  const { db } = useContext(DatabaseContext);
+
   return (
     <Container maxWidth="md">
       <Grid container justify="center" spacing={2}>
@@ -53,7 +49,5 @@ function SchemeOverview(props) {
     </Container>
   );
 }
-
-SchemeOverview.propTypes = propTypes;
 
 export default SchemeOverview;

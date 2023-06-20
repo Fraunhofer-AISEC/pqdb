@@ -14,18 +14,59 @@
  * limitations under the License.
  */
 
-import { BrowserRouter as Router, withRouter } from 'react-router-dom';
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 import App from './App';
+import CustomSQLQuery from './views/CustomSQLQuery';
+import DatabaseProvider from './components/DatabaseProvider';
+import FlavorDetail from './views/FlavorDetail';
+import SchemeComparison from './views/SchemeComparison';
+import SchemeDetail from './views/SchemeDetail';
+import SchemeOverview from './views/SchemeOverview';
+import Welcome from './views/Welcome';
 
-const AppWithRouter = withRouter(App);
-ReactDOM.render(
+// Add new views for routing here
+const router = createBrowserRouter([{
+  path: '/',
+  Component: App,
+  children: [
+    {
+      path: '',
+      Component: Welcome,
+    },
+    {
+      path: 'raw_sql',
+      Component: CustomSQLQuery,
+    },
+    {
+      path: 'comparison',
+      Component: SchemeComparison,
+    },
+    {
+      path: 'detail',
+      Component: SchemeOverview,
+    },
+    {
+      path: 'detail/:schemeId',
+      Component: SchemeDetail,
+    },
+    {
+      path: 'detail/:schemeId/:flavorId',
+      Component: FlavorDetail,
+    },
+  ],
+}]);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Router>
-      <AppWithRouter />
-    </Router>
+    <DatabaseProvider>
+      <RouterProvider router={router} />
+    </DatabaseProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
 );
