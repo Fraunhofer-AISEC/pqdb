@@ -21,38 +21,53 @@ import {
   Link,
   Paper,
   Typography,
+  useTheme,
 } from '@mui/material';
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { DatabaseContext } from '../components/DatabaseProvider';
 
 import SchemeList from '../components/SchemeList';
 import menuArrow from '../res/menu-arrow.svg';
 
-const propTypes = {
-  db: PropTypes.shape({
-    prepare: PropTypes.func.isRequired,
-  }).isRequired,
-};
+function Welcome() {
+  const { db } = useContext(DatabaseContext);
 
-function Welcome({ db }) {
+  const theme = useTheme();
+
+  const [showMenuArrow, setShowMenuArrow] = useState({ matches: true });
+
   useEffect(() => {
     document.title = 'Welcome - pqdb';
+
+    // Hide the menu arrow on small screens
+    const arrowQuery = window.matchMedia('(min-width: 1130px)');
+    setShowMenuArrow(arrowQuery);
+    arrowQuery.addEventListener('change', setShowMenuArrow);
+    return () => arrowQuery.removeEventListener('change', setShowMenuArrow);
   }, []);
 
   return (
     <Container maxWidth="md">
-      <img
-        style={{
-          position: 'absolute',
-          left: 15,
-          top: 50,
-          opacity: 0.54,
-          transform: 'scale(.8)',
-          transformOrigin: 'left top',
-        }}
-        src={menuArrow}
-        alt=""
-      />
+      {
+        (showMenuArrow.matches)
+          ? (
+            <img
+              style={{
+                position: 'absolute',
+                left: 15,
+                top: 50,
+                opacity: 0.54,
+                transform: 'scale(.8)',
+                transformOrigin: 'left top',
+                filter: `invert(${(theme.palette.mode === 'light') ? '0%' : '100%'} )`,
+              }}
+              src={menuArrow}
+              alt=""
+            />
+          )
+          : null
+      }
 
       <Paper>
         <Box p={4}>
@@ -103,7 +118,5 @@ function Welcome({ db }) {
     </Container>
   );
 }
-
-Welcome.propTypes = propTypes;
 
 export default Welcome;

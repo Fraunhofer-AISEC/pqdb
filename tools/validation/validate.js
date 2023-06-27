@@ -391,6 +391,8 @@ if (dbSchemaSvg != null) {
     var svgData = nomnoml.renderSvg(source);
     // Add white background color
     svgData = svgData.replace('</desc>\n', '</desc>\n  <rect width="100%" height="100%" fill="white"/>\n');
+    svgData = svgData.replace('xmlns:xlink', 'xmlnsXlink');
+    svgData = svgData.replace('xmlns:ev', 'xmlnsEv');
 
     // Write to file
     fs.writeFileSync(dbSchemaSvg, svgData);

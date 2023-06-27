@@ -17,9 +17,9 @@
 import React from 'react';
 import { SelectOrCreate, SelectList } from './BaseComponents';
 import { listDirs, ROOT_DIR, showAlert } from './Tools';
-import { Box, Grid, Paper } from '@material-ui/core';
+import { Box, Grid, Paper } from '@mui/material';
 const fs = window.require('fs');
-const path = require('path');
+const path = window.require('path');
 const yaml = require('js-yaml')
 
 

@@ -30,25 +30,28 @@
     }
   },
   "dependencies": {
-    "@electron/remote": "^2.0.8",
-    "@jsonforms/core": "^2.5.2",
-    "@jsonforms/material-renderers": "^2.5.2",
-    "@jsonforms/react": "^2.5.2",
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.3",
-    "@material-ui/lab": "^4.0.0-alpha.47",
+    "@electron/remote": "^2.0.10",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@jsonforms/core": "^3.0.0",
+    "@jsonforms/material-renderers": "^3.0.0",
+    "@jsonforms/react": "^3.0.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.5",
+    "@mui/styles": "^5.13.2",
+    "@mui/x-date-pickers": "^6.8.0",
     "electron-is-dev": "^2.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.3.3",
-    "react-scripts": "^4.0.3"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
-    "concurrently": "^7.2.1",
-    "electron": "^19.0.1",
-    "electron-builder": "^23.0.3",
-    "typescript": "^4.7.2",
-    "wait-on": "^6.0.1"
+    "concurrently": "^8.2.0",
+    "electron": "^25.1.1",
+    "electron-builder": "^24.4.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.1.3",
+    "wait-on": "^7.0.1"
   },
   "main": "public/electron.js",
   "scripts": {
@@ -76,5 +79,5 @@
       "last 1 safari version"
     ]
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.6.0"
 }

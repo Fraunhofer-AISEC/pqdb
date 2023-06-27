@@ -109,6 +109,13 @@ class QueryTable extends React.Component {
     this.resultHash = 'null';
   }
 
+  shouldComponentUpdate(nextProps) {
+    const { queryResult, order, orderBy } = this.props;
+    return (queryResult !== nextProps.queryResult
+       || order !== nextProps.order
+       || orderBy !== nextProps.orderBy);
+  }
+
   componentDidUpdate() {
     const { queryResult } = this.props;
     this.resultHash = (queryResult) ? md5(JSON.stringify(queryResult)) : 'null';

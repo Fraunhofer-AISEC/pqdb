@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import genCSV from 'csv-stringify';
+import { stringify } from 'csv-stringify';
 
 const propTypes = {
   queryResult: PropTypes.shape({
@@ -45,6 +45,15 @@ function startDownload(content, filename) {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
+}
+
+function stringifyCells(queryResult) {
+  return queryResult.map(
+    (row) => row.map((val) => {
+      if (val?.props?.children) return val.props.children; // If Link is used in QueryTable
+      return val;
+    }),
+  );
 }
 
 function DownloadTableButton(props) {
@@ -66,11 +75,11 @@ function DownloadTableButton(props) {
   const handleMenuItemClick = (event, index) => {
     const { queryResult } = props;
     if (index === 0) {
-      genCSV([queryResult.columns, ...queryResult.values], (err, output) => {
+      stringify([queryResult.columns, ...stringifyCells(queryResult.values)], (err, output) => {
         startDownload(output, 'data.csv');
       });
     } else if (index === 1) {
-      startDownload(JSON.stringify(queryResult, null, 2), 'data.json');
+      startDownload(JSON.stringify(stringifyCells(queryResult.values), null, 2), 'data.json');
     }
     setOpen(false);
   };

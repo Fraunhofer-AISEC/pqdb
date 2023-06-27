@@ -23,15 +23,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const defaultProps = {
-  views: { routing: false },
+  views: {},
 };
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   views: PropTypes.objectOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    view: PropTypes.elementType.isRequired,
-    routing: PropTypes.bool,
   })),
 };
 

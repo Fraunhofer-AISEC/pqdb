@@ -17,10 +17,10 @@
 import React from 'react';
 import { Generate } from '@jsonforms/core';
 import { SelectOrCreate, SelectList, EditFile } from './BaseComponents';
-import { Grid, Paper, Box } from '@material-ui/core';
+import { Grid, Paper, Box } from '@mui/material';
 import { listFiles, ROOT_DIR, disableUIElements, showAlert } from './Tools';
 const fs = window.require('fs');
-const path = require('path');
+const path = window.require('path');
 const yaml = require('js-yaml')
 const typeDirs = { "enc": path.join(ROOT_DIR, "encryption"), "sig": path.join(ROOT_DIR, "signatures") };
 
