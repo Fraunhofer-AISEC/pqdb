@@ -56,3 +56,7 @@ Further documentation is also available for the various helper tools:
 * [On schema validation](tools/validation/README.md)
 * [On the enter-data-helper](tools/enter-data-helper/README.md)
 * [On the frontend](frontend/README.md)
+
+## Acknowledgments
+
+This work was partly funded by the German Federal Ministry of Education and Research (BMBF) as part of the [FLOQI](https://floqi.org/) project (grant no. 16KIS1073) and the [KBLS](https://www.forschung-it-sicherheit-kommunikationssysteme.de/projekte/kbls) project (grant no. 16KIS1059K).
