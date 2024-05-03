@@ -22,6 +22,7 @@ import {
   Drawer,
   Grid,
   IconButton,
+  Link as MuiLink,
   Paper,
   Tooltip,
 } from '@mui/material';
@@ -148,6 +149,11 @@ function App() {
                   </Box>
                 </Paper>
               </Container>
+            </Grid>
+            <Grid item>
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+              </Box>
             </Grid>
           </Grid>
           <IconButton
