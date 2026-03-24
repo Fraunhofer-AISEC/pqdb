@@ -26,6 +26,7 @@ import App from './App';
 import CustomSQLQuery from './views/CustomSQLQuery';
 import DatabaseProvider from './components/DatabaseProvider';
 import FlavorDetail from './views/FlavorDetail';
+import PrivacyPolicy from './views/PrivacyPolicy';
 import SchemeComparison from './views/SchemeComparison';
 import SchemeDetail from './views/SchemeDetail';
 import SchemeOverview from './views/SchemeOverview';
@@ -59,6 +60,10 @@ const router = createBrowserRouter([{
     {
       path: 'detail/:schemeId/:flavorId',
       Component: FlavorDetail,
+    },
+    {
+      path: 'privacy_policy',
+      Component: PrivacyPolicy,
     },
   ],
 }]);

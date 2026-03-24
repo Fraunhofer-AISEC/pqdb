@@ -151,8 +151,9 @@ function App() {
               </Container>
             </Grid>
             <Grid item>
-              <Box display="flex" alignItems="center" justifyContent="center">
+              <Box display="flex" alignItems="center" justifyContent="center" gap="10px">
                 <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+                <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
               </Box>
             </Grid>
           </Grid>
