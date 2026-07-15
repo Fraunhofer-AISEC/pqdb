@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/* eslint-disable sort-imports */
+import DownloadTableButton from './DownloadTableButton';
+import md5 from 'md5';
+import { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import {
   Grid,
   Paper,
@@ -26,12 +33,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-import React from 'react';
-import md5 from 'md5';
-import withStyles from '@mui/styles/withStyles';
-
-import DownloadTableButton from './DownloadTableButton';
+import styled from '@mui/material/styles/styled';
 
 const propTypes = {
   formatFunctions: PropTypes.arrayOf(PropTypes.func),
@@ -56,27 +58,32 @@ const defaultProps = {
   queryResult: null,
 };
 
-// Variables for coloring properly
-function styleTableCell(a, b) {
-  return withStyles((theme) => {
-    const cellBgColors = (theme.palette.mode === 'dark') ? [
-      ['#303030', '#414141'],
-      ['#3a3a3a', '#575757'],
-    ] : [
-      ['#ffffff', '#eeeeee'],
-      ['#f5f5f5', '#d8d8d8'],
-    ];
-    return {
-      head: {
-        backgroundColor: cellBgColors[a][b],
-      },
-      body: {
-        backgroundColor: cellBgColors[a][b],
-      },
-    };
-  })(TableCell);
+// Variables for coloring properly - create styled cells using useMemo to ensure theme is available
+function createStyledCells() {
+  return [0, 1].map((a) => (
+    [0, 1].map((b) => {
+      const StyledTableCell = styled(TableCell)(({ theme }) => {
+        const paletteMode = theme?.palette?.mode || 'light';
+        const cellBgColors = (paletteMode === 'dark') ? [
+          ['#303030', '#414141'],
+          ['#3a3a3a', '#575757'],
+        ] : [
+          ['#ffffff', '#eeeeee'],
+          ['#f5f5f5', '#d8d8d8'],
+        ];
+        return {
+          head: {
+            backgroundColor: cellBgColors[a][b],
+          },
+          body: {
+            backgroundColor: cellBgColors[a][b],
+          },
+        };
+      });
+      return StyledTableCell;
+    })
+  ));
 }
-const styledCells = [0, 1].map((a) => ([0, 1].map((b) => styleTableCell(a, b))));
 
 function comparator(a, b, orderBy, isAsc) {
   let x = a[orderBy];
@@ -107,6 +114,7 @@ class QueryTable extends React.Component {
   constructor(props) {
     super(props);
     this.resultHash = 'null';
+    this.this.styledCells = createStyledCells();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -160,7 +168,7 @@ class QueryTable extends React.Component {
                     <TableRow>
                       {
                           headers.map((name, idx) => {
-                            const StyledTableCell = styledCells[1][idx % 2];
+                            const StyledTableCell = this.styledCells[1][idx % 2];
                             return (
                               <StyledTableCell
                                 key={name}
@@ -178,7 +186,7 @@ class QueryTable extends React.Component {
                 <TableRow>
                   {
                     queryResult.columns.map((column, idx) => {
-                      const StyledTableCell = styledCells[1][this.headerModVal(idx)];
+                      const StyledTableCell = this.styledCells[1][this.headerModVal(idx)];
                       return (
                         <StyledTableCell
                           key={this.createKey(column + idx)}
@@ -211,7 +219,7 @@ class QueryTable extends React.Component {
                               if (formatFunctions && formatFunctions[j]) {
                                 value = formatFunctions[j](val);
                               }
-                              const StyledTableCell = styledCells[idx % 2][this.headerModVal(j)];
+                              const StyledTableCell = this.styledCells[idx % 2][this.headerModVal(j)];
                               return (
                                 <StyledTableCell
                                   key={this.createKey(`${row[1]}-${j}`)}
