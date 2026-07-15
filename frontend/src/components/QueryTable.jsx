@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable sort-imports */
-import DownloadTableButton from './DownloadTableButton';
-import md5 from 'md5';
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 import {
   Grid,
   Paper,
@@ -33,7 +26,11 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import PropTypes from 'prop-types';
+import React from 'react';
+import md5 from 'md5';
+
+import DownloadTableButton from './DownloadTableButton';
 
 const propTypes = {
   formatFunctions: PropTypes.arrayOf(PropTypes.func),
@@ -58,31 +55,21 @@ const defaultProps = {
   queryResult: null,
 };
 
-// Variables for coloring properly - create styled cells using useMemo to ensure theme is available
-function createStyledCells() {
-  return [0, 1].map((a) => (
-    [0, 1].map((b) => {
-      const StyledTableCell = styled(TableCell)(({ theme }) => {
-        const paletteMode = theme?.palette?.mode || 'light';
-        const cellBgColors = (paletteMode === 'dark') ? [
-          ['#303030', '#414141'],
-          ['#3a3a3a', '#575757'],
-        ] : [
-          ['#ffffff', '#eeeeee'],
-          ['#f5f5f5', '#d8d8d8'],
-        ];
-        return {
-          head: {
-            backgroundColor: cellBgColors[a][b],
-          },
-          body: {
-            backgroundColor: cellBgColors[a][b],
-          },
-        };
-      });
-      return StyledTableCell;
-    })
-  ));
+// Variables for coloring properly
+function getCellBgColor(theme, a, b) {
+  const paletteMode = theme?.palette?.mode || 'light';
+  const cellBgColors = (paletteMode === 'dark') ? [
+    ['#303030', '#414141'],
+    ['#3a3a3a', '#575757'],
+  ] : [
+    ['#ffffff', '#eeeeee'],
+    ['#f5f5f5', '#d8d8d8'],
+  ];
+  return cellBgColors[a][b];
+}
+
+function cellSx(a, b) {
+  return (theme) => ({ backgroundColor: getCellBgColor(theme, a, b) });
 }
 
 function comparator(a, b, orderBy, isAsc) {
@@ -114,7 +101,6 @@ class QueryTable extends React.Component {
   constructor(props) {
     super(props);
     this.resultHash = 'null';
-    this.this.styledCells = createStyledCells();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -167,43 +153,39 @@ class QueryTable extends React.Component {
                   headers.length > 0 && (
                     <TableRow>
                       {
-                          headers.map((name, idx) => {
-                            const StyledTableCell = this.styledCells[1][idx % 2];
-                            return (
-                              <StyledTableCell
-                                key={name}
-                                align="center"
-                                colSpan={headerSpans[idx]}
-                              >
-                                {name}
-                              </StyledTableCell>
-                            );
-                          })
-                        }
+                        headers.map((name, idx) => (
+                          <TableCell
+                            key={name}
+                            align="center"
+                            colSpan={headerSpans[idx]}
+                            sx={cellSx(1, idx % 2)}
+                          >
+                            {name}
+                          </TableCell>
+                        ))
+                      }
                     </TableRow>
                   )
                 }
                 <TableRow>
                   {
-                    queryResult.columns.map((column, idx) => {
-                      const StyledTableCell = this.styledCells[1][this.headerModVal(idx)];
-                      return (
-                        <StyledTableCell
-                          key={this.createKey(column + idx)}
-                          style={{
-                            top: headers.length > 0 ? 57 : 0, // So headers don't collapse on scroll
-                          }}
+                    queryResult.columns.map((column, idx) => (
+                      <TableCell
+                        key={this.createKey(column + idx)}
+                        sx={cellSx(1, this.headerModVal(idx))}
+                        style={{
+                          top: headers.length > 0 ? 57 : 0, // So headers don't collapse on scroll
+                        }}
+                      >
+                        <TableSortLabel
+                          active={orderBy === idx}
+                          direction={orderBy === idx ? order : 'asc'}
+                          onClick={() => this.handleRequestSort(idx)}
                         >
-                          <TableSortLabel
-                            active={orderBy === idx}
-                            direction={orderBy === idx ? order : 'asc'}
-                            onClick={() => this.handleRequestSort(idx)}
-                          >
-                            {column}
-                          </TableSortLabel>
-                        </StyledTableCell>
-                      );
-                    })
+                          {column}
+                        </TableSortLabel>
+                      </TableCell>
+                    ))
                   }
                 </TableRow>
               </TableHead>
@@ -219,13 +201,13 @@ class QueryTable extends React.Component {
                               if (formatFunctions && formatFunctions[j]) {
                                 value = formatFunctions[j](val);
                               }
-                              const StyledTableCell = this.styledCells[idx % 2][this.headerModVal(j)];
                               return (
-                                <StyledTableCell
+                                <TableCell
                                   key={this.createKey(`${row[1]}-${j}`)}
+                                  sx={cellSx(idx % 2, this.headerModVal(j))}
                                 >
                                   {value}
-                                </StyledTableCell>
+                                </TableCell>
                               );
                             },
                           )
