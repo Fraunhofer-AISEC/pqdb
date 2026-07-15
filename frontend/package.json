@@ -5,9 +5,9 @@
   "homepage": "https://www.pqdb.info/",
   "dependencies": {
     "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.1",
-    "@mui/icons-material": "5.15.14",
-    "@mui/material": "5.15.14",
+    "@emotion/styled": "11.14.0",
+    "@mui/icons-material": "6.2.1",
+    "@mui/material": "6.2.1",
     "@mui/styles": "^5.13.2",
     "copy-webpack-plugin": "14.0.0",
     "csv-stringify": "6.8.1",
@@ -22,12 +22,12 @@
     "sql.js": "1.8.0"
   },
   "devDependencies": {
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "4.6.2",
     "react-app-rewired": "^2.2.1",
     "typescript": "^5.1.3"
   },
