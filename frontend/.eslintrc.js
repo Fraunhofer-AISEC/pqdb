@@ -4,8 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'plugin:react/recommended',
-    'airbnb',
+    'react-app',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -14,11 +13,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-  ],
   rules: {
-    'react/jsx-props-no-spreading': 0,
     'sort-imports': ['error', { allowSeparatedGroups: true }],
   },
 };
