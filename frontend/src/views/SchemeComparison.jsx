@@ -34,7 +34,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, {
-  useContext, useEffect, useMemo, useState,
+  useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
@@ -49,6 +49,21 @@ import humanReadableSize from '../utils/humanReadableSize';
 import not from '../utils/not';
 import queryAll from '../utils/queryAll';
 import queryAllAsArray from '../utils/queryAllAsArray';
+
+const defaultState = {
+  // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req', 'code_size'
+  showColumns: ['benchmarks', 'hw_features', 'nist_category'],
+  schemeType: 'sig',
+  platformFilter: '',
+  securityLevel: 0,
+  securityQuantum: 0,
+  showRef: false,
+  nistRound: '4',
+  showNonNistSchemes: false,
+  order: 'asc',
+  orderBy: null,
+  checkedSchemes: null,
+};
 
 function schemesListQueryDB(db, type, nistRound, nonNist) {
   const schemesListQuery = `
@@ -189,10 +204,22 @@ function getFormatFunctions(results) {
   return formatFunctions;
 }
 
+function computeResult(db, sqlQuery, params) {
+  const results = queryAllAsArray(db, sqlQuery, params);
+  if (results.values.length === 0) return undefined;
+  results.columns.shift(); // Remove the 'ID' column name
+  results.values.forEach((res) => {
+    // eslint-disable-next-line no-param-reassign
+    res[1] = <Link component={RouterLink} to={detailLink(res[0])}>{res[1]}</Link>;
+    res.shift(); // Remove the 'ID' entry
+  });
+  return results;
+}
+
 function SchemeComparison() {
   const { db } = useContext(DatabaseContext);
 
-  let platformFilterTimeout = null;
+  const platformFilterTimeout = useRef(null);
 
   const fullSchemeLists = useMemo(() => ({
     enc: schemesListQueryDB(db, 'enc', '0', true),
@@ -202,26 +229,10 @@ function SchemeComparison() {
   const [queryProcessing, setQueryProcessing] = useState(true);
   const [queryResult, setQueryResult] = useState(undefined);
   const [schemesList, setSchemesList] = useState([]);
-  const [orderChanged, setOrderChanged] = useState(false);
-
-  const defaultState = {
-    // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req', 'code_size'
-    showColumns: ['benchmarks', 'hw_features', 'nist_category'],
-    schemeType: 'sig',
-    platformFilter: '',
-    securityLevel: 0,
-    securityQuantum: 0,
-    showRef: false,
-    nistRound: '4',
-    showNonNistSchemes: false,
-    order: 'asc',
-    orderBy: null,
-    checkedSchemes: null,
-  };
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  function filterStateFromSearchParams() {
+  const filterState = useMemo(() => {
     const resultState = { ...defaultState };
     if (searchParams.has('state')) {
       try {
@@ -235,56 +246,36 @@ function SchemeComparison() {
       resultState.checkedSchemes = fullSchemeLists[resultState.schemeType];
     }
     return resultState;
-  }
+  }, [searchParams, fullSchemeLists]);
 
-  const filterState = filterStateFromSearchParams();
-  const headerSections = createHeaderSections(filterState);
-  const query = buildQuery(filterState);
+  const query = useMemo(() => buildQuery(filterState), [filterState]);
+  const headerSections = useMemo(() => createHeaderSections(filterState), [filterState]);
+
+  // Always keep the latest filterState available without adding it as an
+  // effect dependency (order changes must not trigger a recomputation).
+  const filterStateRef = useRef(filterState);
+  filterStateRef.current = filterState;
 
   function updateSearchParams(replace, newFilterState) {
     const searchParam = {};
     const { schemeType } = newFilterState;
-    defaultState.checkedSchemes = fullSchemeLists[schemeType];
+    const comparisonState = { ...defaultState, checkedSchemes: fullSchemeLists[schemeType] };
     if (!replace) Object.assign(newFilterState, { order: 'asc', orderBy: null });
 
-    Object.keys(defaultState).forEach((key) => {
+    Object.keys(comparisonState).forEach((key) => {
       const value = newFilterState[key];
-      if (Array.isArray(defaultState[key]) && Array.isArray(value)) {
-        if (not(defaultState[key], value).length > 0
-           || not(value, defaultState[key]).length > 0) {
+      if (Array.isArray(comparisonState[key]) && Array.isArray(value)) {
+        if (not(comparisonState[key], value).length > 0
+           || not(value, comparisonState[key]).length > 0) {
           searchParam[key] = value;
         }
-      } else if (value !== defaultState[key]) {
+      } else if (value !== comparisonState[key]) {
         searchParam[key] = value;
       }
     });
     const searchParamStr = JSON.stringify(searchParam);
-    setOrderChanged(replace);
     if (searchParamStr === '{}') setSearchParams({}, { replace });
     else setSearchParams({ state: searchParamStr }, { replace });
-  }
-
-  function computeResult(queryState, sqlQuery) {
-    const params = prepareParams(queryState);
-    const results = queryAllAsArray(db, sqlQuery, params);
-    if (results.values.length === 0) return undefined;
-    results.columns.shift(); // Remove the 'ID' column name
-    results.values.forEach((res) => {
-      res[1] = <Link component={RouterLink} to={detailLink(res[0])}>{res[1]}</Link>;
-      res.shift(); // Remove the 'ID' entry
-    });
-
-    return results;
-  }
-
-  function updateResult() {
-    const { schemeType, nistRound, showNonNistSchemes } = filterState;
-    const schemesListDb = schemesListQueryDB(db, schemeType, nistRound, showNonNistSchemes);
-    const queryResultDb = computeResult(filterState, query);
-
-    setQueryProcessing(false);
-    setQueryResult(queryResultDb);
-    setSchemesList(schemesListDb);
   }
 
   function setFilter(change, replace = false) {
@@ -292,21 +283,35 @@ function SchemeComparison() {
   }
 
   useEffect(() => {
-    updateResult();
     document.title = 'Scheme Comparison - pqdb';
   }, []);
 
-  useEffect(() => {
-    if (!orderChanged) setQueryProcessing(true);
-  }, [searchParams]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if (!queryProcessing) return;
+    const runQuery = () => {
+      const state = filterStateRef.current;
+      const params = prepareParams(state);
+      setQueryResult(computeResult(db, query, params));
+      setSchemesList(
+        schemesListQueryDB(db, state.schemeType, state.nistRound, state.showNonNistSchemes),
+      );
+      setQueryProcessing(false);
+    };
 
-    setTimeout(() => {
-      updateResult();
-    }, 300);
-  }, [queryProcessing]);
+    // Initial load: compute immediately, no debounce.
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      runQuery();
+      return undefined;
+    }
+
+    // `query` only changes for "real" filter changes, not for order changes,
+    // so this effect debounces exactly those recomputations.
+    setQueryProcessing(true);
+    const timeout = setTimeout(runQuery, 300);
+    return () => clearTimeout(timeout);
+  }, [db, query]);
 
   function expandQuery() {
     // UNSAFE, DO NOT USE
@@ -563,10 +568,10 @@ function SchemeComparison() {
                             label="Platform"
                             variant="outlined"
                             onChange={(e) => {
-                              clearTimeout(platformFilterTimeout);
+                              clearTimeout(platformFilterTimeout.current);
                               const filterValue = e.target.value;
-                              platformFilterTimeout = setTimeout(() => {
-                                platformFilterTimeout = null;
+                              platformFilterTimeout.current = setTimeout(() => {
+                                platformFilterTimeout.current = null;
                                 setFilter({ platformFilter: filterValue });
                               }, 750);
                             }}

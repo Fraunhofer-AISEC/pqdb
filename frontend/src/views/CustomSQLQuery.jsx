@@ -84,9 +84,9 @@ function CustomSQLQuery() {
   }, []);
 
   useEffect(() => {
-    if (sqlInput === '') return;
-
     const query = searchParams.get('query');
+    if (!query) return;
+
     setSqlInput(query);
 
     setQueryProcessing(true);
@@ -106,7 +106,7 @@ function CustomSQLQuery() {
       },
       0,
     );
-  }, [searchParams]);
+  }, [db, searchParams]);
 
   const onChangeOrder = useCallback((newOrder, newOrderBy) => {
     setOrder(newOrder);

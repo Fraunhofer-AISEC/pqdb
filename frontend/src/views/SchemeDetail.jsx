@@ -86,7 +86,7 @@ function SchemeDetail() {
       setFlavors(queryAll(db, 'SELECT * FROM flavor WHERE scheme_id=?', [queriedScheme.id]));
       setPatentslink(queryAll(db, 'SELECT * FROM scheme_patents_source WHERE scheme_id=?', [queriedScheme.id]));
     }
-  }, []);
+  }, [db, schemeId]);
 
   if (scheme === null) return null;
 

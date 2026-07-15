@@ -70,9 +70,14 @@ function FlavorDetail() {
   useEffect(() => {
     const queriedScheme = queryAll(db, 'SELECT * FROM scheme WHERE id_text=?', [schemeId])[0];
     setScheme(queriedScheme);
+    if (queriedScheme === undefined) {
+      setFlavor(undefined);
+      document.title = 'Unknown - Flavor Details - pqdb';
+      return;
+    }
     const queriedFlavor = queryAll(db, 'SELECT * FROM flavor WHERE scheme_id=? AND id_text=?', [queriedScheme.id, flavorId])[0];
     setFlavor(queriedFlavor);
-    if (queriedScheme === undefined || queriedFlavor === undefined) {
+    if (queriedFlavor === undefined) {
       document.title = 'Unknown - Flavor Details - pqdb';
     } else {
       document.title = `${queriedFlavor.name} - Flavor Details - pqdb`;
@@ -81,7 +86,7 @@ function FlavorDetail() {
       setLinks(queryAll(db, 'SELECT * FROM flavor_link WHERE flavor_id=?', [queriedFlavor.id]));
       setSources(queryAll(db, 'SELECT * FROM flavor_source WHERE flavor_id=?', [queriedFlavor.id]));
     }
-  }, []);
+  }, [db, schemeId, flavorId]);
 
   if (scheme === null) return null;
 
