@@ -197,7 +197,7 @@ function SchemeComparison() {
   const fullSchemeLists = useMemo(() => ({
     enc: schemesListQueryDB(db, 'enc', '0', true),
     sig: schemesListQueryDB(db, 'sig', '0', true),
-  }), []);
+  }), [db]);
 
   const [queryProcessing, setQueryProcessing] = useState(true);
   const [queryResult, setQueryResult] = useState(undefined);

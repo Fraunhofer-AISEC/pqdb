@@ -51,6 +51,7 @@ function DatabaseProvider({ children }) {
       .catch((err) => setError(err));
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       db?.close();
     };
   }, []);
