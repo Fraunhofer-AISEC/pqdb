@@ -25,7 +25,6 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 
 import intersection from '../utils/intersection';
 import not from '../utils/not';
@@ -36,18 +35,6 @@ const propTypes = {
   checkedList: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   onChange: PropTypes.func.isRequired,
 };
-
-const useStyles = makeStyles(() => ({
-  root: {
-    minWidth: 240,
-    maxWidth: 300,
-    overflow: 'auto',
-    maxHeight: 200,
-  },
-  listItem: {
-    padding: 1,
-  },
-}));
 
 function SchemeCheckboxList(props) {
   const { list, checkedList, onChange } = props;
@@ -76,12 +63,10 @@ function SchemeCheckboxList(props) {
     onChange(newChecked);
   };
 
-  const classes = useStyles();
-
   return (
     <Card>
       <List>
-        <ListItem dense className={classes.listItem} button onClick={handleToggleAll(list)}>
+        <ListItem dense sx={{ padding: 1 }} button onClick={handleToggleAll(list)}>
           <ListItemIcon>
             <Checkbox
               checked={numberOfChecked(list) === list.length && list.length !== 0}
@@ -94,11 +79,17 @@ function SchemeCheckboxList(props) {
         </ListItem>
       </List>
       <Divider />
-      <List className={classes.root}>
+      <List sx={{
+        minWidth: 240,
+        maxWidth: 300,
+        overflow: 'auto',
+        maxHeight: 200,
+      }}
+      >
         {list.map((value) => (
           <ListItem
             dense
-            className={classes.listItem}
+            sx={{ padding: 1 }}
             key={value}
             button
             onClick={
