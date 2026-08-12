@@ -115,11 +115,11 @@ function CustomSQLQuery() {
 
   return (
     <Grid container direction="column" spacing={2}>
-      <Grid item>
+      <Grid>
         <Paper>
           <Box p={2}>
             <Grid container direction="column" spacing={3}>
-              <Grid item>
+              <Grid>
                 <AutoFocusTextField
                   label="SQL Query"
                   multiline
@@ -134,7 +134,7 @@ function CustomSQLQuery() {
                   onChange={(e) => setSqlInput(e.target.value)}
                 />
               </Grid>
-              <Grid item>
+              <Grid>
                 <Box display="flex" justifyContent="center">
                   <Button
                     variant="contained"
@@ -150,7 +150,7 @@ function CustomSQLQuery() {
           </Box>
         </Paper>
       </Grid>
-      <Grid container item>
+      <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -162,7 +162,7 @@ function CustomSQLQuery() {
           </Accordion>
         </Container>
       </Grid>
-      <Grid container item>
+      <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
             <Box p={2} display="flex" justifyContent="center">

@@ -35,9 +35,9 @@ function SchemeOverview() {
 
   return (
     <Container maxWidth="md">
-      <Grid container justify="center" spacing={2}>
+      <Grid container justifyContent="center" spacing={2}>
         {Object.keys(SCHEME_TYPES).map((typeKey) => (
-          <Grid key={typeKey} item xs>
+          <Grid key={typeKey} size="grow">
             <Paper>
               <Box p={2}>
                 <SchemeList db={db} typeKey={typeKey} />

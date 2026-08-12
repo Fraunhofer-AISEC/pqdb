@@ -102,12 +102,12 @@ function Welcome() {
 
           <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
           <Grid container>
-            <Grid item xs key="enc">
+            <Grid size="grow" key="enc">
               <Box p={4}>
                 <SchemeList db={db} typeKey="enc" />
               </Box>
             </Grid>
-            <Grid item xs key="sig">
+            <Grid size="grow" key="sig">
               <Box p={4}>
                 <SchemeList db={db} typeKey="sig" />
               </Box>

@@ -227,7 +227,7 @@ function SchemeDetail() {
                         const plElement = patentslink[x - 1];
                         const plUrl = plElement.url;
                         return (
-                          <Link href={plUrl}>
+                          <Link key={plUrl} href={plUrl}>
                             {ps}
                           </Link>
                         );

@@ -114,7 +114,7 @@ function App() {
   let content;
   if (db) {
     content = (
-      <Grid container item>
+      <Grid container size="grow">
         <Outlet />
       </Grid>
     );
@@ -129,7 +129,7 @@ function App() {
         <CssBaseline />
         <Box p={2}>
           <Grid container direction="column" spacing={2}>
-            <Grid item>
+            <Grid>
               <Container maxWidth="sm">
                 <Link to="/">
                   <img src={logo} style={{ width: '100%', height: 'auto' }} alt="Logo" />
@@ -137,7 +137,7 @@ function App() {
               </Container>
             </Grid>
             {content}
-            <Grid item>
+            <Grid>
               <Container maxWidth="lg">
                 <Paper>
                   <Box p={1} display="flex" alignItems="center" justifyContent="center">
@@ -150,7 +150,7 @@ function App() {
                 </Paper>
               </Container>
             </Grid>
-            <Grid item>
+            <Grid>
               <Box display="flex" alignItems="center" justifyContent="center" gap="10px">
                 <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
                 <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>

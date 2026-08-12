@@ -19,7 +19,7 @@ import {
   Checkbox,
   Divider,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
@@ -66,7 +66,7 @@ function SchemeCheckboxList(props) {
   return (
     <Card>
       <List>
-        <ListItem dense sx={{ padding: 1 }} button onClick={handleToggleAll(list)}>
+        <ListItemButton dense sx={{ padding: 1 }} onClick={handleToggleAll(list)}>
           <ListItemIcon>
             <Checkbox
               checked={numberOfChecked(list) === list.length && list.length !== 0}
@@ -76,7 +76,7 @@ function SchemeCheckboxList(props) {
             />
           </ListItemIcon>
           <ListItemText primary="Schemes" />
-        </ListItem>
+        </ListItemButton>
       </List>
       <Divider />
       <List sx={{
@@ -87,11 +87,10 @@ function SchemeCheckboxList(props) {
       }}
       >
         {list.map((value) => (
-          <ListItem
+          <ListItemButton
             dense
             sx={{ padding: 1 }}
             key={value}
-            button
             onClick={
             handleSchemeToggle(value)
             }
@@ -104,7 +103,7 @@ function SchemeCheckboxList(props) {
               />
             </ListItemIcon>
             <ListItemText primary={value} />
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Card>

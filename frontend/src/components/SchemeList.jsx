@@ -71,6 +71,7 @@ function SchemeList(props) {
                 { s.website && [
                   ' ',
                   <Link
+                    key="website"
                     href={s.website}
                     target="_blank"
                     rel="noopener"

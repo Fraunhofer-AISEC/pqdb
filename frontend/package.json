@@ -6,8 +6,8 @@
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
-    "@mui/icons-material": "6.2.1",
-    "@mui/material": "6.2.1",
+    "@mui/icons-material": "7.3.11",
+    "@mui/material": "7.3.11",
     "copy-webpack-plugin": "14.0.0",
     "csv-stringify": "6.8.1",
     "md5": "^2.3.0",

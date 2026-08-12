@@ -350,15 +350,15 @@ function SchemeComparison() {
 
   return (
     <Grid container direction="column" spacing={2}>
-      <Grid item>
+      <Grid>
         <Container maxWidth="md">
           <Paper>
             <Box p={2}>
               <Grid justifyContent="space-between" container direction="row">
-                <Grid item>
+                <Grid>
                   <Typography variant="h4">Scheme Comparison</Typography>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <ToggleButtonGroup
                     value={schemeType}
                     exclusive
@@ -443,20 +443,20 @@ function SchemeComparison() {
                     </Box>
                   </Box>
                 </Paper>
-                <Grid container justify="space-between" spacing={1}>
-                  <Grid item xs>
+                <Grid container justifyContent="space-between" spacing={1}>
+                  <Grid size="grow">
                     <Accordion>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="button">Filter parameter sets</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Grid container spacing={3} justify="space-between">
-                          <Grid container item direction="column" xs>
-                            <Grid container item spacing={2}>
-                              <Grid item xs={3} style={{ minWidth: 80 }}>
+                        <Grid container spacing={3} justifyContent="space-between">
+                          <Grid container direction="column" size="grow">
+                            <Grid container size="grow" spacing={2}>
+                              <Grid size={3} style={{ minWidth: 80 }}>
                                 <Box><Typography>Classical Security</Typography></Box>
                               </Grid>
-                              <Grid item xs style={{ minWidth: 150 }}>
+                              <Grid size="grow" style={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
@@ -473,11 +473,11 @@ function SchemeComparison() {
                                 />
                               </Grid>
                             </Grid>
-                            <Grid container item spacing={2}>
-                              <Grid item xs={3} style={{ minWidth: 80 }}>
+                            <Grid container size="grow" spacing={2}>
+                              <Grid size={3} style={{ minWidth: 80 }}>
                                 <Typography>Quantum Security</Typography>
                               </Grid>
-                              <Grid item xs style={{ minWidth: 150 }}>
+                              <Grid size="grow" style={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
@@ -494,11 +494,11 @@ function SchemeComparison() {
                                 />
                               </Grid>
                             </Grid>
-                            <Grid container item spacing={2}>
-                              <Grid item xs={3} style={{ minWidth: 80 }}>
+                            <Grid container size="grow" spacing={2}>
+                              <Grid size={3} style={{ minWidth: 80 }}>
                                 <Typography>NIST Round</Typography>
                               </Grid>
-                              <Grid item xs style={{ minWidth: 150 }}>
+                              <Grid size="grow" style={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
@@ -516,7 +516,7 @@ function SchemeComparison() {
                                 />
                               </Grid>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                               <FormControlLabel
                                 control={(
                                   <Checkbox
@@ -531,7 +531,7 @@ function SchemeComparison() {
                               />
                             </Grid>
                           </Grid>
-                          <Grid item>
+                          <Grid>
                             <SchemeCheckboxList
                               list={schemesList}
                               checkedList={checkedSchemes}
@@ -544,7 +544,7 @@ function SchemeComparison() {
                       </AccordionDetails>
                     </Accordion>
                   </Grid>
-                  <Grid item>
+                  <Grid>
                     <Accordion>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="button">Filter implementations</Typography>
@@ -593,7 +593,7 @@ function SchemeComparison() {
           </Paper>
         </Container>
       </Grid>
-      <Grid container item>
+      <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
             <Box p={2} display="flex" justifyContent="center">

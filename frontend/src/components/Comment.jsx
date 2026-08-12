@@ -33,7 +33,7 @@ function Comment({ title }) {
   return (
     <>
       {'\u2002'}
-      <Tooltip interactive title={title} placement="right" arrow>
+      <Tooltip title={title} placement="right" arrow>
         <InfoIcon fontSize="inherit" style={{ cursor: 'help' }} />
       </Tooltip>
     </>

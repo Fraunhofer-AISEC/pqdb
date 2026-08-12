@@ -145,7 +145,7 @@ class QueryTable extends React.Component {
     if (!queryResult) return null;
     return (
       <Grid direction="column" alignItems="flex-end" spacing={1} container>
-        <Grid container item>
+        <Grid container size="grow">
           <TableContainer component={Paper} style={{ maxHeight: 850 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -220,7 +220,7 @@ class QueryTable extends React.Component {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item><DownloadTableButton queryResult={queryResult} /></Grid>
+        <Grid><DownloadTableButton queryResult={queryResult} /></Grid>
       </Grid>
     );
   }

@@ -16,7 +16,7 @@
 
 import {
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -38,9 +38,9 @@ function DrawerList({ views, onClick }) {
     <List>
       {
         Object.keys(views).map((key) => (
-          <ListItem key={key} button onClick={() => onClick(key)}>
+          <ListItemButton key={key} onClick={() => onClick(key)}>
             <ListItemText primary={views[key].name} secondary={views[key].description} />
-          </ListItem>
+          </ListItemButton>
         ))
       }
     </List>
