@@ -11,9 +11,13 @@ module.exports = function override(config) {
   };
   overridden.plugins.push(new CopyPlugin({
     patterns: [
-      // This wasm file will be fetched dynamically when we initialize sql.js
-      // It is important that we do not change its name, and that it is in the same folder as the js
+      // These wasm files will be fetched dynamically when we initialize sql.js.
+      // sql.js 1.14.x resolves its browser entry point to sql-wasm-browser.js which
+      // requests sql-wasm-browser.wasm, so we must copy BOTH the default and the
+      // browser wasm variants. Their names must not be changed, and they must stay
+      // in the same folder as the js.
       { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/js/' },
+      { from: 'node_modules/sql.js/dist/sql-wasm-browser.wasm', to: 'static/js/' },
     ],
   }));
 
