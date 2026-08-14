@@ -2928,9 +2928,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/styled@npm:11.14.0":
-  version: 11.14.0
-  resolution: "@emotion/styled@npm:11.14.0"
+"@emotion/styled@npm:11.14.1":
+  version: 11.14.1
+  resolution: "@emotion/styled@npm:11.14.1"
   dependencies:
     "@babel/runtime": ^7.18.3
     "@emotion/babel-plugin": ^11.13.5
@@ -2944,7 +2944,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 9c1b842e942e69fb6037d1ab161046d2bcfeff95fd2ccfdab30acaaf6b89dc07b14bb00f8cc8ec14df11e6746c8e4e1d781bc54d10bd739aab44966ded64d4fb
+  checksum: 86238d9f5c41232a73499e441fa9112e855545519d6772f489fa885634bb8f31b422a9ba9d1e8bc0b4ad66132f9d398b1c309d92c19c5ee21356b41671ec984a
   languageName: node
   linkType: hard
 
@@ -6965,10 +6965,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:6.8.1":
-  version: 6.8.1
-  resolution: "csv-stringify@npm:6.8.1"
-  checksum: c03c2de3a20e0c3456db1dd73f1caa5e7c0c922a9b00e0ea33918d0c9bce41fe0427e7a3a20694a1e000ac84e1fbebdc8b02cc5c82666cf4990b97eca1dce1b2
+"csv-stringify@npm:6.8.3":
+  version: 6.8.3
+  resolution: "csv-stringify@npm:6.8.3"
+  checksum: 244d82eda97c69e83a4728177e48114649366bf5ab616c311c175e38e3724b68bb6e56afbbd0f69e86619b4ade2a956f1014edd9119131f6992185a27e583436
   languageName: node
   linkType: hard
 
@@ -13736,11 +13736,11 @@ __metadata:
   resolution: "pqdb-frontend@workspace:."
   dependencies:
     "@emotion/react": 11.14.0
-    "@emotion/styled": 11.14.0
+    "@emotion/styled": 11.14.1
     "@mui/icons-material": 7.3.11
     "@mui/material": 7.3.11
     copy-webpack-plugin: 14.0.0
-    csv-stringify: 6.8.1
+    csv-stringify: 6.8.3
     eslint: 8.57.1
     eslint-config-airbnb: ^19.0.4
     eslint-plugin-import: 2.31.0
