@@ -70,15 +70,15 @@ function Welcome() {
       }
 
       <Paper>
-        <Box p={4}>
+        <Box sx={{ p: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             This is the frontend presenting data from
             {' '}
             <Link href="https://github.com/Fraunhofer-AISEC/pqdb/">https://github.com/Fraunhofer-AISEC/pqdb</Link>
             . You can select different views by clicking the menu icon in the top left corner.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             The page is written in
             {' '}
             <Link href="https://reactjs.org/">React</Link>
@@ -92,7 +92,7 @@ function Welcome() {
             <Link href="pqdb.sqlite">here</Link>
             ) which is generated from the data in pqdb.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             Contributions are warmly welcomed, see
             {' '}
             <Link href="https://github.com/Fraunhofer-AISEC/pqdb#contribute">here</Link>
@@ -100,15 +100,15 @@ function Welcome() {
             for details.
           </Typography>
 
-          <Typography variant="h4" component="h1" align="center" pt={2}>Available Schemes</Typography>
+          <Typography variant="h4" component="h1" sx={{ textAlign: 'center', pt: 2 }}>Available Schemes</Typography>
           <Grid container>
             <Grid size="grow" key="enc">
-              <Box p={4}>
+              <Box sx={{ p: 4 }}>
                 <SchemeList db={db} typeKey="enc" />
               </Box>
             </Grid>
             <Grid size="grow" key="sig">
-              <Box p={4}>
+              <Box sx={{ p: 4 }}>
                 <SchemeList db={db} typeKey="sig" />
               </Box>
             </Grid>

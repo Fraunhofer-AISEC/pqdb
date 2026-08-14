@@ -27,6 +27,7 @@ import {
   Link,
   Paper,
   Slider,
+  Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -349,12 +350,12 @@ function SchemeComparison() {
   } = filterState;
 
   return (
-    <Grid container direction="column" spacing={2}>
-      <Grid>
+    <Stack spacing={2}>
+      <div>
         <Container maxWidth="md">
           <Paper>
-            <Box p={2}>
-              <Grid justifyContent="space-between" container direction="row">
+            <Box sx={{ p: 2 }}>
+              <Grid container direction="row" sx={{ justifyContent: 'space-between' }}>
                 <Grid>
                   <Typography variant="h4">Scheme Comparison</Typography>
                 </Grid>
@@ -378,13 +379,13 @@ function SchemeComparison() {
                   </ToggleButtonGroup>
                 </Grid>
               </Grid>
-              <Box my={2}>
+              <Box sx={{ my: 2 }}>
                 <Paper>
-                  <Box p={2} mb={2}>
-                    <Box mb={2}>
+                  <Box sx={{ p: 2, mb: 2 }}>
+                    <Box sx={{ mb: 2 }}>
                       <Typography variant="button">Select columns to display</Typography>
                     </Box>
-                    <Box display="flex" justifyContent="center">
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       <ToggleButtonGroup
                         value={showColumns}
                         size="medium"
@@ -443,15 +444,15 @@ function SchemeComparison() {
                     </Box>
                   </Box>
                 </Paper>
-                <Grid container justifyContent="space-between" spacing={1}>
+                <Grid container spacing={1} sx={{ justifyContent: 'space-between' }}>
                   <Grid size="grow">
                     <Accordion>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="button">Filter parameter sets</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Grid container spacing={3} justifyContent="space-between">
-                          <Grid container direction="column" size="grow">
+                        <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
+                          <Stack spacing={2}>
                             <Grid container size="grow" spacing={2}>
                               <Grid size={3} style={{ minWidth: 80 }}>
                                 <Box><Typography>Classical Security</Typography></Box>
@@ -530,7 +531,7 @@ function SchemeComparison() {
                                 label="Include schemes not in the NIST competition"
                               />
                             </Grid>
-                          </Grid>
+                          </Stack>
                           <Grid>
                             <SchemeCheckboxList
                               list={schemesList}
@@ -592,11 +593,11 @@ function SchemeComparison() {
             </Box>
           </Paper>
         </Container>
-      </Grid>
+      </div>
       <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
-            <Box p={2} display="flex" justifyContent="center">
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
               <QueryTable
                 onChangeOrder={onChangeOrder}
                 order={order}
@@ -610,7 +611,7 @@ function SchemeComparison() {
           </Paper>
         </Container>
       </Grid>
-    </Grid>
+    </Stack>
   );
 }
 

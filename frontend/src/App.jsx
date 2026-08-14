@@ -24,6 +24,7 @@ import {
   IconButton,
   Link as MuiLink,
   Paper,
+  Stack,
   Tooltip,
 } from '@mui/material';
 import {
@@ -86,7 +87,7 @@ const views = {
 const pathname = (key) => `/${key}`;
 
 function Progress() {
-  return <Box display="flex" justifyContent="center"><CircularProgress /></Box>;
+  return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
 }
 
 function App() {
@@ -127,20 +128,20 @@ function App() {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={getTheme(themeId)}>
         <CssBaseline />
-        <Box p={2}>
-          <Grid container direction="column" spacing={2}>
-            <Grid>
+        <Box sx={{ p: 2 }}>
+          <Stack spacing={2}>
+            <div>
               <Container maxWidth="sm">
                 <Link to="/">
                   <img src={logo} style={{ width: '100%', height: 'auto' }} alt="Logo" />
                 </Link>
               </Container>
-            </Grid>
+            </div>
             {content}
-            <Grid>
+            <div>
               <Container maxWidth="lg">
                 <Paper>
-                  <Box p={1} display="flex" alignItems="center" justifyContent="center">
+                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
                       <IconButton onClick={() => toggleTheme()} size="large">
                         {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
@@ -149,14 +150,14 @@ function App() {
                   </Box>
                 </Paper>
               </Container>
-            </Grid>
-            <Grid>
-              <Box display="flex" alignItems="center" justifyContent="center" gap="10px">
+            </div>
+            <div>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
                 <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
                 <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
               </Box>
-            </Grid>
-          </Grid>
+            </div>
+          </Stack>
           <IconButton
             style={{ position: 'absolute', top: 0, left: 0 }}
             onClick={() => setDrawerOpen(true)}

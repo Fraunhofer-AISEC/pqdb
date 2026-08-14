@@ -17,6 +17,7 @@
 import {
   Grid,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -144,7 +145,7 @@ class QueryTable extends React.Component {
     if (queryResult === undefined) return <Typography>No results</Typography>;
     if (!queryResult) return null;
     return (
-      <Grid direction="column" alignItems="flex-end" spacing={1} container>
+      <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
         <Grid container size="grow">
           <TableContainer component={Paper} style={{ maxHeight: 850 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -220,8 +221,8 @@ class QueryTable extends React.Component {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid><DownloadTableButton queryResult={queryResult} /></Grid>
-      </Grid>
+        <div><DownloadTableButton queryResult={queryResult} /></div>
+      </Stack>
     );
   }
 }

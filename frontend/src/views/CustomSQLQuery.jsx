@@ -23,6 +23,7 @@ import {
   Container,
   Grid,
   Paper,
+  Stack,
   TextField,
 } from '@mui/material';
 import React, {
@@ -114,42 +115,38 @@ function CustomSQLQuery() {
   }, []);
 
   return (
-    <Grid container direction="column" spacing={2}>
-      <Grid>
+    <Stack spacing={2}>
+      <div>
         <Paper>
-          <Box p={2}>
-            <Grid container direction="column" spacing={3}>
-              <Grid>
-                <AutoFocusTextField
-                  label="SQL Query"
-                  multiline
-                  fullWidth
-                  margin="normal"
-                  minRows={6}
-                  maxRows={100}
-                  variant="outlined"
-                  error={error != null}
-                  helperText={error ? error.toString() : ''}
-                  value={sqlInput}
-                  onChange={(e) => setSqlInput(e.target.value)}
-                />
-              </Grid>
-              <Grid>
-                <Box display="flex" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={queryProcessing}
-                    onClick={() => executeSQLQuery()}
-                  >
-                    {(queryProcessing) ? 'Computing...' : 'Run Query'}
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
+          <Box sx={{ p: 2 }}>
+            <Stack spacing={3}>
+              <AutoFocusTextField
+                label="SQL Query"
+                multiline
+                fullWidth
+                margin="normal"
+                minRows={6}
+                maxRows={100}
+                variant="outlined"
+                error={error != null}
+                helperText={error ? error.toString() : ''}
+                value={sqlInput}
+                onChange={(e) => setSqlInput(e.target.value)}
+              />
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={queryProcessing}
+                  onClick={() => executeSQLQuery()}
+                >
+                  {(queryProcessing) ? 'Computing...' : 'Run Query'}
+                </Button>
+              </Box>
+            </Stack>
           </Box>
         </Paper>
-      </Grid>
+      </div>
       <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Accordion>
@@ -165,7 +162,7 @@ function CustomSQLQuery() {
       <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
-            <Box p={2} display="flex" justifyContent="center">
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
               <QueryTable
                 queryResult={queryResult}
                 order={order}
@@ -176,7 +173,7 @@ function CustomSQLQuery() {
           </Paper>
         </Container>
       </Grid>
-    </Grid>
+    </Stack>
   );
 }
 

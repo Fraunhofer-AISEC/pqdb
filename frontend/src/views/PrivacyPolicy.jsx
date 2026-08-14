@@ -31,23 +31,23 @@ function PrivacyPolicy() {
   return (
     <Container maxWidth="md">
       <Paper>
-        <Box p={4}>
+        <Box sx={{ p: 4 }}>
           <Typography variant="h4" gutterBottom>Privacy Policy</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             The information on this website is for informational purposes only. We do not process
             personal data beyond what is technically necessary for the provision of this service.
             Personal data, as defined by Article 4 (1) General Data Protection Regulation (GDPR),
             include all information related to an identified or identifiable natural person.
           </Typography>
           <Typography variant="h5" gutterBottom>1. Name and Contact Information of Controller and Corporate Data Protection Officer</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             This data protection information applies to data processing on our website
             {' '}
             <Link href="https://www.pqdb.info/">www.pqdb.info</Link>
             {' '}
             by the controller:
           </Typography>
-          <Typography paragraph sx={{ ml: 2 }}>
+          <Typography sx={{ ml: 2, marginBottom: '16px' }}>
             Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
             <br />
             Hansastraße 27 c
@@ -64,13 +64,13 @@ function PrivacyPolicy() {
               info(at)zv.fraunhofer.de
             </Box>
           </Typography>
-          <Typography paragraph sx={{ ml: 2 }}>
+          <Typography sx={{ ml: 2, marginBottom: '16px' }}>
             (hereinafter referred to as “Fraunhofer”)
           </Typography>
-          <Typography paragraph sx={{ ml: 2 }}>
+          <Typography sx={{ ml: 2, marginBottom: '16px' }}>
             on behalf of its
           </Typography>
-          <Typography paragraph sx={{ ml: 2 }}>
+          <Typography sx={{ ml: 2, marginBottom: '16px' }}>
             Fraunhofer-Institut für Angewandte und Integrierte Sicherheit AISEC
             <br />
             Lichtenbergstraße 11
@@ -79,7 +79,7 @@ function PrivacyPolicy() {
             <br />
             Telephone: +49 89 322 99 86-0
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             The corporate data protection officer at Fraunhofer can be reached at the
             above-mentioned address, c/o Data Protection Officer or at
             {' '}
@@ -91,7 +91,7 @@ function PrivacyPolicy() {
           </Typography>
           <Typography variant="h5" gutterBottom>2. Personal Data Processing and Purposes of Data Processing</Typography>
           <Typography variant="h6" gutterBottom>a) When visiting the website</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             We do not process any personal data on this website ourselves. This website is hosted
             as a GitHub Pages website. GitHub may collect personal information from visitors to
             this website. See the
@@ -101,17 +101,17 @@ function PrivacyPolicy() {
             for more details.
           </Typography>
           <Typography variant="h6" gutterBottom>b) Further data collection</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             No additional data is collected on this website (e.g., through cookies, analytics
             tools, or contact forms).
           </Typography>
           <Typography variant="h5" gutterBottom>3. Transfer of Data</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             If we transfer personal data collected through websites to processors, we will notify
             you in this data protection information regarding the respective data processing
             operation, citing the specific recipient.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             Aside from that, we will transfer your personal data only if
             <ul>
               <li>you have given explicit consent pursuant to Art. 6 (1) lit. a GDPR;</li>
@@ -127,7 +127,7 @@ function PrivacyPolicy() {
             above-mentioned ones.
           </Typography>
           <Typography variant="h5" gutterBottom>4. Rights of the Data Subject</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             You have the right:
             <ul>
               <li>
@@ -176,26 +176,26 @@ function PrivacyPolicy() {
             </ul>
           </Typography>
           <Typography variant="h5" gutterBottom>5. Information on your right to object pursuant to Art. 21 GDPR</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             You have the right to object, on grounds relating to your particular situation, at any
             time to processing of your personal data pursuant to Art. 6 (1) lit. e GDPR (data
             processing carried out in the public interest) and Art. 6 (1) lit. f GDPR (data
             processing for purposes of legitimate interests). This also applies to any profiling as
             defined in Art. 4 (4) GDPR that is based on said provision in Art. 6.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             If you file an objection, we will no longer process your personal data unless we can
             demonstrate compelling legitimate grounds for processing that override your interests,
             rights and freedoms, or unless the processing serves the establishment, exercise or
             defense of legal claims.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             If your objection is directed against the processing of data for the purpose of direct
             advertising, we will stop the processing immediately. In this case, citing a special
             situation is not necessary. This includes profiling to the extent that it is related to
             such direct advertising.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             If you would like to assert your right to object, simply send an email to
             {' '}
             <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
@@ -204,21 +204,21 @@ function PrivacyPolicy() {
             .
           </Typography>
           <Typography variant="h5" gutterBottom>6. Data Security</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             All your personal data are transmitted in encrypted format, using the widely used and
             secure TLS (Transport Layer Security) standard. TLS is a secure and proven standard that
             is also used, for instance, in online banking. You will recognize a secure TLS
             connection by the additional s after http (i.e., https://...) in the address bar of your
             browser or by the lock icon in the bottom part of your browser window.
           </Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             In all other regards, we use suitable technical and organizational security measures to
             protect your data against accidental or intentional manipulations, partial or complete
             loss, destruction, or the unauthorized access of third parties. We continuously improve
             our security measures in accordance with the state of the art.
           </Typography>
           <Typography variant="h5" gutterBottom>7. Timeliness and Amendments to this Data Protection Information</Typography>
-          <Typography paragraph>
+          <Typography sx={{ marginBottom: '16px' }}>
             The further development of our website and the products and services offered or changed
             due to statutory or regulatory requirements, respectively, may make it necessary to
             amend this data protection information. You may access and print out the latest data
