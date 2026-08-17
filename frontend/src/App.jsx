@@ -26,6 +26,7 @@ import {
   Paper,
   Stack,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import {
   Brightness4 as DarkIcon,
@@ -37,31 +38,32 @@ import {
   Outlet,
   useNavigate,
 } from 'react-router-dom';
-import { StyledEngineProvider, ThemeProvider, createTheme } from '@mui/material/styles';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 
 import { DatabaseContext } from './components/DatabaseProvider';
 import DrawerList from './components/DrawerList';
+import getTheme from './theme';
 import logo from './pqdb.svg';
 
-const defaultTheme = createTheme();
-function getTheme(type) {
-  return createTheme({
-    components: {
-      MuiToggleButton: {
-        styleOverrides: {
-          root: {
-            '&.Mui-disabled': {
-              color: defaultTheme.palette.action.disabled,
-            },
-          },
-        },
-      },
-    },
-    palette: {
-      mode: type,
-    },
-  });
+// User-facing theme preference. 'system' follows the OS setting and reacts to
+// changes live; 'light'/'dark' are the explicit persistent choices.
+const THEME_MODES = ['light', 'dark', 'system'];
+const THEME_STORAGE_KEY = 'pqdb-theme-mode';
+
+function readStoredMode() {
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (THEME_MODES.includes(stored)) return stored;
+  } catch {
+    // localStorage unavailable (e.g. privacy mode) — fall through to default.
+  }
+  return 'system';
+}
+
+// Resolve the effective light/dark palette for the current preference and OS.
+function resolveMode(preference, systemDark) {
+  return preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
 }
 
 // Add new views for the DrawerList here
@@ -91,7 +93,8 @@ function Progress() {
 }
 
 function App() {
-  const [themeId, setThemeId] = useState('light');
+  const [themePreference, setThemePreference] = useState(readStoredMode);
+  const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { db, error } = useContext(DatabaseContext);
 
@@ -103,14 +106,27 @@ function App() {
     setDrawerOpen(false);
   }
 
-  function toggleTheme() {
-    setThemeId((themeId === 'light') ? 'dark' : 'light');
+  function cycleTheme() {
+    const next = THEME_MODES[(THEME_MODES.indexOf(themePreference) + 1) % THEME_MODES.length];
+    setThemePreference(next);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Persistence is best-effort; the in-memory choice still applies.
+    }
   }
 
   useEffect(() => {
-    const darkPreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (darkPreferred) setThemeId('dark');
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = (e) => setSystemDark(e.matches);
+    setSystemDark(query.matches);
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
   }, []);
+
+  const mode = resolveMode(themePreference, systemDark);
+  const theme = getTheme(mode);
+  const nextModeLabel = THEME_MODES[(THEME_MODES.indexOf(themePreference) + 1) % THEME_MODES.length];
 
   let content;
   if (db) {
@@ -126,7 +142,7 @@ function App() {
   }
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={getTheme(themeId)}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box sx={{ p: 2 }}>
           <Stack spacing={2}>
@@ -141,12 +157,13 @@ function App() {
             <div>
               <Container maxWidth="lg">
                 <Paper>
-                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
-                      <IconButton onClick={() => toggleTheme()} size="large">
-                        {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
+                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                    <Tooltip title={`Theme: ${themePreference}. Click to switch to ${nextModeLabel}.`}>
+                      <IconButton onClick={cycleTheme} size="large">
+                        {(mode === 'dark') ? <LightIcon /> : <DarkIcon />}
                       </IconButton>
                     </Tooltip>
+                    <Typography variant="caption" sx={{ opacity: 0.7 }}>{themePreference}</Typography>
                   </Box>
                 </Paper>
               </Container>

@@ -1,0 +1,22 @@
+/* Self-hosted Inter variable font (SIL Open Font License 1.1).
+ * Bundled locally so no fonts are fetched from an external CDN on page load.
+ * See LICENSE.txt in this directory for the full OFL 1.1 license text.
+ *
+ * Inter v4.1 — The Inter Project Authors (https://github.com/rsms/inter).
+ * Both files are variable fonts covering the full weight axis (100–900).
+ */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./InterVariable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./InterVariable-Italic.woff2') format('woff2');
+}

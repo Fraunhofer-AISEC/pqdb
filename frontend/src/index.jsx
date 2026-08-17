@@ -26,6 +26,10 @@ import RouteError, { SafeErrorBoundary } from './components/AppErrorFallback';
 import App from './App';
 import DatabaseProvider from './components/DatabaseProvider';
 
+// Self-hosted Inter font faces are loaded here so no font is fetched from an
+// external CDN on page load. See src/fonts/fonts.css for the @font-face rules.
+import './fonts/fonts.css';
+
 // Lazy-load every route view so that a single blocked module (e.g. a browser
 // add-on blocking a request) can never take down the whole app. Each view is
 // only fetched when its route is actually visited, and any failure is contained
