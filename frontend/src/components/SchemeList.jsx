@@ -19,7 +19,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Tooltip,
+  Stack,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -30,21 +30,9 @@ import {
   SCHEME_TYPES,
 } from '../constants';
 import ExternalLinkIcon from '../icons/ExternalLink';
+import StatusBadge from './StatusBadge';
 import detailLink from '../utils/detailLink';
 import queryAll from '../utils/queryAll';
-
-function MaybeTooltip({ title, children }) {
-  return (title && title !== '') ? <Tooltip title={title}>{children}</Tooltip> : children;
-}
-
-MaybeTooltip.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
-
-MaybeTooltip.defaultProps = {
-  title: '',
-};
 
 function SchemeList(props) {
   const { typeKey, db } = props;
@@ -80,21 +68,22 @@ function SchemeList(props) {
                   </Link>,
                 ]}
               </Typography>
-              <small style={{ lineHeight: 1 }}>
-                <MaybeTooltip title={s.category_comment}>
-                  <span>{s.category}</span>
-                </MaybeTooltip>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 0.5 }}>
+                <StatusBadge kind="categories" value={s.category} title={s.category_comment} />
                 {s.nist_round !== 'none' && (
-                <>
-                  {' \u2022 '}
-                  <MaybeTooltip title={s.nist_round_comment}>
-                    <span>{NIST_ROUNDS[s.nist_round].short}</span>
-                  </MaybeTooltip>
-                </>
+                  <StatusBadge
+                    kind="rounds"
+                    value={s.nist_round}
+                    label={NIST_ROUNDS[s.nist_round].short}
+                    title={s.nist_round_comment}
+                  />
                 )}
-                {s.description && ' \u2022 '}
-                <em>{s.description}</em>
-              </small>
+              </Stack>
+              {s.description && (
+                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
+                  <em>{s.description}</em>
+                </Typography>
+              )}
             </ListItemText>
           </ListItem>
         ))}

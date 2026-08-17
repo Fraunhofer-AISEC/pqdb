@@ -52,6 +52,7 @@ import {
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import PropItem from '../components/PropItem';
+import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
@@ -118,10 +119,7 @@ function SchemeDetail() {
             </ListItem>
 
             <PropItem key="category" title="Category" Icon={CategoryIcon}>
-              {scheme.category}
-              {' '}
-              based
-              <Comment title={scheme.category_comment} />
+              <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
             </PropItem>
 
             {(scheme.stateful || scheme.stateful_comment) && (
@@ -131,7 +129,12 @@ function SchemeDetail() {
               </PropItem>
             )}
             <PropItem key="nist_round" title="NIST standardization" Icon={LeaderboardIcon}>
-              {NIST_ROUNDS[scheme.nist_round].long}
+              <StatusBadge
+                kind="rounds"
+                value={scheme.nist_round}
+                label={NIST_ROUNDS[scheme.nist_round].short ?? 'Not submitted'}
+                title={NIST_ROUNDS[scheme.nist_round].long}
+              />
             </PropItem>
 
             {attacks.length > 0

@@ -35,6 +35,7 @@ import {
   ListItem,
   ListItemText,
   Paper,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -51,6 +52,7 @@ import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import MeasureIcon from '../icons/Measure';
 import PropItem from '../components/PropItem';
+import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
@@ -206,25 +208,27 @@ function FlavorDetail() {
                   </ListItem>
 
                   <PropItem key="seclevel" title="Security Level" Icon={SecurityIcon}>
-                    <div>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                       {(p.security_level_nist_category ?? 0) > 0 && (
-                        <>
-                          <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
-                            <span>{romanCat(p.security_level_nist_category)}</span>
-                          </Tooltip>
-                          {' \u2022 '}
-                        </>
+                        <StatusBadge
+                          kind="security"
+                          value={p.security_level_nist_category}
+                          label={`NIST Cat ${romanCat(p.security_level_nist_category)}`}
+                          title={`NIST Category ${p.security_level_nist_category}`}
+                        />
                       )}
-                      {p.security_level_quantum}
-                      {' '}
-                      <span style={{ opacity: 0.5 }}> (quantum)</span>
-                      {p.security_level_classical && (
-                        <>
-                          {` \u2022 ${p.security_level_classical}`}
-                          <span style={{ opacity: 0.5 }}> (classical)</span>
-                        </>
-                      )}
-                    </div>
+                      <span>
+                        {p.security_level_quantum}
+                        {' '}
+                        <span style={{ opacity: 0.5 }}>(quantum)</span>
+                        {p.security_level_classical && (
+                          <>
+                            {` \u2022 ${p.security_level_classical}`}
+                            <span style={{ opacity: 0.5 }}>(classical)</span>
+                          </>
+                        )}
+                      </span>
+                    </Stack>
                     {p.security_level_comment
                       && <div><TextComment>{p.security_level_comment}</TextComment></div>}
                   </PropItem>
