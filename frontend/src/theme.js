@@ -25,6 +25,18 @@ const fontFamily = [
   'sans-serif',
 ].join(',');
 
+// Self-hosted JetBrains Mono (static 400/500 + italic), used as a mono accent
+// for crypto/size and numeric data. System mono fallbacks mirror the sans stack.
+const fontFamilyMono = [
+  'JetBrains Mono',
+  'ui-monospace',
+  'SFMono-Regular',
+  'Menlo',
+  'Monaco',
+  'Consolas',
+  'monospace',
+].join(',');
+
 // Deep "quantum electron" teal brand. `main` is tuned per mode so it meets
 // contrast on light and dark surfaces.
 const brand = {
@@ -125,5 +137,5 @@ function getTheme(mode) {
   });
 }
 
-export { brand, STATUS_COLORS };
+export { brand, STATUS_COLORS, fontFamilyMono };
 export default getTheme;

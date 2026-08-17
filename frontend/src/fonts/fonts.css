@@ -1,9 +1,14 @@
-/* Self-hosted Inter variable font (SIL Open Font License 1.1).
+/* Self-hosted fonts (SIL Open Font License 1.1).
  * Bundled locally so no fonts are fetched from an external CDN on page load.
- * See LICENSE.txt in this directory for the full OFL 1.1 license text.
+ * See LICENSE-Inter.txt and LICENSE-JetBrainsMono.txt in this directory for the
+ * full OFL 1.1 license texts.
  *
- * Inter v4.1 — The Inter Project Authors (https://github.com/rsms/inter).
- * Both files are variable fonts covering the full weight axis (100–900).
+ * 'Inter' — variable font (full 100–900 weight axis), used as the UI/Document
+ *           font. Inter v4.1 — The Inter Project Authors
+ *           (https://github.com/rsms/inter).
+ * 'JetBrains Mono' — static weights used as the mono accent for crypto/size and
+ *           numeric data. JetBrains Mono v2.304 — The JetBrains Mono Project
+ *           Authors (https://github.com/JetBrains/JetBrainsMono).
  */
 @font-face {
   font-family: 'Inter';
@@ -19,4 +24,28 @@
   font-weight: 100 900;
   font-display: swap;
   src: url('./InterVariable-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./JetBrainsMono-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./JetBrainsMono-Italic.woff2') format('woff2');
 }

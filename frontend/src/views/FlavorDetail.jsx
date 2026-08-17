@@ -51,6 +51,7 @@ import BottomIcon from '../icons/Bottom';
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import MeasureIcon from '../icons/Measure';
+import Mono from '../components/Mono';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
@@ -258,17 +259,17 @@ function FlavorDetail() {
                     <div>
                       sk:
                       {' '}
-                      {p.sizes_sk}
+                      <Mono>{p.sizes_sk}</Mono>
                       {' '}
                       {' \u2022 '}
                       pk:
                       {' '}
-                      {p.sizes_pk}
+                      <Mono>{p.sizes_pk}</Mono>
                       {' '}
                       {' \u2022 '}
                       {SCHEME_TYPES[scheme.type].ctsig}
                       {': '}
-                      {p.sizes_ct_sig}
+                      <Mono>{p.sizes_ct_sig}</Mono>
                     </div>
                     {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
                   </PropItem>

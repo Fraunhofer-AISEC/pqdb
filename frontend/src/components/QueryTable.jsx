@@ -32,6 +32,7 @@ import React from 'react';
 import md5 from 'md5';
 
 import DownloadTableButton from './DownloadTableButton';
+import Mono from './Mono';
 
 const propTypes = {
   formatFunctions: PropTypes.arrayOf(PropTypes.func),
@@ -207,7 +208,9 @@ class QueryTable extends React.Component {
                                   key={this.createKey(`${row[1]}-${j}`)}
                                   sx={cellSx(idx % 2, this.headerModVal(j))}
                                 >
-                                  {value}
+                                  {formatFunctions && formatFunctions[j]
+                                    ? <Mono>{value}</Mono>
+                                    : value}
                                 </TableCell>
                               );
                             },
