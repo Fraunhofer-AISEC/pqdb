@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Generate } from '@jsonforms/core';
 import { SelectOrCreate, SelectList, EditFile } from './BaseComponents';
 import { Grid, Paper, Box } from '@mui/material';
@@ -24,83 +25,78 @@ const path = window.require('path');
 const yaml = require('js-yaml')
 const typeDirs = { "enc": path.join(ROOT_DIR, "encryption"), "sig": path.join(ROOT_DIR, "signatures") };
 
-class SubtypeOverview extends React.Component {
-    constructor(props) {
-        super(props)
-        this.type = props.match.params.type;
-        this.schemeIdentifier = props.match.params.schemeIdentifier;
-        this.flavorIdentifier = props.match.params.flavorIdentifier;
-        this.subType = props.match.params.subType;
-        this.subIdentifier = props.match.params.subIdentifier;
+function generateChoices(baseDir, type) {
+    return listFiles(path.join(baseDir, type))
+        .filter(x => x.endsWith('.yaml')).map(x => x.substring(0, x.length - 5));
+}
 
-        this.targetFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.flavorIdentifier,
-            this.subType, this.subIdentifier + '.yaml');
-        this.data = yaml.load(fs.readFileSync(this.targetFile, 'utf-8'));
-        this.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
-            { 'bench': 'benchmark', 'param': 'paramset', 'impl': 'implementation' }[this.subType] + '.json')));
-        this.uiSchema = Generate.uiSchema(this.schema);
-        if (this.subType === 'bench') {
-            var parts = this.subIdentifier.split('_');
-            this.data.impl = parts[0];
-            this.data.param = parts[1];
-            disableUIElements(this.uiSchema, ['#/properties/impl', '#/properties/param']);
+function SubtypeOverview() {
+    const { type, schemeIdentifier, flavorIdentifier, subType, subIdentifier } = useParams();
+
+    const { data, schema, uiSchema } = useMemo(() => {
+        const targetFile = path.join(typeDirs[type], schemeIdentifier, flavorIdentifier,
+            subType, subIdentifier + '.yaml');
+        let data = yaml.load(fs.readFileSync(targetFile, 'utf-8'));
+        const schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema',
+            { 'bench': 'benchmark', 'param': 'paramset', 'impl': 'implementation' }[subType] + '.json')));
+        const uiSchema = Generate.uiSchema(schema);
+        if (subType === 'bench') {
+            var parts = subIdentifier.split('_');
+            data.impl = parts[0];
+            data.param = parts[1];
+            disableUIElements(uiSchema, ['#/properties/impl', '#/properties/param']);
         }
-    }
+        return { data, schema, uiSchema };
+    }, [type, schemeIdentifier, flavorIdentifier, subType, subIdentifier]);
 
-    onPreSave(data) {
-        if (this.subType === 'bench') {
+    function onPreSave(data) {
+        if (subType === 'bench') {
             delete data.param;
             delete data.impl;
         }
     }
 
-    render() {
-        return (
-            <Box px={2} pt={1} pb={2}>
-                <h2>{{
-                    'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation'
-                }[this.subType] + " Properties"}</h2>
-                <EditFile filePath={this.targetFile} initialData={this.data} schema={this.schema}
-                    uiSchema={this.uiSchema} onPreSave={(data) => this.onPreSave(data)} />
-            </Box>
-        );
-    }
+    return (
+        <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+            <h2>{{
+                'bench': 'Benchmark', 'param': 'Parameter Set', 'impl': 'Implementation'
+            }[subType] + " Properties"}</h2>
+            <EditFile filePath={path.join(typeDirs[type], schemeIdentifier, flavorIdentifier,
+                subType, subIdentifier + '.yaml')} initialData={data} schema={schema}
+                uiSchema={uiSchema} onPreSave={onPreSave} />
+        </Box>
+    );
 }
 
-class FlavorOverview extends React.Component {
-    constructor(props) {
-        super(props)
-        this.schemeIdentifier = props.match.params.schemeIdentifier;
-        this.identifier = props.match.params.flavorIdentifier;
-        this.type = props.match.params.type;
-        this.baseDir = path.join(typeDirs[this.type], this.schemeIdentifier, this.identifier);
-        this.state = {
-            param: this.generateChoices('param'),
-            impl: this.generateChoices('impl'),
-            bench: this.generateChoices('bench')
-        };
+function FlavorOverview() {
+    const { schemeIdentifier, flavorIdentifier, type } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const baseDir = path.join(typeDirs[type], schemeIdentifier, flavorIdentifier);
 
-        this.benchRegex = '^(:?' + this.state.impl.join('|') + ')_(:?' + this.state.param.join('|') + ')_[A-Za-z0-9-]+$';
-        this.history = props.history;
+    const [param, setParam] = useState(() => generateChoices(baseDir, 'param'));
+    const [impl, setImpl] = useState(() => generateChoices(baseDir, 'impl'));
+    const [bench, setBench] = useState(() => generateChoices(baseDir, 'bench'));
 
-        this.flavorFile = path.join(typeDirs[this.type], this.schemeIdentifier, this.identifier, this.identifier + '.yaml');
-        this.schema = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'flavor.json'), 'utf-8'));
-    }
+    const benchRegex = '^(:?' + impl.join('|') + ')_(:?' + param.join('|') + ')_[A-Za-z0-9-]+$';
 
-    generateChoices(type) {
-        return listFiles(path.join(this.baseDir, type))
-            .filter(x => x.endsWith('.yaml')).map(x => x.substring(0, x.length - 5));
-    }
+    const flavorFile = useMemo(() =>
+        path.join(typeDirs[type], schemeIdentifier, flavorIdentifier, flavorIdentifier + '.yaml'),
+        [type, schemeIdentifier, flavorIdentifier]);
 
-    submitForm(identifier, type, create) {
-        if (create === fs.existsSync(path.join(this.baseDir, type, identifier + ".yaml"))) {
+    const schema = useMemo(() =>
+        JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'schema', 'flavor.json'), 'utf-8')),
+        []);
+
+    function submitForm(identifier, type, create) {
+        if (create === fs.existsSync(path.join(baseDir, type, identifier + ".yaml"))) {
             showAlert('Error. Unexpected existance or non-existance of flavor file.', 'error');
             return;
         }
 
         if (create) {
             try {
-                var dir = path.join(this.baseDir, type);
+                var dir = path.join(baseDir, type);
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir);
                 var data = {};
                 fs.writeFileSync(path.join(dir, identifier + ".yaml"), yaml.dump(data));
@@ -109,65 +105,64 @@ class FlavorOverview extends React.Component {
                 showAlert('"' + identifier + '" could not be created.', 'error');
             }
 
-            var newState = {};
-            newState[type] = this.generateChoices(type);
-            this.setState(newState);
+            const fresh = generateChoices(baseDir, type);
+            if (type === 'param') setParam(fresh);
+            else if (type === 'impl') setImpl(fresh);
+            else if (type === 'bench') setBench(fresh);
 
             return;
         }
 
-        this.history.push(this.history.location.pathname + type + '/' + identifier + '/');
+        navigate(location.pathname + type + '/' + identifier + '/');
         window.scrollTo(0, 0);
     }
 
-    render() {
-        return (
-            <Grid container direction="column" spacing={3}>
-                <Grid item>
-                    <Paper>
-                        <Box px={2} pt={1} pb={2}>
-                            <h2>Flavor Properties</h2>
-                            <EditFile filePath={this.flavorFile} schema={this.schema} />
-                        </Box>
-                    </Paper>
-                </Grid>
-                <Grid item>
-                    <Paper>
-                        <Box px={2} pt={1} pb={2}>
-                            <h2>Parameter Sets</h2>
-                            <SelectList entries={this.state.param}
-                                action={(identifier) => this.submitForm(identifier, "param", false)} />
-                            <SelectOrCreate schemes={this.state.param} addNew={true}
-                                action={(data) => this.submitForm(data.identifier, "param", true)} />
-                        </Box>
-                    </Paper>
-                </Grid>
-                <Grid item>
-                    <Paper>
-                        <Box px={2} pt={1} pb={2}>
-                            <h2>Implementations</h2>
-                            <SelectList entries={this.state.impl}
-                                action={(identifier) => this.submitForm(identifier, "impl", false)} />
-                            <SelectOrCreate schemes={this.state.impl} addNew={true}
-                                action={(data) => this.submitForm(data.identifier, "impl", true)} />
-                        </Box>
-                    </Paper>
-                </Grid>
-                <Grid item>
-                    <Paper>
-                        <Box px={2} pt={1} pb={2}>
-                            <h2>Benchmarks</h2>
-                            <SelectList entries={this.state.bench}
-                                action={(identifier) => this.submitForm(identifier, "bench", false)} />
-                            <SelectOrCreate schemes={this.state.bench} regex={this.benchRegex} addNew={true}
-                                action={(data) => this.submitForm(data.identifier, "bench", true)} />
-                        </Box>
-                    </Paper>
-                </Grid>
+    return (
+        <Grid container direction="column" spacing={3}>
+            <Grid item>
+                <Paper>
+                    <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+                        <h2>Flavor Properties</h2>
+                        <EditFile filePath={flavorFile} schema={schema} />
+                    </Box>
+                </Paper>
+            </Grid>
+            <Grid item>
+                <Paper>
+                    <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+                        <h2>Parameter Sets</h2>
+                        <SelectList entries={param}
+                            action={(identifier) => submitForm(identifier, "param", false)} />
+                        <SelectOrCreate schemes={param} addNew={true}
+                            action={(data) => submitForm(data.identifier, "param", true)} />
+                    </Box>
+                </Paper>
+            </Grid>
+            <Grid item>
+                <Paper>
+                    <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+                        <h2>Implementations</h2>
+                        <SelectList entries={impl}
+                            action={(identifier) => submitForm(identifier, "impl", false)} />
+                        <SelectOrCreate schemes={impl} addNew={true}
+                            action={(data) => submitForm(data.identifier, "impl", true)} />
+                    </Box>
+                </Paper>
+            </Grid>
+            <Grid item>
+                <Paper>
+                    <Box sx={{ px: 2, pt: 1, pb: 2 }}>
+                        <h2>Benchmarks</h2>
+                        <SelectList entries={bench}
+                            action={(identifier) => submitForm(identifier, "bench", false)} />
+                        <SelectOrCreate schemes={bench} regex={benchRegex} addNew={true}
+                            action={(data) => submitForm(data.identifier, "bench", true)} />
+                    </Box>
+                </Paper>
+            </Grid>
 
-            </Grid >
-        );
-    }
+        </Grid >
+    );
 }
 
 export { FlavorOverview, SubtypeOverview };

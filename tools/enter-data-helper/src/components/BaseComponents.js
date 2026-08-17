@@ -20,22 +20,25 @@ import { Generate, schemaMatches, rankWith, resolveSchema } from '@jsonforms/cor
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
 import {
     Tooltip, Grid, Button, AppBar, Toolbar, IconButton, Link, Breadcrumbs, Typography, ButtonGroup, Box,
-    List, ListItem, ListItemIcon, ListItemText, Paper
+    List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper
 } from '@mui/material';
 import {
     Info as InfoIcon, ArrowBack as BackIcon, Home as HomeIcon, ArrowForward as ForwardIcon
 } from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation, useBlocker } from 'react-router-dom';
 import { showAlert, getUserConfirmation } from './Tools';
-import { Prompt } from 'react-router'
 const yaml = require('js-yaml');
 const fs = window.require('fs');
 const remote = window.require('@electron/remote');
 
+export const AppContext = React.createContext(null);
+
 class TooltipWrapper extends React.Component {
     constructor(props) {
         super(props);
-        this.subSchema = resolveSchema(props.schema, props.id);
+        const { schema, uischema } = props;
+        const subSchema = resolveSchema(schema, uischema && uischema.scope);
+        this.comment = subSchema ? subSchema["$comment"] : undefined;
     }
 
     render() {
@@ -49,11 +52,13 @@ class TooltipWrapper extends React.Component {
                         renderers={materialRenderers} /*need to use renderers in which this wrapper is not included*/
                     />
                 </Grid>
-                <Grid item>
-                    <Tooltip arrow placement="left" title={this.subSchema["$comment"]}>
-                        <InfoIcon />
-                    </Tooltip>
-                </Grid>
+                {this.comment != null ? (
+                    <Grid item>
+                        <Tooltip arrow placement="left" title={this.comment}>
+                            <InfoIcon />
+                        </Tooltip>
+                    </Grid>
+                ) : null}
             </Grid>
         );
     }
@@ -61,82 +66,89 @@ class TooltipWrapper extends React.Component {
 
 const LinkRouter = props => <Link color="inherit" {...props} component={RouterLink} />;
 
-class NavBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.history = props.history;
-        this.location = this.history.location.pathname;
+function NavBar() {
+    const { themeId, setTheme } = React.useContext(AppContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const currentLocation = location.pathname;
+
+    var path = currentLocation.substring(1, currentLocation.length - 1).split('/');
+    var pathLinks = [['/', "Home"]];
+    if (path.length >= 2 && path[0] !== '') {
+        var text1 = path.slice(0, 2).join("/");
+        var link1 = '/' + text1 + '/';
+        pathLinks.push([link1, text1]);
+    }
+    if (path.length >= 3) {
+        var text2 = path[2];
+        var link2 = '/' + path.slice(0, 3).join("/") + '/';
+        pathLinks.push([link2, text2]);
+    }
+    if (path.length === 5) {
+        var text3 = path.slice(3, 5).join("/");
+        var link3 = '/' + path.join('/') + '/';
+        pathLinks.push([link3, text3]);
     }
 
-    selectTheme(theme) {
-        this.props.setTheme(theme);
-    }
+    var last = pathLinks.length - 1;
 
-    componentDidMount() {
-        this.unlisten = this.history.listen((location, action) => {
-            this.location = location.pathname;
-            this.forceUpdate();
-        });
-    }
-    componentWillUnmount() {
-        this.unlisten();
-    }
+    return (
+        <AppBar position="sticky" color="neutral">
+            <Toolbar>
+                {
+                    (pathLinks.length > 1) ?
+                        <IconButton edge="start" color="inherit" onClick={() => navigate(-1)}>
+                            <BackIcon />
+                        </IconButton>
+                        :
+                        <IconButton edge="start" color="inherit">
+                            <HomeIcon />
+                        </IconButton>
+                }
 
-    render() {
-        var path = this.location.substring(1, this.location.length - 1).split('/');
-        var pathLinks = [['/', "Home"]];
-        if (path.length >= 2 && path[0] !== '') {
-            var text1 = path.slice(0, 2).join("/");
-            var link1 = '/' + text1 + '/';
-            pathLinks.push([link1, text1]);
-        }
-        if (path.length >= 3) {
-            var text2 = path[2];
-            var link2 = '/' + path.slice(0, 3).join("/") + '/';
-            pathLinks.push([link2, text2]);
-        }
-        if (path.length === 5) {
-            var text3 = path.slice(3, 5).join("/");
-            var link3 = '/' + path.join('/') + '/';
-            pathLinks.push([link3, text3]);
-        }
-
-        var last = pathLinks.length - 1;
-
-        return (
-            <AppBar position="sticky" color="neutral">
-                <Toolbar>
-                    {
-                        (pathLinks.length > 1) ?
-                            <IconButton edge="start" color="inherit" onClick={(evt) => this.history.goBack()}>
-                                <BackIcon />
-                            </IconButton>
-                            :
-                            <IconButton edge="start" color="inherit">
-                                <HomeIcon />
-                            </IconButton>
-                    }
-
-                    <Breadcrumbs color="Menu">
-                        {pathLinks.slice(0, last).map(x => <LinkRouter key={x[0]} to={x[0]}>{x[1]}</LinkRouter>)}
-                        {<Typography>{pathLinks[last][1]}</Typography>}
-                    </Breadcrumbs>
-                    <Box flex={1} />
-                    <ButtonGroup color="primary">
-                        <Button
-                            variant={this.props.theme === 'light' ? "contained" : "outlined"}
-                            onClick={() => this.selectTheme('light')}>Light</Button>
-                        <Button
-                            variant={this.props.theme === 'dark' ? "contained" : "outlined"}
-                            onClick={() => this.selectTheme('dark')}>Dark</Button>
-                    </ButtonGroup>
-                </Toolbar>
-            </AppBar>
-        );
-    }
+                <Breadcrumbs color="Menu">
+                    {pathLinks.slice(0, last).map(x => <LinkRouter key={x[0]} to={x[0]}>{x[1]}</LinkRouter>)}
+                    {<Typography>{pathLinks[last][1]}</Typography>}
+                </Breadcrumbs>
+                <Box sx={{ flex: 1 }} />
+                <ButtonGroup color="primary">
+                    <Button
+                        variant={themeId === 'light' ? "contained" : "outlined"}
+                        onClick={() => setTheme('light')}>Light</Button>
+                    <Button
+                        variant={themeId === 'dark' ? "contained" : "outlined"}
+                        onClick={() => setTheme('dark')}>Dark</Button>
+                </ButtonGroup>
+            </Toolbar>
+        </AppBar>
+    );
 }
 
 const quitQuestion = "Discard changes?"
+
+function NavigationBlocker({ when, message }) {
+    const blocker = useBlocker(when);
+    const handledRef = React.useRef(false);
+
+    React.useEffect(() => {
+        if (blocker.state === 'blocked' && !handledRef.current) {
+            handledRef.current = true;
+            getUserConfirmation(message, (answer) => {
+                handledRef.current = false;
+                if (answer) blocker.proceed();
+                else blocker.reset();
+            });
+        }
+    }, [blocker, message, when]);
+
+    React.useEffect(() => {
+        if (blocker.state === 'blocked' && !when) {
+            blocker.reset();
+        }
+    }, [blocker, when]);
+
+    return null;
+}
 
 class EditFile extends React.Component {
     constructor(props) {
@@ -190,7 +202,7 @@ class EditFile extends React.Component {
                     </Button>
                     { this.state.validState ? null : <span style={{ marginLeft:"1em", opacity:.6, textColor:"red" }}>You cannot save because there still are errors in the data.</span> }
                 </Grid>
-                <Prompt when={this.state.dataChanged} message={quitQuestion} />
+                <NavigationBlocker when={this.state.dataChanged} message={quitQuestion} />
             </Grid>
         );
     }
@@ -230,11 +242,13 @@ class SelectList extends React.Component {
                 <List component="ul">
                     {
                         this.props.entries.map(entry => (
-                            <ListItem button key={"item-" + entry} onClick={() => this.props.action(entry)}>
-                                <ListItemText primary={entry} />
-                                <ListItemIcon>
-                                    <ForwardIcon />
-                                </ListItemIcon>
+                            <ListItem key={"item-" + entry} disablePadding>
+                                <ListItemButton onClick={() => this.props.action(entry)}>
+                                    <ListItemText primary={entry} />
+                                    <ListItemIcon>
+                                        <ForwardIcon />
+                                    </ListItemIcon>
+                                </ListItemButton>
                             </ListItem>
                         ))
                     }

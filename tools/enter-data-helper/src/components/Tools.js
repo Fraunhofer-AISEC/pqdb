@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 const fs = window.require('fs');
 const path = window.require('path');
@@ -67,9 +67,10 @@ function disableUIElements(uiSchema, scopes) {
 const getUserConfirmation = (message, callback, title, yesmsg, nomsg) => {
     const modal = document.createElement('div');
     document.body.appendChild(modal);
+    const root = createRoot(modal);
 
     const withCleanup = (answer) => {
-        ReactDOM.unmountComponentAtNode(modal);
+        root.unmount();
         document.body.removeChild(modal);
         callback(answer);
     }
@@ -89,7 +90,7 @@ const getUserConfirmation = (message, callback, title, yesmsg, nomsg) => {
         nomsg = knownQuestions[title].nomsg;
     }
 
-    ReactDOM.render(
+    root.render(
         <Dialog
             open={true}
             onClose={() => withCleanup(false)}>
