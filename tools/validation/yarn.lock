@@ -132,14 +132,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.2.3":
-  version: 5.2.3
-  resolution: "js-yaml@npm:5.2.3"
+"js-yaml@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "js-yaml@npm:5.3.0"
   dependencies:
     argparse: ^2.0.1
   bin:
     js-yaml: bin/js-yaml.mjs
-  checksum: ef771189bdf77d990d03cac9984fa47c2367050376d670ae41c90d469a28f700aadb4d0ae963d1ec8b4022a21f2e2b2ac61a9d1cfb61668beb6dc8d2589f5145
+  checksum: 7b2f946dab72b05ac0fa4b40daa6230044df06fa7a8a8c75944f4e7f644914960fc2f01e7a98d714d986126418cafab1b1b495fbad74f211df49e4818808db55
   languageName: node
   linkType: hard
 
@@ -231,7 +231,7 @@ __metadata:
     ajv: ^8.20.0
     ajv-formats: ^3.0.1
     better-sqlite3: ^13.0.3
-    js-yaml: ^5.2.3
+    js-yaml: ^5.3.0
     nomnoml: ^1.7.0
   dependenciesMeta:
     nomnoml:

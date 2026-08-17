@@ -4280,7 +4280,7 @@ __metadata:
     react-dom: ^19.2.8
     react-image-magnifiers: ^1.4.0
     react-router-dom: ^7.18.2
-    sql.js: 1.14.1
+    sql.js: ^1.14.2
     vite: 8.2.1
   languageName: unknown
   linkType: soft
@@ -4899,10 +4899,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sql.js@npm:1.14.1":
-  version: 1.14.1
-  resolution: "sql.js@npm:1.14.1"
-  checksum: 8a2e10f050b47c68189c0fba5265d83c4eb700fe368f6aabe0a2ee10015531417b58f491829ef7c7cc7e08b194a0b3fde8b06423d146ac5ce6580b40fdb93b5b
+"sql.js@npm:^1.14.2":
+  version: 1.14.2
+  resolution: "sql.js@npm:1.14.2"
+  checksum: 8dc9d8f583318d4a4226b4368844782398adf69cb2991d9907c74e5df94b85da55c76c40fa8d9c737aff8f03f0e2973b8d8876a378e40108d15a6edc93a3150d
   languageName: node
   linkType: hard
 
