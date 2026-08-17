@@ -35,7 +35,7 @@ function StatusBadge({ kind, value, label, title, size }) {
 }
 
 StatusBadge.propTypes = {
-  kind: PropTypes.oneOf(['categories', 'rounds', 'security']).isRequired,
+  kind: PropTypes.oneOf(['categories', 'rounds', 'security', 'statefulness']).isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.node,
   title: PropTypes.string,

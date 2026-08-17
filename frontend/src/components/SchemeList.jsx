@@ -78,6 +78,14 @@ function SchemeList(props) {
                     title={s.nist_round_comment}
                   />
                 )}
+                {s.stateful === 1 && (
+                  <StatusBadge
+                    kind="statefulness"
+                    value={1}
+                    label="stateful"
+                    title={s.stateful_comment}
+                  />
+                )}
               </Stack>
               {s.description && (
                 <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>

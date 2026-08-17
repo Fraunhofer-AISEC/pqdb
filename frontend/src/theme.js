@@ -66,6 +66,9 @@ const STATUS_COLORS = {
     4: '#f59e0b',
     5: '#ef4444',
   },
+  statefulness: {
+    1: '#ea580c',
+  },
 };
 
 function getTheme(mode) {
