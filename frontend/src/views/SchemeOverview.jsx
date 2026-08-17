@@ -20,7 +20,7 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import { SCHEME_TYPES } from '../constants';

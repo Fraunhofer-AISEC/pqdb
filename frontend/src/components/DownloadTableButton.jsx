@@ -24,9 +24,9 @@ import {
   Paper,
   Popper,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { stringify } from 'csv-stringify';
+import { stringify } from 'csv-stringify/browser/esm';
 
 const propTypes = {
   queryResult: PropTypes.shape({
@@ -58,7 +58,7 @@ function stringifyCells(queryResult) {
 
 function DownloadTableButton(props) {
   const [open, setOpen] = useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = useRef(null);
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {

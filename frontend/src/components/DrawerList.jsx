@@ -20,7 +20,6 @@ import {
   ListItemText,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 const defaultProps = {
   views: {},

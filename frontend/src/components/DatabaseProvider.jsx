@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, {
+import {
   createContext,
   useEffect,
   useMemo,
@@ -33,9 +33,8 @@ function DatabaseProvider({ children }) {
   const dbRef = useRef(null);
 
   useEffect(() => {
-    // sql.js needs to fetch its wasm file, so we cannot immediately instantiate the database
-    // without any configuration, initSqlJs will fetch the wasm files from the specified
-    // path, see ../config-overrides.js
+    // sql.js must fetch its wasm file first, so the database cannot be
+    // instantiated until initSqlJs has resolved the wasm binary.
     let cancelled = false;
 
     const loadDatabase = (SQL) => {
@@ -53,7 +52,7 @@ function DatabaseProvider({ children }) {
       xhr.send();
     };
 
-    initSqlJs({ locateFile: (file) => `/static/js/${file}` })
+    initSqlJs({ locateFile: (file) => `/${file}` })
       .then((SQL) => loadDatabase(SQL))
       .catch((err) => setError(err));
 

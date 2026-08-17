@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import makeSvgIcon from '../utils/makeSvgIcon';
 
 const Seal = makeSvgIcon(

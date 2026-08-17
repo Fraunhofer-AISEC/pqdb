@@ -34,10 +34,10 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, {
+import { Link as RouterLink, useSearchParams } from 'react-router-dom';
+import {
   useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
-import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -210,7 +210,6 @@ function computeResult(db, sqlQuery, params) {
   if (results.values.length === 0) return undefined;
   results.columns.shift(); // Remove the 'ID' column name
   results.values.forEach((res) => {
-    // eslint-disable-next-line no-param-reassign
     res[1] = <Link component={RouterLink} to={detailLink(res[0])}>{res[1]}</Link>;
     res.shift(); // Remove the 'ID' entry
   });

@@ -24,7 +24,6 @@ import {
   ListItemText,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import intersection from '../utils/intersection';
 import not from '../utils/not';

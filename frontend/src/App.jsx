@@ -37,8 +37,8 @@ import {
   Outlet,
   useNavigate,
 } from 'react-router-dom';
-import React, { useContext, useEffect, useState } from 'react';
 import { StyledEngineProvider, ThemeProvider, createTheme } from '@mui/material/styles';
+import { useContext, useEffect, useState } from 'react';
 
 import { DatabaseContext } from './components/DatabaseProvider';
 import DrawerList from './components/DrawerList';

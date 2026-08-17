@@ -22,7 +22,6 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 const defaultProps = {
   children: null,

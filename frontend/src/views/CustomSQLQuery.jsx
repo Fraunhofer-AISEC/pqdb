@@ -26,8 +26,8 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import React, {
-  useCallback, useContext, useEffect, useState,
+import {
+  useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GlassMagnifier } from 'react-image-magnifiers';
@@ -39,9 +39,9 @@ import diagramImage from '../tables.svg';
 
 // As suggested in https://github.com/mui-org/material-ui/issues/1594#issuecomment-272547735
 function AutoFocusTextField(props) {
-  const inputRef = React.useRef();
+  const inputRef = useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timeout = setTimeout(() => {
       inputRef.current.focus();
     }, 100);

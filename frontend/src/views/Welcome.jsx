@@ -23,7 +23,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 

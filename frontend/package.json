@@ -2,52 +2,36 @@
   "name": "pqdb-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.pqdb.info/",
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@mui/icons-material": "^9.3.1",
     "@mui/material": "^9.3.1",
-    "copy-webpack-plugin": "14.0.0",
     "csv-stringify": "6.8.3",
     "md5": "^2.3.0",
-    "node-polyfill-webpack-plugin": "3.0.0",
     "prop-types": "^15.8.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-image-magnifiers": "^1.4.0",
     "react-router-dom": "^7.18.2",
-    "react-scripts": "^5.0.1",
     "sql.js": "1.14.1"
   },
   "devDependencies": {
-    "eslint": "8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
+    "@eslint/js": "^9",
+    "@vitejs/plugin-react": "6.0.5",
+    "eslint": "^9",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "4.6.2",
-    "react-app-rewired": "^2.2.1"
+    "eslint-plugin-react-hooks": "^7",
+    "globals": "^17",
+    "vite": "8.2.1"
   },
   "scripts": {
-    "start": "HOST=localhost react-app-rewired start",
-    "build": "react-app-rewired build",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@3.6.0",
+  "type": "module"
 }

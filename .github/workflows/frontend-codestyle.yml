@@ -35,5 +35,5 @@ jobs:
       run: yarn build
       working-directory: ${{ env.frontend-dir }}
     - name: Check codestyle
-      run: yarn run eslint --ext .js,.jsx ./src
+      run: yarn eslint .
       working-directory: ${{ env.frontend-dir }}
