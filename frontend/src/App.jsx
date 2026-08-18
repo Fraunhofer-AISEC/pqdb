@@ -17,18 +17,10 @@
 import {
   Box,
   CircularProgress,
-  Container,
   CssBaseline,
-  IconButton,
-  Paper,
   Stack,
   Toolbar,
-  Tooltip,
 } from '@mui/material';
-import {
-  Brightness4 as DarkIcon,
-  BrightnessHigh as LightIcon,
-} from '@mui/icons-material';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -106,6 +98,8 @@ function App() {
             mini={mini}
             onToggleMini={() => setMini((m) => !m)}
             onOpenSearch={() => setSearchOpen(true)}
+            themeId={themeId}
+            onToggleTheme={toggleTheme}
             db={db}
           />
           <NavDrawer
@@ -128,19 +122,6 @@ function App() {
             <Box sx={{ px: 2, flexGrow: 1 }}>
               <Stack spacing={2}>
                 {content}
-                <div>
-                  <Container maxWidth="lg">
-                    <Paper>
-                      <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                        <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
-                          <IconButton onClick={toggleTheme} size="large">
-                            {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    </Paper>
-                  </Container>
-                </div>
               </Stack>
             </Box>
           </Box>

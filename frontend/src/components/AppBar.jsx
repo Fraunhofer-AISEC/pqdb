@@ -20,6 +20,8 @@ import {
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  Brightness4 as DarkIcon,
+  BrightnessHigh as LightIcon,
   Menu as MenuIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
@@ -31,7 +33,7 @@ import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
 import Breadcrumbs from './Breadcrumbs';
 import logo from '../pqdb.svg';
 
-function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, db }) {
+function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onToggleTheme, db }) {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
   const dw = mini ? DRAWER_MINI_WIDTH : DRAWER_WIDTH;
@@ -75,6 +77,12 @@ function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, db }) {
 
         <Box sx={{ flexGrow: 1 }} />
 
+        <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
+          <IconButton onClick={onToggleTheme} size="small" aria-label="Toggle theme">
+            {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
+          </IconButton>
+        </Tooltip>
+
         <Tooltip title="Search schemes and flavors (Ctrl+K / /)">
           <IconButton onClick={onOpenSearch} size="small" aria-label="Search">
             <SearchIcon />
@@ -90,6 +98,8 @@ AppBar.propTypes = {
   mini: PropTypes.bool.isRequired,
   onToggleMini: PropTypes.func.isRequired,
   onOpenSearch: PropTypes.func.isRequired,
+  themeId: PropTypes.string.isRequired,
+  onToggleTheme: PropTypes.func.isRequired,
   db: PropTypes.shape({
     prepare: PropTypes.func.isRequired,
   }),
