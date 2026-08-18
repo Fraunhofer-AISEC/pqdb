@@ -19,177 +19,151 @@ import {
   CircularProgress,
   Container,
   CssBaseline,
-  Drawer,
-  Grid,
   IconButton,
   Link as MuiLink,
   Paper,
   Stack,
+  Toolbar,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import {
   Brightness4 as DarkIcon,
   BrightnessHigh as LightIcon,
-  Menu as MenuIcon,
 } from '@mui/icons-material';
 import {
   Link,
   Outlet,
-  useNavigate,
 } from 'react-router-dom';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 
 import { DatabaseContext } from './components/DatabaseProvider';
-import DrawerList from './components/DrawerList';
+
+import AppBar from './components/AppBar';
+import CommandPalette from './components/CommandPalette';
+import NavDrawer from './components/NavDrawer';
 import getTheme from './theme';
-import logo from './pqdb.svg';
-
-// User-facing theme preference. 'system' follows the OS setting and reacts to
-// changes live; 'light'/'dark' are the explicit persistent choices.
-const THEME_MODES = ['light', 'dark', 'system'];
-const THEME_STORAGE_KEY = 'pqdb-theme-mode';
-
-function readStoredMode() {
-  try {
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (THEME_MODES.includes(stored)) return stored;
-  } catch {
-    // localStorage unavailable (e.g. privacy mode) — fall through to default.
-  }
-  return 'system';
-}
-
-// Resolve the effective light/dark palette for the current preference and OS.
-function resolveMode(preference, systemDark) {
-  return preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
-}
-
-// Add new views for the DrawerList here
-const views = {
-  '': {
-    name: 'Welcome Page',
-    description: 'Contains info about this website.',
-  },
-  raw_sql: {
-    name: 'Custom SQL Query',
-    description: 'Enter a custom database query and display the result in a table.',
-  },
-  detail: {
-    name: 'Scheme Details',
-    description: 'Browse data stored for a scheme',
-  },
-  comparison: {
-    name: 'Scheme Comparison',
-    description: 'Compare schemes based on memory requirements and performance.',
-  },
-};
-
-const pathname = (key) => `/${key}`;
 
 function Progress() {
   return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
 }
 
 function App() {
-  const [themePreference, setThemePreference] = useState(readStoredMode);
-  const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [themeId, setThemeId] = useState('light');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mini, setMini] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
   const { db, error } = useContext(DatabaseContext);
 
-  const navigate = useNavigate();
-  // const [searchParams] = useSearchParams();
-
-  function switchView(view) {
-    navigate(pathname(view));
-    setDrawerOpen(false);
+  function toggleTheme() {
+    setThemeId((themeId === 'light') ? 'dark' : 'light');
   }
 
-  function cycleTheme() {
-    const next = THEME_MODES[(THEME_MODES.indexOf(themePreference) + 1) % THEME_MODES.length];
-    setThemePreference(next);
-    try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, next);
-    } catch {
-      // Persistence is best-effort; the in-memory choice still applies.
-    }
-  }
-
+  // Select the preferred theme from the system.
   useEffect(() => {
-    const query = window.matchMedia('(prefers-color-scheme: dark)');
-    const onChange = (e) => setSystemDark(e.matches);
-    setSystemDark(query.matches);
-    query.addEventListener('change', onChange);
-    return () => query.removeEventListener('change', onChange);
+    const darkPreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (darkPreferred) setThemeId('dark');
   }, []);
 
-  const mode = resolveMode(themePreference, systemDark);
-  const theme = getTheme(mode);
-  const nextModeLabel = THEME_MODES[(THEME_MODES.indexOf(themePreference) + 1) % THEME_MODES.length];
+  // Global command-palette shortcut: Ctrl/Cmd+K opens it; '/' opens it unless
+  // the user is already typing in a field.
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+        return;
+      }
+      if (e.key === '/' && !searchOpen) {
+        const target = e.target;
+        const tag = target?.tagName;
+        const editable = tag === 'INPUT' || tag === 'TEXTAREA' || target?.isContentEditable;
+        if (!editable) {
+          e.preventDefault();
+          setSearchOpen(true);
+        }
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [searchOpen]);
+
+  const resolvedTheme = getTheme(themeId);
 
   let content;
   if (db) {
-    content = (
-      <Grid container size="grow">
-        <Outlet />
-      </Grid>
-    );
+    content = <Outlet />;
   } else if (error) {
     content = 'There was an error while loading the database.';
   } else {
     content = <Progress />;
   }
+
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={resolvedTheme}>
         <CssBaseline />
-        <Box sx={{ p: 2 }}>
-          <Stack spacing={2}>
-            <div>
-              <Container maxWidth="sm">
-                <Link to="/">
-                  <img src={logo} style={{ width: '100%', height: 'auto' }} alt="Logo" />
-                </Link>
-              </Container>
-            </div>
-            {content}
-            <div>
-              <Container maxWidth="lg">
-                <Paper>
-                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                    <Tooltip title={`Theme: ${themePreference}. Click to switch to ${nextModeLabel}.`}>
-                      <IconButton onClick={cycleTheme} size="large">
-                        {(mode === 'dark') ? <LightIcon /> : <DarkIcon />}
-                      </IconButton>
-                    </Tooltip>
-                    <Typography variant="caption" sx={{ opacity: 0.7 }}>{themePreference}</Typography>
-                  </Box>
-                </Paper>
-              </Container>
-            </div>
-            <div>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
-                <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
-              </Box>
-            </div>
-          </Stack>
-          <IconButton
-            style={{ position: 'absolute', top: 0, left: 0 }}
-            onClick={() => setDrawerOpen(true)}
-            size="large"
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+          <AppBar
+            onOpenDrawer={() => setDrawerOpen(true)}
+            mini={mini}
+            onToggleMini={() => setMini((m) => !m)}
+            onOpenSearch={() => setSearchOpen(true)}
+            db={db}
+          />
+          <NavDrawer
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            mini={mini}
+            onToggleMini={() => setMini((m) => !m)}
+          />
+
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minWidth: 0,
+            }}
           >
-            <MenuIcon />
-          </IconButton>
+            <Toolbar variant="dense" sx={{ mb: 1 }} />
+            <Box sx={{ px: 2, flexGrow: 1 }}>
+              <Stack spacing={2}>
+                {content}
+                <div>
+                  <Container maxWidth="lg">
+                    <Paper>
+                      <Box sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                        <Tooltip title={`Switch to ${(themeId === 'light') ? 'dark' : 'light'} theme`}>
+                          <IconButton onClick={toggleTheme} size="large">
+                            {(themeId === 'light') ? <DarkIcon /> : <LightIcon />}
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </Paper>
+                  </Container>
+                </div>
+                <div>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                    <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+                    <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
+                  </Box>
+                </div>
+              </Stack>
+            </Box>
+          </Box>
+
+          <CommandPalette
+            open={searchOpen}
+            onClose={() => setSearchOpen(false)}
+            db={db}
+          />
         </Box>
-        <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-          <DrawerList onClick={(view) => switchView(view)} views={views} />
-        </Drawer>
       </ThemeProvider>
     </StyledEngineProvider>
   );
 }
 
 export default App;
-export { pathname, views };

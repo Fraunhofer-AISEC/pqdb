@@ -21,54 +21,22 @@ import {
   Link,
   Paper,
   Typography,
-  useTheme,
 } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 
 import SchemeList from '../components/SchemeList';
-import menuArrow from '../res/menu-arrow.svg';
 
 function Welcome() {
   const { db } = useContext(DatabaseContext);
 
-  const theme = useTheme();
-
-  const [showMenuArrow, setShowMenuArrow] = useState({ matches: true });
-
   useEffect(() => {
     document.title = 'Welcome - pqdb';
-
-    // Hide the menu arrow on small screens
-    const arrowQuery = window.matchMedia('(min-width: 1130px)');
-    setShowMenuArrow(arrowQuery);
-    arrowQuery.addEventListener('change', setShowMenuArrow);
-    return () => arrowQuery.removeEventListener('change', setShowMenuArrow);
   }, []);
 
   return (
     <Container maxWidth="md">
-      {
-        (showMenuArrow.matches)
-          ? (
-            <img
-              style={{
-                position: 'absolute',
-                left: 15,
-                top: 50,
-                opacity: 0.54,
-                transform: 'scale(.8)',
-                transformOrigin: 'left top',
-                filter: `invert(${(theme.palette.mode === 'light') ? '0%' : '100%'} )`,
-              }}
-              src={menuArrow}
-              alt=""
-            />
-          )
-          : null
-      }
-
       <Paper>
         <Box sx={{ p: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>Welcome!</Typography>
@@ -76,7 +44,8 @@ function Welcome() {
             This is the frontend presenting data from
             {' '}
             <Link href="https://github.com/Fraunhofer-AISEC/pqdb/">https://github.com/Fraunhofer-AISEC/pqdb</Link>
-            . You can select different views by clicking the menu icon in the top left corner.
+            . You can browse schemes via the navigation sidebar, or use the search
+            (top right, or Ctrl+K) to jump straight to a scheme or flavor.
           </Typography>
           <Typography sx={{ marginBottom: '16px' }}>
             The page is written in

@@ -1,0 +1,98 @@
+/*
+ * Top application bar for the shell.
+ *
+ * Holds the side-nav expand/collapse control, the logo (which links home), and
+ * the global search trigger. Uses MUI tokens for both palettes; no hard-coded
+ * colours beyond the theme. On large screens the bar is shifted right by the
+ * persistent drawer's width; on smaller screens it spans full width and the
+ * hamburger toggles a temporary overlay drawer.
+ */
+
+import {
+  Box,
+  IconButton,
+  AppBar as MuiAppBar,
+  Toolbar,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import {
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Menu as MenuIcon,
+  Search as SearchIcon,
+} from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
+
+import Breadcrumbs from './Breadcrumbs';
+import logo from '../pqdb.svg';
+
+function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, db }) {
+  const theme = useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
+  const dw = mini ? DRAWER_MINI_WIDTH : DRAWER_WIDTH;
+
+  return (
+    <MuiAppBar
+      position="fixed"
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        bgcolor: 'background.paper',
+        color: 'text.primary',
+        ml: { lg: dw },
+        width: { lg: `calc(100% - ${dw}px)` },
+      }}
+    >
+      <Toolbar variant="dense" sx={{ gap: 1 }}>
+        {isLarge ? (
+          <Tooltip title={mini ? 'Expand navigation' : 'Collapse navigation'}>
+            <IconButton onClick={onToggleMini} edge="start" size="small">
+              {mini ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Open navigation">
+            <IconButton onClick={onOpenDrawer} edge="start" size="small">
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
+          <Box
+            component="img"
+            src={logo}
+            alt="pqdb"
+            sx={{ height: 34, width: 'auto' }}
+          />
+        </Link>
+
+        {db && <Breadcrumbs db={db} sx={{ px: 1, pb: 0 }} />}
+
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Tooltip title="Search schemes and flavors (Ctrl+K / /)">
+          <IconButton onClick={onOpenSearch} size="small" aria-label="Search">
+            <SearchIcon />
+          </IconButton>
+        </Tooltip>
+      </Toolbar>
+    </MuiAppBar>
+  );
+}
+
+AppBar.propTypes = {
+  onOpenDrawer: PropTypes.func.isRequired,
+  mini: PropTypes.bool.isRequired,
+  onToggleMini: PropTypes.func.isRequired,
+  onOpenSearch: PropTypes.func.isRequired,
+  db: PropTypes.shape({
+    prepare: PropTypes.func.isRequired,
+  }),
+};
+
+export default AppBar;
