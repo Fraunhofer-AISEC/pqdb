@@ -15,11 +15,12 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Link as MuiLink,
   Toolbar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH, NAV_ITEMS } from '../nav';
@@ -109,6 +110,11 @@ function NavDrawer({ open, onClose, mini, onToggleMini }) {
           </ListItemButton>
         </Box>
       )}
+      <Divider />
+      <Box sx={{ p: 1.5, display: 'flex', justifyContent: 'center', gap: 1 }}>
+        <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+        <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
+      </Box>
     </>
   );
 

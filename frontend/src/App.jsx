@@ -20,7 +20,6 @@ import {
   Container,
   CssBaseline,
   IconButton,
-  Link as MuiLink,
   Paper,
   Stack,
   Toolbar,
@@ -30,12 +29,9 @@ import {
   Brightness4 as DarkIcon,
   BrightnessHigh as LightIcon,
 } from '@mui/icons-material';
-import {
-  Link,
-  Outlet,
-} from 'react-router-dom';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { DatabaseContext } from './components/DatabaseProvider';
 
@@ -144,12 +140,6 @@ function App() {
                       </Box>
                     </Paper>
                   </Container>
-                </div>
-                <div>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                    <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
-                    <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
-                  </Box>
                 </div>
               </Stack>
             </Box>
