@@ -45,11 +45,11 @@ function SchemeList(props) {
         {type.name}
         s
         {'  '}
-        <type.icon fontSize="inherit" style={{ marginBottom: -3 }} />
+        <type.icon fontSize="inherit" sx={{ marginBottom: '-3px' }} />
       </Typography>
       <List>
         {queryAll(db, stmt, [typeKey]).map((s) => (
-          <ListItem key={`${typeKey}-${s.id_text}`} style={{ paddingLeft: 0 }}>
+          <ListItem key={`${typeKey}-${s.id_text}`} sx={{ paddingLeft: 0 }}>
             <ListItemText>
               <Typography variant="h6">
                 <Link component={RouterLink} to={detailLink(s.id_text)}>
@@ -64,7 +64,7 @@ function SchemeList(props) {
                     rel="noopener"
                     title="Website"
                   >
-                    <ExternalLinkIcon style={{ fontSize: '.8em', marginBottom: -2, marginLeft: '.2em' }} />
+                    <ExternalLinkIcon sx={{ fontSize: '.8em', marginBottom: '-2px', marginLeft: '.2em' }} />
                   </Link>,
                 ]}
               </Typography>

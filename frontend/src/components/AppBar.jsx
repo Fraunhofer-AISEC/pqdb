@@ -12,6 +12,7 @@ import {
   Box,
   IconButton,
   AppBar as MuiAppBar,
+  Link,
   Toolbar,
   Tooltip,
   useMediaQuery,
@@ -25,7 +26,7 @@ import {
   Menu as MenuIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
@@ -64,7 +65,7 @@ function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onTog
           </Tooltip>
         )}
 
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
+        <Link component={RouterLink} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
           <Box
             component="img"
             src={logo}

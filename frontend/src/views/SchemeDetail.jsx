@@ -149,11 +149,11 @@ function SchemeDetail() {
               {
                 [
                   scheme.year_paper
-                    ? [scheme.year_paper, <span key="pap" style={{ opacity: 0.5 }}> (paper)</span>] : [],
+                    ? [scheme.year_paper, <Box component="span" key="pap" sx={{ opacity: 0.5 }}> (paper)</Box>] : [],
                   scheme.year_candidate
-                    ? [scheme.year_candidate, <span key="cand" style={{ opacity: 0.5 }}> (NIST candidate)</span>] : [],
+                    ? [scheme.year_candidate, <Box component="span" key="cand" sx={{ opacity: 0.5 }}> (NIST candidate)</Box>] : [],
                   scheme.year_standardization
-                    ? [scheme.year_standardization, <span key="sdt" style={{ opacity: 0.5 }}> (standardization)</span>] : [],
+                    ? [scheme.year_standardization, <Box component="span" key="sdt" sx={{ opacity: 0.5 }}> (standardization)</Box>] : [],
                   scheme.year_comment
                     ? [<em key="comment">{scheme.year_comment}</em>] : [],
                 ].reduce((accu, elem) => {
@@ -170,7 +170,7 @@ function SchemeDetail() {
                   && (
                   <>
                     <div><strong>Trust: </strong></div>
-                    <div style={{ marginBottom: '.6em' }}>{scheme.trust_comment}</div>
+                    <Box sx={{ marginBottom: '.6em' }}>{scheme.trust_comment}</Box>
                   </>
                   )}
               {(problems.length > 0 || scheme.problems_comment)
@@ -252,7 +252,7 @@ function SchemeDetail() {
 
               return (
                 <div key={`flavor-${f.id}`}>
-                  <ListItem key="head" style={{ display: 'block' }}>
+                  <ListItem key="head" sx={{ display: 'block' }}>
                     <Typography component="h3" variant="h5">
                       <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>
                         {f.name}

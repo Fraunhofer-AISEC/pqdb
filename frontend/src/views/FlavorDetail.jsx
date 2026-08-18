@@ -119,7 +119,7 @@ function FlavorDetail() {
                     <TypeIcon fontSize="inherit" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
                   </Tooltip>
                   {' '}
-                  <span style={{ fontWeight: 'normal', marginLeft: '.4em' }}>
+                  <Box component="span" sx={{ fontWeight: 'normal', marginLeft: '.4em' }}>
                     {scheme.category}
                     {' '}
                     <Comment title={scheme.category_comment} />
@@ -142,7 +142,7 @@ function FlavorDetail() {
                         <Comment title={scheme.nist_round_comment} />
                       </>
                       )}
-                  </span>
+                  </Box>
                 </Typography>
               </ListItemText>
             </ListItem>
@@ -201,7 +201,7 @@ function FlavorDetail() {
               const paramsetSources = queryAll(db, 'SELECT * FROM paramset_source WHERE paramset_id=?', [p.id]);
               return (
                 <div key={`p-${p.id}`}>
-                  <ListItem key="head" style={{ display: 'block' }}>
+                  <ListItem key="head" sx={{ display: 'block' }}>
                     <Typography component="h4" variant="h5">
                       {p.name}
                     </Typography>
@@ -221,11 +221,11 @@ function FlavorDetail() {
                       <span>
                         {p.security_level_quantum}
                         {' '}
-                        <span style={{ opacity: 0.5 }}>(quantum)</span>
+                        <Box component="span" sx={{ opacity: 0.5 }}>(quantum)</Box>
                         {p.security_level_classical && (
                           <>
                             {` \u2022 ${p.security_level_classical}`}
-                            <span style={{ opacity: 0.5 }}>(classical)</span>
+                            <Box component="span" sx={{ opacity: 0.5 }}>(classical)</Box>
                           </>
                         )}
                       </span>
@@ -309,7 +309,7 @@ function FlavorDetail() {
 
               return (
                 <div key={`i-${i.id}`}>
-                  <ListItem key={`i-${i.id}-head`} style={{ display: 'block' }}>
+                  <ListItem key={`i-${i.id}-head`} sx={{ display: 'block' }}>
                     <Typography component="h4" variant="h5">
                       {i.name}
                     </Typography>

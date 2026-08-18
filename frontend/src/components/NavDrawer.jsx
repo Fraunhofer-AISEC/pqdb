@@ -99,7 +99,7 @@ function NavDrawer({ open, onClose, mini, onToggleMini }) {
             }}
           >
             <ListItemIcon sx={{ minWidth: 0, mr: compact ? 0 : 2, color: 'inherit' }}>
-              <span style={{ fontSize: '0.95rem' }}>{mini ? '»' : '«'}</span>
+              <Box component="span" sx={{ fontSize: '0.95rem' }}>{mini ? '»' : '«'}</Box>
             </ListItemIcon>
             {!compact && (
               <ListItemText

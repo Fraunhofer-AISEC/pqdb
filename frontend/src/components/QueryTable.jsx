@@ -148,7 +148,7 @@ class QueryTable extends React.Component {
     return (
       <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
         <Grid container size="grow">
-          <TableContainer component={Paper} style={{ maxHeight: 850 }}>
+          <TableContainer component={Paper} sx={{ maxHeight: 850 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 {
@@ -174,10 +174,10 @@ class QueryTable extends React.Component {
                     queryResult.columns.map((column, idx) => (
                       <TableCell
                         key={this.createKey(column + idx)}
-                        sx={cellSx(1, this.headerModVal(idx))}
-                        style={{
-                          top: headers.length > 0 ? 57 : 0, // So headers don't collapse on scroll
-                        }}
+                        sx={[
+                          cellSx(1, this.headerModVal(idx)),
+                          { top: headers.length > 0 ? 57 : 0 }, // So headers don't collapse on scroll
+                        ]}
                       >
                         <TableSortLabel
                           active={orderBy === idx}

@@ -453,10 +453,10 @@ function SchemeComparison() {
                         <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
                           <Stack spacing={2}>
                             <Grid container size="grow" spacing={2}>
-                              <Grid size={3} style={{ minWidth: 80 }}>
+                              <Grid size={3} sx={{ minWidth: 80 }}>
                                 <Box><Typography>Classical Security</Typography></Box>
                               </Grid>
-                              <Grid size="grow" style={{ minWidth: 150 }}>
+                              <Grid size="grow" sx={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
@@ -474,10 +474,10 @@ function SchemeComparison() {
                               </Grid>
                             </Grid>
                             <Grid container size="grow" spacing={2}>
-                              <Grid size={3} style={{ minWidth: 80 }}>
+                              <Grid size={3} sx={{ minWidth: 80 }}>
                                 <Typography>Quantum Security</Typography>
                               </Grid>
-                              <Grid size="grow" style={{ minWidth: 150 }}>
+                              <Grid size="grow" sx={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
@@ -495,10 +495,10 @@ function SchemeComparison() {
                               </Grid>
                             </Grid>
                             <Grid container size="grow" spacing={2}>
-                              <Grid size={3} style={{ minWidth: 80 }}>
+                              <Grid size={3} sx={{ minWidth: 80 }}>
                                 <Typography>NIST Round</Typography>
                               </Grid>
-                              <Grid size="grow" style={{ minWidth: 150 }}>
+                              <Grid size="grow" sx={{ minWidth: 150 }}>
                                 <Slider
                                   disabled={queryProcessing}
                                   color="secondary"
