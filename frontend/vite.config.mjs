@@ -4,10 +4,12 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 
-// sql.js loads its `.wasm` binaries from the URL root (see locateFile in
-// DatabaseProvider.jsx), so they must be reachable at `/` in both dev and build.
+// sql.js loads its `.wasm` binary from the URL root (see locateFile in
+// DatabaseProvider.jsx), so it must be reachable at `/` in both dev and build.
+// Only sql-wasm-browser.wasm is fetched at runtime (the bundler's browser field
+// resolves sql.js to sql-wasm-browser.js, which requests that name).
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SQL_WASM_FILES = ['sql-wasm.wasm', 'sql-wasm-browser.wasm'];
+const SQL_WASM_FILE = 'sql-wasm-browser.wasm';
 
 function sqlJsWasmPlugin() {
   const srcDir = resolve(__dirname, 'node_modules/sql.js/dist');
@@ -16,7 +18,7 @@ function sqlJsWasmPlugin() {
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const name = req.url && req.url.split('?')[0].replace(/^\//, '');
-        if (SQL_WASM_FILES.includes(name)) {
+        if (name === SQL_WASM_FILE) {
           const file = resolve(srcDir, name);
           if (existsSync(file)) {
             res.setHeader('Content-Type', 'application/wasm');
@@ -30,9 +32,7 @@ function sqlJsWasmPlugin() {
     closeBundle() {
       const outDir = resolve(__dirname, 'build');
       mkdirSync(outDir, { recursive: true });
-      for (const name of SQL_WASM_FILES) {
-        copyFileSync(resolve(srcDir, name), resolve(outDir, name));
-      }
+      copyFileSync(resolve(srcDir, SQL_WASM_FILE), resolve(outDir, SQL_WASM_FILE));
     },
   };
 }
