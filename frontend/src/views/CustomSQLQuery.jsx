@@ -30,7 +30,6 @@ import {
   useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { GlassMagnifier } from 'react-image-magnifiers';
 import { useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
@@ -54,14 +53,72 @@ function AutoFocusTextField(props) {
   return <TextField inputRef={inputRef} {...props} />;
 }
 
+// Glass-style magnifier over the database diagram. The SVG is shown at full
+// width, and a square lens follows the cursor, displaying the image zoomed via
+// an absolutely-positioned background. (The previous react-image-magnifiers
+// dependency is incompatible with React 19, so this self-contained version
+// replaces it.)
+const ZOOM = 2.5;
+const LENS_SIZE = 220;
+
 function DatabaseDiagram() {
-  return (
-    <GlassMagnifier
-      imageSrc={diagramImage}
-      square
-      magnifierSize="25%"
-      allowOverflow
+  const containerRef = useRef(null);
+  const [cursor, setCursor] = useState(null);
+
+  function onMouseMove(e) {
+    const rect = containerRef.current.getBoundingClientRect();
+    if (rect.width === 0) return;
+    setCursor({
+      // Fractional position within the image.
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+      // Position of the lens within the (position: relative) container.
+      left: e.clientX - rect.left,
+      top: e.clientY - rect.top,
+      width: rect.width,
+      height: rect.height,
+    });
+  }
+
+  function onMouseLeave() {
+    setCursor(null);
+  }
+
+  const lens = cursor && (
+    <div
+      style={{
+        position: 'absolute',
+        width: LENS_SIZE,
+        height: LENS_SIZE,
+        pointerEvents: 'none',
+        left: cursor.left - LENS_SIZE / 2,
+        top: cursor.top - LENS_SIZE / 2,
+        border: '2px solid rgba(255,255,255,0.8)',
+        boxShadow: '0 0 12px rgba(0,0,0,0.5)',
+        borderRadius: 4,
+        overflow: 'hidden',
+        backgroundImage: `url(${diagramImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: `${cursor.width * ZOOM}px ${cursor.height * ZOOM}px`,
+        backgroundPosition: `${-(cursor.x * cursor.width * ZOOM - LENS_SIZE / 2)}px ${-(cursor.y * cursor.height * ZOOM - LENS_SIZE / 2)}px`,
+      }}
     />
+  );
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ position: 'relative', width: '100%', cursor: 'zoom-in' }}
+    >
+      <img
+        src={diagramImage}
+        alt="Database diagram"
+        style={{ display: 'block', width: '100%', height: 'auto', maxWidth: '100%' }}
+      />
+      {lens}
+    </div>
   );
 }
 
