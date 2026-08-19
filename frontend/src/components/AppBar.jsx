@@ -26,8 +26,8 @@ import {
   Menu as MenuIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
 

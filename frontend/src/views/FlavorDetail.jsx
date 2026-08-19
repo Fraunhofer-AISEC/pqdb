@@ -16,7 +16,6 @@
 
 import {
   ArrowBack as ArrowBackIcon,
-  AutoMode as AutoModeIcon,
   BarChart as BarChartIcon,
   Category as CategoryIcon,
   Memory as ChipIcon,
@@ -32,6 +31,7 @@ import {
   Box,
   Chip,
   Container,
+  Grid,
   Link,
   Paper,
   Stack,
@@ -48,12 +48,10 @@ import {
   SCHEME_TYPES,
   SEC_NOTIONS,
 } from '../constants';
-import BottomIcon from '../icons/Bottom';
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
-import MeasureIcon from '../icons/Measure';
-import Mono from '../components/Mono';
+import ParamsetCard from '../components/ParamsetCard';
 import PropItem from '../components/PropItem';
 import QueryTable from '../components/QueryTable';
 import StatusBadge from '../components/StatusBadge';
@@ -63,7 +61,6 @@ import humanReadableSize from '../utils/humanReadableSize';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
 import queryAllAsArray from '../utils/queryAllAsArray';
-import romanCat from '../utils/romanCat';
 
 /**
  * Build the SQL used both for the inline benchmark table and the raw-SQL link.
@@ -290,100 +287,24 @@ function FlavorDetail() {
       )}
 
       {activeTab === 1 && (
-        <Stack spacing={2}>
-          {paramsets.map((p) => {
-            const paramsetLinks = queryAll(db, 'SELECT * FROM paramset_link WHERE paramset_id=?', [p.id]);
-            const paramsetSources = queryAll(db, 'SELECT * FROM paramset_source WHERE paramset_id=?', [p.id]);
-            return (
-              <DetailCard key={`p-${p.id}`} title={p.name} Icon={MeasureIcon}>
-                {p.comment && <Box sx={{ pb: 1 }}><TextComment>{p.comment}</TextComment></Box>}
-
-                <PropItem key="seclevel" title="Security Level" Icon={SecurityIcon}>
-                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
-                    {(p.security_level_nist_category ?? 0) > 0 && (
-                      <StatusBadge
-                        kind="security"
-                        value={p.security_level_nist_category}
-                        label={`NIST Cat ${romanCat(p.security_level_nist_category)}`}
-                        title={`NIST Category ${p.security_level_nist_category}`}
-                      />
-                    )}
-                    <span>
-                      {p.security_level_quantum}
-                      {' '}
-                      <Box component="span" sx={{ opacity: 0.5 }}>(quantum)</Box>
-                      {p.security_level_classical && (
-                        <>
-                          {` \u2022 ${p.security_level_classical}`}
-                          {' '}
-                          <Box component="span" sx={{ opacity: 0.5 }}>(classical)</Box>
-                        </>
-                      )}
-                    </span>
-                  </Stack>
-                  {p.security_level_comment
-                    && <div><TextComment>{p.security_level_comment}</TextComment></div>}
-                </PropItem>
-
-                {(scheme.type === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment)
-                  && (
-                  <PropItem key="failureprob" title="Failure Probability" Icon={BottomIcon}>
-                    <Box sx={{ display: 'inline-flex', alignItems: 'baseline', gap: 0.5 }}>
-                      {p.failure_probability === 0
-                        ? '0'
-                        : (
-                          <>
-                            2
-                            <sup>{p.failure_probability}</sup>
-                          </>
-                        )}
-                      <Comment title={p.failure_probability_comment} />
-                    </Box>
-                  </PropItem>
-                  )}
-
-                <PropItem key="numop" title="Number of Operations" Icon={AutoModeIcon}>
-                  {p.number_of_operations === 'inf'
-                    ? 'unlimited'
-                    : p.number_of_operations}
-                </PropItem>
-
-                <PropItem key="sizes" title="Sizes" Icon={MeasureIcon}>
-                  <div>
-                    sk:
-                    {' '}
-                    <Mono>{p.sizes_sk}</Mono>
-                    {' '}
-                    {' \u2022 '}
-                    pk:
-                    {' '}
-                    <Mono>{p.sizes_pk}</Mono>
-                    {' '}
-                    {' \u2022 '}
-                    {SCHEME_TYPES[scheme.type].ctsig}
-                    {': '}
-                    <Mono>{p.sizes_ct_sig}</Mono>
-                  </div>
-                  {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
-                </PropItem>
-
-                {paramsetLinks.length > 0
-                  && (
-                  <PropItem key="links" title="Links" Icon={LinkIcon}>
-                    {paramsetLinks.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
-                  </PropItem>
-                  )}
-
-                {paramsetSources.length > 0
-                  && (
-                  <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
-                    {paramsetSources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
-                  </PropItem>
-                  )}
-              </DetailCard>
+        <Grid container spacing={2}>
+          {(() => {
+            const maxSize = paramsets.reduce(
+              (max, pa) => Math.max(
+                max,
+                ...['sizes_sk', 'sizes_pk', 'sizes_ct_sig']
+                  .map((key) => pa[key])
+                  .filter((v) => Number.isFinite(v)),
+              ),
+              0,
             );
-          })}
-        </Stack>
+            return paramsets.map((p) => (
+              <Grid key={`p-${p.id}`} size={{ xs: 12, md: 6, lg: 4 }}>
+                <ParamsetCard p={p} schemeType={scheme.type} maxSize={maxSize} />
+              </Grid>
+            ));
+          })()}
+        </Grid>
       )}
 
       {activeTab === 2 && (
