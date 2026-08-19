@@ -15,7 +15,6 @@
  */
 
 import {
-  Grid,
   Paper,
   Stack,
   Table,
@@ -146,10 +145,9 @@ class QueryTable extends React.Component {
     if (queryResult === undefined) return <Typography>No results</Typography>;
     if (!queryResult) return null;
     return (
-      <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
-        <Grid container size="grow">
-          <TableContainer component={Paper} sx={{ maxHeight: 850 }}>
-            <Table stickyHeader aria-label="sticky table">
+      <Stack spacing={1} sx={{ alignItems: 'stretch' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: 850, width: '100%' }}>
+          <Table stickyHeader sx={{ width: '100%' }} aria-label="sticky table">
               <TableHead>
                 {
                   headers.length > 0 && (
@@ -223,7 +221,6 @@ class QueryTable extends React.Component {
               </TableBody>
             </Table>
           </TableContainer>
-        </Grid>
         <div><DownloadTableButton queryResult={queryResult} /></div>
       </Stack>
     );
