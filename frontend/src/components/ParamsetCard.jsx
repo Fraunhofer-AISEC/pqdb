@@ -158,10 +158,12 @@ function ParamsetCard({ p, schemeType, maxSize }) {
           </Box>
 
           <Box sx={{ mt: 1, pt: 1, borderTop: (theme) => `1px solid ${theme.palette.divider}` }}>
-            <Typography sx={{ fontWeight: 600, fontSize: '0.85rem', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Sizes
-            </Typography>
-            <Comment title={p.sizes_comment} />
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography sx={{ fontWeight: 600, fontSize: '0.85rem', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Sizes
+              </Typography>
+              <Comment title={p.sizes_comment} />
+            </Box>
             <Box
               sx={{
                 display: 'grid',
