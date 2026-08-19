@@ -182,7 +182,7 @@ function FlavorDetail() {
   const typeLabel = SEC_NOTIONS[flavor.security_notion] ?? undefined;
 
   return (
-    <Container maxWidth={hasMemoryData ? 'xl' : 'md'}>
+    <Container maxWidth="xl">
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 1.5 }}>
         <Typography variant="h6" component="span">
           <Link component={RouterLink} to={detailLink(scheme.id_text)} sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
