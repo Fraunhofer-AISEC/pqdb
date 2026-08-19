@@ -17,13 +17,11 @@
 import {
   Bolt as BoltIcon,
   Category as CategoryIcon,
-  Code as CodeIcon,
-  SyncAlt as DiffieHellmanIcon,
   Event as EventIcon,
+  Layers as LayersIcon,
   Leaderboard as LeaderboardIcon,
   Link as LinkIcon,
   MenuBook as MenuBookIcon,
-  Tune as ParamSetIcon,
   PendingActions as PendingActionsIcon,
   PeopleAlt as PeopleIcon,
   Save as SaveIcon,
@@ -31,12 +29,13 @@ import {
 } from '@mui/icons-material';
 import {
   Box,
+  Chip,
   Container,
+  Divider,
+  Grid,
   Link,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -51,13 +50,13 @@ import {
 } from '../constants';
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
+import DetailCard from '../components/DetailCard';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
-import romanCat from '../utils/romanCat';
 
 function SchemeDetail() {
   const { schemeId } = useParams();
@@ -99,220 +98,246 @@ function SchemeDetail() {
 
   const exp = /([[0-9]+])/;
   const patentString = scheme.patents?.split(exp);
+
+  // Build the year line as a list of present year entries, sorted ascending.
+  // Each entry is tagged with a descriptive label and rendered separated by a
+  // middot, skipping any absent years.
+  const yearEntries = [
+    { year: scheme.year_paper, label: 'paper' },
+    { year: scheme.year_candidate, label: 'NIST candidate' },
+    { year: scheme.year_standardization, label: 'standardization' },
+  ]
+    .filter((e) => e.year)
+    .sort((a, b) => a.year - b.year);
+  const yearParts = yearEntries.map((e) => (
+    <span key={e.label}>{e.year}<Box component="span" sx={{ opacity: 0.5 }}> ({e.label})</Box></span>
+  ));
+  if (scheme.year_comment) {
+    yearParts.push(<em key="comment">{scheme.year_comment}</em>);
+  }
+  const yearRow = yearParts.flatMap((part, i) => (i > 0 ? [' · ', part] : [part]));
+
+  const yearRowNode = (
+    <Box component="div" sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 0.5 }}>
+      {yearRow}
+    </Box>
+  );
+
   return (
-    <Container maxWidth="md">
-      <Paper>
-        <Box>
-          <List>
-            <ListItem key="head" alignItems="flex-start">
-              <ListItemText>
-                <Typography component="h1" variant="h2">
-                  {scheme.name}
-                  {'  '}
-                  <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
-                    <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
-                  </Tooltip>
-                </Typography>
-                {scheme.description && <div>{scheme.description}</div>}
-                {scheme.comment && <div><TextComment>{scheme.comment}</TextComment></div>}
-              </ListItemText>
-            </ListItem>
-
-            <PropItem key="category" title="Category" Icon={CategoryIcon}>
-              <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
-            </PropItem>
-
-            {(scheme.stateful || scheme.stateful_comment) && (
-              <PropItem key="stateful" title="Statefulness" Icon={SaveIcon}>
-                {scheme.stateful === 1
-                  ? <StatusBadge kind="statefulness" value={1} label="stateful" title={scheme.stateful_comment} />
-                  : <span>stateless <Comment title={scheme.stateful_comment} /></span> /* stateless only shown if there's a comment */}
-              </PropItem>
+    <Container maxWidth="xl">
+      <Stack spacing={2}>
+        <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
+          <Box sx={{ p: 3 }}>
+            <Typography component="h1" variant="h4" sx={{ fontWeight: 700 }}>
+              {scheme.name}
+              {'  '}
+              <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
+                <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
+              </Tooltip>
+            </Typography>
+            {scheme.description && <Box sx={{ mt: 1 }}>{scheme.description}</Box>}
+            {scheme.comment && (
+              <Box sx={{ mt: 1 }}><TextComment>{scheme.comment}</TextComment></Box>
             )}
-            <PropItem key="nist_round" title="NIST standardization" Icon={LeaderboardIcon}>
-              <StatusBadge
-                kind="rounds"
-                value={scheme.nist_round}
-                label={NIST_ROUNDS[scheme.nist_round].short ?? 'Not submitted'}
-                title={NIST_ROUNDS[scheme.nist_round].long}
-              />
-            </PropItem>
+          </Box>
+        </Paper>
 
-            {attacks.length > 0
-                && (
-                <PropItem key="attacks" title="Attacks" Icon={BoltIcon}>
-                  {attacks.map((a) => <div key={a.url}>{linkify(a.url)}</div>)}
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Stack spacing={2}>
+              <DetailCard title="Details" Icon={CategoryIcon}>
+                <PropItem key="category" title="Category" Icon={CategoryIcon}>
+                  <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
                 </PropItem>
+
+                <PropItem key="nist_round" title="NIST Standardization" Icon={LeaderboardIcon}>
+                  <StatusBadge
+                    kind="rounds"
+                    value={scheme.nist_round}
+                    label={NIST_ROUNDS[scheme.nist_round].short ?? 'Not submitted'}
+                    title={NIST_ROUNDS[scheme.nist_round].long}
+                  />
+                </PropItem>
+
+                {(scheme.stateful || scheme.stateful_comment) && (
+                  <PropItem key="stateful" title="Statefulness" Icon={SaveIcon}>
+                    {scheme.stateful === 1
+                      ? <StatusBadge kind="statefulness" value={1} label="stateful" title={scheme.stateful_comment} />
+                      : <span>stateless <Comment title={scheme.stateful_comment} /></span> /* stateless only shown if there's a comment */}
+                  </PropItem>
                 )}
 
-            <PropItem key="year" title="Year" Icon={EventIcon}>
-              {
-                [
-                  scheme.year_paper
-                    ? [scheme.year_paper, <Box component="span" key="pap" sx={{ opacity: 0.5 }}> (paper)</Box>] : [],
-                  scheme.year_candidate
-                    ? [scheme.year_candidate, <Box component="span" key="cand" sx={{ opacity: 0.5 }}> (NIST candidate)</Box>] : [],
-                  scheme.year_standardization
-                    ? [scheme.year_standardization, <Box component="span" key="sdt" sx={{ opacity: 0.5 }}> (standardization)</Box>] : [],
-                  scheme.year_comment
-                    ? [<em key="comment">{scheme.year_comment}</em>] : [],
-                ].reduce((accu, elem) => {
-                  // join(), but skipping empty entries
-                  if (!elem.length) return accu;
-                  if (!accu.length) return [elem];
-                  return [...accu, ' \u2022 ', elem];
-                }, [])
-              }
-            </PropItem>
-
-            <PropItem key="problems_trust" title="Security Properties" Icon={SecurityIcon}>
-              {scheme.trust_comment
-                  && (
-                  <>
-                    <div><strong>Trust: </strong></div>
-                    <Box sx={{ marginBottom: '.6em' }}>{scheme.trust_comment}</Box>
-                  </>
-                  )}
-              {(problems.length > 0 || scheme.problems_comment)
-                  && (
-                  <>
-                    <div><strong>Problems:</strong></div>
-                    {scheme.problems_comment
-                     && <div><TextComment>{scheme.problems_comment}</TextComment></div>}
-                    {problems.map((p) => (
-                      <div key={p.assumption}>
-                        {p.assumption}
-                        {' '}
-                        <Comment title={p.comment} />
-                      </div>
-                    ))}
-                  </>
-                  )}
-            </PropItem>
-
-            <PropItem key="authors" title="Authors" Icon={PeopleIcon}>
-              {authors.map((a) => <div key={a.name}>{a.name}</div>)}
-            </PropItem>
-
-            {(scheme.website || links.length > 0)
-                && (
-                <PropItem key="links" title="Links" Icon={LinkIcon}>
-                  {
-                    scheme.website
-                    && (
-                    <div key={scheme.website}>
-                      <Link href={scheme.website}>
-                        Website (
-                        {scheme.website}
-                        )
-                      </Link>
-                    </div>
-                    )
-                  }
-                  {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
+                <PropItem key="year" title="Year" Icon={EventIcon}>
+                  {yearRowNode}
                 </PropItem>
-                )}
+              </DetailCard>
 
-            {sources.length > 0
-                && (
-                <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
-                  {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
-                </PropItem>
-                )}
-
-            {scheme.patents
-                && (
-                <PropItem key="patents" title="Patents" Icon={PendingActionsIcon}>
-                  <div key={patentString}>
-                    {patentString.map((ps) => {
-                      if (exp.test(ps)) {
-                        const xs = ps.replace('[', '');
-                        const x = xs.replace(']', '');
-                        const plElement = patentslink[x - 1];
-                        const plUrl = plElement.url;
-                        return (
-                          <Link key={plUrl} href={plUrl}>
-                            {ps}
-                          </Link>
-                        );
-                      }
-                      return ps;
-                    })}
-                  </div>
-                </PropItem>
-                )}
-
-            <ListItem key="flavors">
-              <Typography component="h2" variant="h4">Flavors</Typography>
-            </ListItem>
-
-            {flavors.map((f) => {
-              const flavorParamsets = queryAll(db, 'SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC', [f.id]);
-              const flavorImplementations = queryAll(db, 'SELECT name FROM implementation WHERE flavor_id=? ORDER BY type DESC', [f.id]);
-
-              return (
-                <div key={`flavor-${f.id}`}>
-                  <ListItem key="head" sx={{ display: 'block' }}>
-                    <Typography component="h3" variant="h5">
-                      <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>
-                        {f.name}
-                      </Link>
-                    </Typography>
-                    {f.description && <div>{f.description}</div>}
-                    {f.comment && <div><TextComment>{f.comment}</TextComment></div>}
-                  </ListItem>
-
-                  {f.type !== 'SIG' && !f.type_comment // there's just one type for signatures, not worth showing this here
+              <DetailCard title="Security" Icon={SecurityIcon}>
+                <PropItem key="problems_trust" title="Security Properties" Icon={SecurityIcon}>
+                  {scheme.trust_comment
                       && (
-                      <PropItem key="type" title="API Type" Icon={CategoryIcon}>
-                        {f.type}
-                        {' '}
-                        <Comment title={f.type_comment} />
-                      </PropItem>
+                      <>
+                        <div><strong>Trust: </strong></div>
+                        <Box sx={{ marginBottom: '.6em' }}>{scheme.trust_comment}</Box>
+                      </>
                       )}
+                  {(problems.length > 0 || scheme.problems_comment)
+                      && (
+                      <>
+                        <div><strong>Problems:</strong></div>
+                        {scheme.problems_comment
+                         && <div><TextComment>{scheme.problems_comment}</TextComment></div>}
+                        {problems.map((p) => (
+                          <div key={p.assumption}>
+                            {p.assumption}
+                            {' '}
+                            <Comment title={p.comment} />
+                          </div>
+                        ))}
+                      </>
+                      )}
+                </PropItem>
 
-                  <PropItem key="securitynotion" title="Security Notion" Icon={SecurityIcon}>
-                    <Tooltip title={SEC_NOTIONS[f.security_notion]}>
-                      <span>{f.security_notion}</span>
-                    </Tooltip>
-                    <Comment title={f.security_notion_comment} />
-                  </PropItem>
-
-                  {f.dh_ness && (
-                    <PropItem key="dhness" title="Diffie-Hellman-Ness" Icon={DiffieHellmanIcon}>
-                      <strong>Diffie-Hellman-Ness: </strong>
-                      {f.dh_ness}
+                {attacks.length > 0
+                    && (
+                    <PropItem key="attacks" title="Attacks" Icon={BoltIcon}>
+                      {attacks.map((a) => <div key={a.url}>{linkify(a.url)}</div>)}
                     </PropItem>
-                  )}
+                    )}
+              </DetailCard>
 
-                  <PropItem key="paramsets" title="Parameter sets" Icon={ParamSetIcon}>
-                    {flavorParamsets.map((p) => (
-                      <div key={p.name}>
-                        {p.name}
-                        {' '}
-                        {(p.security_level_nist_category ?? 0) > 0 && (
+              <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
+                <Box sx={{ p: 3 }}>
+                  <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', mb: 1 }}>
+                    <LayersIcon fontSize="small" color="primary" />
+                    <Typography component="h2" variant="h6" sx={{ fontWeight: 600 }}>
+                      Flavors
+                    </Typography>
+                  </Stack>
 
-                        <Tooltip title={`NIST Category ${p.security_level_nist_category}`}>
-                          <span>
-                            (
-                            {romanCat(p.security_level_nist_category)}
+                  {flavors.map((f) => {
+                    const counts = queryAll(
+                      db,
+                      `SELECT
+                         (SELECT COUNT(*) FROM paramset WHERE flavor_id=?) AS paramsets,
+                         (SELECT COUNT(*) FROM implementation WHERE flavor_id=?) AS implementations,
+                         (SELECT COUNT(*) FROM benchmark
+                           WHERE paramset_id IN (SELECT id FROM paramset WHERE flavor_id=?)) AS benchmarks`,
+                      [f.id, f.id, f.id],
+                    )[0] ?? {};
+                    const { paramsets: pCount = 0, implementations: implCount = 0, benchmarks: benchCount = 0 } = counts;
+
+                    return (
+                      <Box key={`flavor-${f.id}`}>
+                        <Divider sx={{ my: 2 }} />
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                          <Typography component="h3" variant="h6">
+                            <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>
+                              {f.name}
+                            </Link>
+                          </Typography>
+
+                          {f.type !== 'SIG' && !f.type_comment // there's just one type for signatures, not worth showing this here
+                              && (
+                              <Chip
+                                size="small"
+                                icon={<CategoryIcon />}
+                                label={f.type}
+                                title={f.type_comment ?? undefined}
+                              />
+                              )}
+
+                          <Chip
+                            size="small"
+                            icon={<SecurityIcon />}
+                            label={f.security_notion}
+                            title={SEC_NOTIONS[f.security_notion]}
+                          />
+
+                          {(pCount > 0 || implCount > 0 || benchCount > 0) && (
+                            <Link
+                              component={RouterLink}
+                              to={detailLink(scheme.id_text, f.id_text)}
+                              sx={{ ml: 'auto', color: 'text.secondary', fontSize: 13, whiteSpace: 'nowrap' }}
+                            >
+                              {[
+                                pCount > 0 && `${pCount} parameter set${pCount !== 1 ? 's' : ''}`,
+                                implCount > 0 && `${implCount} implementation${implCount !== 1 ? 's' : ''}`,
+                                benchCount > 0 && `${benchCount} benchmark${benchCount !== 1 ? 's' : ''}`,
+                              ].filter(Boolean).join(' · ')}
+                              {' →'}
+                            </Link>
+                          )}
+                        </Box>
+                        {f.description && <Box sx={{ mt: 0.5 }}>{f.description}</Box>}
+                        {f.comment && <Box sx={{ mt: 0.5 }}><TextComment>{f.comment}</TextComment></Box>}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Paper>
+            </Stack>
+          </Grid>
+
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Stack spacing={2}>
+              <DetailCard title="Attribution" Icon={PeopleIcon}>
+                <PropItem key="authors" title="Authors" Icon={PeopleIcon}>
+                  {authors.map((a) => <div key={a.name}>{a.name}</div>)}
+                </PropItem>
+
+                {(scheme.website || links.length > 0)
+                    && (
+                    <PropItem key="links" title="Links" Icon={LinkIcon}>
+                      {
+                        scheme.website
+                        && (
+                        <div key={scheme.website}>
+                          <Link href={scheme.website}>
+                            Website (
+                            {scheme.website}
                             )
-                          </span>
-                        </Tooltip>
-                        )}
-                      </div>
-                    ))}
-                  </PropItem>
+                          </Link>
+                        </div>
+                        )
+                      }
+                      {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
+                    </PropItem>
+                    )}
 
-                  <PropItem key="implementations" title="Implementations" Icon={CodeIcon}>
-                    {flavorImplementations.map((i) => <div key={i.name}>{i.name}</div>)}
-                  </PropItem>
-                </div>
-              );
-            })}
-          </List>
-        </Box>
-      </Paper>
+                {sources.length > 0
+                    && (
+                    <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
+                      {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
+                    </PropItem>
+                    )}
+
+                {scheme.patents
+                    && (
+                    <PropItem key="patents" title="Patents" Icon={PendingActionsIcon}>
+                      <Box component="div" key={patentString} sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {patentString.map((ps) => {
+                          if (exp.test(ps)) {
+                            const xs = ps.replace('[', '');
+                            const x = xs.replace(']', '');
+                            const plElement = patentslink[x - 1];
+                            const plUrl = plElement.url;
+                            return (
+                              <Link key={plUrl} href={plUrl}>
+                                {ps}
+                              </Link>
+                            );
+                          }
+                          return ps;
+                        })}
+                      </Box>
+                    </PropItem>
+                    )}
+              </DetailCard>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Stack>
     </Container>
   );
 }

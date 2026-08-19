@@ -43,7 +43,7 @@ import queryAll from '../utils/queryAll';
 function buildIndex(db) {
   const schemes = queryAll(
     db,
-    'SELECT id, id_text, name, description, category, nist_round, stateful FROM scheme ORDER BY name ASC',
+    'SELECT id, id_text, name, description, category, nist_round, stateful, stateful_comment FROM scheme ORDER BY name ASC',
   );
   const entries = schemes.flatMap((s) => {
     const schemeEntry = {
@@ -214,6 +214,15 @@ function CommandPalette({ open, onClose, db }) {
                         kind="rounds"
                         value={option.scheme.nist_round}
                         label={NIST_ROUNDS[option.scheme.nist_round].short}
+                        size="small"
+                      />
+                    )}
+                    {option.scheme.stateful === 1 && (
+                      <StatusBadge
+                        kind="statefulness"
+                        value={1}
+                        label="stateful"
+                        title={option.scheme.stateful_comment}
                         size="small"
                       />
                     )}

@@ -16,7 +16,7 @@ const toneFor = (kind, value) => {
   return (table && table[value]) || '#64748b';
 };
 
-function StatusBadge({ kind, value, label, title, size }) {
+function StatusBadge({ kind, value, label, title, size, sx }) {
   if (value === undefined || value === null || value === '') return null;
   const color = toneFor(kind, value);
   return (
@@ -29,6 +29,7 @@ function StatusBadge({ kind, value, label, title, size }) {
         backgroundColor: color,
         fontWeight: 600,
         '&:hover': { backgroundColor: color },
+        ...sx,
       }}
     />
   );
@@ -40,6 +41,7 @@ StatusBadge.propTypes = {
   label: PropTypes.node,
   title: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium']),
+  sx: PropTypes.object,
 };
 
 StatusBadge.defaultProps = {
