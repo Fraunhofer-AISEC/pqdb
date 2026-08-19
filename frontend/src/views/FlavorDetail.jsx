@@ -20,6 +20,7 @@ import {
   Category as CategoryIcon,
   Memory as ChipIcon,
   Code as CodeIcon,
+  SyncAlt as DiffieHellmanIcon,
   Fort as FortIcon,
   Translate as LanguageIcon,
   Link as LinkIcon,
@@ -224,12 +225,30 @@ function FlavorDetail() {
           {flavor.description && <Box sx={{ mt: 0.5 }}>{flavor.description}</Box>}
           {flavor.dh_ness
             && (
-            <Box sx={{ mt: 0.5, display: 'inline-flex', alignItems: 'baseline', gap: 0.5 }}>
-              <strong>Diffie-Hellman-Ness: </strong>
-              {flavor.dh_ness}
+            <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: 'max-content 1fr', columnGap: 1, alignItems: 'flex-start' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <DiffieHellmanIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+                <Typography sx={{ fontWeight: 500, color: 'text.secondary', whiteSpace: 'nowrap' }}>Diffie-Hellman-Ness</Typography>
+              </Box>
+              <Box component="span">
+                {flavor.dh_ness}
+              </Box>
             </Box>
             )}
           {flavor.comment && <Box sx={{ mt: 0.5 }}><TextComment>{flavor.comment}</TextComment></Box>}
+          {sources.length > 0
+            && (
+            <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+              <MenuBookIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+              <Typography sx={{ fontWeight: 500, color: 'text.secondary' }}>Sources</Typography>
+              {sources.map((s, i) => (
+                <span key={s.url}>
+                  {i > 0 && ', '}
+                  {linkify(s.url)}
+                </span>
+              ))}
+            </Box>
+            )}
         </Box>
         <Tabs
           value={activeTab}
@@ -247,15 +266,6 @@ function FlavorDetail() {
         <DetailCard title="Links" Icon={LinkIcon}>
           <PropItem key="links" title="Links" Icon={LinkIcon}>
             {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
-          </PropItem>
-        </DetailCard>
-        )}
-
-      {sources.length > 0
-        && (
-        <DetailCard title="Sources" Icon={MenuBookIcon}>
-          <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
-            {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
           </PropItem>
         </DetailCard>
         )}
