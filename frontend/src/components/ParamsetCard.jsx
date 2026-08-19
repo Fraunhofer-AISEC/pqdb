@@ -16,20 +16,13 @@
 
 import {
   Box,
-  Collapse,
-  IconButton,
   Paper,
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  ExpandLess as ExpandLessIcon,
-  ExpandMore as ExpandMoreIcon,
-  Link as LinkIcon,
-  MenuBook as MenuBookIcon,
-} from '@mui/icons-material';
-import { useContext, useState } from 'react';
+import { MenuBook as MenuBookIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 import Comment from './Comment';
 import { DatabaseContext } from './DatabaseProvider';
@@ -37,19 +30,18 @@ import Mono from './Mono';
 import PropItem from './PropItem';
 import { SCHEME_TYPES } from '../constants';
 import StatusBadge from './StatusBadge';
-import TextComment from './TextComment';
 import humanReadableSize from '../utils/humanReadableSize';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
 import romanCat from '../utils/romanCat';
 
 /*
- * ParamsetCard — a compact, expandable summary tile for one paramset. It is the
+ * ParamsetCard — a compact summary tile for one paramset. It is the
  * "radar"-style at-a-glance card shown in the FlavorDetail Parameter Sets tab:
- * NIST security category, sizes, failure probability, and security levels on the
- * surface, with the full paramset detail (comment, links, sources) revealed when
- * the tile is expanded. Styling is theme-token based via `sx` so it renders
- * correctly in light and dark modes.
+ * NIST security category, sizes, failure probability, and security levels, with
+ * comments available via info-icon tooltips and sources as inline links.
+ * Styling is theme-token based via `sx` so it renders correctly in light and
+ * dark modes.
  */
 
 function SizeBarRow({ label, size, maxSize }) {
@@ -83,20 +75,12 @@ function SizeBarRow({ label, size, maxSize }) {
 
 function ParamsetCard({ p, schemeType, maxSize }) {
   const { db } = useContext(DatabaseContext);
-  const [expanded, setExpanded] = useState(false);
 
   const ctSigLabel = SCHEME_TYPES[schemeType].ct_sig;
 
-  // Lazily fetch links/sources only when the tile is expanded, so a collapsed
-  // summary never walks the link/source tables for every paramset.
-  const paramsetLinks = expanded
-    ? queryAll(db, 'SELECT * FROM paramset_link WHERE paramset_id=?', [p.id])
-    : [];
-  const paramsetSources = expanded
-    ? queryAll(db, 'SELECT * FROM paramset_source WHERE paramset_id=?', [p.id])
-    : [];
+  const paramsetSources = queryAll(db, 'SELECT * FROM paramset_source WHERE paramset_id=?', [p.id]);
 
-  const showFailure = schemeType === 'enc' || p.failure_probability !== 0 || p.failure_probability_comment;
+  const showFailure = p.failure_probability !== 0 || p.failure_probability_comment;
 
   return (
     <Paper variant="outlined" sx={{ height: '100%' }}>
@@ -115,15 +99,9 @@ function ParamsetCard({ p, schemeType, maxSize }) {
                   title={`NIST Category ${p.security_level_nist_category}`}
                 />
               )}
+              <Comment title={p.comment} />
             </Box>
           </Box>
-          <IconButton
-            size="small"
-            aria-label={expanded ? 'Collapse' : 'Expand'}
-            onClick={() => setExpanded((e) => !e)}
-          >
-            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </IconButton>
         </Box>
 
         <Stack spacing={0.75} sx={{ mt: 1.5 }}>
@@ -143,6 +121,7 @@ function ParamsetCard({ p, schemeType, maxSize }) {
                   <Box component="span" sx={{ opacity: 0.5 }}>(classical)</Box>
                 </>
               )}
+              <Comment title={p.security_level_comment} />
             </Box>
 
             {showFailure && (
@@ -182,6 +161,7 @@ function ParamsetCard({ p, schemeType, maxSize }) {
             <Typography sx={{ fontWeight: 600, fontSize: '0.85rem', color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Sizes
             </Typography>
+            <Comment title={p.sizes_comment} />
             <Box
               sx={{
                 display: 'grid',
@@ -199,25 +179,11 @@ function ParamsetCard({ p, schemeType, maxSize }) {
           </Box>
         </Stack>
 
-        <Collapse in={expanded} unmountOnExit>
-          <Stack spacing={1} sx={{ mt: 1.5, pt: 1.5, borderTop: (theme) => `1px solid ${theme.palette.divider}` }}>
-            {p.comment && <TextComment>{p.comment}</TextComment>}
-            {p.security_level_comment && <div><TextComment>{p.security_level_comment}</TextComment></div>}
-            {p.sizes_comment && <div><TextComment>{p.sizes_comment}</TextComment></div>}
-
-            {paramsetLinks.length > 0 && (
-              <PropItem key="links" title="Links" Icon={LinkIcon}>
-                {paramsetLinks.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
-              </PropItem>
-            )}
-
-            {paramsetSources.length > 0 && (
-              <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
-                {paramsetSources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
-              </PropItem>
-            )}
-          </Stack>
-        </Collapse>
+        {paramsetSources.length > 0 && (
+          <PropItem title="Sources" Icon={MenuBookIcon}>
+            {paramsetSources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
+          </PropItem>
+        )}
       </Box>
     </Paper>
   );

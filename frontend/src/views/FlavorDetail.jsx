@@ -20,12 +20,10 @@ import {
   Category as CategoryIcon,
   Memory as ChipIcon,
   Code as CodeIcon,
-  SyncAlt as DiffieHellmanIcon,
   Fort as FortIcon,
   Translate as LanguageIcon,
   Link as LinkIcon,
   MenuBook as MenuBookIcon,
-  Security as SecurityIcon,
 } from '@mui/icons-material';
 import {
   Box,
@@ -216,8 +214,21 @@ function FlavorDetail() {
 
       <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, mb: 2 }}>
         <Box sx={{ px: 3, pt: 2 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>{flavor.name}</Typography>
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>{flavor.name}</Typography>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
+              <Chip size="small" label={flavor.type} />
+              <Chip size="small" color="primary" variant="outlined" label={flavor.security_notion} title={typeLabel} />
+            </Stack>
+          </Stack>
           {flavor.description && <Box sx={{ mt: 0.5 }}>{flavor.description}</Box>}
+          {flavor.dh_ness
+            && (
+            <Box sx={{ mt: 0.5, display: 'inline-flex', alignItems: 'baseline', gap: 0.5 }}>
+              <strong>Diffie-Hellman-Ness: </strong>
+              {flavor.dh_ness}
+            </Box>
+            )}
           {flavor.comment && <Box sx={{ mt: 0.5 }}><TextComment>{flavor.comment}</TextComment></Box>}
         </Box>
         <Tabs
@@ -225,68 +236,31 @@ function FlavorDetail() {
           onChange={(_event, value) => setActiveTab(value)}
           sx={{ px: 2, borderTop: (theme) => `1px solid ${theme.palette.divider}`, mt: 1 }}
         >
-          <Tab label="Overview" />
           <Tab label="Parameter Sets" />
           <Tab label="Implementations" />
           <Tab label="Benchmarks" />
         </Tabs>
       </Paper>
 
+      {links.length > 0
+        && (
+        <DetailCard title="Links" Icon={LinkIcon}>
+          <PropItem key="links" title="Links" Icon={LinkIcon}>
+            {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
+          </PropItem>
+        </DetailCard>
+        )}
+
+      {sources.length > 0
+        && (
+        <DetailCard title="Sources" Icon={MenuBookIcon}>
+          <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
+            {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
+          </PropItem>
+        </DetailCard>
+        )}
+
       {activeTab === 0 && (
-        <Stack spacing={2}>
-          <DetailCard title="Details" Icon={CategoryIcon}>
-            <PropItem key="type" title="Scheme Type" Icon={CategoryIcon}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-                <Chip size="small" label={flavor.type} />
-                <Comment title={flavor.type_comment} />
-              </Box>
-            </PropItem>
-
-            <PropItem key="securitynotion" title="Security Notion" Icon={SecurityIcon}>
-              <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
-                <Chip
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  label={flavor.security_notion}
-                  title={typeLabel}
-                />
-                <Comment title={flavor.security_notion_comment} />
-              </Stack>
-            </PropItem>
-
-            {flavor.dh_ness
-              && (
-              <PropItem key="dhness" title="Diffie-Hellman-Ness" Icon={DiffieHellmanIcon}>
-                <Box sx={{ display: 'inline-flex', alignItems: 'baseline', gap: 0.5 }}>
-                  <strong>Diffie-Hellman-Ness: </strong>
-                  {flavor.dh_ness}
-                </Box>
-              </PropItem>
-              )}
-          </DetailCard>
-
-          {links.length > 0
-            && (
-            <DetailCard title="Links" Icon={LinkIcon}>
-              <PropItem key="links" title="Links" Icon={LinkIcon}>
-                {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
-              </PropItem>
-            </DetailCard>
-            )}
-
-          {sources.length > 0
-            && (
-            <DetailCard title="Sources" Icon={MenuBookIcon}>
-              <PropItem key="sources" title="Sources" Icon={MenuBookIcon}>
-                {sources.map((s) => <div key={s.url}>{linkify(s.url)}</div>)}
-              </PropItem>
-            </DetailCard>
-            )}
-        </Stack>
-      )}
-
-      {activeTab === 1 && (
         <Grid container spacing={2}>
           {(() => {
             const maxSize = paramsets.reduce(
@@ -307,7 +281,7 @@ function FlavorDetail() {
         </Grid>
       )}
 
-      {activeTab === 2 && (
+      {activeTab === 1 && (
         <Stack spacing={2}>
           {implementations.map((i) => {
             const implLinks = queryAll(db, 'SELECT * FROM implementation_link WHERE implementation_id=?', [i.id]);
@@ -386,7 +360,7 @@ function FlavorDetail() {
         </Stack>
       )}
 
-      {activeTab === 3 && (
+      {activeTab === 2 && (
         <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, p: 2 }}>
           <Stack spacing={1.5}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
