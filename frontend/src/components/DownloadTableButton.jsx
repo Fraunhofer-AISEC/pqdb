@@ -24,9 +24,9 @@ import {
   Paper,
   Popper,
 } from '@mui/material';
-import { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { stringify } from 'csv-stringify/browser/esm';
+import PropTypes from 'prop-types';
+import { useRef, useState } from 'react';
 
 const propTypes = {
   queryResult: PropTypes.shape({

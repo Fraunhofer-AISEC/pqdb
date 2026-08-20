@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import PropTypes from 'prop-types';
 import {
   createContext,
   useEffect,
@@ -21,8 +22,6 @@ import {
   useRef,
   useState,
 } from 'react';
-
-import PropTypes from 'prop-types';
 import initSqlJs from 'sql.js';
 
 const DatabaseContext = createContext();

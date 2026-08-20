@@ -137,5 +137,5 @@ function getTheme(mode) {
   });
 }
 
-export { brand, STATUS_COLORS, fontFamilyMono };
+export { brand, fontFamilyMono,STATUS_COLORS };
 export default getTheme;

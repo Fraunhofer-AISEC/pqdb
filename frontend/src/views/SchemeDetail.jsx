@@ -39,21 +39,20 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-
-import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import {
-  NIST_ROUNDS,
-  SCHEME_TYPES,
-  SEC_NOTIONS,
-} from '../constants';
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
+import {
+  NIST_ROUNDS,
+  SCHEME_TYPES,
+  SEC_NOTIONS,
+} from '../constants';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';

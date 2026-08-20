@@ -9,30 +9,29 @@
  */
 
 import {
+  Brightness4 as DarkIcon,
+  BrightnessHigh as LightIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Menu as MenuIcon,
+  Search as SearchIcon,
+} from '@mui/icons-material';
+import {
+  AppBar as MuiAppBar,
   Box,
   IconButton,
-  AppBar as MuiAppBar,
   Link,
   Toolbar,
   Tooltip,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import {
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  Brightness4 as DarkIcon,
-  BrightnessHigh as LightIcon,
-  Menu as MenuIcon,
-  Search as SearchIcon,
-} from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
-
-import Breadcrumbs from './Breadcrumbs';
 import logo from '../pqdb.svg';
+import Breadcrumbs from './Breadcrumbs';
 
 function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onToggleTheme, db }) {
   const theme = useTheme();

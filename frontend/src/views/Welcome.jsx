@@ -9,7 +9,9 @@
  * search button that opens the global CommandPalette.
  */
 
+import SearchIcon from '@mui/icons-material/Search';
 import {
+  alpha,
   Box,
   Button,
   Container,
@@ -18,19 +20,16 @@ import {
   Paper,
   Stack,
   Typography,
-  alpha,
   useTheme,
 } from '@mui/material';
 import { useContext, useEffect } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
-import StatusBadge from '../components/StatusBadge';
-import queryAll from '../utils/queryAll';
 import { useSearchDialog } from '../components/SearchDialogContext';
-
+import StatusBadge from '../components/StatusBadge';
 import logo from '../pqdb.svg';
+import queryAll from '../utils/queryAll';
 
 // Human-readable category labels for the per-category breakdown. Unknown
 // categories fall back to their raw value.

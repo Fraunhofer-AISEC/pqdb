@@ -25,18 +25,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
 import PropTypes from 'prop-types';
-
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { NIST_ROUNDS, SCHEME_TYPES } from '../constants';
-
-import Mono from './Mono';
-import StatusBadge from './StatusBadge';
 import detailLink from '../utils/detailLink';
 import queryAll from '../utils/queryAll';
+import Mono from './Mono';
+import StatusBadge from './StatusBadge';
 
 // Build a flat list of searchable records (one per scheme and one per flavor),
 // each carrying enough context to render and to construct its detail link.

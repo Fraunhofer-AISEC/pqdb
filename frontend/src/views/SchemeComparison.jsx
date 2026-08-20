@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
   AccordionDetails,
@@ -34,17 +35,15 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import {
   useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import QueryTable from '../components/QueryTable';
-import { SCHEME_TYPES } from '../constants';
 import SchemeCheckboxList from '../components/SchemeCheckboxList';
+import { SCHEME_TYPES } from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import not from '../utils/not';

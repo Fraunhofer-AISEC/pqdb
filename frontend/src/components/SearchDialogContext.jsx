@@ -9,9 +9,8 @@
  * CommandPalette, so search behaves identically everywhere.
  */
 
-import { createContext, useContext } from 'react';
-
 import PropTypes from 'prop-types';
+import { createContext, useContext } from 'react';
 
 const SearchDialogContext = createContext({ openSearch: () => {} });
 

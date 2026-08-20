@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
   AccordionDetails,
@@ -29,7 +30,6 @@ import {
 import {
   useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';

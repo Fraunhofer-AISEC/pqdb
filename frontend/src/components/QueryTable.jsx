@@ -26,9 +26,9 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
+import md5 from 'md5';
 import PropTypes from 'prop-types';
 import React from 'react';
-import md5 from 'md5';
 
 import DownloadTableButton from './DownloadTableButton';
 import Mono from './Mono';

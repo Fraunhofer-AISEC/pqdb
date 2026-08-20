@@ -7,6 +7,9 @@
  */
 
 import {
+  ArrowForward as ArrowForwardIcon,
+} from '@mui/icons-material';
+import {
   Box,
   Card,
   CardActionArea,
@@ -15,15 +18,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  ArrowForward as ArrowForwardIcon,
-} from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { NIST_ROUNDS, SCHEME_TYPES } from '../constants';
-import StatusBadge from './StatusBadge';
 import detailLink from '../utils/detailLink';
+import StatusBadge from './StatusBadge';
 
 function SchemeCard({ scheme }) {
   const type = SCHEME_TYPES[scheme.type];

@@ -4,6 +4,7 @@ import js from '@eslint/js';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default [
   {
@@ -51,11 +52,16 @@ export default [
     },
   },
   {
-    // Keep the project's custom import-sorting rule scoped to application code
-    // in src/, not to tooling/config files.
+    // Keep the project's import-sorting rule scoped to application code in
+    // src/, not to tooling/config files. simple-import-sort provides reliable
+    // autofix via `eslint --fix`.
     files: ['src/**/*.{js,jsx}'],
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
     rules: {
-      'sort-imports': ['error', { allowSeparatedGroups: true }],
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   {

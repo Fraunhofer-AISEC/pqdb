@@ -18,13 +18,13 @@ import {
   ArrowBack as ArrowBackIcon,
   BarChart as BarChartIcon,
   Category as CategoryIcon,
-  Memory as ChipIcon,
   Code as CodeIcon,
-  SyncAlt as DiffieHellmanIcon,
   Fort as FortIcon,
-  Translate as LanguageIcon,
   Link as LinkIcon,
+  Memory as ChipIcon,
   MenuBook as MenuBookIcon,
+  SyncAlt as DiffieHellmanIcon,
+  Translate as LanguageIcon,
 } from '@mui/icons-material';
 import {
   Box,
@@ -39,14 +39,9 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import {
-  NIST_ROUNDS,
-  SCHEME_TYPES,
-  SEC_NOTIONS,
-} from '../constants';
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
@@ -55,6 +50,11 @@ import PropItem from '../components/PropItem';
 import QueryTable from '../components/QueryTable';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
+import {
+  NIST_ROUNDS,
+  SCHEME_TYPES,
+  SEC_NOTIONS,
+} from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import linkify from '../utils/linkify';

@@ -21,9 +21,8 @@ import {
   CardHeader,
   Typography,
 } from '@mui/material';
-import { Component } from 'react';
-
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 
 /**
  * Last-resort error boundary. If anything rendered below it throws (for example

@@ -25,10 +25,9 @@ import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { DatabaseContext } from './components/DatabaseProvider';
-
 import AppBar from './components/AppBar';
 import CommandPalette from './components/CommandPalette';
+import { DatabaseContext } from './components/DatabaseProvider';
 import NavDrawer from './components/NavDrawer';
 import SearchDialogProvider from './components/SearchDialogContext';
 import getTheme from './theme';
@@ -122,7 +121,7 @@ function App() {
           >
             <Toolbar variant="dense" sx={{ mb: 1 }} />
             <Box sx={{ px: 2, flexGrow: 1 }}>
-              <Stack spacing={2}>
+              <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 {content}
               </Stack>
             </Box>

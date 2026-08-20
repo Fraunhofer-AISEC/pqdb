@@ -30,9 +30,9 @@ import {
   SCHEME_TYPES,
 } from '../constants';
 import ExternalLinkIcon from '../icons/ExternalLink';
-import StatusBadge from './StatusBadge';
 import detailLink from '../utils/detailLink';
 import queryAll from '../utils/queryAll';
+import StatusBadge from './StatusBadge';
 
 function SchemeList(props) {
   const { typeKey, db } = props;

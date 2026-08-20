@@ -11,17 +11,17 @@ import {
   Box,
   Divider,
   Drawer,
+  Link as MuiLink,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Link as MuiLink,
   Toolbar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { Link, NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH, NAV_ITEMS } from '../nav';
 

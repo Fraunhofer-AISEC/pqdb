@@ -15,8 +15,8 @@
  */
 
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 import { Tooltip } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const propTypes = {
   title: PropTypes.string,

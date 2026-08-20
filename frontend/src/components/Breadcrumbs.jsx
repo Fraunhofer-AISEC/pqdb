@@ -8,13 +8,13 @@
  */
 
 import {
-  Link,
   Breadcrumbs as MuiBreadcrumbs,
+  Link,
   Typography,
 } from '@mui/material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import { NAV_ITEMS } from '../nav';
 import queryAll from '../utils/queryAll';

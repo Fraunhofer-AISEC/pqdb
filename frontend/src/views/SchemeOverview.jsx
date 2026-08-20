@@ -23,8 +23,8 @@ import {
 import { useContext, useEffect } from 'react';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
-import { SCHEME_TYPES } from '../constants';
 import SchemeList from '../components/SchemeList';
+import { SCHEME_TYPES } from '../constants';
 
 function SchemeOverview() {
   useEffect(() => {

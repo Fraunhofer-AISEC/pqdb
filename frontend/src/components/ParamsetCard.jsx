@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
+import { MenuBook as MenuBookIcon } from '@mui/icons-material';
 import {
   Box,
   Paper,
   Stack,
   Typography,
 } from '@mui/material';
-import { MenuBook as MenuBookIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
-import Comment from './Comment';
-import { DatabaseContext } from './DatabaseProvider';
-import Mono from './Mono';
-import PropItem from './PropItem';
 import { SCHEME_TYPES } from '../constants';
-import StatusBadge from './StatusBadge';
 import humanReadableSize from '../utils/humanReadableSize';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
 import romanCat from '../utils/romanCat';
+import Comment from './Comment';
+import { DatabaseContext } from './DatabaseProvider';
+import Mono from './Mono';
+import PropItem from './PropItem';
+import StatusBadge from './StatusBadge';
 
 /*
  * ParamsetCard — a compact summary tile for one paramset. It is the

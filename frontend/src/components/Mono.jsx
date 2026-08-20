@@ -4,8 +4,8 @@
  * numeric data (sk/pk/ct|sig sizes, cycle counts, memory figures).
  */
 
-import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
 import { fontFamilyMono } from '../theme';
 
