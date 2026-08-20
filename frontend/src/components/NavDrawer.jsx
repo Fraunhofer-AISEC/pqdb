@@ -113,7 +113,7 @@ function NavDrawer({ open, onClose, mini, onToggleMini }) {
       <Divider />
       <Box sx={{ p: 1.5, display: 'flex', justifyContent: 'center', gap: 1 }}>
         <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
-        <MuiLink component={Link} to="/privacy_policy">Privacy Policy</MuiLink>
+        <MuiLink component={Link} to="/privacy_policy">Privacy</MuiLink>
       </Box>
     </>
   );
