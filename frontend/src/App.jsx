@@ -30,6 +30,7 @@ import { DatabaseContext } from './components/DatabaseProvider';
 import AppBar from './components/AppBar';
 import CommandPalette from './components/CommandPalette';
 import NavDrawer from './components/NavDrawer';
+import SearchDialogProvider from './components/SearchDialogContext';
 import getTheme from './theme';
 
 function Progress() {
@@ -92,7 +93,8 @@ function App() {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={resolvedTheme}>
         <CssBaseline />
-        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <SearchDialogProvider openSearch={() => setSearchOpen(true)}>
+          <Box sx={{ display: 'flex', minHeight: '100vh' }}>
           <AppBar
             onOpenDrawer={() => setDrawerOpen(true)}
             mini={mini}
@@ -131,7 +133,8 @@ function App() {
             onClose={() => setSearchOpen(false)}
             db={db}
           />
-        </Box>
+          </Box>
+        </SearchDialogProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );
