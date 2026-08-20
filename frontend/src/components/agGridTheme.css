@@ -1,0 +1,51 @@
+/*
+ * AG Grid theme alignment for PQDB.
+ *
+ * Imports the AG Grid Community base + Quartz theme and re-tunes the CSS
+ * variables to the PQDB brand (src/theme.js `brand` ramp) and MUI paper/background
+ * tokens for light and dark. Everything is bundled by Vite — no CDN requests.
+ *
+ * The grid font is left to the surrounding MUI/Inter stack (the `-no-font`
+ * Quartz variant is used), so self-hosted fonts remain the only fonts loaded.
+ */
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-quartz-no-font.css';
+
+.ag-theme-quartz,
+.ag-theme-quartz-dark {
+  --ag-font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  --ag-font-size: 13px;
+  --ag-border-radius: 6px;
+  --ag-wrapper-border-radius: 8px;
+}
+
+/* Light mode — matches theme.js (mode 'light'). */
+.ag-theme-quartz {
+  --ag-background-color: #ffffff;
+  --ag-foreground-color: #181d1f;
+  --ag-header-background-color: #f2f6f9;
+  --ag-header-foreground-color: #0f4e58;
+  --ag-border-color: #d9e2e8;
+  --ag-secondary-border-color: #e5ecf0;
+  --ag-active-color: #3daebd;
+  --ag-row-hover-color: #e9f7f8;
+  --ag-selected-row-background-color: #c8ebee;
+  --ag-odd-row-background-color: #fbfdfe;
+  --ag-row-border-color: #eef3f6;
+}
+
+/* Dark mode — matches theme.js (mode 'dark', brand[900] paper). */
+.ag-theme-quartz-dark {
+  --ag-background-color: #111a2b;
+  --ag-foreground-color: #e3ecf2;
+  --ag-header-background-color: #0e1626;
+  --ag-header-foreground-color: #9ddce2;
+  --ag-border-color: #243049;
+  --ag-secondary-border-color: #1d2940;
+  --ag-active-color: #6cc8d2;
+  --ag-row-hover-color: #0c3b43;
+  --ag-selected-row-background-color: #12626d;
+  --ag-odd-row-background-color: #131d30;
+  --ag-row-border-color: #1b2639;
+}

@@ -44,10 +44,10 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
+import DataTable from '../components/DataTable';
 import DetailCard from '../components/DetailCard';
 import ParamsetCard from '../components/ParamsetCard';
 import PropItem from '../components/PropItem';
-import QueryTable from '../components/QueryTable';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import {
@@ -383,7 +383,7 @@ function FlavorDetail() {
               </Link>
             </Stack>
             {benchmarksQuery && benchmarksQuery.values.length > 0 ? (
-              <QueryTable
+              <DataTable
                 queryResult={benchmarksQuery}
                 formatFunctions={getBenchmarkFormatFunctions(scheme.type, hasMemoryData)}
                 order={benchmarkOrder}

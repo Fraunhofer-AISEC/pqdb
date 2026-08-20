@@ -14,45 +14,48 @@
  * limitations under the License.
  */
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
+  Checklist as ChecklistIcon,
+  Security as SecurityIcon,
+  Tune as TuneIcon,
+} from '@mui/icons-material';
+import {
+  Alert,
   Box,
+  Button,
   Checkbox,
+  Chip,
   Container,
-  FormControl,
+  Divider,
   FormControlLabel,
   Grid,
   Link,
   Paper,
+  Popover,
   Slider,
   Stack,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Tooltip,
   Typography,
 } from '@mui/material';
 import {
-  useContext, useEffect, useMemo, useRef, useState,
+  Fragment, useContext, useEffect, useMemo, useState,
 } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
-import QueryTable from '../components/QueryTable';
+import DataTable from '../components/DataTable';
 import SchemeCheckboxList from '../components/SchemeCheckboxList';
 import { SCHEME_TYPES } from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import not from '../utils/not';
 import queryAll from '../utils/queryAll';
-import queryAllAsArray from '../utils/queryAllAsArray';
+import useDbQuery from '../utils/useDbQuery';
 
 const defaultState = {
   // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req', 'code_size'
-  showColumns: ['benchmarks', 'hw_features', 'nist_category'],
+  showColumns: ['benchmarks', 'nist_category'],
   schemeType: 'sig',
   platformFilter: '',
   securityLevel: 0,
@@ -95,8 +98,61 @@ function getNistRoundValue(l) {
   return round.value;
 }
 
+// Display-column options for the Columns panel. `group` places each option
+// under a section heading in the order listed below; `requires` expresses a
+// dependency on another column being shown (the implementation-level columns
+// only make sense once `benchmarks` is active) and is used to gate the toggle.
+const columnGroups = ['General', 'Sizes', 'Benchmarks'];
+
+const columnOptions = [
+  { value: 'security_levels', label: 'Security Levels', group: 'General', title: 'Security level in bits (classical/quantum)' },
+  { value: 'nist_category', label: 'NIST Category', group: 'General', title: 'NIST security level (1-5)' },
+  { value: 'nist_round', label: 'NIST Round', group: 'General', title: 'Round of the NIST PQC standardization' },
+  { value: 'storage', label: 'Sizes', group: 'Sizes', title: 'Size of keys and ciphertext/signature' },
+  { value: 'benchmarks', label: 'Benchmarks', group: 'Benchmarks', title: 'Timings for cryptographic operations' },
+  { value: 'hw_features', label: 'Hardware Features', group: 'Benchmarks', title: 'Hardware features required by the implementation', requires: 'benchmarks' },
+  { value: 'code_size', label: 'Code Size', group: 'Benchmarks', title: 'Code size required by the implementation', requires: 'benchmarks' },
+  { value: 'memory_req', label: 'Memory Requirements', group: 'Benchmarks', title: 'Memory used by the functions at runtime', requires: 'benchmarks' },
+];
+
+// Tooltip for a display-column chip. When the chip is disabled because its
+// parent column is off (e.g. Hw Features without Benchmarks), explain how to
+// enable it; otherwise show the column's one-line description.
+function columnChipTitle(opt, showColumns) {
+  if (opt.requires && !showColumns.includes(opt.requires)) {
+    const parent = columnOptions.find((o) => o.value === opt.requires)?.label;
+    return `Enable ${parent} to show ${opt.label}`;
+  }
+  return opt.title;
+}
+
+// Shared styling for the primary Signature / Key Exchange selection tiles. The
+// active tile is outlined in the brand colour with a subtle selected tint so it
+// reads as the current comparison mode, distinct from the smaller filter buttons.
+function modeTileSx(active) {
+  return {
+    flexGrow: 1,
+    minWidth: 180,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1.5,
+    p: 1.5,
+    borderRadius: 2,
+    border: '1px solid',
+    borderColor: active ? 'primary.main' : 'divider',
+    bgcolor: active ? 'action.selected' : 'transparent',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s, border-color 0.2s',
+    '&:hover': {
+      borderColor: 'primary.main',
+      bgcolor: active ? 'action.selected' : 'action.hover',
+    },
+  };
+}
+
 function buildQuery(state) {
   return `SELECT
+  f.id_text AS 'flavor_id',
   s.id_text as 'ID',
   p.name || CASE
       s.stateful
@@ -194,7 +250,7 @@ function prepareParams(state) {
 }
 
 function getFormatFunctions(results) {
-  if (results === undefined) return undefined;
+  if (results === undefined || results === null) return undefined;
   const formatFunctions = Array(results.columns.length).fill(undefined);
   results.columns.forEach((col, idx) => {
     if (col.endsWith('(kCycles)')) formatFunctions[idx] = (val) => val?.toLocaleString();
@@ -204,30 +260,38 @@ function getFormatFunctions(results) {
   return formatFunctions;
 }
 
-function computeResult(db, sqlQuery, params) {
-  const results = queryAllAsArray(db, sqlQuery, params);
-  if (results.values.length === 0) return undefined;
-  results.columns.shift(); // Remove the 'ID' column name
-  results.values.forEach((res) => {
-    res[1] = <Link component={RouterLink} to={detailLink(res[0])}>{res[1]}</Link>;
-    res.shift(); // Remove the 'ID' entry
-  });
-  return results;
+// Renders the "Name" column as a router link to the flavor detail page. The
+// scheme and flavor ids are carried on each row as `__id` / `__flavorId` (kept
+// when the ID columns were stripped from the display columns in
+// `reshapeResult`).
+function NameLinkRenderer(params) {
+  return (
+    <Link component={RouterLink} to={detailLink(params.data.__id, params.data.__flavorId)}>
+      {params.value}
+    </Link>
+  );
+}
+
+// Pure reshape of the raw queryAllAsArray result: drop the leading 'flavor_id'
+// and 'ID' columns (display only) while preserving the ids for the name-link
+// renderer.
+function reshapeResult(rawResults) {
+  if (rawResults === undefined) return undefined;
+  if (rawResults === null) return null;
+  const columns = rawResults.columns.slice(2);
+  const ids = rawResults.values.map((res) => res[1]);
+  const flavorIds = rawResults.values.map((res) => res[0]);
+  const values = rawResults.values.map((res) => res.slice(2));
+  return { columns, values, ids, flavorIds };
 }
 
 function SchemeComparison() {
   const { db } = useContext(DatabaseContext);
 
-  const platformFilterTimeout = useRef(null);
-
   const fullSchemeLists = useMemo(() => ({
     enc: schemesListQueryDB(db, 'enc', '0', true),
     sig: schemesListQueryDB(db, 'sig', '0', true),
   }), [db]);
-
-  const [queryProcessing, setQueryProcessing] = useState(true);
-  const [queryResult, setQueryResult] = useState(undefined);
-  const [schemesList, setSchemesList] = useState([]);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -247,13 +311,57 @@ function SchemeComparison() {
     return resultState;
   }, [searchParams, fullSchemeLists]);
 
-  const query = useMemo(() => buildQuery(filterState), [filterState]);
-  const headerSections = useMemo(() => createHeaderSections(filterState), [filterState]);
+  // `query`/`params` only change with the SQL-relevant filter fields, never for
+  // order changes, so useDbQuery re-runs exactly for "real" filter changes.
+  // The narrowed dep arrays (excluding order/orderBy) are intentional: sorting
+  // must not re-trigger the (debounced) DB query.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const query = useMemo(() => buildQuery(filterState), [
+    filterState.schemeType,
+    filterState.showColumns,
+    filterState.nistRound,
+    filterState.securityLevel,
+    filterState.securityQuantum,
+    filterState.platformFilter,
+    filterState.showRef,
+    filterState.showNonNistSchemes,
+    filterState.checkedSchemes,
+  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const params = useMemo(() => prepareParams(filterState), [
+    filterState.schemeType,
+    filterState.nistRound,
+    filterState.securityLevel,
+    filterState.securityQuantum,
+    filterState.showColumns,
+    filterState.platformFilter,
+  ]);
 
-  // Always keep the latest filterState available without adding it as an
-  // effect dependency (order changes must not trigger a recomputation).
-  const filterStateRef = useRef(filterState);
-  filterStateRef.current = filterState;
+  const { data, processing: queryProcessing, error } = useDbQuery(
+    db,
+    query,
+    params,
+    { debounceMs: 300 },
+  );
+  const queryResult = useMemo(() => reshapeResult(data), [data]);
+
+  // Scheme list for the checkbox picker; only depends on the three filter
+  // fields it is derived from.
+  const schemesList = useMemo(
+    () => schemesListQueryDB(
+      db,
+      filterState.schemeType,
+      filterState.nistRound,
+      filterState.showNonNistSchemes,
+    ),
+    [db, filterState.schemeType, filterState.nistRound, filterState.showNonNistSchemes],
+  );
+
+  // Only the selected display columns drive the header grouping.
+  const headerGroups = useMemo(() => {
+    const { headers, headerSpans } = createHeaderSections({ showColumns: filterState.showColumns });
+    return headers.map((name, idx) => ({ name, span: headerSpans[idx] }));
+  }, [filterState.showColumns]);
 
   function updateSearchParams(replace, newFilterState) {
     const searchParam = {};
@@ -285,46 +393,19 @@ function SchemeComparison() {
     document.title = 'Scheme Comparison - pqdb';
   }, []);
 
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    const runQuery = () => {
-      const state = filterStateRef.current;
-      const params = prepareParams(state);
-      setQueryResult(computeResult(db, query, params));
-      setSchemesList(
-        schemesListQueryDB(db, state.schemeType, state.nistRound, state.showNonNistSchemes),
-      );
-      setQueryProcessing(false);
-    };
-
-    // Initial load: compute immediately, no debounce.
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      runQuery();
-      return undefined;
-    }
-
-    // `query` only changes for "real" filter changes, not for order changes,
-    // so this effect debounces exactly those recomputations.
-    setQueryProcessing(true);
-    const timeout = setTimeout(runQuery, 300);
-    return () => clearTimeout(timeout);
-  }, [db, query]);
-
   function expandQuery() {
     // UNSAFE, DO NOT USE
     // this is very hacky and unreliable - we just use it here to generate
     // an expanded string that is returned back to the user, so there is no
     // injection possibility, and no real harm results when it goes wrong.
 
-    const params = prepareParams(filterState).slice();
-    let error = false;
+    const paramsList = prepareParams(filterState).slice();
+    let errorFlag = false;
 
     function replacer() {
-      const val = params.shift();
+      const val = paramsList.shift();
       if (val === undefined) {
-        error = true;
+        errorFlag = true;
         return '';
       }
       if (typeof val === 'string') return `'${val.replaceAll('\'', '\'\'')}'`;
@@ -332,7 +413,7 @@ function SchemeComparison() {
     }
 
     const sqlQuery = query.replaceAll('?', replacer);
-    if (error && params.length > 0) {
+    if (errorFlag && paramsList.length > 0) {
       return '';
     }
     return sqlQuery;
@@ -347,247 +428,338 @@ function SchemeComparison() {
     securityQuantum, schemeType, showColumns, showNonNistSchemes, showRef,
   } = filterState;
 
+  // Local slider positions so the thumb tracks the drag while the committed
+  // value (and the URL/query) only updates on release, keeping the original
+  // commit-on-release behavior with controlled inputs. Re-synced whenever the
+  // URL state changes so restoring a `?state=` link is reflected live.
+  const [sliderDraft, setSliderDraft] = useState({
+    securityLevel,
+    securityQuantum,
+    nistRound: getNistRoundValue(nistRound),
+  });
+  useEffect(() => {
+    setSliderDraft({
+      securityLevel,
+      securityQuantum,
+      nistRound: getNistRoundValue(nistRound),
+    });
+  }, [securityLevel, securityQuantum, nistRound]);
+
+  // Active popover for the category filter buttons. `kind` selects which
+  // filter group (security / scope / schemes) is open; `anchor` is the button
+  // it is anchored to.
+  const [filterMenu, setFilterMenu] = useState(null);
+
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ width: '100%' }}>
       <div>
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Paper>
             <Box sx={{ p: 2 }}>
-              <Grid container direction="row" sx={{ justifyContent: 'space-between' }}>
-                <Grid>
-                  <Typography variant="h4">Scheme Comparison</Typography>
-                </Grid>
-                <Grid>
-                  <ToggleButtonGroup
-                    value={schemeType}
-                    exclusive
-                    size="medium"
-                    onChange={(_event, value) => {
-                      if (value !== null) {
-                        setFilter({ schemeType: value, checkedSchemes: fullSchemeLists[value] });
-                      }
-                    }}
-                  >
-                    <ToggleButton disabled={queryProcessing} value="sig">
+              {/* Row 1: primary comparison mode (Signature vs Key Exchange) */}
+              <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: 'wrap' }}>
+                <Box
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setFilter({ schemeType: 'sig', checkedSchemes: fullSchemeLists.sig })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setFilter({ schemeType: 'sig', checkedSchemes: fullSchemeLists.sig });
+                    }
+                  }}
+                  sx={modeTileSx(schemeType === 'sig')}
+                >
+                  <SCHEME_TYPES.sig.icon sx={{
+                    fontSize: 28,
+                    color: schemeType === 'sig' ? 'primary.main' : 'text.secondary',
+                  }}
+                  />
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
                       Signature
-                    </ToggleButton>
-                    <ToggleButton disabled={queryProcessing} value="enc">
-                      Key Exchange
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-              </Grid>
-              <Box sx={{ my: 2 }}>
-                <Paper>
-                  <Box sx={{ p: 2, mb: 2 }}>
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="button">Select columns to display</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <ToggleButtonGroup
-                        value={showColumns}
-                        size="medium"
-                        onChange={(_event, value) => setFilter({ showColumns: value })}
-                      >
-                        <ToggleButton disabled={queryProcessing} value="storage">
-                          <Tooltip title="Size of keys and ciphertext/signature">
-                            <div>Sizes</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton disabled={queryProcessing} value="benchmarks">
-                          <Tooltip title="Timings for cryptographic operations">
-                            <div>Benchmarks</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton
-                          disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                          value="hw_features"
-                        >
-                          <Tooltip title="Hardware features required by the implementation">
-                            <div>Hardware Features</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton
-                          disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                          value="code_size"
-                        >
-                          <Tooltip title="Code size required by the implementation">
-                            <div>Code Size</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton
-                          disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                          value="memory_req"
-                        >
-                          <Tooltip title="Memory used by the functions at runtime">
-                            <div>Memory Requirements</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton disabled={queryProcessing} value="security_levels">
-                          <Tooltip title="Security level in bits (classical/quantum)">
-                            <div>Security Levels</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton disabled={queryProcessing} value="nist_category">
-                          <Tooltip title="NIST security level (1-5)">
-                            <div>NIST Category</div>
-                          </Tooltip>
-                        </ToggleButton>
-                        <ToggleButton disabled={queryProcessing} value="nist_round">
-                          <Tooltip title="Round of the NIST PQC standardization">
-                            <div>NIST Round</div>
-                          </Tooltip>
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    </Box>
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Post-quantum signature schemes
+                    </Typography>
                   </Box>
-                </Paper>
-                <Grid container spacing={1} sx={{ justifyContent: 'space-between' }}>
-                  <Grid size="grow">
-                    <Accordion>
-                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="button">Filter parameter sets</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
-                          <Stack spacing={2}>
-                            <Grid container size="grow" spacing={2}>
-                              <Grid size={3} sx={{ minWidth: 80 }}>
-                                <Box><Typography>Classical Security</Typography></Box>
-                              </Grid>
-                              <Grid size="grow" sx={{ minWidth: 150 }}>
-                                <Slider
-                                  disabled={queryProcessing}
-                                  color="secondary"
-                                  defaultValue={securityLevel}
-                                  step={16}
-                                  min={0}
-                                  max={256}
-                                  marks={secLevelMarks}
-                                  track="inverted"
-                                  onChangeCommitted={
-                                      (e, v) => setFilter({ securityLevel: v })
-                                    }
-                                  valueLabelDisplay="auto"
-                                />
-                              </Grid>
-                            </Grid>
-                            <Grid container size="grow" spacing={2}>
-                              <Grid size={3} sx={{ minWidth: 80 }}>
-                                <Typography>Quantum Security</Typography>
-                              </Grid>
-                              <Grid size="grow" sx={{ minWidth: 150 }}>
-                                <Slider
-                                  disabled={queryProcessing}
-                                  color="secondary"
-                                  defaultValue={securityQuantum}
-                                  step={16}
-                                  min={0}
-                                  max={256}
-                                  marks={secLevelMarks}
-                                  track="inverted"
-                                  onChangeCommitted={
-                                      (e, v) => setFilter({ securityQuantum: v })
-                                    }
-                                  valueLabelDisplay="auto"
-                                />
-                              </Grid>
-                            </Grid>
-                            <Grid container size="grow" spacing={2}>
-                              <Grid size={3} sx={{ minWidth: 80 }}>
-                                <Typography>NIST Round</Typography>
-                              </Grid>
-                              <Grid size="grow" sx={{ minWidth: 150 }}>
-                                <Slider
-                                  disabled={queryProcessing}
-                                  color="secondary"
-                                  defaultValue={getNistRoundValue(nistRound)}
-                                  step={null}
-                                  min={2}
-                                  max={6}
-                                  marks={nistRoundMarks}
-                                  track="inverted"
-                                  onChangeCommitted={(e, v) => setFilter({
-                                    nistRound: getNistRoundLabel(v),
-                                  })}
-                                  valueLabelFormat={getNistRoundLabel}
-                                  valueLabelDisplay="auto"
-                                />
-                              </Grid>
-                            </Grid>
-                            <Grid>
-                              <FormControlLabel
-                                control={(
-                                  <Checkbox
-                                    disabled={queryProcessing}
-                                    defaultChecked={showNonNistSchemes}
-                                    onChange={() => setFilter({
-                                      showNonNistSchemes: !showNonNistSchemes,
-                                    })}
-                                  />
-                                  )}
-                                label="Include schemes not in the NIST competition"
-                              />
-                            </Grid>
-                          </Stack>
-                          <Grid>
-                            <SchemeCheckboxList
-                              list={schemesList}
-                              checkedList={checkedSchemes}
-                              onChange={(newChecked) => setFilter({
-                                checkedSchemes: newChecked,
-                              })}
-                            />
-                          </Grid>
-                        </Grid>
-                      </AccordionDetails>
-                    </Accordion>
-                  </Grid>
-                  <Grid>
-                    <Accordion>
-                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="button">Filter implementations</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <FormControl component="fieldset">
-                          <FormControlLabel
-                            control={(
-                              <Checkbox
-                                disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                                defaultChecked={showRef}
-                                onChange={() => setFilter({ showRef: !showRef })}
-                              />
-                              )}
-                            label="Include 'ref' Implementations"
-                          />
-                          <TextField
-                            disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                            defaultValue={platformFilter}
-                            color="secondary"
-                            label="Platform"
-                            variant="outlined"
-                            onChange={(e) => {
-                              clearTimeout(platformFilterTimeout.current);
-                              const filterValue = e.target.value;
-                              platformFilterTimeout.current = setTimeout(() => {
-                                platformFilterTimeout.current = null;
-                                setFilter({ platformFilter: filterValue });
-                              }, 750);
-                            }}
-                          />
-                        </FormControl>
-                      </AccordionDetails>
-                    </Accordion>
-                  </Grid>
+                </Box>
+                <Box
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setFilter({ schemeType: 'enc', checkedSchemes: fullSchemeLists.enc })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setFilter({ schemeType: 'enc', checkedSchemes: fullSchemeLists.enc });
+                    }
+                  }}
+                  sx={modeTileSx(schemeType === 'enc')}
+                >
+                  <SCHEME_TYPES.enc.icon sx={{
+                    fontSize: 28,
+                    color: schemeType === 'enc' ? 'primary.main' : 'text.secondary',
+                  }}
+                  />
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                      Key Exchange
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Post-quantum key encapsulation
+                    </Typography>
+                  </Box>
+                </Box>
+              </Stack>
 
-                </Grid>
-              </Box>
-              <Link
-                component={RouterLink}
-                to={`/raw_sql?query=${encodeURIComponent(expandedQuery)}`}
+              {/* Row 2: column selection + filter buttons */}
+              <Stack spacing={1.5} sx={{ mt: 2.5 }}>
+                {/* Column category selects, side-by-side with dividers, wrapping on overflow */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'flex-start',
+                    rowGap: 1.5,
+                  }}
+                >
+                  {columnGroups.map((group, gi) => (
+                    <Fragment key={group}>
+                      {gi > 0 && (
+                        <Divider
+                          orientation="vertical"
+                          flexItem
+                          sx={{ mx: 2, alignSelf: 'stretch' }}
+                        />
+                      )}
+                      <Stack spacing={1} sx={{ minWidth: group === 'Sizes' ? 'auto' : 150 }}>
+                        <Typography
+                          variant="overline"
+                          sx={{
+                            color: 'text.secondary',
+                            fontSize: '0.7rem',
+                            letterSpacing: '0.08em',
+                            lineHeight: 1,
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {group}
+                        </Typography>
+                        <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
+                          {columnOptions.filter((opt) => opt.group === group).map((opt) => {
+                            const active = showColumns.includes(opt.value);
+                            const blockedBy = opt.requires && !showColumns.includes(opt.requires);
+                            return (
+                              <Tooltip key={opt.value} title={columnChipTitle(opt, showColumns)}>
+                                <span>
+                                  <Chip
+                                    size="small"
+                                    label={opt.label}
+                                    variant={active ? 'filled' : 'outlined'}
+                                    color={active ? 'primary' : 'default'}
+                                    disabled={queryProcessing || blockedBy}
+                                    onClick={() => setFilter({
+                                      showColumns: active
+                                        ? showColumns.filter((c) => c !== opt.value)
+                                        : [...showColumns, opt.value],
+                                    })}
+                                    sx={{ fontWeight: 600 }}
+                                  />
+                                </span>
+                              </Tooltip>
+                            );
+                          })}
+                        </Stack>
+                      </Stack>
+                    </Fragment>
+                  ))}
+                </Box>
+
+                {/* Filter buttons (bottom left) + SQL link (right) on one row */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                  }}
+                >
+                  <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      startIcon={<SecurityIcon />}
+                      aria-haspopup="true"
+                      onClick={(e) => setFilterMenu({ anchor: e.currentTarget, kind: 'security' })}
+                    >
+                      Security
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      startIcon={<TuneIcon />}
+                      aria-haspopup="true"
+                      onClick={(e) => setFilterMenu({ anchor: e.currentTarget, kind: 'scope' })}
+                    >
+                      Scope
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      startIcon={<ChecklistIcon />}
+                      aria-haspopup="true"
+                      onClick={(e) => setFilterMenu({ anchor: e.currentTarget, kind: 'schemes' })}
+                    >
+                      Schemes
+                    </Button>
+                  </Stack>
+                  <Link
+                    component={RouterLink}
+                    to={`/raw_sql?query=${encodeURIComponent(expandedQuery)}`}
+                    sx={{ fontSize: '0.75rem', color: 'text.secondary' }}
+                  >
+                    View this query as SQL
+                  </Link>
+                </Box>
+              </Stack>
+
+              {/* Security filters */}
+              <Popover
+                open={filterMenu?.kind === 'security'}
+                anchorEl={filterMenu?.anchor}
+                onClose={() => setFilterMenu(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                slotProps={{ paper: { sx: { width: 380, maxWidth: '90vw', p: 3 } } }}
               >
-                View this query as SQL
-              </Link>
+                <Typography variant="overline" color="text.secondary">Security</Typography>
+                <Stack spacing={2} sx={{ mt: 1 }}>
+                  <Box>
+                    <Typography variant="body2">Classical Security</Typography>
+                    <Slider
+                      disabled={queryProcessing}
+                      color="secondary"
+                      value={sliderDraft.securityLevel}
+                      step={16}
+                      min={0}
+                      max={256}
+                      marks={secLevelMarks}
+                      track="inverted"
+                      valueLabelDisplay="auto"
+                      onChange={(_e, v) => setSliderDraft((d) => ({ ...d, securityLevel: v }))}
+                      onChangeCommitted={(_e, v) => setFilter({ securityLevel: v })}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2">Quantum Security</Typography>
+                    <Slider
+                      disabled={queryProcessing}
+                      color="secondary"
+                      value={sliderDraft.securityQuantum}
+                      step={16}
+                      min={0}
+                      max={256}
+                      marks={secLevelMarks}
+                      track="inverted"
+                      valueLabelDisplay="auto"
+                      onChange={(_e, v) => setSliderDraft((d) => ({ ...d, securityQuantum: v }))}
+                      onChangeCommitted={(_e, v) => setFilter({ securityQuantum: v })}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2">NIST Round</Typography>
+                    <Slider
+                      disabled={queryProcessing}
+                      color="secondary"
+                      value={sliderDraft.nistRound}
+                      step={null}
+                      min={2}
+                      max={6}
+                      marks={nistRoundMarks}
+                      track="inverted"
+                      valueLabelFormat={getNistRoundLabel}
+                      valueLabelDisplay="auto"
+                      onChange={(_e, v) => setSliderDraft((d) => ({ ...d, nistRound: v }))}
+                      onChangeCommitted={(_e, v) => setFilter({
+                        nistRound: getNistRoundLabel(v),
+                      })}
+                    />
+                  </Box>
+                </Stack>
+              </Popover>
+
+              {/* Scope / implementation filters */}
+              <Popover
+                open={filterMenu?.kind === 'scope'}
+                anchorEl={filterMenu?.anchor}
+                onClose={() => setFilterMenu(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                slotProps={{ paper: { sx: { width: 360, maxWidth: '90vw', p: 2 } } }}
+              >
+                <Typography variant="overline" color="text.secondary">Scope / Implementations</Typography>
+                <Stack spacing={0.5} sx={{ mt: 1 }}>
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        size="small"
+                        disabled={queryProcessing}
+                        checked={showNonNistSchemes}
+                        onChange={() => setFilter({ showNonNistSchemes: !showNonNistSchemes })}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                      />
+                    )}
+                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
+                    label={(
+                      <Typography variant="body2">Include schemes not in the NIST competition</Typography>
+                    )}
+                  />
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        size="small"
+                        disabled={queryProcessing || !showColumns.includes('benchmarks')}
+                        checked={showRef}
+                        onChange={() => setFilter({ showRef: !showRef })}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                      />
+                    )}
+                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
+                    label={(
+                      <Typography variant="body2">{`Include 'ref' Implementations`}</Typography>
+                    )}
+                  />
+                  <TextField
+                    disabled={queryProcessing || !showColumns.includes('benchmarks')}
+                    value={platformFilter}
+                    color="secondary"
+                    label="Platform"
+                    variant="outlined"
+                    size="small"
+                    onChange={(e) => setFilter({ platformFilter: e.target.value })}
+                  />
+                </Stack>
+              </Popover>
+
+              {/* Scheme picker */}
+              <Popover
+                open={filterMenu?.kind === 'schemes'}
+                anchorEl={filterMenu?.anchor}
+                onClose={() => setFilterMenu(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                slotProps={{ paper: { sx: { width: 320, maxWidth: '90vw', p: 2 } } }}
+              >
+                <Typography variant="overline" color="text.secondary">Schemes</Typography>
+                <Box sx={{ mt: 1 }}>
+                  <SchemeCheckboxList
+                    list={schemesList}
+                    checkedList={checkedSchemes}
+                    onChange={(newChecked) => setFilter({ checkedSchemes: newChecked })}
+                  />
+                </Box>
+              </Popover>
             </Box>
           </Paper>
         </Container>
@@ -595,16 +767,20 @@ function SchemeComparison() {
       <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
-            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-              <QueryTable
-                onChangeOrder={onChangeOrder}
-                order={order}
-                orderBy={orderBy}
-                queryResult={queryResult}
-                formatFunctions={getFormatFunctions(queryResult)}
-                headers={headerSections.headers}
-                headerSpans={headerSections.headerSpans}
-              />
+            <Box sx={{ p: 2 }}>
+              {error ? (
+                <Alert severity="error">{error.toString()}</Alert>
+              ) : (
+                <DataTable
+                  onChangeOrder={onChangeOrder}
+                  order={order}
+                  orderBy={orderBy}
+                  queryResult={queryResult}
+                  formatFunctions={getFormatFunctions(queryResult)}
+                  headerGroups={headerGroups}
+                  cellRenderers={[NameLinkRenderer]}
+                />
+              )}
             </Box>
           </Paper>
         </Container>

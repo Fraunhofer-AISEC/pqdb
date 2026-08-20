@@ -33,8 +33,13 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
-import QueryTable from '../components/QueryTable';
+import DataTable from '../components/DataTable';
 import diagramImage from '../tables.svg';
+import useDbQuery from '../utils/useDbQuery';
+
+// Custom SQL runs without bound parameters; a stable reference avoids
+// retriggering useDbQuery on every render.
+const NO_PARAMS = [];
 
 // As suggested in https://github.com/mui-org/material-ui/issues/1594#issuecomment-272547735
 function AutoFocusTextField(props) {
@@ -125,13 +130,16 @@ function DatabaseDiagram() {
 function CustomSQLQuery() {
   const { db } = useContext(DatabaseContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchSqlInput = searchParams.has('query') ? searchParams.get('query') : '';
+  const searchSqlInput = searchParams.get('query') ?? '';
   const [sqlInput, setSqlInput] = useState(searchSqlInput);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
-  const [queryResult, setQueryResult] = useState(null);
-  const [error, setError] = useState(null);
-  const [queryProcessing, setQueryProcessing] = useState(false);
+
+  const { data: queryResult, processing: queryProcessing, error } = useDbQuery(
+    db,
+    searchParams.has('query') ? searchParams.get('query') : '',
+    NO_PARAMS,
+  );
 
   function executeSQLQuery() {
     setSearchParams({ query: sqlInput });
@@ -142,29 +150,11 @@ function CustomSQLQuery() {
   }, []);
 
   useEffect(() => {
-    const query = searchParams.get('query');
-    if (!query) return;
-
-    setSqlInput(query);
-
-    setQueryProcessing(true);
-    setTimeout(
-      () => {
-        try {
-          const results = db.exec(query)[0];
-          setQueryResult(results);
-          setError(null);
-        } catch (e) {
-          setQueryResult(null);
-          setError(e);
-        }
-        setQueryProcessing(false);
-        setOrder('asc');
-        setOrderBy(null);
-      },
-      0,
-    );
-  }, [db, searchParams]);
+    if (!searchParams.has('query')) return;
+    setSqlInput(searchParams.get('query'));
+    setOrder('asc');
+    setOrderBy(null);
+  }, [searchParams]);
 
   const onChangeOrder = useCallback((newOrder, newOrderBy) => {
     setOrder(newOrder);
@@ -220,12 +210,14 @@ function CustomSQLQuery() {
         <Container maxWidth={false} disableGutters>
           <Paper>
             <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-              <QueryTable
-                queryResult={queryResult}
-                order={order}
-                orderBy={orderBy}
-                onChangeOrder={onChangeOrder}
-              />
+              {error ? null : (
+                <DataTable
+                  queryResult={queryResult}
+                  order={order}
+                  orderBy={orderBy}
+                  onChangeOrder={onChangeOrder}
+                />
+              )}
             </Box>
           </Paper>
         </Container>
