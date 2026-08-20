@@ -58,4 +58,9 @@ const SCHEME_TYPES = {
   },
 };
 
-export { NIST_ROUNDS, SCHEME_TYPES, SEC_NOTIONS };
+// Explicit left-to-right order in which NIST rounds are displayed on the
+// Scheme Overview page (Standardized first, then highest round, then Not
+// submitted last).
+const ROUND_DISPLAY_ORDER = ['S', '4', '3f', '3a', '2', '1', 'none'];
+
+export { NIST_ROUNDS, ROUND_DISPLAY_ORDER, SCHEME_TYPES, SEC_NOTIONS };

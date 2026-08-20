@@ -43,6 +43,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import Comment from '../components/Comment';
+import AttackedMarker from '../components/AttackedMarker';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DataTable from '../components/DataTable';
 import DetailCard from '../components/DetailCard';
@@ -124,6 +125,7 @@ function FlavorDetail() {
   const { db } = useContext(DatabaseContext);
   const [scheme, setScheme] = useState(null);
   const [flavor, setFlavor] = useState(undefined);
+  const [attacks, setAttacks] = useState(undefined);
   const [paramsets, setParamsets] = useState(undefined);
   const [implementations, setImplementations] = useState(undefined);
   const [sources, setSources] = useState(undefined);
@@ -137,6 +139,9 @@ function FlavorDetail() {
   useEffect(() => {
     const queriedScheme = queryAll(db, 'SELECT * FROM scheme WHERE id_text=?', [schemeId])[0];
     setScheme(queriedScheme);
+    setAttacks(
+      queriedScheme ? queryAll(db, 'SELECT * FROM scheme_attack WHERE scheme_id=?', [queriedScheme.id]) : [],
+    );
     if (queriedScheme === undefined) {
       setFlavor(undefined);
       document.title = 'Unknown - Flavor Details - pqdb';
@@ -211,6 +216,14 @@ function FlavorDetail() {
             sx={{ height: 20 }}
           />
           )}
+
+        {attacks && attacks.length > 0 && (
+          <AttackedMarker
+            label
+            attacks={attacks.map((a) => a.url)}
+            sx={{ height: 20 }}
+          />
+        )}
       </Box>
 
       <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, mb: 2 }}>

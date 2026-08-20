@@ -43,6 +43,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import Comment from '../components/Comment';
+import AttackedMarker from '../components/AttackedMarker';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
 import PropItem from '../components/PropItem';
@@ -127,12 +128,12 @@ function SchemeDetail() {
       <Stack spacing={2}>
         <Paper elevation={0} sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
           <Box sx={{ p: 3 }}>
-            <Typography component="h1" variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography component="h1" variant="h4" sx={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 1.5, rowGap: 0.5 }}>
               {scheme.name}
-              {'  '}
               <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
                 <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
               </Tooltip>
+              {attacks.length > 0 && <AttackedMarker label attacks={attacks.map((a) => a.url)} />}
             </Typography>
             {scheme.description && <Box sx={{ mt: 1 }}>{scheme.description}</Box>}
             {scheme.comment && (

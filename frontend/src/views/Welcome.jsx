@@ -4,7 +4,7 @@
  * A hero/landing for pqdb: brand value proposition, a well-visible search entry
  * point, live stats computed from the in-browser SQLite DB, and a highlight
  * selection of standardized schemes as cards. It deliberately does NOT list the
- * full scheme catalogue (that lives on the Scheme Overview page / SchemeList,
+ * full scheme catalogue (that lives on the Scheme Overview page,
  * which is a separate backlog task). Instead it features scheme cards and a
  * search button that opens the global CommandPalette.
  */
@@ -86,6 +86,15 @@ function Welcome() {
     db,
     "SELECT * FROM scheme WHERE nist_round='S' ORDER BY name ASC",
   );
+
+  // Schemes that have known attacks (for explicit marking on their cards);
+  // map scheme id -> attack descriptions so cards can surface them on hover.
+  const attacksByScheme = {};
+  const attackedIds = new Set();
+  for (const a of queryAll(db, 'SELECT scheme_id, url FROM scheme_attack;')) {
+    attackedIds.add(a.scheme_id);
+    (attacksByScheme[a.scheme_id] = attacksByScheme[a.scheme_id] || []).push(a.url);
+  }
 
   const statTiles = [
     { label: 'Schemes', value: stats.total },
@@ -204,7 +213,7 @@ function Welcome() {
           <Grid container spacing={2}>
             {highlights.map((scheme) => (
               <Grid key={scheme.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <SchemeCard scheme={scheme} />
+                <SchemeCard scheme={scheme} attacked={attackedIds.has(scheme.id)} attacks={attacksByScheme[scheme.id] ?? []} />
               </Grid>
             ))}
           </Grid>
