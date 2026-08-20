@@ -46,7 +46,7 @@ const router = createBrowserRouter([{
   children: [
     {
       path: '',
-      lazy: lazyView(() => import('./views/Welcome')),
+      lazy: lazyView(() => import('./views/Home')),
     },
     {
       path: 'raw_sql',

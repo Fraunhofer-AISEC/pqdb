@@ -55,7 +55,7 @@ function count(db, sql) {
   return row ? row.c : 0;
 }
 
-function Welcome() {
+function Home() {
   const { db } = useContext(DatabaseContext);
   const { openSearch } = useSearchDialog();
   const theme = useTheme();
@@ -250,4 +250,4 @@ function Welcome() {
   );
 }
 
-export default Welcome;
+export default Home;

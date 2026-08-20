@@ -37,7 +37,7 @@ function useCrumbs({ db, pathname }) {
       crumbs.push({ label: 'Privacy Policy', to: '/privacy_policy' });
       i = 1;
     } else {
-      const item = NAV_ITEMS.find((n) => n.isActive(`/${segments[0]}`) && n.key !== 'welcome');
+      const item = NAV_ITEMS.find((n) => n.isActive(`/${segments[0]}`) && n.key !== 'home');
       if (item) {
         crumbs.push({ label: item.label, to: item.path });
         i = 1;

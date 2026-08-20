@@ -18,8 +18,8 @@ const DRAWER_MINI_WIDTH = 64;
 
 const NAV_ITEMS = [
   {
-    key: 'welcome',
-    label: 'Welcome',
+    key: 'home',
+    label: 'Home',
     path: '/',
     icon: HomeIcon,
     isActive: (pathname) => pathname === '/',
