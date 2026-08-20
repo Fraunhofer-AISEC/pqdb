@@ -101,8 +101,17 @@ function heatmapRatio(value, range) {
   return 1 - t;
 }
 
+// AG Grid v36 can pass `params.value` as `undefined` for columns whose values
+// are mostly null (its automatic cell-data-type inference leaves those untyped,
+// so the value is not forwarded to formatters/heatmap). The value is still
+// present on the row node, so fall back to it. `params.value ?? …` keeps the
+// normal path unchanged for the common case.
+function cellValue(params) {
+  return params.value ?? params.node?.data?.[params.colDef?.field];
+}
+
 function heatmapStyle(params, range, colors) {
-  const value = params.value;
+  const value = cellValue(params);
   if (!Number.isFinite(value)) return undefined;
   return { backgroundColor: mixHex(colors[0], colors[1], heatmapRatio(value, range)) };
 }
@@ -189,7 +198,7 @@ function DataTable(props) {
       // `formatFunctions` take the raw value; AG Grid passes a params object,
       // so unwrap `params.value` before delegating.
       valueFormatter: formatFunctions?.[idx]
-        ? (params) => formatFunctions[idx](params.value)
+        ? (params) => formatFunctions[idx](cellValue(params))
         : undefined,
       cellRenderer: cellRenderers?.[idx],
       cellStyle: formatFunctions?.[idx]
@@ -202,7 +211,7 @@ function DataTable(props) {
       // no value), and the grid's `tooltipShowMode: 'whenTruncated'` limits it
       // to values truncated with an ellipsis; `tooltipComponent`/`headerTooltip`
       // apply to the cell and header (plain columns and group headers) alike.
-      tooltipValueGetter: (params) => params.valueFormatted ?? params.value,
+      tooltipValueGetter: (params) => params.valueFormatted ?? cellValue(params),
       tooltipComponent: DataTableTooltip,
       headerTooltip: col,
     }));
