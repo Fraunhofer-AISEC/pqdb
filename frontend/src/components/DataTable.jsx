@@ -25,7 +25,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 // any grid is created so sorting, column state, cell styling and CSV export work.
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-import { brand } from '../theme';
+import { brand, fontFamilyMono } from '../theme';
 import DataTableTooltip from './DataTableTooltip';
 import DownloadTableButton from './DownloadTableButton';
 
@@ -79,16 +79,42 @@ function mixHex(hexA, hexB, t) {
 }
 
 // Low/high heatmap endpoints on the brand teal ramp, tuned per theme mode.
+// `colors[1]` is the intense end, reached by the best (smallest) value.
 const HEATMAP_COLORS = {
   light: [brand[50], brand[300]],
   dark: [brand[900], brand[500]],
 };
 
+// Heatmap position (0..1) for a value, where 1 is the most intensely coloured.
+// A log10 scale keeps a column readable when its values span orders of magnitude
+// (e.g. a reference impl at millions of cycles beside an optimized one at
+// hundreds) instead of a single huge value washing out the rest. The result is
+// inverted because lower is better for the sizes / timings / memory these
+// columns show, so the smallest value is the hottest cell.
+function heatmapRatio(value, range) {
+  if (range.max === range.min) return 0;
+  const lo = Math.max(range.min, 1);
+  const hi = Math.max(range.max, 1);
+  if (hi <= lo) return 0;
+  const t = (Math.log10(Math.max(value, 1)) - Math.log10(lo))
+    / (Math.log10(hi) - Math.log10(lo));
+  return 1 - t;
+}
+
 function heatmapStyle(params, range, colors) {
   const value = params.value;
   if (!Number.isFinite(value)) return undefined;
-  const ratio = range.max === range.min ? 0 : (value - range.min) / (range.max - range.min);
-  return { backgroundColor: mixHex(colors[0], colors[1], ratio) };
+  return { backgroundColor: mixHex(colors[0], colors[1], heatmapRatio(value, range)) };
+}
+
+// Numeric columns (those carrying a formatter: sizes / kCycles / memory) render
+// their values in the self-hosted mono accent font (see theme.js). The heatmap
+// background, when present, is merged in alongside so mono digits keep the
+// brand-tinted cell.
+function numericCellStyle(heatmapSx) {
+  return heatmapSx
+    ? { fontFamily: fontFamilyMono, ...heatmapSx }
+    : { fontFamily: fontFamilyMono };
 }
 
 function DataTable(props) {
@@ -166,8 +192,10 @@ function DataTable(props) {
         ? (params) => formatFunctions[idx](params.value)
         : undefined,
       cellRenderer: cellRenderers?.[idx],
-      cellStyle: heatmapRanges[idx]
-        ? (params) => heatmapStyle(params, heatmapRanges[idx], heatmapColors)
+      cellStyle: formatFunctions?.[idx]
+        ? (params) => numericCellStyle(
+          heatmapRanges[idx] ? heatmapStyle(params, heatmapRanges[idx], heatmapColors) : undefined,
+        )
         : undefined,
       // Custom tooltip shows the complete value on hover. `tooltipValueGetter`
       // provides the tooltip value (a column with only `tooltipComponent` gets
