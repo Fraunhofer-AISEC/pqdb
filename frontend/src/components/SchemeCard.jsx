@@ -53,7 +53,7 @@ function SchemeCard({ scheme, roundOverride, attacked, attacks = [] }) {
             )}
           </Stack>
 
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 1 }}>
+          <Stack direction="row" spacing={1} useFlexGap sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 1, rowGap: 1 }}>
             <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
             {displayRound !== 'none' && (
               <StatusBadge

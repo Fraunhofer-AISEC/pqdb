@@ -110,6 +110,7 @@ function SchemeOverview() {
               <Stack
                 direction="row"
                 spacing={1.5}
+                useFlexGap
                 sx={{ alignItems: 'center', flexWrap: 'wrap', mb: 2 }}
               >
                 <Typography variant="h5" component="h2" sx={{ fontWeight: 700 }}>

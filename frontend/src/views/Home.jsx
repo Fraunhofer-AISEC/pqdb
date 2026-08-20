@@ -187,21 +187,23 @@ function Home() {
         </Grid>
 
         <Stack
-          direction="row"
+          direction="column"
           spacing={1}
-          sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 2 }}
+          sx={{ mt: 2 }}
         >
-          <Typography sx={{ fontWeight: 500, color: 'text.secondary', mr: 1, whiteSpace: 'nowrap' }}>
+          <Typography sx={{ fontWeight: 500, color: 'text.secondary' }}>
             Categories
           </Typography>
-          {categories.map((row) => (
-            <StatusBadge
-              key={row.category}
-              kind="categories"
-              value={row.category}
-              label={`${CATEGORY_LABELS[row.category] ?? row.category} · ${row.c}`}
-            />
-          ))}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {categories.map((row) => (
+              <StatusBadge
+                key={row.category}
+                kind="categories"
+                value={row.category}
+                label={`${CATEGORY_LABELS[row.category] ?? row.category} · ${row.c}`}
+              />
+            ))}
+          </Box>
         </Stack>
       </Paper>
 

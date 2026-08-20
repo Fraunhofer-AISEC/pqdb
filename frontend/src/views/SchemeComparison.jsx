@@ -39,7 +39,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  Fragment, useContext, useEffect, useMemo, useState,
+  Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
@@ -293,6 +293,37 @@ function SchemeComparison() {
     sig: schemesListQueryDB(db, 'sig', '0', true),
   }), [db]);
 
+  // Detect which column-selection group starts a wrapped line so its leading
+  // divider can be hidden (a divider at the left edge of a new line looks
+  // wrong) and the gap it would introduce can be removed.
+  const columnBoxRef = useRef(null);
+  const groupRefs = useRef([]);
+  const [wrappedGroups, setWrappedGroups] = useState(() => ({}));
+
+  const measureColumnWrap = useCallback(() => {
+    const box = columnBoxRef.current;
+    if (!box) return;
+    const groups = groupRefs.current;
+    const firstTop = groups[0]?.offsetTop;
+    const next = {};
+    groups.forEach((el, i) => {
+      // A group whose top edge is below the first group's edge has wrapped to
+      // a new line; its leading divider (present for i > 0) is then the first
+      // item on that line and should be hidden.
+      if (el && firstTop !== undefined && el.offsetTop !== firstTop) next[i] = true;
+    });
+    setWrappedGroups(next);
+  }, []);
+
+  useEffect(() => {
+    const box = columnBoxRef.current;
+    if (!box) return undefined;
+    measureColumnWrap();
+    const ro = new ResizeObserver(measureColumnWrap);
+    ro.observe(box);
+    return () => ro.disconnect();
+  }, [measureColumnWrap]);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filterState = useMemo(() => {
@@ -516,23 +547,29 @@ function SchemeComparison() {
               <Stack spacing={1.5} sx={{ mt: 2.5 }}>
                 {/* Column category selects, side-by-side with dividers, wrapping on overflow */}
                 <Box
+                  ref={columnBoxRef}
                   sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
                     alignItems: 'flex-start',
+                    columnGap: 2,
                     rowGap: 1.5,
                   }}
                 >
                   {columnGroups.map((group, gi) => (
                     <Fragment key={group}>
-                      {gi > 0 && (
+                      {gi > 0 && !wrappedGroups[gi] && (
                         <Divider
                           orientation="vertical"
                           flexItem
-                          sx={{ mx: 2, alignSelf: 'stretch' }}
+                          sx={{ alignSelf: 'stretch' }}
                         />
                       )}
-                      <Stack spacing={1} sx={{ minWidth: group === 'Sizes' ? 'auto' : 150 }}>
+                      <Stack
+                        ref={(el) => { groupRefs.current[gi] = el; }}
+                        spacing={1}
+                        sx={{ flexGrow: 1, minWidth: group === 'Sizes' ? 'auto' : 150 }}
+                      >
                         <Typography
                           variant="overline"
                           sx={{
