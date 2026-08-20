@@ -18,12 +18,14 @@ import {
   Box,
   CircularProgress,
   CssBaseline,
+  Link as MuiLink,
   Stack,
   Toolbar,
+  useMediaQuery,
 } from '@mui/material';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import AppBar from './components/AppBar';
 import CommandPalette from './components/CommandPalette';
@@ -78,6 +80,11 @@ function App() {
   }, [searchOpen]);
 
   const resolvedTheme = getTheme(themeId);
+  const isLarge = useMediaQuery(resolvedTheme.breakpoints.up('lg'));
+  // The drawer is fully expanded on large screens in non-mini mode, and on
+  // smaller screens while the temporary overlay is open. The footer is shown
+  // only when the drawer is collapsed (mini) or closed.
+  const drawerCollapsed = isLarge ? mini : !drawerOpen;
 
   let content;
   if (db) {
@@ -125,6 +132,22 @@ function App() {
                 {content}
               </Stack>
             </Box>
+            {drawerCollapsed && (
+              <Box
+                component="footer"
+                sx={{
+                  py: 2,
+                  px: 2,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: 4,
+                  color: 'text.secondary',
+                }}
+              >
+                <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+                <MuiLink component={Link} to="/privacy_policy">Privacy</MuiLink>
+              </Box>
+            )}
           </Box>
 
           <CommandPalette
