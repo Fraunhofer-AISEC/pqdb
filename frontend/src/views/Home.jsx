@@ -23,6 +23,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useContext, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
@@ -151,8 +152,8 @@ function Home() {
           <Link href="https://github.com/Fraunhofer-AISEC/pqdb/" target="_blank" rel="noopener">
             GitHub
           </Link>
-          <Link href="/detail">Browse all schemes</Link>
-          <Link href="/comparison">Compare schemes</Link>
+          <Link component={RouterLink} to="/detail">Browse all schemes</Link>
+          <Link component={RouterLink} to="/comparison">Compare schemes</Link>
         </Stack>
       </Paper>
 
