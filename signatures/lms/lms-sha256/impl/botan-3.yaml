@@ -1,0 +1,9 @@
+---
+name: Botan 3.13.0 x86-64 (generic optimized)
+platform: c
+type: optimized
+links:
+  - https://botan.randombit.net/releases.html
+side channel guarding:
+  branching: true
+  timing comment: Assumed, but not verified

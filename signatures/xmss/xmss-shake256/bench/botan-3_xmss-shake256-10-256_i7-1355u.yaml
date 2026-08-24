@@ -1,0 +1,11 @@
+# measured with Botan 3.13.0 bench_stfl (mean CPU cycles @ ~2.611 GHz effective clock), x86_64, g++ 12.2.0, O3
+# stateful single-tree XMSS (xmss-shake256-10-256); sign uses one key signing many messages sequentially (RFC 8391)
+# keygen = single one-shot key pair generation; sign avg over a stream from the tree root
+links:
+  - https://botan.randombit.net/releases.html
+platform: Intel Core i7-1355U
+timings:
+  unit: cycles
+  gen: 1415860651
+  enc|sign: 1804099604
+  dec|vrfy: 1378472

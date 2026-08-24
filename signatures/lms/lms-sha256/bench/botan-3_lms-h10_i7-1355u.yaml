@@ -1,0 +1,12 @@
+# measured with Botan 3.13.0 bench_stfl (mean CPU cycles @ ~2.611 GHz effective clock), x86_64, g++ 12.2.0, O3
+# single LMS tree (L=1), Winternitz parameter W=8; stateful: one key signing many messages sequentially (RFC 8554)
+# keygen = single one-shot key pair generation; sign avg over a stream from the tree root
+# W=8 is chosen to match the paramset's signature-size assumption; for reference, W=1 gives gen/sign/verify 130230405/132089794/53190 and W=4 gives 186423418/185403279/92989 cycles.
+links:
+  - https://botan.randombit.net/releases.html
+platform: Intel Core i7-1355U
+timings:
+  unit: cycles
+  gen: 1264533671
+  enc|sign: 1249027791
+  dec|vrfy: 625795
