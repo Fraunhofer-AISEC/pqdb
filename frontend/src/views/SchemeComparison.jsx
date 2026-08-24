@@ -63,6 +63,7 @@ const defaultState = {
   showRef: false,
   nistRound: 6,
   showNonNistSchemes: false,
+  showDeprecatedFlavors: false,
   order: 'asc',
   orderBy: null,
   checkedSchemes: null,
@@ -233,6 +234,7 @@ WHERE
       OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = s.id)`
     : ''}
   )
+  ${(!state.showDeprecatedFlavors) ? "\n    AND (f.deprecated IS NULL OR f.deprecated = 0)" : ''}
   AND p.security_level_classical >= ?
   AND p.security_level_quantum >= ?${
   (state.showColumns.includes('benchmarks'))
@@ -390,6 +392,7 @@ function SchemeComparison() {
     filterState.platformFilter,
     filterState.showRef,
     filterState.showNonNistSchemes,
+    filterState.showDeprecatedFlavors,
     filterState.checkedSchemes,
   ]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -490,7 +493,8 @@ function SchemeComparison() {
   const expandedQuery = expandQuery();
   const {
     checkedSchemes, nistRound, order, orderBy, platformFilter, securityLevel,
-    securityQuantum, schemeType, showColumns, showNonNistSchemes, showRef,
+    securityQuantum, schemeType, showColumns, showDeprecatedFlavors,
+    showNonNistSchemes, showRef,
   } = filterState;
 
   // Local slider positions so the thumb tracks the drag while the committed
@@ -783,6 +787,21 @@ function SchemeComparison() {
                     sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
                     label={(
                       <Typography variant="body2">Include schemes outside the NIST PQC process</Typography>
+                    )}
+                  />
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        size="small"
+                        disabled={queryProcessing}
+                        checked={showDeprecatedFlavors}
+                        onChange={() => setFilter({ showDeprecatedFlavors: !showDeprecatedFlavors })}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                      />
+                    )}
+                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
+                    label={(
+                      <Typography variant="body2">Include deprecated flavors</Typography>
                     )}
                   />
                   <FormControlLabel
