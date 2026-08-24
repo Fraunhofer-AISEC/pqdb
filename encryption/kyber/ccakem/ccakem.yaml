@@ -1,4 +1,6 @@
 name: Kyber.CCAKEM
 description: Main variant using Keccak
+deprecated: true
+deprecated comment: Superseded by ML-KEM in FIPS 203.
 type: KEM
 security notion: IND-CCA

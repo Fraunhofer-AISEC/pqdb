@@ -1,11 +1,20 @@
-name: Dilithium
+name: ML-DSA
+aka:
+  - Dilithium
 description: 'Based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts.'
 stateful: false
 category: lattice
-nist round: S
+status:
+  - process: nist-pqc
+    stage: standardized
+    standard: FIPS 204
+    url: https://csrc.nist.gov/pubs/fips/204/final
+    year: 2024
 year:
   paper: 2018
   candidate: 2017
+  selection: 2022
+  standardization: 2024
 authors:
   - Léo Ducas
   - Eike Kiltz

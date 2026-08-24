@@ -12,7 +12,9 @@ authors:
 problems:
     - assumption: NTRU prime
 stateful: false
-nist round: '3a'
+status:
+  - process: nist-pqc
+    stage: '3a'
 website: https://ntruprime.cr.yp.to/
 sources:
   - NIST Submission Paper (https://ntruprime.cr.yp.to/nist/ntruprime-20190330.pdf)

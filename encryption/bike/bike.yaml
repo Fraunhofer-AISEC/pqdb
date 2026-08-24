@@ -1,7 +1,9 @@
 stateful: false
 name: BIKE
 category: code
-nist round: '4'
+status:
+  - process: nist-pqc
+    stage: '4'
 year:
   candidate: 2017
   paper: 2017

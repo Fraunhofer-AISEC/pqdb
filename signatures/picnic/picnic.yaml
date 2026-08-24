@@ -21,7 +21,9 @@ authors:
 problems:
     - assumption: Onewayness of LowMC, a symmetric cipher
 stateful: false
-nist round: '3a'
+status:
+  - process: nist-pqc
+    stage: '3a'
 sources:
   - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"
 website: https://microsoft.github.io/Picnic/

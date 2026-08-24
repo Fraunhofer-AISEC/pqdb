@@ -19,7 +19,9 @@ sources:
     Round 3 Specification
     (https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf)
 website: 'https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
-nist round: 3f
+status:
+  - process: nist-pqc
+    stage: 3f
 last_updated: '2020-11-14'
 patents: >-
   Patent US9094189: The patent holder claims that the patent applies to "one or

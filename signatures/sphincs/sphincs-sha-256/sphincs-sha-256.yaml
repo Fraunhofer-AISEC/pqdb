@@ -1,3 +1,5 @@
 name: SPHINCS-SHA-256
 type: SIG
 security notion: PQ-EU-CMA
+deprecated: true
+deprecated comment: Superseded by the SLH-DSA-SHA2 flavor in FIPS 205.

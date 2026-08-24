@@ -1,0 +1,7 @@
+name: ML-KEM
+description: >-
+  The FIPS 203 standardized KEM.
+type: KEM
+security notion: IND-CCA
+links:
+  - FIPS 203 (https://csrc.nist.gov/pubs/fips/203/final)

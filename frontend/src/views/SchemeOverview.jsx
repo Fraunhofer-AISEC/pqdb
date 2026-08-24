@@ -34,21 +34,9 @@ import { useContext, useEffect } from 'react';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
 import StatusBadge from '../components/StatusBadge';
-import { NIST_ROUNDS, ROUND_DISPLAY_ORDER } from '../constants';
+import { derivePrimaryStatus, STAGES, STATUS_DISPLAY_ORDER } from '../constants';
 import queryAll from '../utils/queryAll';
-
-// Map of scheme key to the NIST round it should be *displayed* under. Today
-// this is a pure display-only workaround: XMSS is the only scheme with
-// nist_round = 'none' (see its data file), but it is presented in the
-// Standardized section so it is not lost. Ideally this would live in the data
-// (xmss.yaml nist round -> 'S') rather than here; the underlying data is left
-// untouched for now.
-const ROUND_OVERRIDES = {
-  xmss: 'S',
-};
-
-const displayRound = (scheme) =>
-  ROUND_OVERRIDES[scheme.id_text] ?? scheme.nist_round;
+import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
 
 function SchemeOverview() {
   useEffect(() => {
@@ -58,13 +46,19 @@ function SchemeOverview() {
   const { db } = useContext(DatabaseContext);
   if (!db) return null;
 
-  // Group all schemes by (display round -> type).
+  const statusByScheme = fetchStatusMap(db);
+  const akaByScheme = fetchAkaMap(db);
+
+  // Group all schemes by (primary status stage -> type). Schemes with no status
+  // entry (not in any standardization process) are left out of the overview.
   const sections = {};
   for (const scheme of queryAll(db, 'SELECT * FROM scheme;')) {
-    const round = displayRound(scheme);
+    const primary = derivePrimaryStatus(statusByScheme.get(scheme.id) ?? []);
+    if (!primary) continue;
+    const stage = String(primary.stage);
     const typeKey = scheme.type;
-    sections[round] = sections[round] || { enc: [], sig: [] };
-    sections[round][typeKey]?.push(scheme);
+    sections[stage] = sections[stage] || { enc: [], sig: [] };
+    sections[stage][typeKey]?.push(scheme);
   }
 
   // Schemes that have known attacks (for explicit marking on their cards);
@@ -82,21 +76,20 @@ function SchemeOverview() {
     ...[...sig].sort((a, b) => a.name.localeCompare(b.name)),
   ];
 
-  // Rounds present in the data, in display order; absent ones are dropped
-  // entirely (including round 1, which has no schemes today).
-  const visibleRounds = ROUND_DISPLAY_ORDER.filter(
-    (round) => sections[round] && (sections[round].enc.length > 0 || sections[round].sig.length > 0),
+  // Stages present in the data, in display order; absent ones are dropped.
+  const visibleStages = STATUS_DISPLAY_ORDER.filter(
+    (stage) => sections[stage] && (sections[stage].enc.length > 0 || sections[stage].sig.length > 0),
   );
 
   return (
     <Container maxWidth="lg">
       <Stack spacing={3}>
-        {visibleRounds.map((round) => {
-          const { enc, sig } = sections[round];
+        {visibleStages.map((stage) => {
+          const { enc, sig } = sections[stage];
           const count = enc.length + sig.length;
-          const roundMeta = NIST_ROUNDS[round];
+          const stageMeta = STAGES[stage];
 
-          // Distribute all of this round's cards across two columns
+          // Distribute all of this stage's cards across two columns
           // independently of type (the type is shown by each card's icon),
           // filling rows before columns: the first card tops column A, the
           // second tops column B, and so on.
@@ -106,7 +99,7 @@ function SchemeOverview() {
             cards.filter((_, i) => i % 2 === 1),
           ];
           return (
-            <Paper key={round} sx={{ p: 3 }}>
+            <Paper key={stage} sx={{ p: 3 }}>
               <Stack
                 direction="row"
                 spacing={1.5}
@@ -114,13 +107,13 @@ function SchemeOverview() {
                 sx={{ alignItems: 'center', flexWrap: 'wrap', mb: 2 }}
               >
                 <Typography variant="h5" component="h2" sx={{ fontWeight: 700 }}>
-                  {roundMeta?.long ?? round}
+                  {stageMeta?.long ?? stage}
                 </Typography>
                 <StatusBadge
                   kind="rounds"
-                  value={round}
+                  value={stage}
                   label={`${count} ${count === 1 ? 'scheme' : 'schemes'}`}
-                  title={roundMeta?.long}
+                  title={stageMeta?.long}
                 />
               </Stack>
 
@@ -132,7 +125,8 @@ function SchemeOverview() {
                         <SchemeCard
                           key={scheme.id}
                           scheme={scheme}
-                          roundOverride={displayRound(scheme)}
+                          statusRows={statusByScheme.get(scheme.id) ?? []}
+                          aka={akaByScheme.get(scheme.id) ?? []}
                           attacked={attackedIds.has(scheme.id)}
                           attacks={attacksByScheme[scheme.id] ?? []}
                         />

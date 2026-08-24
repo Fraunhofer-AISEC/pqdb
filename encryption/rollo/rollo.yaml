@@ -1,7 +1,9 @@
 stateful: false
 name: ROLLO
 category: code
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
   paper: 2017
   candidate: 2017

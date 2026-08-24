@@ -18,15 +18,38 @@ import EncryptionIcon from '@mui/icons-material/LockOutlined';
 
 import SealIcon from './icons/Seal';
 
-const NIST_ROUNDS = {
-  none: { short: null, long: 'Not submitted to the NIST standardization' },
-  1: { short: 'round 1', long: 'Reached Round 1 of the NIST standardization' },
-  2: { short: 'round 2', long: 'Reached Round 2 of the NIST standardization' },
-  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST standardization' },
-  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST standardization' },
-  4: { short: 'round 4', long: 'Reached Round 4 of the NIST standardization' },
-  S: { short: 'standardized', long: 'Standardized' },
+const STAGES = {
+  standardized: { short: 'standardized', long: 'Standardized (final standard published)' },
+  selected: { short: 'standard pending', long: 'Selected for standardization (final standard pending)' },
+  4: { short: 'round 4', long: 'Reached Round 4 of the NIST PQC standardization' },
+  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST PQC standardization' },
+  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST PQC standardization' },
+  2: { short: 'round 2', long: 'Reached Round 2 of the NIST PQC standardization' },
+  1: { short: 'round 1', long: 'Reached Round 1 of the NIST PQC standardization' },
 };
+
+const PROCESSES = {
+  'nist-pqc': 'NIST PQC Standardization Process',
+  'nist-additional-sigs': 'NIST Additional Digital Signature Schemes',
+  rfc: 'RFC (IETF)',
+  'nist-sp': 'NIST Special Publication',
+  iso: 'ISO',
+  other: 'Other',
+};
+
+// Highest-to-lowest priority for deriving a scheme's single "headline" stage
+// from its (possibly multiple) `status` rows, used for cards and badges.
+const STAGE_PRIORITY = ['standardized', 'selected', '4', '3f', '3a', '2', '1'];
+
+// Pick the primary status row for a scheme: the one at the highest stage in
+// STAGE_PRIORITY. Returns undefined when there is no status entry.
+function derivePrimaryStatus(statusRows = []) {
+  for (const stage of STAGE_PRIORITY) {
+    const hit = statusRows.find((row) => String(row.stage) === stage);
+    if (hit) return hit;
+  }
+  return undefined;
+}
 
 const SEC_NOTIONS = {
   'IND-CCA': 'Indistinguishability under an adaptive Chosen Ciphertext Attack',
@@ -58,9 +81,9 @@ const SCHEME_TYPES = {
   },
 };
 
-// Explicit left-to-right order in which NIST rounds are displayed on the
-// Scheme Overview page (Standardized first, then highest round, then Not
-// submitted last).
-const ROUND_DISPLAY_ORDER = ['S', '4', '3f', '3a', '2', '1', 'none'];
+// Explicit left-to-right order in which status stages are displayed on the
+// Scheme Overview page (Standardized first, then Selected, then highest round,
+// then lower rounds).
+const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '2', '1'];
 
-export { NIST_ROUNDS, ROUND_DISPLAY_ORDER, SCHEME_TYPES, SEC_NOTIONS };
+export { STAGES, PROCESSES, derivePrimaryStatus, STATUS_DISPLAY_ORDER, SCHEME_TYPES, SEC_NOTIONS };

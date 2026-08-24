@@ -1,0 +1,14 @@
+name: SLH-DSA-SHA2-192s
+security level:
+  classical: 193
+  quantum: 97
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 96
+  pk: 48
+  ct|sig: 16224
+  msg: 256
+sources:
+  - FIPS 205 (https://csrc.nist.gov/pubs/fips/205/final)

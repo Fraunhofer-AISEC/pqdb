@@ -1,0 +1,13 @@
+name: ML-DSA-65
+security level:
+  classical: 176
+  quantum: 159
+  nist category: 3
+  comment: security level for SUF-CMA
+failure probability: 0
+sizes:
+  ct|sig: 3309
+  pk: 1952
+  sk: 4032
+  comment: "`sk` can be expanded from 32 byte seed"
+number of operations: inf

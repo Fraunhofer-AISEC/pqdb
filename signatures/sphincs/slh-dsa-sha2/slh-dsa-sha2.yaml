@@ -1,0 +1,8 @@
+name: SLH-DSA-SHA2
+description: >-
+  The FIPS 205 standardized SLH-DSA signature scheme instantiated with the
+  SHA-256 hash function.
+type: SIG
+security notion: EUF-CMA
+links:
+  - FIPS 205 (https://csrc.nist.gov/pubs/fips/205/final)

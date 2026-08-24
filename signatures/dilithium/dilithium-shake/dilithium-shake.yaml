@@ -1,5 +1,7 @@
 name: Dilithium-SHAKE
 description: using SHAKE for seed expansion. Main submission
+deprecated: true
+deprecated comment: Superseded by ML-DSA in FIPS 204.
 type: SIG
 security notion: SUF-CMA
 comment: >-

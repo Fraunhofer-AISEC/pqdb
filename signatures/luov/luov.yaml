@@ -1,7 +1,9 @@
 name: LUOV
 stateful: false
 category: multivariate
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 problems:
   - assumption: MQ
 website: https://www.esat.kuleuven.be/cosic/pqcrypto/luov/

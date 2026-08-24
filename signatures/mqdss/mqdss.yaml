@@ -7,7 +7,9 @@ year:
 problems:
     - assumption: MQ
 stateful: false
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 authors:
   - Ming-Shing Chen
   - Andreas Hülsing

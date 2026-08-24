@@ -1,7 +1,11 @@
-name: Kyber
+name: ML-KEM
+aka:
+  - Kyber
 description: 'Based on Module LWE, using the Lindner-Peikert approach.'
 year:
   candidate: 2017
+  selection: 2022
+  standardization: 2024
 category: lattice
 authors:
   - Roberto Avanzi
@@ -18,7 +22,12 @@ problems:
   - assumption: M-LWE
     comment: 'tight ROM reduction, no-tight QROM reduction'
 stateful: false
-nist round: S
+status:
+  - process: nist-pqc
+    stage: standardized
+    standard: FIPS 203
+    url: https://csrc.nist.gov/pubs/fips/203/final
+    year: 2024
 website: https://pq-crystals.org/kyber/
 links:
   - >-
@@ -38,10 +47,15 @@ patents: >-
   According to the patent holder, Kyber falls into their AKCN mechanism for LWE
   schemes. The inventor issued an informal statement in 2022 that they want to
   give up these patents and they do not hold them for economic reasons [4]. More
-  patent discussions can be found in [5].
+  patent discussions can be found in [5]. NIST has entered into two patent
+  license agreements for Kyber, covering a US portfolio and a portfolio
+  controlled by French institutions, that make the licensed patents royalty-free
+  for any implementer of the CRYSTALS-Kyber algorithm as published by NIST and
+  place enforcement rights into abeyance [6].
 patents sources:
   - https://web.archive.org/web/20220318084318/https://www.cnrsinnovation.com/?lang=en
   - 'https://eprint.iacr.org/2021/1364.pdf'
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2Xv0mrF9IVo/m/e0oKQhllBwAJ
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ
+  - https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/selected-algos-2022/nist-pqc-license-summary-and-excerpts.pdf

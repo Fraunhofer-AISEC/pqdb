@@ -31,6 +31,7 @@ import { useSearchDialog } from '../components/SearchDialogContext';
 import StatusBadge from '../components/StatusBadge';
 import logo from '../pqdb.svg';
 import queryAll from '../utils/queryAll';
+import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
 
 // Human-readable category labels for the per-category breakdown. Unknown
 // categories fall back to their raw value.
@@ -47,7 +48,11 @@ const SCHEME_TABLES = {
   total: 'SELECT COUNT(*) AS c FROM scheme',
   enc: "SELECT COUNT(*) AS c FROM scheme WHERE type='enc'",
   sig: "SELECT COUNT(*) AS c FROM scheme WHERE type='sig'",
-  standardized: "SELECT COUNT(*) AS c FROM scheme WHERE nist_round='S'",
+  // "Standardized" now means a final standard has been published, so only
+  // stage='standardized' counts here (selected-only schemes like Falcon do not).
+  standardized: `SELECT COUNT(DISTINCT s.id) AS c
+    FROM scheme s JOIN scheme_status ss ON ss.scheme_id = s.id
+    WHERE ss.stage = 'standardized'`,
   flavors: 'SELECT COUNT(*) AS c FROM flavor',
 };
 
@@ -81,12 +86,19 @@ function Home() {
     'SELECT category, COUNT(*) AS c FROM scheme GROUP BY category ORDER BY c DESC',
   );
 
-  // Highlight selection: standardized schemes only (one-line WHERE change if
-  // round-3 finalists should be included later, e.g. IN ('S','3f')).
+  // Highlight selection: standardized schemes, plus those selected for
+  // standardization but with no published standard yet (e.g. Falcon). The
+  // badge on each card distinguishes the two.
   const highlights = queryAll(
     db,
-    "SELECT * FROM scheme WHERE nist_round='S' ORDER BY name ASC",
+    `SELECT DISTINCT s.* FROM scheme s
+     JOIN scheme_status ss ON ss.scheme_id = s.id
+     WHERE ss.stage IN ('selected', 'standardized')
+     ORDER BY s.name ASC`,
   );
+
+  const statusByScheme = fetchStatusMap(db);
+  const akaByScheme = fetchAkaMap(db);
 
   // Schemes that have known attacks (for explicit marking on their cards);
   // map scheme id -> attack descriptions so cards can surface them on hover.
@@ -216,7 +228,13 @@ function Home() {
           <Grid container spacing={2}>
             {highlights.map((scheme) => (
               <Grid key={scheme.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <SchemeCard scheme={scheme} attacked={attackedIds.has(scheme.id)} attacks={attacksByScheme[scheme.id] ?? []} />
+                <SchemeCard
+                  scheme={scheme}
+                  statusRows={statusByScheme.get(scheme.id) ?? []}
+                  aka={akaByScheme.get(scheme.id) ?? []}
+                  attacked={attackedIds.has(scheme.id)}
+                  attacks={attacksByScheme[scheme.id] ?? []}
+                />
               </Grid>
             ))}
           </Grid>

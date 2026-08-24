@@ -1,5 +1,7 @@
 name: Dilithium-AES
 description: using AES for seed expansion. To showcase speedups via hardware acceleration.
+deprecated: true
+deprecated comment: Superseded by ML-DSA in FIPS 204.
 type: SIG
 security notion: SUF-CMA
 comment: >-

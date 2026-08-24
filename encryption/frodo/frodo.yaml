@@ -7,7 +7,9 @@ year:
 problems:
   - assumption: LWE
 stateful: false
-nist round: 3a
+status:
+  - process: nist-pqc
+    stage: 3a
 authors:
   - Erdem Alkim
   - Joppe W. Bos

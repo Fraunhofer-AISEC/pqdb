@@ -46,7 +46,7 @@ import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DataTable from '../components/DataTable';
 import SchemeCheckboxList from '../components/SchemeCheckboxList';
-import { SCHEME_TYPES } from '../constants';
+import { SCHEME_TYPES, STAGES } from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import not from '../utils/not';
@@ -54,28 +54,49 @@ import queryAll from '../utils/queryAll';
 import useDbQuery from '../utils/useDbQuery';
 
 const defaultState = {
-  // not shown: 'storage', 'security_levels', 'nist_round', 'memory_req', 'code_size'
+  // not shown: 'storage', 'security_levels', 'status', 'memory_req', 'code_size'
   showColumns: ['benchmarks', 'nist_category'],
   schemeType: 'sig',
   platformFilter: '',
   securityLevel: 0,
   securityQuantum: 0,
   showRef: false,
-  nistRound: '4',
+  nistRound: 6,
   showNonNistSchemes: false,
   order: 'asc',
   orderBy: null,
   checkedSchemes: null,
 };
 
-function schemesListQueryDB(db, type, nistRound, nonNist) {
+// Maps a status stage to a numeric rank (low-to-high: 1 < 2 < 3a < 3f < 4 <
+// selected < standardized) so filters like "reached at least round X" can use a
+// numeric comparison instead of lexical string ordering. The `stage` column
+// lives in `scheme_status`; the CASE only appears inside queries that already
+// reference that table.
+const STAGE_RANK_SQL = `CASE stage
+  WHEN '1' THEN 1 WHEN '2' THEN 2 WHEN '3a' THEN 3 WHEN '3f' THEN 4
+  WHEN '4' THEN 5 WHEN 'selected' THEN 6 WHEN 'standardized' THEN 7
+END`;
+
+function schemesListQueryDB(db, type, minRank, nonNist) {
   const schemesListQuery = `
     SELECT id_text FROM scheme
     WHERE
       type = ?
-      AND (nist_round BETWEEN ? AND 'S' ${(nonNist) ? 'OR nist_round = \'none\'' : ''})
+      AND (
+        id IN (
+          SELECT scheme_id FROM scheme_status
+          WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?
+        )
+        ${(nonNist) ? `
+        OR id IN (SELECT scheme_id FROM scheme_status WHERE process != 'nist-pqc')
+        OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = scheme.id)
+        ` : ''}
+      )
   `;
-  const schemesList = queryAll(db, schemesListQuery, [type, nistRound]);
+  // Bind the stage rank as a number: SQLite compares the CASE (integer) result
+  // against a text-bound param coercively and yields no rows, so coerce here.
+  const schemesList = queryAll(db, schemesListQuery, [type, Number(minRank)]);
   return schemesList.map((row) => row.id_text);
 }
 
@@ -85,17 +106,16 @@ const secLevelMarks = [
 ];
 
 const nistRoundMarks = [
-  { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 }, { label: '4', value: 5 }, { label: 'S', value: 6 },
+  { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 },
+  { label: '4', value: 5 }, { label: 'pending', value: 6 }, { label: 'standard', value: 7 },
 ];
 
+// Clearer label for the slider handle popup. The on-track marks use compact
+// text (see nistRoundMarks) so they don't overlap, so the popup resolves the
+// full STAGES text instead of reusing the mark labels.
 function getNistRoundLabel(v) {
-  const round = nistRoundMarks.find((entry) => entry.value === v);
-  return round.label;
-}
-
-function getNistRoundValue(l) {
-  const round = nistRoundMarks.find((entry) => entry.label === l);
-  return round.value;
+  const stageKey = { 2: '2', 3: '3a', 4: '3f', 5: '4', 6: 'selected', 7: 'standardized' }[v];
+  return stageKey ? STAGES[stageKey].long : v;
 }
 
 // Display-column options for the Columns panel. `group` places each option
@@ -107,7 +127,7 @@ const columnGroups = ['General', 'Sizes', 'Benchmarks'];
 const columnOptions = [
   { value: 'security_levels', label: 'Security Levels', group: 'General', title: 'Security level in bits (classical/quantum)' },
   { value: 'nist_category', label: 'NIST Category', group: 'General', title: 'NIST security level (1-5)' },
-  { value: 'nist_round', label: 'NIST Round', group: 'General', title: 'Round of the NIST PQC standardization' },
+  { value: 'status', label: 'Status', group: 'General', title: 'Standardization status/stage (round, selected, standardized)' },
   { value: 'storage', label: 'Sizes', group: 'Sizes', title: 'Size of keys and ciphertext/signature' },
   { value: 'benchmarks', label: 'Benchmarks', group: 'Benchmarks', title: 'Timings for cryptographic operations' },
   { value: 'hw_features', label: 'Hardware Features', group: 'Benchmarks', title: 'Hardware features required by the implementation', requires: 'benchmarks' },
@@ -159,7 +179,8 @@ function buildQuery(state) {
       WHEN 0 THEN ''
       ELSE ' (Stateful)'
   END AS 'Name'${
-  (state.showColumns.includes('nist_round')) ? ',\n   s.nist_round AS \'NIST Round\'' : ''
+  (state.showColumns.includes('status')) ? `,
+   (SELECT ss.stage FROM scheme_status ss WHERE ss.scheme_id = s.id ORDER BY ${STAGE_RANK_SQL} DESC LIMIT 1) AS 'Status'` : ''
 }${(state.showColumns.includes('security_levels')) ? ',\n    p.security_level_classical AS \'Security Level (classical)\'' : ''
 }${(state.showColumns.includes('security_levels')) ? ',\n    p.security_level_quantum AS \'Security Level (quantum)\'' : ''
 }${(state.showColumns.includes('nist_category')) ? ',\n    p.security_level_nist_category AS \'NIST Category\'' : ''
@@ -202,8 +223,15 @@ WHERE
   s.type = ?
   AND s.id_text IN (${JSON.stringify(state.checkedSchemes ?? []).slice(1, -1)})
   AND (
-      s.nist_round BETWEEN ? AND 'S'${
-  (state.showNonNistSchemes) ? '\n        OR s.nist_round = \'none\'' : ''}
+      s.id IN (
+          SELECT scheme_id FROM scheme_status
+          WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?
+      )${
+  (state.showNonNistSchemes)
+    ? `
+      OR s.id IN (SELECT scheme_id FROM scheme_status WHERE process != 'nist-pqc')
+      OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = s.id)`
+    : ''}
   )
   AND p.security_level_classical >= ?
   AND p.security_level_quantum >= ?${
@@ -224,7 +252,7 @@ function createHeaderSections(state) {
   headerSpans.push(1);
   if (state.showColumns.includes('security_levels')) { headerSpans[headerSpans.length - 1] += 2; }
   if (state.showColumns.includes('nist_category')) { headerSpans[headerSpans.length - 1] += 1; }
-  if (state.showColumns.includes('nist_round')) { headerSpans[headerSpans.length - 1] += 1; }
+  if (state.showColumns.includes('status')) { headerSpans[headerSpans.length - 1] += 1; }
   if (state.showColumns.includes('storage')) {
     headers.push('Size');
     headerSpans.push(4);
@@ -242,7 +270,10 @@ function createHeaderSections(state) {
 }
 
 function prepareParams(state) {
-  const params = [state.schemeType, state.nistRound, state.securityLevel, state.securityQuantum];
+  // Coerce the stage rank to a number: SQLite compares the CASE (integer)
+  // result against a text-bound param coercively and yields no rows (see
+  // schemesListQueryDB).
+  const params = [state.schemeType, Number(state.nistRound), state.securityLevel, state.securityQuantum];
   if (state.showColumns.includes('benchmarks') && state.platformFilter !== '') {
     params.push(state.platformFilter);
   }
@@ -253,6 +284,9 @@ function getFormatFunctions(results) {
   if (results === undefined || results === null) return undefined;
   const formatFunctions = Array(results.columns.length).fill(undefined);
   results.columns.forEach((col, idx) => {
+    if (col === 'Status') {
+      formatFunctions[idx] = (val) => (val === undefined || val === null ? val : STAGES[val]?.long ?? val);
+    }
     if (col.endsWith('(kCycles)')) formatFunctions[idx] = (val) => val?.toLocaleString();
     if (col.endsWith('Size')) formatFunctions[idx] = (val) => humanReadableSize(val, 'B');
     if (col.endsWith('Memory Req.')) formatFunctions[idx] = (val) => humanReadableSize(val, 'B');
@@ -466,13 +500,13 @@ function SchemeComparison() {
   const [sliderDraft, setSliderDraft] = useState({
     securityLevel,
     securityQuantum,
-    nistRound: getNistRoundValue(nistRound),
+    nistRound,
   });
   useEffect(() => {
     setSliderDraft({
       securityLevel,
       securityQuantum,
-      nistRound: getNistRoundValue(nistRound),
+      nistRound,
     });
   }, [securityLevel, securityQuantum, nistRound]);
 
@@ -670,10 +704,10 @@ function SchemeComparison() {
                 anchorEl={filterMenu?.anchor}
                 onClose={() => setFilterMenu(null)}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                slotProps={{ paper: { sx: { width: 380, maxWidth: '90vw', p: 3 } } }}
+                slotProps={{ paper: { sx: { width: 480, maxWidth: '92vw', p: 3 } } }}
               >
                 <Typography variant="overline" color="text.secondary">Security</Typography>
-                <Stack spacing={2} sx={{ mt: 1 }}>
+                <Stack spacing={2} sx={{ mt: 1, px: 2 }}>
                   <Box>
                     <Typography variant="body2">Classical Security</Typography>
                     <Slider
@@ -714,15 +748,13 @@ function SchemeComparison() {
                       value={sliderDraft.nistRound}
                       step={null}
                       min={2}
-                      max={6}
+                      max={7}
                       marks={nistRoundMarks}
                       track="inverted"
                       valueLabelFormat={getNistRoundLabel}
                       valueLabelDisplay="auto"
                       onChange={(_e, v) => setSliderDraft((d) => ({ ...d, nistRound: v }))}
-                      onChangeCommitted={(_e, v) => setFilter({
-                        nistRound: getNistRoundLabel(v),
-                      })}
+                      onChangeCommitted={(_e, v) => setFilter({ nistRound: v })}
                     />
                   </Box>
                 </Stack>
@@ -750,7 +782,7 @@ function SchemeComparison() {
                     )}
                     sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
                     label={(
-                      <Typography variant="body2">Include schemes not in the NIST competition</Typography>
+                      <Typography variant="body2">Include schemes outside the NIST PQC process</Typography>
                     )}
                   />
                   <FormControlLabel

@@ -18,6 +18,7 @@ import {
   Bolt as BoltIcon,
   Category as CategoryIcon,
   Event as EventIcon,
+  ExpandMore as ExpandMoreIcon,
   Layers as LayersIcon,
   Leaderboard as LeaderboardIcon,
   Link as LinkIcon,
@@ -28,6 +29,9 @@ import {
   Security as SecurityIcon,
 } from '@mui/icons-material';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Chip,
   Container,
@@ -42,21 +46,23 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import Comment from '../components/Comment';
 import AttackedMarker from '../components/AttackedMarker';
+import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import {
-  NIST_ROUNDS,
+  PROCESSES,
   SCHEME_TYPES,
   SEC_NOTIONS,
+  STAGES,
 } from '../constants';
 import detailLink from '../utils/detailLink';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
+import { fetchAka, fetchStatus } from '../utils/schemeStatus';
 
 function SchemeDetail() {
   const { schemeId } = useParams();
@@ -69,6 +75,8 @@ function SchemeDetail() {
   const [attacks, setAttacks] = useState(undefined);
   const [flavors, setFlavors] = useState(undefined);
   const [patentslink, setPatentslink] = useState(undefined);
+  const [status, setStatus] = useState(undefined);
+  const [aka, setAka] = useState(undefined);
 
   useEffect(() => {
     const queriedScheme = queryAll(db, 'SELECT * FROM scheme WHERE id_text=?', [schemeId])[0];
@@ -85,6 +93,8 @@ function SchemeDetail() {
       setAttacks(queryAll(db, 'SELECT * FROM scheme_attack WHERE scheme_id=?', [queriedScheme.id]));
       setFlavors(queryAll(db, 'SELECT * FROM flavor WHERE scheme_id=?', [queriedScheme.id]));
       setPatentslink(queryAll(db, 'SELECT * FROM scheme_patents_source WHERE scheme_id=?', [queriedScheme.id]));
+      setStatus(fetchStatus(db, queriedScheme.id));
+      setAka(fetchAka(db, queriedScheme.id));
     }
   }, [db, schemeId]);
 
@@ -105,6 +115,7 @@ function SchemeDetail() {
   const yearEntries = [
     { year: scheme.year_paper, label: 'paper' },
     { year: scheme.year_candidate, label: 'NIST candidate' },
+    { year: scheme.year_selection, label: 'selection' },
     { year: scheme.year_standardization, label: 'standardization' },
   ]
     .filter((e) => e.year)
@@ -123,6 +134,81 @@ function SchemeDetail() {
     </Box>
   );
 
+  // Render a single flavor row (name, chips, counts, description/comment).
+  // Shared by the active list and the deprecated accordion so both look alike.
+  const renderFlavor = (f) => {
+    const counts = queryAll(
+      db,
+      `SELECT
+         (SELECT COUNT(*) FROM paramset WHERE flavor_id=?) AS paramsets,
+         (SELECT COUNT(*) FROM implementation WHERE flavor_id=?) AS implementations,
+         (SELECT COUNT(*) FROM benchmark
+           WHERE paramset_id IN (SELECT id FROM paramset WHERE flavor_id=?)) AS benchmarks`,
+      [f.id, f.id, f.id],
+    )[0] ?? {};
+    const { paramsets: pCount = 0, implementations: implCount = 0, benchmarks: benchCount = 0 } = counts;
+
+    return (
+      <Box key={`flavor-${f.id}`}>
+        <Divider sx={{ my: 2 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+          <Typography component="h3" variant="h6">
+            <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>
+              {f.name}
+            </Link>
+          </Typography>
+
+          {f.type !== 'SIG' && !f.type_comment // there's just one type for signatures, not worth showing this here
+              && (
+              <Chip
+                size="small"
+                icon={<CategoryIcon />}
+                label={f.type}
+                title={f.type_comment ?? undefined}
+              />
+              )}
+
+          <Chip
+            size="small"
+            icon={<SecurityIcon />}
+            label={f.security_notion}
+            title={SEC_NOTIONS[f.security_notion]}
+          />
+
+          {f.deprecated === 1 && (
+            <Chip
+              size="small"
+              color="warning"
+              label="deprecated"
+              title={f.deprecated_comment ?? 'Superseded/archived flavor'}
+            />
+          )}
+
+          {(pCount > 0 || implCount > 0 || benchCount > 0) && (
+            <Link
+              component={RouterLink}
+              to={detailLink(scheme.id_text, f.id_text)}
+              sx={{ ml: 'auto', color: 'text.secondary', fontSize: 13, whiteSpace: 'nowrap' }}
+            >
+              {[
+                pCount > 0 && `${pCount} parameter set${pCount !== 1 ? 's' : ''}`,
+                implCount > 0 && `${implCount} implementation${implCount !== 1 ? 's' : ''}`,
+                benchCount > 0 && `${benchCount} benchmark${benchCount !== 1 ? 's' : ''}`,
+              ].filter(Boolean).join(' · ')}
+              {' →'}
+            </Link>
+          )}
+        </Box>
+        {f.description && <Box sx={{ mt: 0.5 }}>{f.description}</Box>}
+        {f.comment && <Box sx={{ mt: 0.5 }}><TextComment>{f.comment}</TextComment></Box>}
+      </Box>
+    );
+  };
+
+  // Non-deprecated flavors on top; deprecated ones collapsed into an accordion.
+  const activeFlavors = flavors.filter((f) => f.deprecated !== 1);
+  const deprecatedFlavors = flavors.filter((f) => f.deprecated === 1);
+
   return (
     <Container maxWidth="xl">
       <Stack spacing={2}>
@@ -136,6 +222,15 @@ function SchemeDetail() {
               {attacks.length > 0 && <AttackedMarker label attacks={attacks.map((a) => a.url)} />}
             </Typography>
             {scheme.description && <Box sx={{ mt: 1 }}>{scheme.description}</Box>}
+            {aka && aka.length > 0 && (
+              <Box sx={{ mt: 0.5 }}>
+                <Typography component="span" sx={{ opacity: 0.7 }}>
+                  Formerly known as:
+                  {' '}
+                  {aka.join(', ')}
+                </Typography>
+              </Box>
+            )}
             {scheme.comment && (
               <Box sx={{ mt: 1 }}><TextComment>{scheme.comment}</TextComment></Box>
             )}
@@ -150,13 +245,37 @@ function SchemeDetail() {
                   <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
                 </PropItem>
 
-                <PropItem key="nist_round" title="NIST Standardization" Icon={LeaderboardIcon}>
-                  <StatusBadge
-                    kind="rounds"
-                    value={scheme.nist_round}
-                    label={NIST_ROUNDS[scheme.nist_round].short ?? 'Not submitted'}
-                    title={NIST_ROUNDS[scheme.nist_round].long}
-                  />
+                <PropItem key="status" title="Standardization Status" Icon={LeaderboardIcon}>
+                  {status && status.length > 0 ? (
+                    status.map((s, idx) => (
+                      <Box key={`${s.process}-${s.stage}-${s.standard ?? s.url ?? ''}`} sx={{ width: '100%' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                          <StatusBadge
+                            kind="rounds"
+                            value={s.stage}
+                            label={STAGES[s.stage]?.short ?? s.stage}
+                            title={STAGES[s.stage]?.long ?? s.stage}
+                          />
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            {PROCESSES[s.process] ?? s.process}
+                          </Typography>
+                          {s.standard && (
+                            s.url
+                              ? (
+                                <Link href={s.url} target="_blank" rel="noreferrer">
+                                  {s.standard}
+                                </Link>
+                              )
+                              : <Typography variant="body2">{s.standard}</Typography>
+                          )}
+                          {s.comment && <Comment title={s.comment} />}
+                        </Box>
+                        {idx < status.length - 1 && <Divider sx={{ my: 1 }} />}
+                      </Box>
+                    ))
+                  ) : (
+                    <span>Not submitted to any standardization process</span>
+                  )}
                 </PropItem>
 
                 {(scheme.stateful || scheme.stateful_comment) && (
@@ -215,65 +334,25 @@ function SchemeDetail() {
                     </Typography>
                   </Stack>
 
-                  {flavors.map((f) => {
-                    const counts = queryAll(
-                      db,
-                      `SELECT
-                         (SELECT COUNT(*) FROM paramset WHERE flavor_id=?) AS paramsets,
-                         (SELECT COUNT(*) FROM implementation WHERE flavor_id=?) AS implementations,
-                         (SELECT COUNT(*) FROM benchmark
-                           WHERE paramset_id IN (SELECT id FROM paramset WHERE flavor_id=?)) AS benchmarks`,
-                      [f.id, f.id, f.id],
-                    )[0] ?? {};
-                    const { paramsets: pCount = 0, implementations: implCount = 0, benchmarks: benchCount = 0 } = counts;
+                  {activeFlavors.map(renderFlavor)}
 
-                    return (
-                      <Box key={`flavor-${f.id}`}>
-                        <Divider sx={{ my: 2 }} />
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                          <Typography component="h3" variant="h6">
-                            <Link component={RouterLink} to={detailLink(scheme.id_text, f.id_text)}>
-                              {f.name}
-                            </Link>
-                          </Typography>
-
-                          {f.type !== 'SIG' && !f.type_comment // there's just one type for signatures, not worth showing this here
-                              && (
-                              <Chip
-                                size="small"
-                                icon={<CategoryIcon />}
-                                label={f.type}
-                                title={f.type_comment ?? undefined}
-                              />
-                              )}
-
-                          <Chip
-                            size="small"
-                            icon={<SecurityIcon />}
-                            label={f.security_notion}
-                            title={SEC_NOTIONS[f.security_notion]}
-                          />
-
-                          {(pCount > 0 || implCount > 0 || benchCount > 0) && (
-                            <Link
-                              component={RouterLink}
-                              to={detailLink(scheme.id_text, f.id_text)}
-                              sx={{ ml: 'auto', color: 'text.secondary', fontSize: 13, whiteSpace: 'nowrap' }}
-                            >
-                              {[
-                                pCount > 0 && `${pCount} parameter set${pCount !== 1 ? 's' : ''}`,
-                                implCount > 0 && `${implCount} implementation${implCount !== 1 ? 's' : ''}`,
-                                benchCount > 0 && `${benchCount} benchmark${benchCount !== 1 ? 's' : ''}`,
-                              ].filter(Boolean).join(' · ')}
-                              {' →'}
-                            </Link>
-                          )}
-                        </Box>
-                        {f.description && <Box sx={{ mt: 0.5 }}>{f.description}</Box>}
-                        {f.comment && <Box sx={{ mt: 0.5 }}><TextComment>{f.comment}</TextComment></Box>}
-                      </Box>
-                    );
-                  })}
+                  {deprecatedFlavors.length > 0 && (
+                    <Accordion sx={{ mt: 2, border: (theme) => `1px solid ${theme.palette.divider}`, boxShadow: 'none', '&:before': { display: 'none' } }}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{ minHeight: 0, '&.Mui-expanded': { minHeight: 0 } }}
+                      >
+                        <Typography component="h3" variant="subtitle1" sx={{ fontWeight: 600 }}>
+                          Deprecated flavors
+                          {' '}
+                          ({deprecatedFlavors.length})
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ pt: 0 }}>
+                        {deprecatedFlavors.map(renderFlavor)}
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
                 </Box>
               </Paper>
             </Stack>
@@ -315,20 +394,17 @@ function SchemeDetail() {
                 {scheme.patents
                     && (
                     <PropItem key="patents" title="Patents" Icon={PendingActionsIcon}>
-                      <Box component="div" key={patentString} sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {patentString.map((ps) => {
+                      <Box component="div" key={patentString}>
+                        {patentString.map((ps, i) => {
                           if (exp.test(ps)) {
-                            const xs = ps.replace('[', '');
-                            const x = xs.replace(']', '');
+                            const x = parseInt(ps.replace(/[[\]]/g, ''), 10);
                             const plElement = patentslink[x - 1];
-                            const plUrl = plElement.url;
-                            return (
-                              <Link key={plUrl} href={plUrl}>
-                                {ps}
-                              </Link>
-                            );
+                            const plUrl = plElement?.url;
+                            return plUrl
+                              ? <Link key={`${plUrl}-${i}`} href={plUrl} target="_blank" rel="noreferrer">{ps}</Link>
+                              : <span key={`${ps}-${i}`}>{ps}</span>;
                           }
-                          return ps;
+                          return <span key={`${ps}-${i}`}>{ps}</span>;
                         })}
                       </Box>
                     </PropItem>

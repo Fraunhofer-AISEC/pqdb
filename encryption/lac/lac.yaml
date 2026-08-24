@@ -19,6 +19,8 @@ stateful: false
 sources:
   - >-
     https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 problems:
 - assumption: Ring-LWE

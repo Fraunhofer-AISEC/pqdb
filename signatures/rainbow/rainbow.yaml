@@ -10,7 +10,9 @@ problems:
     comment: Isomorphism of Polynomials
   - assumption: Min-Rank
 stateful: false
-nist round: 3f
+status:
+  - process: nist-pqc
+    stage: 3f
 authors:
   - Jintai Ding
   - Ming-Shing Chen

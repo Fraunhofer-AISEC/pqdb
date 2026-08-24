@@ -1,3 +1,5 @@
 name: SPHINCS-Haraka
 type: SIG
 security notion: PQ-EU-CMA
+deprecated: true
+deprecated comment: Not part of the FIPS 205 standard, which only specifies SLH-DSA with SHA2 and SHAKE.

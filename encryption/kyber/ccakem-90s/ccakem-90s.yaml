@@ -1,4 +1,6 @@
 name: Kyber.CCAKEM90s
 description: using AES and SHA2 instead of Keccak, to showcase performance when hardware acceleration is available
+deprecated: true
+deprecated comment: Superseded by ML-KEM in FIPS 203.
 type: KEM
 security notion: IND-CCA

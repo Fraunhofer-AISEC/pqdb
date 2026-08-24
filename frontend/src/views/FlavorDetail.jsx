@@ -52,15 +52,18 @@ import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import TextComment from '../components/TextComment';
 import {
-  NIST_ROUNDS,
+  derivePrimaryStatus,
+  PROCESSES,
   SCHEME_TYPES,
   SEC_NOTIONS,
+  STAGES,
 } from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import linkify from '../utils/linkify';
 import queryAll from '../utils/queryAll';
 import queryAllAsArray from '../utils/queryAllAsArray';
+import { fetchStatus } from '../utils/schemeStatus';
 
 /**
  * Build the SQL used both for the inline benchmark table and the raw-SQL link.
@@ -126,6 +129,7 @@ function FlavorDetail() {
   const [scheme, setScheme] = useState(null);
   const [flavor, setFlavor] = useState(undefined);
   const [attacks, setAttacks] = useState(undefined);
+  const [status, setStatus] = useState(undefined);
   const [paramsets, setParamsets] = useState(undefined);
   const [implementations, setImplementations] = useState(undefined);
   const [sources, setSources] = useState(undefined);
@@ -142,6 +146,7 @@ function FlavorDetail() {
     setAttacks(
       queriedScheme ? queryAll(db, 'SELECT * FROM scheme_attack WHERE scheme_id=?', [queriedScheme.id]) : [],
     );
+    setStatus(queriedScheme ? fetchStatus(db, queriedScheme.id) : []);
     if (queriedScheme === undefined) {
       setFlavor(undefined);
       document.title = 'Unknown - Flavor Details - pqdb';
@@ -206,16 +211,29 @@ function FlavorDetail() {
           <StatusBadge kind="statefulness" value={1} label="stateful" title={scheme.stateful_comment} sx={{ height: 20 }} />
           )}
 
-        {(scheme.nist_round !== 'none')
+        {(derivePrimaryStatus(status) !== undefined)
           && (
           <StatusBadge
             kind="rounds"
-            value={scheme.nist_round}
-            label={NIST_ROUNDS[scheme.nist_round].short}
-            title={NIST_ROUNDS[scheme.nist_round].long}
+            value={derivePrimaryStatus(status).stage}
+            label={STAGES[derivePrimaryStatus(status).stage]?.short}
+            title={status.map((s) => (
+              `${PROCESSES[s.process] ?? s.process}: ${STAGES[s.stage]?.long ?? s.stage}`
+              + (s.standard ? ` (${s.standard})` : '')
+            )).join(' · ')}
             sx={{ height: 20 }}
           />
           )}
+
+        {flavor.deprecated === 1 && (
+          <StatusBadge
+            kind="rounds"
+            value="deprecated"
+            label="deprecated"
+            title={flavor.deprecated_comment ?? 'Superseded/archived flavor'}
+            sx={{ height: 20 }}
+          />
+        )}
 
         {attacks && attacks.length > 0 && (
           <AttackedMarker

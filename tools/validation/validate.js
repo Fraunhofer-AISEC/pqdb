@@ -42,9 +42,9 @@ const BASIC_TYPES = ["boolean", "integer", "number", "string"];
 
 const ARRAY_COLUMN_NAMES = {
     "authors": "name", "links": "url", "sources": "url", "attacks": "url", "hardware features": "feature",
-    "dependencies": "dependency", "patents sources": "url"
+    "dependencies": "dependency", "patents sources": "url", "aka": "name"
 };
-const SINGULAR = { "dependencies": "dependency" };
+const SINGULAR = { "dependencies": "dependency", "aka": "aka", "status": "status" };
 
 function singular(word) {
     if (word in SINGULAR)

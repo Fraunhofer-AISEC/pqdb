@@ -6,7 +6,9 @@ year:
 problems:
   - assumption: HFE
 stateful: false
-nist round: 3a
+status:
+  - process: nist-pqc
+    stage: 3a
 authors:
   - A. Casanova
   - J.-C. Faugère

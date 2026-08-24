@@ -58,7 +58,7 @@ const STATUS_COLORS = {
   categories: {
     lattice: '#3d8bff',
     code: '#0d9488',
-    hash: '#f59e0b',
+    hash: '#a855f7',
     multivariate: '#b45309',
     isogeny: '#d946ef',
     isogenyost: '#d946ef',
@@ -69,7 +69,10 @@ const STATUS_COLORS = {
     2: '#64748b',
     '3a': '#8b5cf6',
     '3f': '#6366f1',
-    S: '#16a34a',
+    4: '#3d8bff',
+    selected: '#f59e0b',
+    standardized: '#16a34a',
+    deprecated: '#64748b',
   },
   security: {
     1: '#12b76a',

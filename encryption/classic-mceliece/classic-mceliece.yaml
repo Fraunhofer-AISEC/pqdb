@@ -1,7 +1,9 @@
 stateful: false
 name: Classic McEliece
 category: code
-nist round: '4'
+status:
+  - process: nist-pqc
+    stage: '4'
 year:
   paper: 1978
   candidate: 2017

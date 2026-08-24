@@ -1,10 +1,14 @@
-name: SPHINCS+
+name: SLH-DSA
+aka:
+  - SPHINCS+
 description: >-
   Stateless hash-based using Merkle's tree approach with a new few-time
   signature scheme (FORS).
 year:
   candidate: 2017
   paper: 2015
+  selection: 2022
+  standardization: 2024
 category: hash
 authors:
   - Andreas Hülsing
@@ -26,7 +30,12 @@ authors:
 problems:
   - assumption: resistance of second preimage cryptographic hash function
 stateful: false
-nist round: S
+status:
+  - process: nist-pqc
+    stage: standardized
+    standard: FIPS 205
+    url: https://csrc.nist.gov/pubs/fips/205/final
+    year: 2024
 website: https://sphincs.org/
 sources:
   - >-

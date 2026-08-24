@@ -1,10 +1,13 @@
 stateful: false
 name: HQC
 category: code
-nist round: '4'
+status:
+  - process: nist-pqc
+    stage: selected
 year:
   paper: 2017
   candidate: 2017
+  selection: 2025
 authors:
   - Carlos Aguilar Melchor
   - Nicolas Aragon

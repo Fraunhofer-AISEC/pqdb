@@ -22,17 +22,18 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AttackedMarker from './AttackedMarker';
-import { NIST_ROUNDS, SCHEME_TYPES } from '../constants';
+import { derivePrimaryStatus, PROCESSES, SCHEME_TYPES, STAGES } from '../constants';
 import detailLink from '../utils/detailLink';
 import StatusBadge from './StatusBadge';
 
-function SchemeCard({ scheme, roundOverride, attacked, attacks = [] }) {
+function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [] }) {
   const type = SCHEME_TYPES[scheme.type];
 
-  // Optional override for the NIST-round badge (e.g. XMSS displayed in the
-  // Standardized section while its underlying data is unchanged). Falls back
-  // to the scheme's own round when not provided.
-  const displayRound = roundOverride ?? scheme.nist_round;
+  // The primary (headline) status drives the badge; `standardized` wins over
+  // `selected` over any round. Falls back to nothing when the scheme has no
+  // status (i.e. not in any standardization process).
+  const primaryStatus = derivePrimaryStatus(statusRows);
+  const stage = primaryStatus?.stage;
   return (
     <Card sx={{ height: 214, border: 1, borderColor: 'divider' }}>
       <CardActionArea
@@ -46,6 +47,19 @@ function SchemeCard({ scheme, roundOverride, attacked, attacks = [] }) {
               <Link component="span" underline="hover">
                 {scheme.name}
               </Link>
+              {aka.length > 0 && (
+                <Box
+                  component="span"
+                  sx={{
+                    color: 'text.secondary',
+                    fontWeight: 'normal',
+                    fontSize: '0.85em',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {' '}({aka.join(', ')})
+                </Box>
+              )}
             </Typography>
             {attacked && <AttackedMarker label size="small" attacks={attacks} />}
             {type && (
@@ -55,12 +69,12 @@ function SchemeCard({ scheme, roundOverride, attacked, attacks = [] }) {
 
           <Stack direction="row" spacing={1} useFlexGap sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 1, rowGap: 1 }}>
             <StatusBadge kind="categories" value={scheme.category} title={scheme.category_comment} />
-            {displayRound !== 'none' && (
+            {stage && (
               <StatusBadge
                 kind="rounds"
-                value={displayRound}
-                label={NIST_ROUNDS[displayRound]?.short}
-                title={scheme.nist_round_comment}
+                value={stage}
+                label={STAGES[stage]?.short}
+                title={statusTitle(statusRows)}
               />
             )}
           </Stack>
@@ -92,18 +106,28 @@ function SchemeCard({ scheme, roundOverride, attacked, attacks = [] }) {
   );
 }
 
+// Compose a tooltip summarizing what the scheme's status entries say (process,
+// stage, standard) so a multi-entry scheme (e.g. XMSS: RFC 8554 + SP 800-208)
+// is fully described.
+function statusTitle(statusRows) {
+  const parts = statusRows.map((s) => (
+    `${PROCESSES[s.process] ?? s.process}: ${STAGES[s.stage]?.long ?? s.stage}`
+    + (s.standard ? ` (${s.standard})` : '')
+  ));
+  return parts.join(' · ');
+}
+
 SchemeCard.propTypes = {
   scheme: PropTypes.shape({
     id_text: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['enc', 'sig']).isRequired,
     category: PropTypes.string,
-    nist_round: PropTypes.string,
     category_comment: PropTypes.string,
-    nist_round_comment: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
-  roundOverride: PropTypes.string,
+  statusRows: PropTypes.arrayOf(PropTypes.object),
+  aka: PropTypes.arrayOf(PropTypes.string),
   attacked: PropTypes.bool,
   attacks: PropTypes.arrayOf(PropTypes.string),
 };

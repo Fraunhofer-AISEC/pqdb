@@ -7,7 +7,9 @@ authors:
   - Gerardo Pelosi
   - Paolo Santini
 category: code
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
   paper: 2020
   candidate: 2017

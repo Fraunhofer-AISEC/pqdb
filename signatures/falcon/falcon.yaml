@@ -4,6 +4,7 @@ description: >-
   Fourier sampler).
 year:
   candidate: 2017
+  selection: 2022
 category: lattice
 authors:
   - Pierre-Alain Fouque
@@ -19,7 +20,10 @@ authors:
 problems:
   - assumption: SIS over NTRU lattices
 stateful: false
-nist round: S
+status:
+  - process: nist-pqc
+    stage: selected
+    comment: Selected for standardization. Final standard (FN-DSA) not yet released.
 sources:
   - >-
     NIST Submission Paper, Round 3, Version 1.2

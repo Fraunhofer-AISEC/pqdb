@@ -29,26 +29,30 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { NIST_ROUNDS, SCHEME_TYPES } from '../constants';
+import { derivePrimaryStatus, SCHEME_TYPES, STAGES } from '../constants';
 import detailLink from '../utils/detailLink';
 import queryAll from '../utils/queryAll';
+import { fetchStatusMap } from '../utils/schemeStatus';
 import Mono from './Mono';
 import StatusBadge from './StatusBadge';
 
 // Build a flat list of searchable records (one per scheme and one per flavor),
 // each carrying enough context to render and to construct its detail link.
 function buildIndex(db) {
+  const statusByScheme = fetchStatusMap(db);
   const schemes = queryAll(
     db,
-    'SELECT id, id_text, name, description, category, nist_round, stateful, stateful_comment FROM scheme ORDER BY name ASC',
+    'SELECT id, id_text, name, description, category, stateful, stateful_comment FROM scheme ORDER BY name ASC',
   );
   const entries = schemes.flatMap((s) => {
+    const statusRows = statusByScheme.get(s.id) ?? [];
     const schemeEntry = {
       id: `scheme-${s.id}`,
       to: detailLink(s.id_text),
       title: s.name,
       subtitle: s.description ?? '',
       scheme: s,
+      statusRows,
       flavor: null,
     };
     const flavors = queryAll(
@@ -61,6 +65,7 @@ function buildIndex(db) {
       title: `${s.name} · ${f.name}`,
       subtitle: f.description ?? '',
       scheme: s,
+      statusRows,
       flavor: f,
     }));
     return [schemeEntry, ...flavors];
@@ -77,7 +82,7 @@ function matches(entry, query) {
     entry.scheme.name,
     entry.scheme.id_text,
     entry.scheme.category,
-    entry.scheme.nist_round,
+    entry.statusRows.map((s) => `${s.process} ${s.stage}`).join(' '),
     ...(entry.flavor
       ? [entry.flavor.id_text, entry.flavor.name, entry.flavor.type]
       : []),
@@ -206,14 +211,17 @@ function CommandPalette({ open, onClose, db }) {
                       label={option.scheme.category}
                       size="small"
                     />
-                    {option.scheme.nist_round !== 'none' && (
-                      <StatusBadge
-                        kind="rounds"
-                        value={option.scheme.nist_round}
-                        label={NIST_ROUNDS[option.scheme.nist_round].short}
-                        size="small"
-                      />
-                    )}
+                    {(() => {
+                      const primary = derivePrimaryStatus(option.statusRows);
+                      return primary && (
+                        <StatusBadge
+                          kind="rounds"
+                          value={primary.stage}
+                          label={STAGES[primary.stage]?.short}
+                          size="small"
+                        />
+                      );
+                    })()}
                     {option.scheme.stateful === 1 && (
                       <StatusBadge
                         kind="statefulness"
