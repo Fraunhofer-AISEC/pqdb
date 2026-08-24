@@ -1,0 +1,28 @@
+name: LMS
+description: A stateful hash-based scheme built from the Leighton-Micali adaptation of Lamport-Diffie-Winternitz-Merkle one-time signatures, organized in a Merkle tree.
+year:
+  paper: 1995
+  standardization: 2019
+category: hash
+authors:
+  - David McGrew
+  - Michael Curcio
+  - Scott Fluhrer
+stateful: true
+status:
+  - process: rfc
+    stage: standardized
+    standard: RFC 8554
+    url: https://www.rfc-editor.org/rfc/rfc8554
+    year: 2019
+  - process: nist-sp
+    stage: standardized
+    standard: NIST SP 800-208
+    url: https://doi.org/10.6028/NIST.SP.800-208
+    year: 2020
+problems: []
+problems comment: "Only properties of the cryptographic hash function are assumed, which is implicitly true for all hash-based schemes and hence not listed explicitly."
+trust comment: "Very high because of minimal assumptions: security relies only on second preimage resistance of the hash function. The scheme is stateful; if a private key state is used twice, no cryptographic security guarantees remain."
+sources:
+  - https://www.rfc-editor.org/rfc/rfc8554
+  - https://doi.org/10.6028/NIST.SP.800-208

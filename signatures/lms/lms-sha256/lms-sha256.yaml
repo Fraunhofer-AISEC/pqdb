@@ -1,0 +1,4 @@
+name: LMS-SHA256
+description: using SHA-256 as hash function, as defined in RFC 8554
+type: SIG
+security notion: EUF-CMA

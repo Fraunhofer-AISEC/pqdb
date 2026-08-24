@@ -1,0 +1,4 @@
+name: XMSS-SHAKE256-192
+description: using SHAKE256/192 as hash function
+type: SIG
+security notion: EUF-CMA
