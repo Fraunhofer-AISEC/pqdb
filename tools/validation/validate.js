@@ -353,7 +353,7 @@ var argv = process.argv.slice(2);
 var dbFile = ":memory:";
 if (argv.length > 0 && argv.length < 3) dbFile = argv[0];
 var dbSchemaSvg = (argv.length == 2) ? dbSchemaSvg = argv[1] : null;
-var db = new Database(dbFile);
+var db = new Database(":memory:");
 
 createTableForSchema("scheme", schemaForScheme, []);
 createTableForSchema("flavor", schemaForFlavor, ["scheme"]);
@@ -366,6 +366,12 @@ delete schemaForBenchReduced.required;
 createTableForSchema("benchmark", schemaForBenchReduced, ["paramset", "implementation"]);
 
 if (!validate()) process.exit(1);
+
+// Validation succeeded. For a file target, write the in-memory database to it.
+if (dbFile != ":memory:") {
+    if (exists(dbFile)) fs.rmSync(dbFile);
+    db.exec(`VACUUM INTO '${dbFile.replace(/'/g, "''")}'`);
+}
 
 if (dbSchemaSvg != null) {
     const nomnoml = require('nomnoml');
