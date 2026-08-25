@@ -97,6 +97,35 @@ ORDER BY p.security_level_nist_category ASC, p.security_level_quantum ASC, i.nam
 // locale-formatted kCycles, sizes/memory as human-readable bytes.
 // The array length/order must match the columns returned by benchmarkSql,
 // so memory formatters are only included when withMemory is true.
+// Rank the literal `number of operations` string so paramsets can be sorted.
+// Values are "<base>^<exp>" (e.g. "2^20"), the literal "inf" (no limit), or
+// an unknown marker such as "todo". Non-finite values map to Infinity so they
+// sort last in any ascending order; finite values keep their numeric ranking.
+function numberOpsRank(value) {
+  if (value == null) return Infinity;
+  const m = /^(\d+)\^(\d+)$/.exec(String(value));
+  return m ? Number(m[1]) ** Number(m[2]) : Infinity;
+}
+
+// Order parametersets by NIST category, then classical security level, then
+// max number of operations (ascending). Missing sort keys sort last, so
+// paramsets that lack a NIST category/classical level still form a coherent
+// trailing group ordered by number of operations. Keys are compared with
+// `!==`/`-` only when they differ, so missing values (ranked as Infinity) never
+// subtract Infinity - Infinity, which would yield NaN and corrupt the sort.
+function sortParamsets(paramsets) {
+  const missing = Infinity;
+  return [...paramsets].sort((a, b) => {
+    const aNist = a.security_level_nist_category ?? missing;
+    const bNist = b.security_level_nist_category ?? missing;
+    if (aNist !== bNist) return aNist - bNist;
+    const aClass = a.security_level_classical ?? missing;
+    const bClass = b.security_level_classical ?? missing;
+    if (aClass !== bClass) return aClass - bClass;
+    return numberOpsRank(a.number_of_operations) - numberOpsRank(b.number_of_operations);
+  });
+}
+
 function getBenchmarkFormatFunctions(schemeType, withMemory = true) {
   const { enc_sign, dec_vrfy } = SCHEME_TYPES[schemeType];
   const columns = [
@@ -158,7 +187,7 @@ function FlavorDetail() {
       document.title = 'Unknown - Flavor Details - pqdb';
     } else {
       document.title = `${queriedFlavor.name} - Flavor Details - pqdb`;
-      setParamsets(queryAll(db, 'SELECT * FROM paramset WHERE flavor_id=? ORDER BY security_level_nist_category ASC, security_level_quantum ASC', [queriedFlavor.id]));
+      setParamsets(sortParamsets(queryAll(db, 'SELECT * FROM paramset WHERE flavor_id=?', [queriedFlavor.id])));
       setImplementations(queryAll(db, 'SELECT * FROM implementation WHERE flavor_id=? ORDER BY type DESC', [queriedFlavor.id])); // reference before optimized
       setLinks(queryAll(db, 'SELECT * FROM flavor_link WHERE flavor_id=?', [queriedFlavor.id]));
       setSources(queryAll(db, 'SELECT * FROM flavor_source WHERE flavor_id=?', [queriedFlavor.id]));
