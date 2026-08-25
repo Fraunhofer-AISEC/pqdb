@@ -44,6 +44,24 @@ import StatusBadge from './StatusBadge';
  * dark modes.
  */
 
+function NumOps({ value }) {
+  const idx = value && value.indexOf('^');
+  return (
+    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'baseline', gap: 0.5 }}>
+      <Box component="span">
+        {idx !== -1 ? (
+          <>
+            {value.slice(0, idx)}
+            <sup>{value.slice(idx + 1)}</sup>
+          </>
+        ) : (
+          value
+        )}
+      </Box>
+    </Box>
+  );
+}
+
 function SizeBarRow({ label, size, maxSize }) {
   const fill = (maxSize > 0 && Number.isFinite(size)) ? Math.max(0, Math.min(100, (size / maxSize) * 100)) : 0;
   return (
@@ -145,13 +163,13 @@ function ParamsetCard({ p, schemeType, maxSize }) {
               </>
             )}
 
-            {p.number_of_operations !== 'inf' && (
+            {p.number_of_operations && p.number_of_operations !== 'inf' && (
               <>
                 <Typography sx={{ fontWeight: 500, color: 'text.secondary', whiteSpace: 'nowrap' }}>
                   Max Operations
                 </Typography>
                 <Box sx={{ display: 'block' }}>
-                  {p.number_of_operations}
+                  <NumOps value={p.number_of_operations} />
                 </Box>
               </>
             )}
@@ -201,6 +219,10 @@ SizeBarRow.propTypes = {
   label: PropTypes.string.isRequired,
   size: PropTypes.number,
   maxSize: PropTypes.number.isRequired,
+};
+
+NumOps.propTypes = {
+  value: PropTypes.string,
 };
 
 export default ParamsetCard;
