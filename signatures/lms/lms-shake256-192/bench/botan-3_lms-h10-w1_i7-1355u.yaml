@@ -6,6 +6,6 @@ links:
 platform: Intel Core i7-1355U
 timings:
   unit: cycles
-  gen: 696287152
-  enc|sign: 593509210
-  dec|vrfy: 155061
+  gen: 333837245
+  enc|sign: 325276782
+  dec|vrfy: 121759
