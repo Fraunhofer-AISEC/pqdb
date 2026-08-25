@@ -19,13 +19,13 @@ import EncryptionIcon from '@mui/icons-material/LockOutlined';
 import SealIcon from './icons/Seal';
 
 const STAGES = {
-  standardized: { short: 'standardized', long: 'Standardized (final standard published)' },
-  selected: { short: 'standard pending', long: 'Selected for standardization (final standard pending)' },
-  4: { short: 'round 4', long: 'Reached Round 4 of the NIST PQC standardization' },
-  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST PQC standardization' },
-  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST PQC standardization' },
-  2: { short: 'round 2', long: 'Reached Round 2 of the NIST PQC standardization' },
-  1: { short: 'round 1', long: 'Reached Round 1 of the NIST PQC standardization' },
+  standardized: { short: 'standardized', long: 'Standardized' },
+  selected: { short: 'standard pending', long: 'Selected for Standardization' },
+  4: { short: 'round 4', long: 'Reached Round 4 of the NIST PQC Standardization' },
+  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST PQC Standardization' },
+  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST PQC Standardization' },
+  2: { short: 'round 2', long: 'Reached Round 2 of the NIST PQC Standardization' },
+  1: { short: 'round 1', long: 'Reached Round 1 of the NIST PQC Standardization' },
 };
 
 const PROCESSES = {
