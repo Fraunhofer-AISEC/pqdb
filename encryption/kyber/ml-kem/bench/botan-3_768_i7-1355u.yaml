@@ -1,0 +1,13 @@
+# measured with `botan speed` (median-of-N RDTSC cycles), x86_64 Linux
+# platform: Intel Core i7-1355U
+# Botan param: ML-KEM-768; encaps/decaps via PK_KEM with KDF2(SHA-256)
+# + 16-byte salt + 64-byte shared key (note: not the raw ML-KEM K,
+#   so encaps/decaps differ from any 'Raw' basis); keygen/clock via System_RNG/RDTSC
+links:
+  - https://botan.randombit.net/releases.html
+platform: Intel Core i7-1355U
+timings:
+  unit: cycles
+  gen: 86194
+  enc|sign: 31186
+  dec|vrfy: 49101

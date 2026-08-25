@@ -1,9 +1,0 @@
-# measured with liboqs 0.16.0 speed_kem (mean CPU cycles), x86_64 WSL2, gcc 12.2.0, OQS_USE_OPENSSL=OFF
-links:
-  - https://github.com/open-quantum-safe/liboqs/tree/8979276ad1eb008215aa78a3c56b3649f604bbb1
-platform: Intel Core i7-1355U
-timings:
-  unit: cycles
-  gen: 38777
-  enc|sign: 41300
-  dec|vrfy: 52056
