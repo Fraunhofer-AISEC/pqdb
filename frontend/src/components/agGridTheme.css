@@ -7,9 +7,14 @@
  *
  * The grid font is left to the surrounding MUI/Inter stack (the `-no-font`
  * Quartz variant is used), so self-hosted fonts remain the only fonts loaded.
+ * The Quartz icon font is still required though: AG Grid renders its icons
+ * (e.g. the ascending/descending sort arrows on sortable headers) as glyphs in
+ * that font, and the `-no-font` variant omits it. Importing the font-face here
+ * restores those icons without loading the grid's body font.
  */
 @import 'ag-grid-community/styles/ag-grid.css';
 @import 'ag-grid-community/styles/ag-theme-quartz-no-font.css';
+@import 'ag-grid-community/styles/agGridQuartzFont.css';
 
 .ag-theme-quartz,
 .ag-theme-quartz-dark {
