@@ -1,5 +1,5 @@
 ---
-name: Botan 3.13.0 x86-64 (generic optimized)
+name: Botan 3.13.0 x86-64
 platform: c
 type: optimized
 links:
