@@ -31,6 +31,7 @@ import AppBar from './components/AppBar';
 import CommandPalette from './components/CommandPalette';
 import { DatabaseContext } from './components/DatabaseProvider';
 import NavDrawer from './components/NavDrawer';
+import ScrollToTop from './components/ScrollToTop';
 import SearchDialogProvider from './components/SearchDialogContext';
 import getTheme from './theme';
 
@@ -99,6 +100,7 @@ function App() {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={resolvedTheme}>
         <CssBaseline />
+        <ScrollToTop />
         <SearchDialogProvider openSearch={() => setSearchOpen(true)}>
           <Box sx={{ display: 'flex', minHeight: '100vh' }}>
           <AppBar
