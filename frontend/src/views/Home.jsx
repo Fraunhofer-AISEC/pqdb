@@ -56,6 +56,7 @@ const SCHEME_TABLES = {
     FROM scheme s JOIN scheme_status ss ON ss.scheme_id = s.id
     WHERE ss.stage = 'standardized'`,
   flavors: 'SELECT COUNT(*) AS c FROM flavor',
+  paramsets: 'SELECT COUNT(*) AS c FROM paramset',
 };
 
 function count(db, sql) {
@@ -80,6 +81,7 @@ function Home() {
     sig: count(db, SCHEME_TABLES.sig),
     standardized: count(db, SCHEME_TABLES.standardized),
     flavors: count(db, SCHEME_TABLES.flavors),
+    paramsets: count(db, SCHEME_TABLES.paramsets),
   };
 
   // Per-category breakdown (schemes only), most common first.
@@ -117,6 +119,7 @@ function Home() {
     { label: 'Signatures', value: stats.sig },
     { label: 'Standardized', value: stats.standardized },
     { label: 'Flavors', value: stats.flavors },
+    { label: 'Parameter sets', value: stats.paramsets },
   ];
 
   return (
