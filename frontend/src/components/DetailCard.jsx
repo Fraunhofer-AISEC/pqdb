@@ -31,7 +31,7 @@ import PropTypes from 'prop-types';
  */
 
 const propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   Icon: PropTypes.elementType,
   children: PropTypes.node,
 };
@@ -47,7 +47,7 @@ function DetailCard({ title, Icon, children }) {
       <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
         <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
           {Icon && <Icon color="primary" fontSize="inherit" />}
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
             {title}
           </Typography>
         </Stack>

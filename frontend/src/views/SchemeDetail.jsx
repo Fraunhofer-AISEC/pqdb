@@ -52,7 +52,6 @@ import { DatabaseContext } from '../components/DatabaseProvider';
 import DetailCard from '../components/DetailCard';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
-import TextComment from '../components/TextComment';
 import {
   PROCESSES,
   SCHEME_TYPES,
@@ -123,14 +122,12 @@ function SchemeDetail() {
   const yearParts = yearEntries.map((e) => (
     <span key={e.label}>{e.year}<Box component="span" sx={{ opacity: 0.5 }}> ({e.label})</Box></span>
   ));
-  if (scheme.year_comment) {
-    yearParts.push(<em key="comment">{scheme.year_comment}</em>);
-  }
   const yearRow = yearParts.flatMap((part, i) => (i > 0 ? [' · ', part] : [part]));
 
   const yearRowNode = (
     <Box component="div" sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 0.5 }}>
       {yearRow}
+      {scheme.year_comment && <Comment title={scheme.year_comment} />}
     </Box>
   );
 
@@ -184,6 +181,8 @@ function SchemeDetail() {
             />
           )}
 
+          {f.comment && <Comment title={f.comment} />}
+
           {(pCount > 0 || implCount > 0 || benchCount > 0) && (
             <Link
               component={RouterLink}
@@ -200,7 +199,6 @@ function SchemeDetail() {
           )}
         </Box>
         {f.description && <Box sx={{ mt: 0.5 }}>{f.description}</Box>}
-        {f.comment && <Box sx={{ mt: 0.5 }}><TextComment>{f.comment}</TextComment></Box>}
       </Box>
     );
   };
@@ -220,6 +218,7 @@ function SchemeDetail() {
                 <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
               </Tooltip>
               {attacks.length > 0 && <AttackedMarker label attacks={attacks.map((a) => a.url)} />}
+              {scheme.comment && <Comment title={scheme.comment} />}
             </Typography>
             {scheme.description && <Box sx={{ mt: 1 }}>{scheme.description}</Box>}
             {aka && aka.length > 0 && (
@@ -230,9 +229,6 @@ function SchemeDetail() {
                   {aka.join(', ')}
                 </Typography>
               </Box>
-            )}
-            {scheme.comment && (
-              <Box sx={{ mt: 1 }}><TextComment>{scheme.comment}</TextComment></Box>
             )}
           </Box>
         </Paper>
@@ -296,16 +292,14 @@ function SchemeDetail() {
                   {scheme.trust_comment
                       && (
                       <>
-                        <div><strong>Trust: </strong></div>
+                        <div><strong>Trust </strong></div>
                         <Box sx={{ marginBottom: '.6em' }}>{scheme.trust_comment}</Box>
                       </>
                       )}
                   {(problems.length > 0 || scheme.problems_comment)
                       && (
                       <>
-                        <div><strong>Problems:</strong></div>
-                        {scheme.problems_comment
-                         && <div><TextComment>{scheme.problems_comment}</TextComment></div>}
+                        <div><strong>Problems </strong>{scheme.problems_comment && <Comment title={scheme.problems_comment} />}</div>
                         {problems.map((p) => (
                           <div key={p.assumption}>
                             {p.assumption}

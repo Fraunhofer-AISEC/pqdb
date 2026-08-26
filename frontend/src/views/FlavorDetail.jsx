@@ -50,7 +50,6 @@ import DetailCard from '../components/DetailCard';
 import ParamsetCard from '../components/ParamsetCard';
 import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
-import TextComment from '../components/TextComment';
 import {
   derivePrimaryStatus,
   PROCESSES,
@@ -280,6 +279,7 @@ function FlavorDetail() {
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
               <Chip size="small" label={flavor.type} />
               <Chip size="small" color="primary" variant="outlined" label={flavor.security_notion} title={typeLabel} />
+              {flavor.comment && <Comment title={flavor.comment} />}
             </Stack>
           </Stack>
           {flavor.description && <Box sx={{ mt: 0.5 }}>{flavor.description}</Box>}
@@ -295,7 +295,6 @@ function FlavorDetail() {
               </Box>
             </Box>
             )}
-          {flavor.comment && <Box sx={{ mt: 0.5 }}><TextComment>{flavor.comment}</TextComment></Box>}
           {sources.length > 0
             && (
             <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
@@ -361,8 +360,16 @@ function FlavorDetail() {
             const sideChannelInfo = { 0: 'no', 1: 'yes', null: 'unknown' };
 
             return (
-              <DetailCard key={`i-${i.id}`} title={i.name} Icon={CodeIcon}>
-                {i.comment && <Box sx={{ pb: 1 }}><TextComment>{i.comment}</TextComment></Box>}
+              <DetailCard
+                key={`i-${i.id}`}
+                Icon={CodeIcon}
+                title={(
+                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                    {i.name}
+                    {i.comment && <Comment title={i.comment} />}
+                  </Box>
+                )}
+              >
 
                 <PropItem key={`i-${i.id}-platform`} title="Platform" Icon={LanguageIcon}>
                   {i.platform}

@@ -25,8 +25,9 @@ const fontFamily = [
   'sans-serif',
 ].join(',');
 
-// Self-hosted JetBrains Mono (static 400/500 + italic), used as a mono accent
-// for crypto/size and numeric data. System mono fallbacks mirror the sans stack.
+// Self-hosted JetBrains Mono (static 400 only; see fonts.css), used as a mono
+// accent for crypto/size and numeric data. System mono fallbacks mirror the
+// sans stack.
 const fontFamilyMono = [
   'JetBrains Mono',
   'ui-monospace',
