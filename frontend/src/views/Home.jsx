@@ -10,6 +10,8 @@
  */
 
 import SearchIcon from '@mui/icons-material/Search';
+import ListIcon from '@mui/icons-material/List';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import {
   alpha,
   Box,
@@ -146,26 +148,39 @@ function Home() {
           where each one stands in NIST standardization.
         </Typography>
 
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<SearchIcon />}
-          onClick={openSearch}
-          sx={{ px: 4, py: 1.25, fontSize: '1rem' }}
-        >
-          Search schemes &amp; flavors…
-        </Button>
-
         <Stack
           direction="row"
-          spacing={2}
-          sx={{ justifyContent: 'center', flexWrap: 'wrap', mt: 2 }}
+          sx={{ justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}
         >
-          <Link href="https://github.com/Fraunhofer-AISEC/pqdb/" target="_blank" rel="noopener">
-            GitHub
-          </Link>
-          <Link component={RouterLink} to="/detail">Browse all schemes</Link>
-          <Link component={RouterLink} to="/comparison">Compare schemes</Link>
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<SearchIcon />}
+            onClick={openSearch}
+            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
+          >
+            Search schemes &amp; flavors…
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/detail"
+            variant="contained"
+            size="large"
+            startIcon={<ListIcon />}
+            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
+          >
+            Browse all schemes
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/comparison"
+            variant="contained"
+            size="large"
+            startIcon={<CompareArrowsIcon />}
+            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
+          >
+            Compare schemes
+          </Button>
         </Stack>
       </Paper>
 
