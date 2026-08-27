@@ -69,6 +69,7 @@ const STATUS_COLORS = {
     1: '#94a3b8',
     2: '#64748b',
     '3a': '#8b5cf6',
+    '3': '#a855f7',
     '3f': '#6366f1',
     4: '#3d8bff',
     selected: '#f59e0b',

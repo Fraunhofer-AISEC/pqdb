@@ -52,10 +52,10 @@ import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import {
   derivePrimaryStatus,
-  PROCESSES,
   SCHEME_TYPES,
   SEC_NOTIONS,
   STAGES,
+  statusTitle,
 } from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
@@ -245,10 +245,7 @@ function FlavorDetail() {
             kind="rounds"
             value={derivePrimaryStatus(status).stage}
             label={STAGES[derivePrimaryStatus(status).stage]?.short}
-            title={status.map((s) => (
-              `${PROCESSES[s.process] ?? s.process}: ${STAGES[s.stage]?.long ?? s.stage}`
-              + (s.standard ? ` (${s.standard})` : '')
-            )).join(' · ')}
+            title={statusTitle(status)}
             sx={{ height: 20 }}
           />
           )}

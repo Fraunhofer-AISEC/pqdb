@@ -69,13 +69,13 @@ const defaultState = {
   checkedSchemes: null,
 };
 
-// Maps a status stage to a numeric rank (low-to-high: 1 < 2 < 3a < 3f < 4 <
+// Maps a status stage to a numeric rank (low-to-high: 1 < 2 < 3a/3 < 3f < 4 <
 // selected < standardized) so filters like "reached at least round X" can use a
 // numeric comparison instead of lexical string ordering. The `stage` column
 // lives in `scheme_status`; the CASE only appears inside queries that already
 // reference that table.
 const STAGE_RANK_SQL = `CASE stage
-  WHEN '1' THEN 1 WHEN '2' THEN 2 WHEN '3a' THEN 3 WHEN '3f' THEN 4
+  WHEN '1' THEN 1 WHEN '2' THEN 2 WHEN '3' THEN 3 WHEN '3a' THEN 3 WHEN '3f' THEN 4
   WHEN '4' THEN 5 WHEN 'selected' THEN 6 WHEN 'standardized' THEN 7
 END`;
 

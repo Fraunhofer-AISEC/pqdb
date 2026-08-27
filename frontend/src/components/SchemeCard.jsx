@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AttackedMarker from './AttackedMarker';
-import { derivePrimaryStatus, PROCESSES, SCHEME_TYPES, STAGES } from '../constants';
+import { derivePrimaryStatus, SCHEME_TYPES, STAGES, statusTitle } from '../constants';
 import detailLink from '../utils/detailLink';
 import StatusBadge from './StatusBadge';
 
@@ -106,17 +106,9 @@ function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [] 
   );
 }
 
-// Compose a tooltip summarizing what the scheme's status entries say (process,
-// stage, standard) so a multi-entry scheme (e.g. XMSS: RFC 8554 + SP 800-208)
-// is fully described.
-function statusTitle(statusRows) {
-  const parts = statusRows.map((s) => (
-    `${PROCESSES[s.process] ?? s.process}: ${STAGES[s.stage]?.long ?? s.stage}`
-    + (s.standard ? ` (${s.standard})` : '')
-  ));
-  return parts.join(' · ');
-}
-
+// Tooltip for the status badge is built by `statusTitle` in ../constants (it
+// joins every status entry with its process + standard so multi-entry schemes
+// like XMSS: RFC 8554 + SP 800-208 are fully described).
 SchemeCard.propTypes = {
   scheme: PropTypes.shape({
     id_text: PropTypes.string.isRequired,

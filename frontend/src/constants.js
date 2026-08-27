@@ -27,11 +27,12 @@ import SealIcon from './icons/Seal';
 const STAGES = {
   standardized: { short: 'standardized', long: 'Standardized' },
   selected: { short: 'standard pending', long: 'Selected for Standardization' },
-  4: { short: 'round 4', long: 'Reached Round 4 of the NIST PQC Standardization' },
-  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3 of the NIST PQC Standardization' },
-  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3 of the NIST PQC Standardization' },
-  2: { short: 'round 2', long: 'Reached Round 2 of the NIST PQC Standardization' },
-  1: { short: 'round 1', long: 'Reached Round 1 of the NIST PQC Standardization' },
+  4: { short: 'round 4', long: 'Reached Round 4' },
+  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3' },
+  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3' },
+  3: { short: 'round 3', long: 'Reached Round 3' },
+  2: { short: 'round 2', long: 'Reached Round 2' },
+  1: { short: 'round 1', long: 'Reached Round 1' },
 };
 
 const PROCESSES = {
@@ -74,7 +75,7 @@ const PROCESS_META = {
 
 // Highest-to-lowest priority for deriving a scheme's single "headline" stage
 // from its (possibly multiple) `status` rows, used for cards and badges.
-const STAGE_PRIORITY = ['standardized', 'selected', '4', '3f', '3a', '2', '1'];
+const STAGE_PRIORITY = ['standardized', 'selected', '4', '3f', '3a', '3', '2', '1'];
 
 // Pick the primary status row for a scheme: the one at the highest stage in
 // STAGE_PRIORITY. Returns undefined when there is no status entry.
@@ -84,6 +85,22 @@ function derivePrimaryStatus(statusRows = []) {
     if (hit) return hit;
   }
   return undefined;
+}
+
+// Compose a full stage description for a status row, prefixing the name of the
+// process it belongs to (used where the process is not already shown nearby).
+function stageDescription(s) {
+  const base = STAGES[s?.stage]?.long ?? s?.stage;
+  if (!s?.process) return base;
+  return `${PROCESSES[s.process] ?? s.process}: ${base}`;
+}
+
+// Compose a tooltip summarizing what a scheme's status entries say (process,
+// stage, standard) so a multi-entry scheme (e.g. XMSS: RFC 8554 + SP 800-208)
+// is fully described.
+function statusTitle(statusRows = []) {
+  const parts = statusRows.map((s) => stageDescription(s) + (s.standard ? ` (${s.standard})` : ''));
+  return parts.join(' · ');
 }
 
 const SEC_NOTIONS = {
@@ -119,7 +136,7 @@ const SCHEME_TYPES = {
 // Explicit left-to-right order in which status stages are displayed on the
 // Scheme Overview page (Standardized first, then Selected, then highest round,
 // then lower rounds).
-const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '2', '1'];
+const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '3', '2', '1'];
 
 // Order in which top-level standardization processes are displayed on the
 // Scheme Overview page. Each process renders its own round-banded section, so
@@ -127,4 +144,4 @@ const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '2', 
 // appended after these in object-key order.
 const PROCESS_DISPLAY_ORDER = ['nist-pqc', 'nist-additional-sigs'];
 
-export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, STAGES, STATUS_DISPLAY_ORDER };
+export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, STAGES, stageDescription, STATUS_DISPLAY_ORDER, statusTitle };

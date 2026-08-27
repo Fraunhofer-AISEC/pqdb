@@ -163,14 +163,9 @@ function SchemeOverview() {
     (stage) => sections[stage] && (sections[stage].enc.length > 0 || sections[stage].sig.length > 0),
   );
 
-  // The on-page heading for a stage: the full STAGES label without the
-  // trailing process clause ("of the …"), since the process name already
-  // appears in the section heading above. Standardized/selected stages have no
-  // such clause and pass through unchanged.
-  const roundHeading = (stage) => {
-    const long = STAGES[stage]?.long ?? stage;
-    return long.replace(/ of the .*$/, '');
-  };
+  // The on-page heading for a stage: the full STAGES label. Standardized/
+  // selected stages have no round wording and pass through unchanged.
+  const roundHeading = (stage) => STAGES[stage]?.long ?? stage;
 
   // Render one stage's bands as Papers of SchemeCards. `idPrefix` gives the
   // Paper a stable anchor (`idPrefix-stage`) so the table of contents can jump

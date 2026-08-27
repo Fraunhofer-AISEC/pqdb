@@ -218,9 +218,13 @@ function SchemeDetail() {
                 <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
               </Tooltip>
               {attacks.length > 0 && <AttackedMarker label attacks={attacks.map((a) => a.url)} />}
-              {scheme.comment && <Comment title={scheme.comment} />}
             </Typography>
-            {scheme.description && <Box sx={{ mt: 1 }}>{scheme.description}</Box>}
+            {scheme.description && (
+              <Box sx={{ mt: 1 }}>
+                {scheme.description}
+                {scheme.comment && <Comment title={scheme.comment} />}
+              </Box>
+            )}
             {aka && aka.length > 0 && (
               <Box sx={{ mt: 0.5 }}>
                 <Typography component="span" sx={{ opacity: 0.7 }}>
