@@ -1,0 +1,13 @@
+name: m4
+platform: m4
+type: reference
+comment: >-
+  Verification-only implementation for 32-bit embedded systems (ARM Cortex-M4),
+  derived from the reference implementation's verification routines. Key-pair
+  generation and signing are mocked. Recommended evaluation via the pqm4 project.
+  Code size (pqm4 speed preset): NIST-I ~40 KB, NIST-III ~44 KB, NIST-V ~46 KB
+  (Table 7).
+side channel guarding:
+  timing: false
+links:
+  - https://github.com/SQISign/the-sqisign-pqm4

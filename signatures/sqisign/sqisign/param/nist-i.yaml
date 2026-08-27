@@ -1,0 +1,19 @@
+name: SQIsign NIST-I
+security level:
+  classical: 128
+  quantum: 64
+  nist category: 1
+  comment: >-
+    Classical target λ = 128 bits (best known attack on the endomorphism ring
+    problem Õ(2^λ)); quantum ≈ λ/2 = 64 bits (Õ(2^(λ/2)), Grover). p_I = 5·2^248 − 1.
+failure probability: -65
+number of operations: inf
+sizes:
+  sk: 353
+  pk: 65
+  ct|sig: 148
+comment: >-
+  failure probability given as log2 of the estimated SuitableIdeals failure
+  probability, min F(C) = 2^-65 (Table 8); sub-algorithm failure probabilities
+  are designed to be < 2^-64 (Section 4.2.2). No signing limit stated (stateless),
+  hence number of operations = inf.

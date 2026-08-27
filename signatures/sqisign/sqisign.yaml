@@ -1,0 +1,74 @@
+name: SQIsign
+description: >-
+  An isogeny-based Fiat-Shamir signature scheme proving knowledge of a supersingular
+  elliptic-curve endomorphism, with security based on the endomorphism ring problem.
+comment: >-
+  Only isogeny-based family in the NIST additional-signatures process. The
+  round-2 submission integrates the SQIsign2D-West improvements [BDD+24],
+  yielding ~20x faster signing and ~14% smaller signatures at level I vs round 1.
+category: isogeny
+category comment: >-
+  Elliptic-curve isogeny scheme; security rests on the endomorphism ring problem
+  (equivalent to the supersingular isogeny path problem under polynomial-time
+  reductions).
+year:
+  paper: 2020
+  candidate: 2023
+authors:
+  - Marius A. Aardal
+  - Gora Adj
+  - Diego F. Aranha
+  - Andrea Basso
+  - Isaac Andrés Canales Martínez
+  - Jorge Chávez-Saab
+  - Maria Corte-Real Santos
+  - Pierrick Dartois
+  - Luca De Feo
+  - Max Duparc
+  - Jonathan Komada Eriksen
+  - Tako Boris Fouotsa
+  - Décio Luiz Gazzoni Filho
+  - Basil Hess
+  - David Kohel
+  - Antonin Leroux
+  - Patrick Longa
+  - Luciano Maino
+  - Michael Meyer
+  - Kohei Nakagawa
+  - Hiroshi Onuki
+  - Lorenz Panny
+  - Sikhar Patranabis
+  - Christophe Petit
+  - Giacomo Pope
+  - Krijn Reijnders
+  - Damien Robert
+  - Francisco Rodríguez Henríquez
+  - Sina Schaeffler
+  - Benjamin Wesolowski
+stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+    comment: Round-2 submission (SQIsign specification v2.0.1, 2025-07-07).
+problems:
+  - assumption: Endomorphism ring problem for supersingular elliptic curves
+    comment: >-
+      Equivalent to the supersingular isogeny path problem under polynomial-time
+      reductions [EHL+18; Wes22]. EUF-CMA security is proven under a "hint"
+      variant of the endomorphism ring problem (q-sim-hint-OneEndp,
+      q-unif-hint-OneEndp, q-unif-hint-EndRingp).
+trust comment: >-
+  Not affected by the polynomial-time SIDH attacks [CD23; MMP+23; Rob23], which
+  targeted an easier variant of the isogeny problem. Primes are chosen "nothing
+  up my sleeve" with no known security impact beyond arithmetic speedups (as with
+  SIKE's special primes). The critical curves E_pk and E_com are uniformly
+  distributed, leveraging a worst-case to average-case reduction of the
+  endomorphism ring problem.
+website: https://sqisign.org
+links:
+  - Initial paper (https://eprint.iacr.org/2020/1240)
+sources:
+  - Specification, version 2.0.1 (https://sqisign.org/spec/sqisign-20250707.pdf)
+last_updated: '2025-07-07'
+last_updated comment: Date of the SQIsign v2.0.1 specification document.

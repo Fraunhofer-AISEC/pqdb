@@ -1,0 +1,16 @@
+name: SQIsign NIST-V
+security level:
+  classical: 256
+  quantum: 128
+  nist category: 5
+  comment: >-
+    Classical target λ = 256 bits; quantum ≈ λ/2 = 128 bits. p_V = 27·2^500 − 1.
+failure probability: -60
+number of operations: inf
+sizes:
+  sk: 701
+  pk: 129
+  ct|sig: 292
+comment: >-
+  failure probability = log2 of the estimated SuitableIdeals failure probability,
+  min F(C) = 2^-60 (Table 8). Stateless, so number of operations = inf.

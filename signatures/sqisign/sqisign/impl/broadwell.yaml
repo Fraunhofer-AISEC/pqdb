@@ -1,0 +1,15 @@
+name: broadwell
+platform: x86-64
+type: optimized
+comment: >-
+  Assembly-optimized implementation targeting Intel Broadwell (and later). The
+  assembly optimizations are applied to the GF (finite-field) module; the rest of
+  the code base is reused from the reference implementation. This is the
+  "optimized 64-bit Intel implementation" of the performance summary.
+hardware features:
+  - AES-NI (accelerated AES256-CTR-DRBG)
+side channel guarding:
+  timing: false
+  timing comment: >-
+    Not constant-time; Pornin's inversion and Legendre-symbol algorithms are
+    implemented in constant-time.

@@ -1,0 +1,7 @@
+platform: "Intel Core i7-13700K (Raptor Lake) x86-64 @ 3.4 GHz, Ubuntu Linux 24.04 LTS, clang 18, -march=native -O3, GMP 6.3.0; Turbo Boost and HyperThreading disabled"
+timings:
+  unit: cycles
+  gen: 134000000
+  enc|sign: 309200000
+  dec|vrfy: 18600000
+  comment: Median of 1,000 runs (Table 5, assembly-optimized Broadwell-or-later implementation).

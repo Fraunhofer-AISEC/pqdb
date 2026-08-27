@@ -1,0 +1,9 @@
+platform: "Intel Core i7-13700K (Raptor Lake) x86-64 @ 3.4 GHz, Ubuntu Linux 24.04 LTS, clang 18, -march=native -O3, GMP 6.3.0; Turbo Boost and HyperThreading disabled"
+timings:
+  unit: cycles
+  gen: 325400000
+  enc|sign: 751800000
+  dec|vrfy: 61900000
+  comment: >-
+    Median of 1,000 runs (Table 5, reference implementation, default/system GMP).
+    With GMP --disable-assembly: gen 402.6M, sign 1021.0M, vrfy 62.2M cycles.
