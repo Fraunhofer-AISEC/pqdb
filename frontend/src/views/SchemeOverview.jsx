@@ -189,7 +189,7 @@ function SchemeOverview() {
       cards.filter((_, i) => i % 2 === 1),
     ];
     return (
-      <Paper key={stage} id={`${idPrefix}-${stage}`} sx={{ p: 3, scrollMarginTop: 88 }}>
+      <Paper key={stage} id={`${idPrefix}-${stage}`} sx={{ p: 3, scrollMarginTop: 56 }}>
         <Stack
           direction="row"
           spacing={1.5}
@@ -243,7 +243,7 @@ function SchemeOverview() {
       <Grid container spacing={3}>
         {/* Left table of contents, sticky on large screens. */}
         <Grid size={{ xs: 12, lg: 3 }} sx={{ display: { xs: 'none', lg: 'block' } }}>
-          <Box sx={{ position: 'sticky', top: 88, maxHeight: 'calc(100vh - 104px)', overflowY: 'auto' }}>
+          <Box sx={{ position: 'sticky', top: 56, maxHeight: 'calc(100vh - 72px)', overflowY: 'auto' }}>
             <Paper variant="outlined" sx={{ px: 1, py: 1 }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, px: 1.5, py: 0.5 }}>
                 Contents
