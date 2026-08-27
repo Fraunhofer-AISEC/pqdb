@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+import CategoryIcon from '@mui/icons-material/Category';
+import DescriptionIcon from '@mui/icons-material/Description';
 import EncryptionIcon from '@mui/icons-material/LockOutlined';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import PublicIcon from '@mui/icons-material/Public';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 import SealIcon from './icons/Seal';
 
@@ -35,6 +41,35 @@ const PROCESSES = {
   'nist-sp': 'NIST Special Publication',
   iso: 'ISO',
   other: 'Other',
+};
+
+// Icon and one-line description for each standardization process, used on the
+// Scheme Overview's process-selection tiles. `PROCESSES` above holds the name.
+const PROCESS_META = {
+  'nist-pqc': {
+    icon: VerifiedIcon,
+    description: 'Initial PQC standardization call from 2016',
+  },
+  'nist-additional-sigs': {
+    icon: NoteAddIcon,
+    description: 'Additional signature schemes call from 2022',
+  },
+  rfc: {
+    icon: MenuBookIcon,
+    description: 'Schemes standardized by the IETF via RFC',
+  },
+  'nist-sp': {
+    icon: DescriptionIcon,
+    description: 'Schemes published as NIST Special Publications',
+  },
+  iso: {
+    icon: PublicIcon,
+    description: 'Schemes standardized by the ISO',
+  },
+  other: {
+    icon: CategoryIcon,
+    description: 'Schemes in other standardization efforts',
+  },
 };
 
 // Highest-to-lowest priority for deriving a scheme's single "headline" stage
@@ -86,4 +121,10 @@ const SCHEME_TYPES = {
 // then lower rounds).
 const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '2', '1'];
 
-export { STAGES, PROCESSES, derivePrimaryStatus, STATUS_DISPLAY_ORDER, SCHEME_TYPES, SEC_NOTIONS };
+// Order in which top-level standardization processes are displayed on the
+// Scheme Overview page. Each process renders its own round-banded section, so
+// the two NIST tracks stay visually separate. Processes not listed here are
+// appended after these in object-key order.
+const PROCESS_DISPLAY_ORDER = ['nist-pqc', 'nist-additional-sigs'];
+
+export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, STAGES, STATUS_DISPLAY_ORDER };
