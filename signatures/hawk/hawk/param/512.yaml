@@ -1,0 +1,19 @@
+name: HAWK-512
+security level:
+  classical: 108
+  quantum: 68
+  nist category: 0
+  comment: >-
+    HAWK-512 originally targeted NIST category 1 with a claimed classical
+    security of around 2^150 gates in the AGPS20 model. The 2026 attack reduces
+    the classical key recovery cost to about 2^108 gates, which falls below NIST
+    category 1, so the effective category is now 0. The quantum figure of 68
+    bits is derived from the quantum core SVP estimate at the attack oracle
+    dimension of 257. The original values are retained in this comment as
+    historical context.
+failure probability: -105
+number of operations: 2^64
+sizes:
+  sk: 184
+  pk: 1024
+  ct|sig: 555

@@ -1,0 +1,16 @@
+platform: "STMicroelectronics STM32F407VG-DISC1 (STM32F4 Discovery), ARM Cortex-M4 @ 24 MHz, no flash/RAM wait states, GCC-10.3.1 -O2 -mthumb -mcpu=cortex-m4, Keccak-f in assembly"
+timings:
+  unit: cycles
+  gen: 225658496
+  enc|sign: 6179673
+  dec|vrfy: 3006983
+  comment: >-
+    Averages in clock cycles (Table 6). "Fast" variants run signing in 2494513
+    and verification in 2609859 cycles.
+memory requirements:
+  gen: 27648
+  enc|sign: 7168
+  dec|vrfy: 11264
+  comment: >-
+    RAM usage estimate for embedded systems (bytes). "Fast" variants use 9512
+    (sign) and 16512 (verify) bytes.

@@ -1,0 +1,21 @@
+name: ref
+platform: c
+type: reference
+comment: >-
+  Plain C reference implementation of the exact HAWK specification; lightweight,
+  fast, isochronous and free of floating-point arithmetic. Used for the ARM
+  Cortex-M4 benchmarks (with the Keccak-f permutation in assembly). A didactic
+  Python 3 implementation following the specification is also provided.
+side channel guarding:
+  timing: true
+  branching: true
+  timing comment: >-
+    HAWK is designed to be isochronous: any function depending on secret data
+    runs in time independent of that data.
+  branching comment: >-
+    Constant-time design: secret-dependent memory-access patterns and early
+    aborts are avoided (e.g. the sampler always scans both tables and applies
+    the sign bit in constant time). Note [GR24] demonstrates power-analysis
+    attacks on the reference sampler, with proposed countermeasures.
+links:
+  - https://github.com/hawk-sign/
