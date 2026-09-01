@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
+import ArticleIcon from '@mui/icons-material/Article';
 import CategoryIcon from '@mui/icons-material/Category';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EncryptionIcon from '@mui/icons-material/LockOutlined';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import PublicIcon from '@mui/icons-material/Public';
-import VerifiedIcon from '@mui/icons-material/Verified';
 
 import SealIcon from './icons/Seal';
 
@@ -48,15 +47,15 @@ const PROCESSES = {
 // Scheme Overview's process-selection tiles. `PROCESSES` above holds the name.
 const PROCESS_META = {
   'nist-pqc': {
-    icon: VerifiedIcon,
+    icon: FactCheckIcon,
     description: 'Initial PQC standardization call from 2016',
   },
   'nist-additional-sigs': {
-    icon: NoteAddIcon,
+    icon: SealIcon,
     description: 'Additional signature schemes call from 2022',
   },
   rfc: {
-    icon: MenuBookIcon,
+    icon: ArticleIcon,
     description: 'Schemes standardized by the IETF via RFC',
   },
   'nist-sp': {

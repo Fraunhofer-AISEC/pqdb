@@ -16,21 +16,21 @@
 /*
  * Scheme Overview — the full scheme catalogue.
  *
- * Standardized and selected-for-standardization schemes are shown together in a
- * top section, regardless of the standardization process they came from, so the
- * "current" schemes are immediately visible. The remaining candidates are
- * grouped by standardization process, with a row of selection tiles to switch
- * between the processes; within a process the candidates are grouped into
- * round bands.
+ * A prominent track selector sits at the top, offering a "Standardized" option
+ * alongside one tile per standardization process. Selecting "Standardized"
+ * shows every standardized and selected-for-standardization scheme together,
+ * regardless of the process they came from, so the "current" schemes are
+ * immediately visible. Selecting a process track shows that track's schemes by
+ * round, with that track's own standardized/selected schemes at the top, so each
+ * process can be browsed on its own.
  *
  * On large screens a sticky table of contents sits to the left, mirroring the
- * currently rendered page: one entry per visible round band, grouped under the
- * standardized/selected section and the active process. Selecting an entry
- * scrolls the page to that band.
+ * currently rendered page: one entry per visible round band within the active
+ * selection. Selecting an entry scrolls the page to that band.
  *
  * Each round band renders a round header (with count and a descriptive tooltip)
  * followed by two columns of rich SchemeCards (distributed by type icon, not a
- * separate type column). Round bands and processes with no schemes are hidden.
+ * separate type column). Round bands with no schemes are hidden.
  */
 
 import {
@@ -46,6 +46,8 @@ import {
 } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
+import VerifiedIcon from '@mui/icons-material/Verified';
+
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
 import StatusBadge from '../components/StatusBadge';
@@ -60,15 +62,21 @@ import {
 import queryAll from '../utils/queryAll';
 import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
 
-// Stages shown in the unified top section, in display order.
+// Stages shown in the "Standardized" selection, in display order.
 const TOP_STAGES = ['standardized', 'selected'];
 
-// Shared styling for the process-selection tiles. The active tile is outlined
-// in the brand colour with a subtle selected tint so it reads as the current
-// process, matching the Scheme Comparison mode tiles.
-function modeTileSx(active) {
+// The track key used by the "Standardized" selection; distinct from any process
+// key so it can prefix its own anchor ids and be told apart from a track.
+const STANDARDIZED_TRACK = 'standardized';
+
+// Shared styling for the prominent track-selection tiles. The active tile is
+// outlined in the brand colour with a subtle selected tint so it reads as the
+// current selection, matching the Scheme Comparison mode tiles. Tiles flex out
+// to fill the row and wrap as needed on narrow screens.
+function trackTileSx(active) {
   return {
-    height: '100%',
+    flexGrow: 1,
+    minWidth: 200,
     display: 'flex',
     alignItems: 'center',
     gap: 1.5,
@@ -91,8 +99,8 @@ function SchemeOverview() {
     document.title = 'Scheme Overview - pqdb';
   }, []);
 
-  // Index of the currently selected process tile.
-  const [activeTab, setActiveTab] = useState(0);
+  // Currently selected track: either the STANDARDIZED_TRACK key or a process key.
+  const [activeTrack, setActiveTrack] = useState(STANDARDIZED_TRACK);
 
   // Element id to scroll to once the matching band has rendered.
   const [pendingScroll, setPendingScroll] = useState(null);
@@ -109,27 +117,21 @@ function SchemeOverview() {
   const statusByScheme = fetchStatusMap(db);
   const akaByScheme = fetchAkaMap(db);
 
-  // Group schemes by their single highest-priority status row:
-  //  - `top`: stage is standardized or selected (all processes combined).
-  //  - `candidatesByProcess`: every other stage, keyed process -> stage -> type,
-  //    one entry per process the scheme has been submitted to.
-  // Schemes with no status entry (not in any standardization process) are left
-  // out of the overview.
-  const top = {};
-  const candidatesByProcess = {};
+  // Group schemes by process -> stage -> type using each scheme's single
+  // highest-priority status row. The stage buckets hold every stage a process
+  // has reached, including standardized/selected, so a chosen track can render
+  // its own current schemes plus its candidates. Schemes with no status entry
+  // (not in any standardization process) are left out of the overview.
+  const byProcess = {};
   for (const scheme of queryAll(db, 'SELECT * FROM scheme;')) {
     const primary = derivePrimaryStatus(statusByScheme.get(scheme.id) ?? []);
     if (!primary) continue;
     const stage = String(primary.stage);
     const typeKey = scheme.type;
-    if (TOP_STAGES.includes(stage)) {
-      top[stage] = top[stage] || { enc: [], sig: [] };
-      top[stage][typeKey]?.push(scheme);
-    } else {
-      candidatesByProcess[primary.process] = candidatesByProcess[primary.process] || {};
-      candidatesByProcess[primary.process][stage] = candidatesByProcess[primary.process][stage] || { enc: [], sig: [] };
-      candidatesByProcess[primary.process][stage][typeKey]?.push(scheme);
-    }
+    byProcess[primary.process] = byProcess[primary.process] || {};
+    const bucket = byProcess[primary.process][stage] || { enc: [], sig: [] };
+    bucket[typeKey]?.push(scheme);
+    byProcess[primary.process][stage] = bucket;
   }
 
   // Schemes that have known attacks (for explicit marking on their cards);
@@ -147,27 +149,56 @@ function SchemeOverview() {
     ...[...sig].sort((a, b) => a.name.localeCompare(b.name)),
   ];
 
-  // Processes that still have non-standardized candidates, in display order;
-  // processes not in PROCESS_DISPLAY_ORDER are appended after.
+  // Processes that still have schemes, in display order; processes not in
+  // PROCESS_DISPLAY_ORDER are appended after.
   const knownProcesses = new Set(PROCESS_DISPLAY_ORDER);
   const visibleProcesses = PROCESS_DISPLAY_ORDER.filter(
-    (process) => candidatesByProcess[process] && Object.keys(candidatesByProcess[process]).length > 0,
+    (process) => byProcess[process] && Object.keys(byProcess[process]).length > 0,
   );
-  for (const process of Object.keys(candidatesByProcess)) {
+  for (const process of Object.keys(byProcess)) {
     if (!knownProcesses.has(process)) visibleProcesses.push(process);
   }
 
-  // The stages of a section (top, or an active process) present in the data, in
-  // display order; absent ones are dropped.
+  // The whole set of track choices: the "Standardized" selection first, then one
+  // tile per visible process.
+  const trackChoices = [STANDARDIZED_TRACK, ...visibleProcesses];
+
+  // The sections (stage -> { enc, sig }) rendered for a given selection:
+  //  - the STANDARDIZED_TRACK combines the standardized/selected stages of every
+  //    visible process;
+  //  - a process track serves that process's own buckets, all stages.
+  const sectionsForTrack = (track) => {
+    if (track === STANDARDIZED_TRACK) {
+      const sections = {};
+      for (const process of visibleProcesses) {
+        for (const [stage, types] of Object.entries(byProcess[process] ?? {})) {
+          if (!TOP_STAGES.includes(stage)) continue;
+          sections[stage] = sections[stage] || { enc: [], sig: [] };
+          sections[stage].enc.push(...types.enc);
+          sections[stage].sig.push(...types.sig);
+        }
+      }
+      return sections;
+    }
+    return byProcess[track] ?? {};
+  };
+
+  // The stages of a section present in the data, in display order; absent ones
+  // are dropped.
   const visibleStagesIn = (sections) => STATUS_DISPLAY_ORDER.filter(
     (stage) => sections[stage] && (sections[stage].enc.length > 0 || sections[stage].sig.length > 0),
   );
+
+  // Total number of schemes shown by a track selection (used on its tile).
+  const trackCount = (track) => visibleStagesIn(sectionsForTrack(track))
+    .reduce((n, stage) => n + sectionsForTrack(track)[stage].enc.length
+      + sectionsForTrack(track)[stage].sig.length, 0);
 
   // The on-page heading for a stage: the full STAGES label. Standardized/
   // selected stages have no round wording and pass through unchanged.
   const roundHeading = (stage) => STAGES[stage]?.long ?? stage;
 
-  // Render one stage's bands as Papers of SchemeCards. `idPrefix` gives the
+  // Render one stage's band as a Paper of SchemeCards. `idPrefix` gives the
   // Paper a stable anchor (`idPrefix-stage`) so the table of contents can jump
   // to it.
   const renderBand = (stage, sections, idPrefix) => {
@@ -224,138 +255,131 @@ function SchemeOverview() {
     );
   };
 
-  // Clamp the selected filter to the current set of visible processes and
-  // resolve it to a process key.
-  const safeActiveTab = Math.min(activeTab, Math.max(visibleProcesses.length - 1, 0));
-  const activeProcess = visibleProcesses[safeActiveTab];
+  // Guard the selection against any choice that is no longer available.
+  const safeTrack = trackChoices.includes(activeTrack) ? activeTrack : STANDARDIZED_TRACK;
 
-  // The top section is shown whenever at least one standardized/selected
-  // scheme exists.
-  const hasTop = visibleStagesIn(top).length > 0;
+  // The sections and bands rendered for the active selection.
+  const sections = sectionsForTrack(safeTrack);
+  const stages = visibleStagesIn(sections);
+  // The "Standardized" selection is combined across processes, so its anchors
+  // use the track key itself; a process track anchors by its key.
+  const idPrefix = safeTrack === STANDARDIZED_TRACK ? STANDARDIZED_TRACK : safeTrack;
+  const activeIsStandardized = safeTrack === STANDARDIZED_TRACK;
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3}>
-        {/* Left table of contents, sticky on large screens. */}
-        <Grid size={{ xs: 12, lg: 3 }} sx={{ display: { xs: 'none', lg: 'block' } }}>
-          <Box sx={{ position: 'sticky', top: 56, maxHeight: 'calc(100vh - 72px)', overflowY: 'auto' }}>
-            <Paper variant="outlined" sx={{ px: 1, py: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, px: 1.5, py: 0.5 }}>
-                Contents
-              </Typography>
-              <List dense disablePadding>
-                {hasTop && visibleStagesIn(top).map((stage) => (
-                  <ListItemButton
-                    key={stage}
-                    onClick={() => setPendingScroll(`top-${stage}`)}
-                    sx={{ borderRadius: 1 }}
-                  >
-                    <ListItemText
-                      primary={roundHeading(stage)}
-                    />
-                  </ListItemButton>
-                ))}
-                {activeProcess && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ px: 1.5, pt: 1, pb: 0.5, color: 'text.secondary', fontWeight: 600 }}
-                    >
-                      {PROCESSES[activeProcess] ?? activeProcess}
-                    </Typography>
-                    {visibleStagesIn(candidatesByProcess[activeProcess]).map((stage) => (
-                      <ListItemButton
-                        key={stage}
-                        onClick={() => setPendingScroll(`${activeProcess}-${stage}`)}
-                        sx={{ borderRadius: 1 }}
-                      >
-                        <ListItemText primary={roundHeading(stage)} />
-                      </ListItemButton>
-                    ))}
-                  </>
-                )}
-              </List>
-            </Paper>
-          </Box>
-        </Grid>
-
-        {/* Main content. */}
-        <Grid size={{ xs: 12, lg: 9 }}>
-          <Stack spacing={4}>
-            {/* Unified standardized / selected section, independent of process. */}
-            {hasTop && (
-              <Stack spacing={3}>
-                {visibleStagesIn(top).map((stage) => renderBand(stage, top, 'top'))}
-              </Stack>
-            )}
-
-            {/* Remaining candidates, grouped by standardization process. */}
-            {visibleProcesses.length > 0 && (
-              <Stack spacing={3}>
-                {visibleProcesses.length > 1 ? (
-                  <Grid container spacing={2}>
-                    {visibleProcesses.map((process, i) => {
-                      const count = visibleStagesIn(candidatesByProcess[process])
-                        .reduce((n, stage) => n + candidatesByProcess[process][stage].enc.length
-                          + candidatesByProcess[process][stage].sig.length, 0);
-                      const active = i === safeActiveTab;
-                      const meta = PROCESS_META[process];
-                      const Icon = meta?.icon;
-                      return (
-                        <Grid key={process} size={{ xs: 12, sm: 6 }}>
-                          <Box
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => setActiveTab(i)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                setActiveTab(i);
-                              }
-                            }}
-                            sx={modeTileSx(active)}
-                          >
-                            {Icon && (
-                              <Icon sx={{
-                                fontSize: 28,
-                                color: active ? 'primary.main' : 'text.secondary',
-                              }}
-                              />
-                            )}
-                            <Box>
-                              <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                              {PROCESSES[process] ?? process}
-                              <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-                                {' '}({count})
-                              </Box>
-                            </Typography>
-                            {meta?.description && (
-                              <Typography variant="caption" color="text.secondary">
-                                {meta.description}
-                              </Typography>
-                            )}
-                          </Box>
-                        </Box>
-                      </Grid>
-                      );
-                    })}
-                  </Grid>
-                ) : (
-                  <Typography variant="h4" component="h2" sx={{ fontWeight: 800 }}>
-                    {PROCESSES[activeProcess] ?? activeProcess}
+      <Stack spacing={3}>
+        {/* Prominent track selection, spanning the full width. */}
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+            Track
+          </Typography>
+          <Grid container spacing={2} sx={{ flexWrap: 'wrap' }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: 'flex' }}>
+              <Box
+                role="button"
+                tabIndex={0}
+                onClick={() => setActiveTrack(STANDARDIZED_TRACK)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveTrack(STANDARDIZED_TRACK);
+                  }
+                }}
+                sx={trackTileSx(activeIsStandardized)}
+              >
+                <VerifiedIcon sx={{ fontSize: 28, color: activeIsStandardized ? 'primary.main' : 'text.secondary' }} />
+                <Box>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                    Standardized
+                    <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                      {' '}({trackCount(STANDARDIZED_TRACK)})
+                    </Box>
                   </Typography>
-                )}
+                  <Typography variant="caption" color="text.secondary">
+                    Standardized &amp; selected for standardization
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            {visibleProcesses.map((process) => {
+              const active = safeTrack === process;
+              const meta = PROCESS_META[process];
+              const Icon = meta?.icon;
+              return (
+                <Grid key={process} size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: 'flex' }}>
+                  <Box
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setActiveTrack(process)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActiveTrack(process);
+                      }
+                    }}
+                    sx={trackTileSx(active)}
+                  >
+                    {Icon && (
+                      <Icon sx={{ fontSize: 28, color: active ? 'primary.main' : 'text.secondary' }} />
+                    )}
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                        {PROCESSES[process] ?? process}
+                        <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                          {' '}({trackCount(process)})
+                        </Box>
+                      </Typography>
+                      {meta?.description && (
+                        <Typography variant="caption" color="text.secondary">
+                          {meta.description}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
 
-                {activeProcess && (
-                  visibleStagesIn(candidatesByProcess[activeProcess]).map((stage) => (
-                    renderBand(stage, candidatesByProcess[activeProcess], activeProcess)
-                  ))
-                )}
-              </Stack>
-            )}
-          </Stack>
+        <Grid container spacing={3}>
+          {/* Left table of contents, sticky on large screens. */}
+          <Grid size={{ xs: 12, lg: 3 }} sx={{ display: { xs: 'none', lg: 'block' } }}>
+            <Box sx={{ position: 'sticky', top: 56, maxHeight: 'calc(100vh - 72px)', overflowY: 'auto' }}>
+              <Paper variant="outlined" sx={{ px: 1, py: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, px: 1.5, py: 0.5 }}>
+                  Contents
+                </Typography>
+                <List dense disablePadding>
+                  {stages.map((stage) => (
+                    <ListItemButton
+                      key={stage}
+                      onClick={() => setPendingScroll(`${idPrefix}-${stage}`)}
+                      sx={{ borderRadius: 1 }}
+                    >
+                      <ListItemText primary={roundHeading(stage)} />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Paper>
+            </Box>
+          </Grid>
+
+          {/* Main content. */}
+          <Grid size={{ xs: 12, lg: 9 }}>
+            <Stack spacing={4}>
+              {stages.length === 0 ? (
+                <Typography color="text.secondary">
+                  No schemes in this track yet.
+                </Typography>
+              ) : (
+                stages.map((stage) => renderBand(stage, sections, idPrefix))
+              )}
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
+      </Stack>
     </Container>
   );
 }
