@@ -26,7 +26,7 @@ import { derivePrimaryStatus, SCHEME_TYPES, STAGES, statusTitle } from '../const
 import detailLink from '../utils/detailLink';
 import StatusBadge from './StatusBadge';
 
-function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [] }) {
+function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [], to }) {
   const type = SCHEME_TYPES[scheme.type];
 
   // The primary (headline) status drives the badge; `standardized` wins over
@@ -38,7 +38,7 @@ function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [] 
     <Card sx={{ height: 214, border: 1, borderColor: 'divider' }}>
       <CardActionArea
         component={RouterLink}
-        to={detailLink(scheme.id_text)}
+        to={to ?? detailLink(scheme.id_text)}
         sx={{ height: '100%' }}
       >
         <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -122,6 +122,7 @@ SchemeCard.propTypes = {
   aka: PropTypes.arrayOf(PropTypes.string),
   attacked: PropTypes.bool,
   attacks: PropTypes.arrayOf(PropTypes.string),
+  to: PropTypes.string,
 };
 
 export default SchemeCard;

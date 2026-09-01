@@ -45,6 +45,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import VerifiedIcon from '@mui/icons-material/Verified';
 
@@ -60,6 +61,7 @@ import {
   STATUS_DISPLAY_ORDER,
 } from '../constants';
 import queryAll from '../utils/queryAll';
+import detailLink from '../utils/detailLink';
 import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
 
 // Stages shown in the "Standardized" selection, in display order.
@@ -99,8 +101,24 @@ function SchemeOverview() {
     document.title = 'Scheme Overview - pqdb';
   }, []);
 
-  // Currently selected track: either the STANDARDIZED_TRACK key or a process key.
-  const [activeTrack, setActiveTrack] = useState(STANDARDIZED_TRACK);
+  // The selected track lives in the URL (`?track=<key>`) so it survives browser
+  // navigation, e.g. going back from a scheme detail keeps the same tab. The
+  // key is either STANDARDIZED_TRACK or a process key.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTrack, setActiveTrack] = useState(
+    () => searchParams.get('track') ?? STANDARDIZED_TRACK,
+  );
+
+  // Select a track and mirror the choice into the URL. The default
+  // (Standardized) selection drops the param so the URL stays clean.
+  function selectTrack(track) {
+    setActiveTrack(track);
+    if (track === STANDARDIZED_TRACK) {
+      setSearchParams({}, { replace: true });
+    } else {
+      setSearchParams({ track }, { replace: true });
+    }
+  }
 
   // Element id to scroll to once the matching band has rendered.
   const [pendingScroll, setPendingScroll] = useState(null);
@@ -245,6 +263,7 @@ function SchemeOverview() {
                     aka={akaByScheme.get(scheme.id) ?? []}
                     attacked={attackedIds.has(scheme.id)}
                     attacks={attacksByScheme[scheme.id] ?? []}
+                    to={cardLink(scheme.id_text)}
                   />
                 ))}
               </Stack>
@@ -257,6 +276,13 @@ function SchemeOverview() {
 
   // Guard the selection against any choice that is no longer available.
   const safeTrack = trackChoices.includes(activeTrack) ? activeTrack : STANDARDIZED_TRACK;
+
+  // Detail link for a scheme that carries the current track as a query param so
+  // returning from the detail page (via the browser back button) restores this
+  // exact selection. The default Standardized selection needs no param.
+  const cardLink = (schemeId) => safeTrack === STANDARDIZED_TRACK
+    ? detailLink(schemeId)
+    : `${detailLink(schemeId)}?track=${encodeURIComponent(safeTrack)}`;
 
   // The sections and bands rendered for the active selection.
   const sections = sectionsForTrack(safeTrack);
@@ -279,11 +305,11 @@ function SchemeOverview() {
               <Box
                 role="button"
                 tabIndex={0}
-                onClick={() => setActiveTrack(STANDARDIZED_TRACK)}
+                onClick={() => selectTrack(STANDARDIZED_TRACK)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    setActiveTrack(STANDARDIZED_TRACK);
+                    selectTrack(STANDARDIZED_TRACK);
                   }
                 }}
                 sx={trackTileSx(activeIsStandardized)}
@@ -311,11 +337,11 @@ function SchemeOverview() {
                   <Box
                     role="button"
                     tabIndex={0}
-                    onClick={() => setActiveTrack(process)}
+                    onClick={() => selectTrack(process)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setActiveTrack(process);
+                        selectTrack(process);
                       }
                     }}
                     sx={trackTileSx(active)}
