@@ -1,0 +1,8 @@
+platform: 'Intel Xeon E3-1260L v5 (Skylake) at 2.90 GHz, Ubuntu, clang 14.0.0, -O3 -march=native'
+timings:
+  unit: cycles
+  gen: 202026
+  enc|sign: 574530
+  dec|vrfy: 247169
+  comment: >-
+    Median of 1000 runs.

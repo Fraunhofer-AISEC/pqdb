@@ -1,0 +1,18 @@
+name: opt
+platform: c
+type: optimized
+comment: >-
+  Portable C99 code with parameters fixed at compile time and specialized
+  batched arithmetic functions. AES-NI is used by default when available, and
+  the specification also reports timings with AES-NI disabled.
+side channel guarding:
+  branching: true
+  timing: true
+  branching comment: The implementation avoids secret dependent control flow.
+  timing comment: >-
+    The implementation avoids secret dependent data indexing. AES is only used
+    to expand public values, so a non constant time AES is acceptable.
+hardware features:
+  - aes-ni
+links:
+  - https://github.com/PQCMayo/MAYO-C

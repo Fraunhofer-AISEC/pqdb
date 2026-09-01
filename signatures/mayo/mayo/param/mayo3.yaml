@@ -1,0 +1,26 @@
+name: MAYO-3
+comment: 'Parameters (n, m, o, k, q) = (118, 108, 10, 11, 16) with f108(z).'
+security level:
+  classical: 224
+  quantum: 112
+  nist category: 3
+  comment: >-
+    The specification reports bit complexity lower bounds of 416 for the Kipnis
+    Shamir attack, 262 for the reconciliation attack, 482 for the intersection
+    attack, 224 for the direct attack and 229 for claw finding. The classical
+    value is the smallest of these. The quantum value follows the statement that
+    known quantum attacks improve on classical attacks by at most a square root
+    factor.
+failure probability: 0
+failure probability comment: >-
+  Signing never fails. The linear system is not of full rank with probability
+  about 2 to the power minus 12, in which case signing restarts with a new
+  counter value.
+number of operations: inf
+sizes:
+  sk: 32
+  pk: 2986
+  ct|sig: 681
+  comment: >-
+    Secret key and public key sizes are for the compact representations. The
+    expanded secret key is 367 KB and the expanded public key is 370 KB.

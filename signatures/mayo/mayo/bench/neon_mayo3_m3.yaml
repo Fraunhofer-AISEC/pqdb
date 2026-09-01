@@ -1,0 +1,8 @@
+platform: 'Apple M3, Apple clang toolchain 1600.0.26.6'
+timings:
+  unit: cycles
+  gen: 386820
+  enc|sign: 1039799
+  dec|vrfy: 454799
+  comment: >-
+    Average of 1000 runs.

@@ -1,0 +1,9 @@
+platform: 'Intel Xeon E3-1260L v5 (Skylake) at 2.90 GHz, Ubuntu, clang 14.0.0, -O3 -march=native'
+timings:
+  unit: cycles
+  gen: 1197019
+  enc|sign: 3037778
+  dec|vrfy: 11336685
+  comment: >-
+    Median of 1000 runs. The verification value is reproduced as printed in
+    the specification, where it appears inconsistent with the other tables.

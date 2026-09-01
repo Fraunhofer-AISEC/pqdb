@@ -1,0 +1,8 @@
+platform: 'Intel Xeon E3-1225 v3 (Haswell) at 3.20 GHz, Ubuntu, clang 18.1.3, -O3 -march=native'
+timings:
+  unit: cycles
+  gen: 1338275
+  enc|sign: 3475547
+  dec|vrfy: 1488808
+  comment: >-
+    Median of 1000 runs.

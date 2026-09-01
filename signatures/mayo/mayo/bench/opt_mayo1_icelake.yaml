@@ -1,0 +1,8 @@
+platform: 'Intel Xeon Gold 6338 (Ice Lake) at 2.0 GHz, Ubuntu, clang 18.1.8, -O3 -march=native'
+timings:
+  unit: cycles
+  gen: 878654
+  enc|sign: 2724374
+  dec|vrfy: 353682
+  comment: >-
+    Median of 1000 runs.
