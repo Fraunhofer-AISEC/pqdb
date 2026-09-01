@@ -16,7 +16,12 @@
 
 import { Link } from '@mui/material';
 
+const URL_REGEX = /(https?:\/\/[^\s()]+)/g;
+
 export default function linkify(s) {
-  const url = s.match(/https?:\/\/[^\s]*[^-.,;()]/g);
-  return url ? <Link href={url}>{s}</Link> : s;
+  return s.split(URL_REGEX).map((part, i) =>
+    /^https?:\/\//.test(part)
+      ? <Link key={`${part}-${i}`} href={part} target="_blank" rel="noreferrer">{part}</Link>
+      : part,
+  );
 }
