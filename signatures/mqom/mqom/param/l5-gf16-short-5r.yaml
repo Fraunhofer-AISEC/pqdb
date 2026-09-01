@@ -1,0 +1,11 @@
+name: MQOM2-L5-gf16-short-5r
+security level:
+  classical: 280
+  quantum: 128
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 180
+  pk: 122
+  ct|sig: 12014

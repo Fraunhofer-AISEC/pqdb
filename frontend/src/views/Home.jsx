@@ -43,6 +43,7 @@ const CATEGORY_LABELS = {
   multivariate: 'Multivariate',
   isogeny: 'Isogeny',
   hash: 'Hash',
+  'mpc-in-the-head': 'MPC-in-the-Head',
   other: 'Other',
 };
 

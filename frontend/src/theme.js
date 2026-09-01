@@ -63,6 +63,7 @@ const STATUS_COLORS = {
     multivariate: '#b45309',
     isogeny: '#d946ef',
     isogenyost: '#d946ef',
+    'mpc-in-the-head': '#0ea5e9',
     other: '#64748b',
   },
   rounds: {

@@ -1,0 +1,13 @@
+platform: >-
+  STM32 Cortex-M4 on a Nucleo-L4R5ZI board at 16 MHz with zero wait state
+  flash, arm-none-eabi-gcc 14.2.1 -O3 -march=armv7e-m -mtune=cortex-m4
+  -mfloat-abi=hard -mfpu=fpv4-sp-d16.
+timings:
+  unit: cycles
+  gen: 90890000
+  enc|sign: 857420000
+  dec|vrfy: 853270000
+memory requirements:
+  gen: 3390
+  enc|sign: 13090
+  dec|vrfy: 12620

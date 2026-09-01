@@ -30,6 +30,7 @@
                 "multivariate",
                 "isogeny",
                 "hash",
+                "mpc-in-the-head",
                 "other"
             ]
         },
