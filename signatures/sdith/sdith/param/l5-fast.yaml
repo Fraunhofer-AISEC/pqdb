@@ -1,0 +1,16 @@
+name: SDitH3-L5-gf2-fast
+comment: >-
+  Same syndrome decoding parameters as the short instance of category V with
+  smaller trees for faster computation. The proof system uses kappa equal to 7,
+  tau equal to 36, wpow equal to 6, Topen equal to 216 and B equal to 16 with hash
+  based grinding.
+security level:
+  classical: 272
+  quantum: 128
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 275
+  pk: 132
+  ct|sig: 19144

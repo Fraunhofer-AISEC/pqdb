@@ -1,0 +1,8 @@
+name: SDitH
+type: SIG
+security notion: EUF-CMA
+comment: >-
+  The classical security value reported per parameter set is the syndrome
+  decoding security in bits from the specification. The document gives no
+  dedicated quantum estimate, so the quantum value reports half the targeted
+  security parameter lambda of the proof system.

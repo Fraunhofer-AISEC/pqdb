@@ -1,0 +1,16 @@
+name: SDitH3-L1-gf2-short
+comment: >-
+  Regular syndrome decoding over F2 with n equal to 10360, codimension 432 and
+  weight 56, and arities 4, 4, 4 and 3. The proof system uses kappa equal to 11,
+  tau equal to 11, wpow equal to 9, Topen equal to 109 and B equal to 16 with hash
+  based grinding.
+security level:
+  classical: 143
+  quantum: 64
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 147
+  pk: 70
+  ct|sig: 3721
