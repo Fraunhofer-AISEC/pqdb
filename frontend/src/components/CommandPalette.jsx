@@ -208,7 +208,6 @@ function CommandPalette({ open, onClose, db }) {
                     <StatusBadge
                       kind="categories"
                       value={option.scheme.category}
-                      label={option.scheme.category}
                       size="small"
                     />
                     {(() => {
@@ -226,7 +225,7 @@ function CommandPalette({ open, onClose, db }) {
                       <StatusBadge
                         kind="statefulness"
                         value={1}
-                        label="stateful"
+                        label="Stateful"
                         title={option.scheme.stateful_comment}
                         size="small"
                       />

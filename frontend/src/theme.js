@@ -89,6 +89,19 @@ const STATUS_COLORS = {
   },
 };
 
+// Human-readable category names, keyed by the category value used for chips and
+// UI. Kept alongside the category colour tokens so the display name of every
+// category lives in one place.
+const CATEGORY_LABELS = {
+  lattice: 'Lattice',
+  code: 'Code',
+  multivariate: 'Multivariate',
+  isogeny: 'Isogeny',
+  hash: 'Hash',
+  'mpc-in-the-head': 'MPC-in-the-Head',
+  other: 'Other',
+};
+
 function getTheme(mode) {
   const dark = mode === 'dark';
   return createTheme({
@@ -143,5 +156,5 @@ function getTheme(mode) {
   });
 }
 
-export { brand, fontFamilyMono,STATUS_COLORS };
+export { brand, fontFamilyMono, CATEGORY_LABELS, STATUS_COLORS };
 export default getTheme;

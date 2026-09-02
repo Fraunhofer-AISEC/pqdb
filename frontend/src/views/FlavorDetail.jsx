@@ -236,7 +236,7 @@ function FlavorDetail() {
 
         {(scheme.stateful === 1)
           && (
-          <StatusBadge kind="statefulness" value={1} label="stateful" title={scheme.stateful_comment} sx={{ height: 20 }} />
+          <StatusBadge kind="statefulness" value={1} label="Stateful" title={scheme.stateful_comment} sx={{ height: 20 }} />
           )}
 
         {(derivePrimaryStatus(status) !== undefined)
@@ -254,7 +254,7 @@ function FlavorDetail() {
           <StatusBadge
             kind="rounds"
             value="deprecated"
-            label="deprecated"
+            label="Deprecated"
             title={flavor.deprecated_comment ?? 'Superseded/archived flavor'}
             sx={{ height: 20 }}
           />

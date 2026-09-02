@@ -24,14 +24,14 @@ import PublicIcon from '@mui/icons-material/Public';
 import SealIcon from './icons/Seal';
 
 const STAGES = {
-  standardized: { short: 'standardized', long: 'Standardized' },
-  selected: { short: 'standard pending', long: 'Selected for Standardization' },
-  4: { short: 'round 4', long: 'Reached Round 4' },
-  '3f': { short: 'round 3 finalist', long: 'Finalist in Round 3' },
-  '3a': { short: 'round 3 alternate', long: 'Alternate Candidate in Round 3' },
-  3: { short: 'round 3', long: 'Reached Round 3' },
-  2: { short: 'round 2', long: 'Reached Round 2' },
-  1: { short: 'round 1', long: 'Reached Round 1' },
+  standardized: { short: 'Standardized', long: 'Standardized' },
+  selected: { short: 'Standard Pending', long: 'Selected for Standardization' },
+  4: { short: 'Round 4', long: 'Reached Round 4' },
+  '3f': { short: 'Round 3 Finalist', long: 'Finalist in Round 3' },
+  '3a': { short: 'Round 3 Alternate', long: 'Alternate Candidate in Round 3' },
+  3: { short: 'Round 3', long: 'Reached Round 3' },
+  2: { short: 'Round 2', long: 'Reached Round 2' },
+  1: { short: 'Round 1', long: 'Reached Round 1' },
 };
 
 const PROCESSES = {

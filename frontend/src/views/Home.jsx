@@ -9,13 +9,9 @@
  * search button that opens the global CommandPalette.
  */
 
-import SearchIcon from '@mui/icons-material/Search';
-import ListIcon from '@mui/icons-material/List';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import {
   alpha,
   Box,
-  Button,
   Container,
   Grid,
   Link,
@@ -29,33 +25,23 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
-import { useSearchDialog } from '../components/SearchDialogContext';
 import StatusBadge from '../components/StatusBadge';
+import { CATEGORY_LABELS } from '../theme';
 import logo from '../pqdb.svg';
+import overviewLink from '../utils/overviewLink';
 import queryAll from '../utils/queryAll';
 import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
-
-// Human-readable category labels for the per-category breakdown. Unknown
-// categories fall back to their raw value.
-const CATEGORY_LABELS = {
-  lattice: 'Lattice',
-  code: 'Code',
-  multivariate: 'Multivariate',
-  isogeny: 'Isogeny',
-  hash: 'Hash',
-  'mpc-in-the-head': 'MPC-in-the-Head',
-  other: 'Other',
-};
 
 const SCHEME_TABLES = {
   total: 'SELECT COUNT(*) AS c FROM scheme',
   enc: "SELECT COUNT(*) AS c FROM scheme WHERE type='enc'",
   sig: "SELECT COUNT(*) AS c FROM scheme WHERE type='sig'",
-  // "Standardized" now means a final standard has been published, so only
-  // stage='standardized' counts here (selected-only schemes like Falcon do not).
+  // "Standardized" here matches the Scheme Overview's Standardized track: it
+  // counts both published-final-standard schemes and those selected for
+  // standardization whose standard is still pending (e.g. Falcon).
   standardized: `SELECT COUNT(DISTINCT s.id) AS c
     FROM scheme s JOIN scheme_status ss ON ss.scheme_id = s.id
-    WHERE ss.stage = 'standardized'`,
+    WHERE ss.stage IN ('standardized', 'selected')`,
   flavors: 'SELECT COUNT(*) AS c FROM flavor',
   paramsets: 'SELECT COUNT(*) AS c FROM paramset',
 };
@@ -67,7 +53,6 @@ function count(db, sql) {
 
 function Home() {
   const { db } = useContext(DatabaseContext);
-  const { openSearch } = useSearchDialog();
   const theme = useTheme();
 
   useEffect(() => {
@@ -115,13 +100,66 @@ function Home() {
   }
 
   const statTiles = [
-    { label: 'Schemes', value: stats.total },
-    { label: 'Key Exchange', value: stats.enc },
-    { label: 'Signatures', value: stats.sig },
-    { label: 'Standardized', value: stats.standardized },
+    // Scheme-level figures link into the filtered overview; flavor/paramset
+    // tiles stay static because they are not scheme filters.
+    {
+      label: 'Schemes',
+      value: stats.total,
+      to: overviewLink({ track: 'all' }),
+    },
+    {
+      label: 'Key Exchange',
+      value: stats.enc,
+      to: overviewLink({ track: 'all', type: 'enc' }),
+    },
+    {
+      label: 'Signatures',
+      value: stats.sig,
+      to: overviewLink({ track: 'all', type: 'sig' }),
+    },
+    {
+      label: 'Standardized',
+      value: stats.standardized,
+      to: overviewLink({ track: 'standardized' }),
+    },
     { label: 'Flavors', value: stats.flavors },
     { label: 'Parameter sets', value: stats.paramsets },
   ];
+
+  // Whether a stat tile should render as a link (scheme-level figures only).
+  const isStatLink = (tile) => Boolean(tile.to);
+
+  const statContent = (tile) => (
+    <Box
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        border: 1,
+        borderColor: 'divider',
+        textAlign: 'center',
+        height: '100%',
+        ...(isStatLink(tile)
+          ? {
+              color: 'inherit',
+              textDecoration: 'none',
+              display: 'block',
+              transition: 'background-color 0.15s, border-color 0.15s',
+              '&:hover': {
+                borderColor: 'primary.main',
+                bgcolor: alpha(theme.palette.primary.main, 0.06),
+              },
+            }
+          : {}),
+      }}
+    >
+      <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
+        {tile.value}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {tile.label}
+      </Typography>
+    </Box>
+  );
 
   return (
     <Container maxWidth="lg">
@@ -151,41 +189,6 @@ function Home() {
           Browse schemes, flavors, parameter sets, and benchmarks, and see
           where each one stands in NIST standardization.
         </Typography>
-
-        <Stack
-          direction="row"
-          sx={{ justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}
-        >
-          <Button
-            variant="contained"
-            size="large"
-            startIcon={<SearchIcon />}
-            onClick={openSearch}
-            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
-          >
-            Search schemes &amp; flavors…
-          </Button>
-          <Button
-            component={RouterLink}
-            to="/detail"
-            variant="contained"
-            size="large"
-            startIcon={<ListIcon />}
-            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
-          >
-            Browse all schemes
-          </Button>
-          <Button
-            component={RouterLink}
-            to="/comparison"
-            variant="contained"
-            size="large"
-            startIcon={<CompareArrowsIcon />}
-            sx={{ px: 4, py: 1.25, fontSize: '1rem', width: { xs: '100%', sm: 'auto' } }}
-          >
-            Compare schemes
-          </Button>
-        </Stack>
       </Paper>
 
       {/* Live stats */}
@@ -196,23 +199,13 @@ function Home() {
         <Grid container spacing={2}>
           {statTiles.map((t) => (
             <Grid key={t.label} size={{ xs: 6, sm: 4, md: 2 }}>
-              <Box
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  border: 1,
-                  borderColor: 'divider',
-                  textAlign: 'center',
-                  height: '100%',
-                }}
-              >
-                <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                  {t.value}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {t.label}
-                </Typography>
-              </Box>
+              {isStatLink(t) ? (
+                <Link component={RouterLink} to={t.to} underline="none" sx={{ display: 'block', height: '100%' }}>
+                  {statContent(t)}
+                </Link>
+              ) : (
+                statContent(t)
+              )}
             </Grid>
           ))}
         </Grid>
@@ -227,12 +220,19 @@ function Home() {
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {categories.map((row) => (
-              <StatusBadge
+              <Link
                 key={row.category}
-                kind="categories"
-                value={row.category}
-                label={`${CATEGORY_LABELS[row.category] ?? row.category} · ${row.c}`}
-              />
+                component={RouterLink}
+                to={overviewLink({ track: 'all', category: row.category })}
+                underline="none"
+                sx={{ display: 'inline-block' }}
+              >
+                <StatusBadge
+                  kind="categories"
+                  value={row.category}
+                  label={`${CATEGORY_LABELS[row.category] ?? row.category} · ${row.c}`}
+                />
+              </Link>
             ))}
           </Box>
         </Stack>

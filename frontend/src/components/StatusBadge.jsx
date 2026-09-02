@@ -9,7 +9,7 @@
 import { Chip } from '@mui/material';
 import PropTypes from 'prop-types';
 
-import { STATUS_COLORS } from '../theme';
+import { CATEGORY_LABELS, STATUS_COLORS } from '../theme';
 
 const toneFor = (kind, value) => {
   const table = STATUS_COLORS[kind];
@@ -19,10 +19,14 @@ const toneFor = (kind, value) => {
 function StatusBadge({ kind, value, label, title, size, sx }) {
   if (value === undefined || value === null || value === '') return null;
   const color = toneFor(kind, value);
+  // Categories default to a human-readable name; any other kind (or an explicit
+  // `label` from the caller) falls back to the raw value/string.
+  const resolvedLabel = label
+    ?? (kind === 'categories' ? (CATEGORY_LABELS[value] ?? value) : String(value));
   return (
     <Chip
       size={size}
-      label={label ?? String(value)}
+      label={resolvedLabel}
       title={title}
       sx={{
         color: '#fff',

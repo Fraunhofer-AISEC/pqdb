@@ -176,7 +176,7 @@ function SchemeDetail() {
             <Chip
               size="small"
               color="warning"
-              label="deprecated"
+              label="Deprecated"
               title={f.deprecated_comment ?? 'Superseded/archived flavor'}
             />
           )}
@@ -281,7 +281,7 @@ function SchemeDetail() {
                 {(scheme.stateful || scheme.stateful_comment) && (
                   <PropItem key="stateful" title="Statefulness" Icon={SaveIcon}>
                     {scheme.stateful === 1
-                      ? <StatusBadge kind="statefulness" value={1} label="stateful" title={scheme.stateful_comment} />
+                      ? <StatusBadge kind="statefulness" value={1} label="Stateful" title={scheme.stateful_comment} />
                       : <span>stateless <Comment title={scheme.stateful_comment} /></span> /* stateless only shown if there's a comment */}
                   </PropItem>
                 )}
