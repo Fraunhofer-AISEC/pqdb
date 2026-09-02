@@ -10,12 +10,12 @@ status:
   - process: nist-pqc
     stage: 3a
 authors:
-  - A. Casanova
-  - J.-C. Faugère
-  - G. Macario-Rat
-  - J. Patarin
-  - L. Perret
-  - J. Ryckeghem
+  - Antoine Casanova
+  - Jean-Charles Faugère
+  - Gilles Macario-Rat
+  - Jacques Patarin
+  - Ludovic Perret
+  - Jocelyn Ryckeghem
 website: https://www-polsys.lip6.fr/Links/NIST/GeMSS.html
 sources:
   - >-
