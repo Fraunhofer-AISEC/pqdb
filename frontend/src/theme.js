@@ -53,36 +53,56 @@ const brand = {
   900: '#0c3b43',
 };
 
-// Semantic status colors for category / NIST round / security-level badges.
-// Kept in one place so a badge can look them up by value.
+// ---------------------------------------------------------------------------
+// Unified colour palette (the single source of truth for every non-neutral
+// colour in the app). `brand` above is the teal anchor; each additional hue is
+// exposed as { main, light, dark } so a token can be drawn as a solid badge
+// (`main`) or tinted surface (`light`/`dark`) on both light and dark paper.
+// Every semantic colour below and the logo's fills derive from these hues so
+// the whole site reads as one palette. See DESIGN_LANGUAGE.md.
+// ---------------------------------------------------------------------------
+const PALETTE = {
+  teal: { main: '#2195a6', light: '#6cc8d2', dark: '#12626d' },
+  indigo: { main: '#4f6ef7', light: '#8199f8', dark: '#3a54c9' },
+  violet: { main: '#8b5cf6', light: '#a78bfa', dark: '#6d3ef0' },
+  sky: { main: '#0ea5e9', light: '#38bdf8', dark: '#0284c7' },
+  magenta: { main: '#d946ef', light: '#e879f9', dark: '#b11fd0' },
+  amber: { main: '#f59e0b', light: '#fbbf24', dark: '#d97706' },
+  green: { main: '#16a34a', light: '#22c55e', dark: '#15803d' },
+  coral: { main: '#ef4444', light: '#f87171', dark: '#dc2626' },
+  slate: { main: '#64748b', light: '#94a3b8', dark: '#475569' },
+};
+
+// Semantic status colors for category / NIST round / security-level badges,
+// derived from PALETTE so badges always match the brand/logo hues.
 const STATUS_COLORS = {
   categories: {
-    lattice: '#3d8bff',
-    code: '#0d9488',
-    hash: '#a855f7',
-    multivariate: '#b45309',
-    isogeny: '#d946ef',
-    isogenyost: '#d946ef',
-    'mpc-in-the-head': '#0ea5e9',
-    other: '#64748b',
+    lattice: PALETTE.indigo.main,
+    code: PALETTE.teal.main,
+    hash: PALETTE.violet.main,
+    multivariate: PALETTE.amber.dark,
+    isogeny: PALETTE.magenta.main,
+    isogenyost: PALETTE.magenta.main,
+    'mpc-in-the-head': PALETTE.sky.main,
+    other: PALETTE.slate.main,
   },
   rounds: {
-    1: '#94a3b8',
-    2: '#64748b',
-    '3a': '#8b5cf6',
+    1: PALETTE.slate.light,
+    2: PALETTE.slate.main,
+    '3a': PALETTE.violet.main,
     '3': '#a855f7',
     '3f': '#6366f1',
-    4: '#3d8bff',
-    selected: '#f59e0b',
-    standardized: '#16a34a',
-    deprecated: '#64748b',
+    4: PALETTE.sky.main,
+    selected: PALETTE.amber.main,
+    standardized: PALETTE.green.main,
+    deprecated: PALETTE.slate.main,
   },
   security: {
-    1: '#12b76a',
+    1: PALETTE.green.main,
     2: '#12a3b7',
-    3: '#3d8bff',
-    4: '#f59e0b',
-    5: '#ef4444',
+    3: PALETTE.indigo.main,
+    4: PALETTE.amber.main,
+    5: PALETTE.coral.main,
   },
   statefulness: {
     1: '#ea580c',
@@ -156,5 +176,5 @@ function getTheme(mode) {
   });
 }
 
-export { brand, fontFamilyMono, CATEGORY_LABELS, STATUS_COLORS };
+export { brand, fontFamilyMono, CATEGORY_LABELS, PALETTE, STATUS_COLORS };
 export default getTheme;
