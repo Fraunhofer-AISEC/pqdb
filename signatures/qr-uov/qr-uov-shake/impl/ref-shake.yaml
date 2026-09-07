@@ -1,0 +1,13 @@
+name: ref-shake
+platform: c
+type: reference
+comment: >-
+  Reference C implementation with the SHAKE option for the pseudorandom
+  generator, using SHAKE128 at security level I and SHAKE256 at security levels
+  III and V.
+side channel guarding:
+  timing: false
+  timing comment: >-
+    The reference implementation does not use a constant time algorithm for
+    solving the linear system during signing. The specification recommends such
+    an algorithm for critical applications.

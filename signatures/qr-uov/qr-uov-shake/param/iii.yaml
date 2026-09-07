@@ -1,0 +1,23 @@
+name: QR-UOV III
+comment: Recommended parameter set for security level III.
+security level:
+  classical: 211
+  quantum: 180
+  nist category: 3
+  comment: >-
+    The values are base 2 logarithms of the number of gates of the best attack,
+    which is the hybrid approach with polynomial XL applied to the direct
+    attack. This parameter set also satisfies NIST security level IV.
+failure probability: 0
+failure probability comment: >-
+  Signing does not fail because a fresh salt is sampled until the linear system
+  in the oil variables has a solution. The expected number of iterations is
+  about 2.0.
+number of operations: inf
+sizes:
+  sk: 48
+  pk: 71891
+  ct|sig: 292
+  comment: >-
+    The private key consists of two seeds of lambda bits and lambda equals 192
+    at this security level.

@@ -1,0 +1,17 @@
+name: QR-UOV-SHAKE
+comment: >-
+  QR-UOV flavor whose key seeds are expanded with the SHAKE pseudorandom
+  generator: SHAKE128 at security level I and SHAKE256 at security levels III
+  and V. Because the SHAKE option expands the private and public key seeds
+  differently than the AES option, keys and signatures produced by the two
+  flavors are not interoperable.
+description: >-
+  Variant of QR-UOV using the SHAKE pseudorandom generator for the probabilistic
+  hash and sign construction that resamples the salt until the linear system in
+  the oil variables is solvable.
+type: SIG
+security notion: EUF-CMA
+security notion comment: >-
+  The proof holds in the quantum random oracle model and reduces EUF-CMA
+  security to the UOV problem over the extension field and to the QR-MQ problem.
+  Strong unforgeability is not claimed.

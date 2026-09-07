@@ -1,0 +1,67 @@
+name: QR-UOV
+description: >-
+  An unbalanced Oil and Vinegar multivariate signature scheme using quotient-ring
+  block matrices to reduce public key size compared with plain UOV.
+category: multivariate
+category comment: >-
+  The security relies on the multivariate quadratic problem in the form of the
+  UOV problem over the extension field and the QR-MQ problem.
+stateful: false
+year:
+  paper: 2021
+  candidate: 2023
+  comment: >-
+    The construction was published at ASIACRYPT 2021 and was first submitted to
+    the NIST additional signature schemes process in 2023. The document read
+    here is the Round 2 specification version 2.0 dated February 5, 2025.
+authors:
+  - Hiroki Furue
+  - Yasuhiko Ikematsu
+  - Fumitaka Hoshino
+  - Tsuyoshi Takagi
+  - Haruhisa Kosuge
+  - Kimihiro Yamakoshi
+  - Rika Akiyama
+  - Satoshi Nakamura
+  - Shingo Orihara
+  - Koha Kinjo
+problems:
+  - assumption: UOV problem
+    comment: >-
+      Distinguishing a UOV public key with v/ell vinegar variables, m/ell oil
+      variables and m equations over the extension field F_{q^ell} from a random
+      quadratic map.
+  - assumption: QR-MQ problem
+    comment: >-
+      Finding a preimage of a random target under a quadratic map whose
+      representation matrices carry the quotient ring structure of QR-UOV.
+problems comment: >-
+  No formal reduction from the QR-MQ problem to the plain MQ problem is known.
+  The authors report experiments in which the degree of regularity of a QR-UOV
+  public key system equals the degree of regularity of a random system, which
+  indicates equal difficulty.
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+    comment: >-
+      The data comes from the Round 2 specification version 2.0 dated February
+      5, 2025. QR-UOV advanced through round 1 (2023) and round 2 (2025) of the
+      NIST additional signature schemes process and was selected for round 3 in
+      2026.
+trust comment: >-
+  The EUF-CMA security is proven in the quantum random oracle model under the
+  UOV and QR-MQ assumptions, following the analysis of Kosuge and Xagawa. The
+  NIST status report on the first round of additional signatures raised concerns
+  about the quotient ring structure and the authors state that the first round
+  parameter sets remain secure. The authors also analyse the lifting method over
+  the extension field, the technique used in the recent attacks on SNOVA and the
+  multiplication of the public key by the polynomial matrix of x, and conclude
+  that none of these approaches weakens QR-UOV.
+sources:
+  - "Specification, version 2.0 (https://info.isl.ntt.co.jp/crypt/qruov/files/qruov_Spec-v2.0.pdf)"
+website: https://info.isl.ntt.co.jp/crypt/qruov/
+links:
+  - "Initial paper (https://eprint.iacr.org/2020/1243)"
+last_updated: '2025-02-05'
+last_updated comment: Date of the Round 2 specification version 2.0.

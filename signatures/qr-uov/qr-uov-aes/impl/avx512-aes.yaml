@@ -1,0 +1,10 @@
+name: avx512-aes
+platform: x86-64
+type: optimized
+comment: >-
+  C implementation with AVX512 intrinsics and the AES counter mode option for
+  the pseudorandom generator.
+hardware features:
+  - AVX512
+dependencies:
+  - OpenSSL
