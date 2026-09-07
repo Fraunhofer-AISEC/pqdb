@@ -17,8 +17,8 @@
 import ArticleIcon from '@mui/icons-material/Article';
 import CategoryIcon from '@mui/icons-material/Category';
 import DescriptionIcon from '@mui/icons-material/Description';
-import EncryptionIcon from '@mui/icons-material/LockOutlined';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
+import EncryptionIcon from '@mui/icons-material/LockOutlined';
 import PublicIcon from '@mui/icons-material/Public';
 
 import SealIcon from './icons/Seal';
@@ -143,4 +143,4 @@ const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '3', 
 // appended after these in object-key order.
 const PROCESS_DISPLAY_ORDER = ['nist-pqc', 'nist-additional-sigs'];
 
-export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, STAGES, stageDescription, STATUS_DISPLAY_ORDER, statusTitle };
+export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, stageDescription, STAGES, STATUS_DISPLAY_ORDER, statusTitle };

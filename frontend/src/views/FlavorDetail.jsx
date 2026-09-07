@@ -42,8 +42,8 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import Comment from '../components/Comment';
 import AttackedMarker from '../components/AttackedMarker';
+import Comment from '../components/Comment';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DataTable from '../components/DataTable';
 import DetailCard from '../components/DetailCard';

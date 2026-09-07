@@ -176,5 +176,5 @@ function getTheme(mode) {
   });
 }
 
-export { brand, fontFamilyMono, CATEGORY_LABELS, PALETTE, STATUS_COLORS };
+export { brand, CATEGORY_LABELS, fontFamilyMono, PALETTE, STATUS_COLORS };
 export default getTheme;
