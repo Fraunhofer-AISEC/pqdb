@@ -26,8 +26,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
 import StatusBadge from '../components/StatusBadge';
-import { CATEGORY_LABELS } from '../theme';
+import { PROCESS_DISPLAY_ORDER, PROCESSES } from '../constants';
 import logo from '../pqdb.svg';
+import { CATEGORY_LABELS } from '../theme';
 import overviewLink from '../utils/overviewLink';
 import queryAll from '../utils/queryAll';
 import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
@@ -42,12 +43,27 @@ const SCHEME_TABLES = {
   standardized: `SELECT COUNT(DISTINCT s.id) AS c
     FROM scheme s JOIN scheme_status ss ON ss.scheme_id = s.id
     WHERE ss.stage IN ('standardized', 'selected')`,
-  flavors: 'SELECT COUNT(*) AS c FROM flavor',
-  paramsets: 'SELECT COUNT(*) AS c FROM paramset',
 };
 
-function count(db, sql) {
-  const row = queryAll(db, sql)[0];
+// Scheme count within a single standardization process (distinct scheme ids),
+// used for the per-process tiles. Mirrors the Overview's "visible processes".
+const PROCESS_SCHEME_COUNT = `SELECT COUNT(DISTINCT s.id) AS c
+  FROM scheme s JOIN scheme_status ss ON ss.scheme_id = s.id
+  WHERE ss.process = ?`;
+
+// Short labels for the per-process tiles (PROCESSES holds the full names,
+// which would not fit a tile). Falls back to the full process name.
+const PROCESS_TILE_LABELS = {
+  'nist-pqc': 'NIST PQC',
+  'nist-additional-sigs': 'NIST Add\'l Sigs',
+  'nist-sp': 'NIST SP',
+  rfc: 'IETF RFC',
+  iso: 'ISO',
+  other: 'Other',
+};
+
+function count(db, sql, params) {
+  const row = queryAll(db, sql, params)[0];
   return row ? row.c : 0;
 }
 
@@ -66,9 +82,16 @@ function Home() {
     enc: count(db, SCHEME_TABLES.enc),
     sig: count(db, SCHEME_TABLES.sig),
     standardized: count(db, SCHEME_TABLES.standardized),
-    flavors: count(db, SCHEME_TABLES.flavors),
-    paramsets: count(db, SCHEME_TABLES.paramsets),
   };
+
+  // Per-process scheme counts (only the processes shown on the Overview),
+  // most prominent first.
+  const processStats = PROCESS_DISPLAY_ORDER
+    .map((process) => ({
+      process,
+      value: count(db, PROCESS_SCHEME_COUNT, [process]),
+    }))
+    .filter(({ value }) => value > 0);
 
   // Per-category breakdown (schemes only), most common first.
   const categories = queryAll(
@@ -100,8 +123,7 @@ function Home() {
   }
 
   const statTiles = [
-    // Scheme-level figures link into the filtered overview; flavor/paramset
-    // tiles stay static because they are not scheme filters.
+    // Every figure links into the filtered overview.
     {
       label: 'Schemes',
       value: stats.total,
@@ -122,8 +144,13 @@ function Home() {
       value: stats.standardized,
       to: overviewLink({ track: 'standardized' }),
     },
-    { label: 'Flavors', value: stats.flavors },
-    { label: 'Parameter sets', value: stats.paramsets },
+    // One tile per standardization process in the data, each linking to its
+    // grouped round view on the Overview. Counts are distinct schemes.
+    ...processStats.map(({ process, value }) => ({
+      label: PROCESS_TILE_LABELS[process] ?? PROCESSES[process] ?? process,
+      value,
+      to: overviewLink({ track: process }),
+    })),
   ];
 
   // Whether a stat tile should render as a link (scheme-level figures only).
