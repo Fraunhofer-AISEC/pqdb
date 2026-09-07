@@ -41,11 +41,13 @@
  * separate type column). Round bands with no schemes are hidden.
  */
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
   Autocomplete,
   Box,
   Button,
+  Collapse,
   Container,
   Divider,
   Grid,
@@ -57,6 +59,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -137,6 +140,128 @@ function readParam(searchParams, key) {
   const value = searchParams.get(key);
   return value && value.length > 0 ? value : null;
 }
+
+// Order a band's cards by type (enc before sig), then alphabetically.
+const orderedCards = (enc, sig) => [
+  ...[...enc].sort((a, b) => a.name.localeCompare(b.name)),
+  ...[...sig].sort((a, b) => a.name.localeCompare(b.name)),
+];
+
+// The on-page heading for a stage: the full STAGES label. Standardized/
+// selected stages have no round wording and pass through unchanged.
+const roundHeading = (stage) => STAGES[stage]?.long ?? stage;
+
+// One round band: a round header (with count and a descriptive tooltip) followed
+// by two columns of rich SchemeCards, distributed by type icon. The header
+// carries a toggle so the whole card grid can be collapsed/expanded in place.
+function SchemeBand({
+  stage,
+  sections,
+  idPrefix,
+  statusByScheme,
+  akaByScheme,
+  attackedIds,
+  attacksByScheme,
+  onCardLink,
+  defaultExpanded = false,
+}) {
+  const { enc, sig } = sections[stage];
+  const stageCount = enc.length + sig.length;
+  const stageMeta = STAGES[stage];
+  const [expanded, setExpanded] = useState(defaultExpanded);
+
+  const cards = orderedCards(enc, sig);
+  const columns = [
+    cards.filter((_, i) => i % 2 === 0),
+    cards.filter((_, i) => i % 2 === 1),
+  ];
+
+  return (
+    <Paper id={`${idPrefix}-${stage}`} sx={{ scrollMarginTop: 56 }}>
+      <Stack
+        direction="row"
+        spacing={1.5}
+        useFlexGap
+        onClick={() => setExpanded((v) => !v)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        aria-label={`${expanded ? 'Collapse' : 'Expand'} ${roundHeading(stage)}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setExpanded((v) => !v);
+          }
+        }}
+        sx={{
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          // The header is the clickable, button-like element, so it owns all of
+          // the card's padding — the whole padded area, top and bottom, toggles
+          // on click, and keeps the heading centred when the band is collapsed.
+          p: 3,
+          cursor: 'pointer',
+          borderRadius: 1,
+          '&:hover': { backgroundColor: 'action.hover' },
+        }}
+      >
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 700 }}>
+          {roundHeading(stage)}
+        </Typography>
+        <StatusBadge
+          kind="rounds"
+          value={stage}
+          label={`${stageCount} ${stageCount === 1 ? 'Scheme' : 'Schemes'}`}
+          title={stageMeta?.long}
+        />
+        <Box sx={{ flexGrow: 1 }} />
+        <ExpandMoreIcon
+          fontSize="small"
+          sx={{
+            color: 'text.secondary',
+            transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)',
+            transition: 'transform 0.2s',
+          }}
+        />
+      </Stack>
+      <Collapse in={expanded}>
+        <Box sx={{ px: 3, pb: 3 }}>
+          <Grid container spacing={2}>
+            {columns.map((columnCards, i) => (
+              <Grid key={i} size={{ xs: 12, md: 6 }}>
+                <Stack spacing={2}>
+                  {columnCards.map((scheme) => (
+                    <SchemeCard
+                      key={scheme.id}
+                      scheme={scheme}
+                      statusRows={statusByScheme.get(scheme.id) ?? []}
+                      aka={akaByScheme.get(scheme.id) ?? []}
+                      attacked={attackedIds.has(scheme.id)}
+                      attacks={attacksByScheme[scheme.id] ?? []}
+                      to={onCardLink(scheme.id_text)}
+                    />
+                  ))}
+                </Stack>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Collapse>
+    </Paper>
+  );
+}
+
+SchemeBand.propTypes = {
+  stage: PropTypes.string.isRequired,
+  sections: PropTypes.object.isRequired,
+  idPrefix: PropTypes.string.isRequired,
+  statusByScheme: PropTypes.object,
+  akaByScheme: PropTypes.object,
+  attackedIds: PropTypes.object,
+  attacksByScheme: PropTypes.object,
+  onCardLink: PropTypes.func.isRequired,
+  defaultExpanded: PropTypes.bool,
+};
 
 function SchemeOverview() {
   useEffect(() => {
@@ -242,12 +367,6 @@ function SchemeOverview() {
     attackedIds.add(a.scheme_id);
     (attacksByScheme[a.scheme_id] = attacksByScheme[a.scheme_id] || []).push(a.url);
   }
-
-  // Order a band's cards by type (enc before sig), then alphabetically.
-  const orderedCards = (enc, sig) => [
-    ...[...enc].sort((a, b) => a.name.localeCompare(b.name)),
-    ...[...sig].sort((a, b) => a.name.localeCompare(b.name)),
-  ];
 
   // Processes that still have schemes, in display order; processes not in
   // PROCESS_DISPLAY_ORDER are appended after.
@@ -358,71 +477,18 @@ function SchemeOverview() {
   const trackCount = (track) => buildGroups(track, true)
     .reduce((n, group) => n + groupCount(group), 0);
 
-  // The on-page heading for a stage: the full STAGES label. Standardized/
-  // selected stages have no round wording and pass through unchanged.
-  const roundHeading = (stage) => STAGES[stage]?.long ?? stage;
-
-  // Render one stage's band as a Paper of SchemeCards. `idPrefix` gives the
-  // Paper a stable anchor (`idPrefix-stage`) so the table of contents can jump
-  // to it.
-  const renderBand = (stage, sections, idPrefix) => {
-    const { enc, sig } = sections[stage];
-    const stageCount = enc.length + sig.length;
-    const stageMeta = STAGES[stage];
-
-    const cards = orderedCards(enc, sig);
-    const columns = [
-      cards.filter((_, i) => i % 2 === 0),
-      cards.filter((_, i) => i % 2 === 1),
-    ];
-    return (
-      <Paper key={stage} id={`${idPrefix}-${stage}`} sx={{ p: 3, scrollMarginTop: 56 }}>
-        <Stack
-          direction="row"
-          spacing={1.5}
-          useFlexGap
-          sx={{ alignItems: 'center', flexWrap: 'wrap', mb: 2 }}
-        >
-          <Typography variant="h5" component="h3" sx={{ fontWeight: 700 }}>
-            {roundHeading(stage)}
-          </Typography>
-          <StatusBadge
-            kind="rounds"
-            value={stage}
-            label={`${stageCount} ${stageCount === 1 ? 'Scheme' : 'Schemes'}`}
-            title={stageMeta?.long}
-          />
-        </Stack>
-
-        <Grid container spacing={2}>
-          {columns.map((columnCards, i) => (
-            <Grid key={i} size={{ xs: 12, md: 6 }}>
-              <Stack spacing={2}>
-                {columnCards.map((scheme) => (
-                  <SchemeCard
-                    key={scheme.id}
-                    scheme={scheme}
-                    statusRows={statusByScheme.get(scheme.id) ?? []}
-                    aka={akaByScheme.get(scheme.id) ?? []}
-                    attacked={attackedIds.has(scheme.id)}
-                    attacks={attacksByScheme[scheme.id] ?? []}
-                    to={cardLink(scheme.id_text)}
-                  />
-                ))}
-              </Stack>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-    );
-  };
-
   // Guard each selection against any choice that is no longer available,
   // falling back to the default (track: All tracks; others: no filter).
   const safeTrack = trackChoices.includes(activeTrack) ? activeTrack : ALL_TRACKS;
   const safeCategory = categoryChoices.includes(activeCategory) ? activeCategory : null;
   const safeType = (activeType === 'enc' || activeType === 'sig') ? activeType : null;
   const safeAuthor = authorOptions.some((o) => o.name === activeAuthor) ? activeAuthor : null;
+
+  // Signature of the active selection. It is folded into every band's React key
+  // so that changing the track/filters remounts the bands, resetting each band's
+  // collapse state (first band of each group expanded, the rest collapsed) to
+  // match the fresh selection.
+  const selectionKey = [safeTrack, safeCategory ?? '', safeType ?? '', safeAuthor ?? ''].join('|');
 
   // Detail link for a scheme that carries the active filters as query params so
   // returning from the detail page (via the browser back button) restores this
@@ -626,7 +692,9 @@ function SchemeOverview() {
                     // the selection itself already names them.
                     const multiple = safeTrack === ALL_TRACKS;
                     return [
-                      ...(multiple ? [(
+                      // The combined Standardized group is already labelled by its
+                      // band entries, so it gets no redundant Contents heading.
+                      ...(multiple && group.id !== STANDARDIZED_TRACK ? [(
                         <Typography
                           key={`${group.id}-h`}
                           variant="subtitle2"
@@ -664,13 +732,29 @@ function SchemeOverview() {
                   const multiple = safeTrack === ALL_TRACKS;
                   return (
                     <Box key={group.id}>
-                      {multiple && (
+                      {/* The combined Standardized group is already labelled by
+                          its Standardized/selected band headings, so it gets no
+                          redundant group heading; process groups keep theirs. */}
+                      {multiple && group.id !== STANDARDIZED_TRACK && (
                         <Typography variant="h5" component="h2" sx={{ fontWeight: 700, mb: 1.5 }}>
                           {group.title}
                         </Typography>
                       )}
                       <Stack spacing={4}>
-                        {stages.map((stage) => renderBand(stage, group.sections, group.id))}
+                        {stages.map((stage, i) => (
+                          <SchemeBand
+                            key={`${group.id}-${stage}-${selectionKey}`}
+                            stage={stage}
+                            sections={group.sections}
+                            idPrefix={group.id}
+                            statusByScheme={statusByScheme}
+                            akaByScheme={akaByScheme}
+                            attackedIds={attackedIds}
+                            attacksByScheme={attacksByScheme}
+                            onCardLink={cardLink}
+                            defaultExpanded={i === 0}
+                          />
+                        ))}
                       </Stack>
                     </Box>
                   );
