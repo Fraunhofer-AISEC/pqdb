@@ -179,7 +179,7 @@ function Home() {
           sx={{ height: 72, width: 'auto', mb: 2 }}
         />
         <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-          The database of post-quantum cryptography
+          The Post-Quantum Cryptography Database
         </Typography>
         <Typography
           variant="h6"
@@ -194,7 +194,7 @@ function Home() {
       {/* Live stats */}
       <Paper sx={{ mb: 3, p: 3 }}>
         <Typography variant="h6" component="h2" gutterBottom>
-          Key figures
+          Key Figures
         </Typography>
         <Grid container spacing={2}>
           {statTiles.map((t) => (
@@ -241,7 +241,7 @@ function Home() {
       {/* Highlight cards */}
       <Paper sx={{ p: 3 }}>
         <Typography variant="h6" component="h2" gutterBottom>
-          Standardized schemes
+          Standardized Schemes
         </Typography>
         {highlights.length > 0 ? (
           <Grid container spacing={2}>
