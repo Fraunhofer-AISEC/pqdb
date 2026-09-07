@@ -21,9 +21,9 @@ import {
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
-import AttackedMarker from './AttackedMarker';
 import { derivePrimaryStatus, SCHEME_TYPES, STAGES, statusTitle } from '../constants';
 import detailLink from '../utils/detailLink';
+import AttackedMarker from './AttackedMarker';
 import StatusBadge from './StatusBadge';
 
 function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [], to }) {
@@ -77,6 +77,14 @@ function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [],
                 title={statusTitle(statusRows)}
               />
             )}
+            {scheme.stateful === 1 && (
+              <StatusBadge
+                kind="statefulness"
+                value={1}
+                label="Stateful"
+                title={scheme.stateful_comment}
+              />
+            )}
           </Stack>
 
           {scheme.description && (
@@ -117,6 +125,8 @@ SchemeCard.propTypes = {
     category: PropTypes.string,
     category_comment: PropTypes.string,
     description: PropTypes.string,
+    stateful: PropTypes.number,
+    stateful_comment: PropTypes.string,
   }).isRequired,
   statusRows: PropTypes.arrayOf(PropTypes.object),
   aka: PropTypes.arrayOf(PropTypes.string),
