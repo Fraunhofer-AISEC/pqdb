@@ -129,7 +129,7 @@ function App() {
             }}
           >
             <Toolbar variant="dense" sx={{ mb: 1 }} />
-            <Box sx={{ px: 2, flexGrow: 1 }}>
+            <Box sx={{ px: 2, pb: 4, flexGrow: 1 }}>
               <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 {content}
               </Stack>
