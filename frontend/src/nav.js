@@ -9,7 +9,6 @@
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import DataObjectIcon from '@mui/icons-material/DataObject';
 import HomeIcon from '@mui/icons-material/Home';
 
 // Fixed widths for the side drawer (used by the shell layout + AppBar offset).
@@ -37,13 +36,6 @@ const NAV_ITEMS = [
     path: '/comparison',
     icon: CompareArrowsIcon,
     isActive: (pathname) => pathname === '/comparison',
-  },
-  {
-    key: 'raw_sql',
-    label: 'Custom SQL Query',
-    path: '/raw_sql',
-    icon: DataObjectIcon,
-    isActive: (pathname) => pathname === '/raw_sql',
   },
 ];
 
