@@ -1,0 +1,11 @@
+name: SNOVA I (37, 17, 16, 2), Compressed SK
+security level:
+  classical: 143
+  quantum: 61
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 48
+  pk: 9842
+  ct|sig: 124

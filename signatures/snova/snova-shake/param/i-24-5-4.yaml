@@ -1,0 +1,11 @@
+name: SNOVA I (24, 5, 16, 4)
+security level:
+  classical: 143
+  quantum: 61
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 36848
+  pk: 1016
+  ct|sig: 248

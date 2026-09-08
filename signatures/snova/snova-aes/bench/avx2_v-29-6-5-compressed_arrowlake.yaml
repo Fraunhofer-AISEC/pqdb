@@ -1,0 +1,10 @@
+platform: >-
+  Intel Core Ultra 7 265K, Linux Mint 22, GCC 14.2.0 with Turbo Boost
+  disabled.
+timings:
+  unit: cycles
+  gen: 804402
+  enc|sign: 2278333
+  dec|vrfy: 1073040
+  comment: >-
+    The key generation value is the reported expanded secret key measurement.

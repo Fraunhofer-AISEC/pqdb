@@ -1,0 +1,45 @@
+name: SNOVA
+description: >-
+  A multivariate signature scheme derived from Unbalanced Oil and
+  Vinegar over noncommutative matrix rings with randomness alignment.
+category: multivariate
+year:
+  paper: 2022
+  candidate: 2023
+authors:
+  - Lih-Chung Wang
+  - Chun-Yen Chou
+  - Jintai Ding
+  - Yen-Liang Kuan
+  - Jan Adriaan Leegwater
+  - Ming-Siou Li
+  - Bo-Shu Tseng
+  - Po-En Tseng
+  - Chia-Chun Wang
+stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+problems:
+  - assumption: Multivariate quadratic problem
+    comment: >-
+      Security is assessed through forgery and key recovery attacks against the
+      UOV structure induced by the SNOVA public map.
+trust comment: >-
+  The Round 2 public map was modified in response to attacks on the Round 1
+  construction. The specification states that SNOVA has no provable security.
+  Some estimates for the parameter sets with matrix dimension five are
+  heuristic.
+website: https://snova.pqclab.org
+sources:
+  - >-
+    Specification, version 2.0
+    (https://snova.pqclab.org/files/SNOVA_Round2.pdf)
+links:
+  - >-
+    Initial paper
+    (https://eprint.iacr.org/2022/1742.pdf)
+last_updated: '2025-01-25'
+last_updated comment: >-
+  This is the date of specification version 2.0.

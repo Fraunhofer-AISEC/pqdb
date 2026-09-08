@@ -1,0 +1,11 @@
+name: SNOVA III (49, 11, 16, 3), Compressed SK
+security level:
+  classical: 207
+  quantum: 125
+  nist category: 3
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 48
+  pk: 6006
+  ct|sig: 286

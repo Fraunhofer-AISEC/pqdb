@@ -1,0 +1,6 @@
+name: SNOVA-AES
+description: >-
+  Variant of SNOVA that uses AES128 for the expansion of its secret and public
+  key seeds.
+type: SIG
+security notion: EUF-CMA

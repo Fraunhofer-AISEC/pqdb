@@ -1,0 +1,13 @@
+name: avx2
+comment: >-
+  This implementation uses AVX2 and SNOVA SHAKE for expanding the secret and
+  public key seeds. It supports both seed type (compressed) and expanded secret
+  keys during signing.
+platform: x86-64
+type: optimized
+hardware features:
+  - AVX2
+sources:
+  - >-
+    Official implementation
+    (https://github.com/PQCLAB-SNOVA/SNOVA)
