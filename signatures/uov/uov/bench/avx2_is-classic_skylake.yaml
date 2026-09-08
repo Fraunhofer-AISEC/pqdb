@@ -1,0 +1,8 @@
+platform: >-
+  Intel Xeon E3-1275 v5 (Skylake) x86-64 at 3.60 GHz, Ubuntu, Clang 18.1.3,
+  Turbo Boost and Hyper Threading disabled.
+timings:
+  unit: cycles
+  gen: 4836380
+  enc|sign: 128972
+  dec|vrfy: 60916

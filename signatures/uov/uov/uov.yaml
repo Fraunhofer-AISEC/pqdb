@@ -1,0 +1,4 @@
+name: UOV
+type: SIG
+security notion: EUF-CMA
+security notion comment: The specification targets existential unforgeability under chosen message attacks.
