@@ -1,0 +1,63 @@
+name: FAEST
+description: >-
+  Signature scheme that uses VOLE in the Head and QuickSilver to
+  prove knowledge of a preimage of an AES based one way function. Its FAEST EM
+  variants use the Even Mansour construction with AES or Rijndael.
+category: other
+category comment: >-
+  The construction uses VOLE in the Head rather than MPC in the Head.
+year:
+  paper: 2023
+  candidate: 2023
+authors:
+  - Carsten Baum
+  - Ward Beullens
+  - Lennart Braun
+  - Cyprien Delpech de Saint Guilhem
+  - Michael Klooß
+  - Christian Majenz
+  - Shibam Mukherjee
+  - Emmanuela Orsini
+  - Sebastian Ramacher
+  - Christian Rechberger
+  - Lawrence Roy
+  - Peter Scholl
+problems:
+  - assumption: AES one wayness and pseudorandomness
+    comment: >-
+      The main FAEST variants use AES based one way functions and AES in counter
+      mode as a pseudorandom generator.
+  - assumption: VOLE in the Head and QuickSilver security
+    comment: >-
+      The signature derives from a noninteractive argument of knowledge built
+      from VOLE in the Head and QuickSilver.
+  - assumption: Even Mansour one wayness
+    comment: >-
+      The FAEST EM variants assume that the Even Mansour construction based on
+      AES or Rijndael is hard to invert.
+  - assumption: Almost injectivity of the IV based tweakable PRG
+    comment: >-
+      This additional nonstandard assumption is used only for FAEST EM to
+      establish extractable binding.
+trust comment: >-
+  The specification proves EUF-CMA security in the random oracle model and the
+  quantum accessible random oracle model. These proofs cover at most 2^64
+  signing queries. Standard FAEST obtains statistical commitment binding in
+  the random oracle model. FAEST EM additionally relies on almost injectivity
+  of the IV based tweakable PRG and ideal permutation security of its Even
+  Mansour construction. The specification reports no full round shortcut key
+  recovery attacks that improve substantially on exhaustive search.
+stateful: false
+website: https://faest.info
+links:
+  - "Initial paper (https://eprint.iacr.org/2023/996.pdf)"
+  - "Follow-up paper (https://eprint.iacr.org/2026/164.pdf)"
+sources:
+  - "Specification, version 3.0 (https://faest.info/faest-spec-v3.0.pdf)"
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+last_updated: '2026-09-01'
+last_updated comment: >-
+  This is the date of the version 3.0 specification.

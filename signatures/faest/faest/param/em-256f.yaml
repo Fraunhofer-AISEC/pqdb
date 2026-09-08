@@ -1,0 +1,15 @@
+name: FAEST-EM-256f
+security level:
+  classical: 254
+  quantum: 128
+  nist category: 5
+  comment: >-
+    The specification estimates public key inversion at between 2^254 and 2^255
+    evaluations. Its ideal permutation analysis gives quantum query complexity
+    with exponent 128.
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 64
+  pk: 64
+  ct|sig: 18084

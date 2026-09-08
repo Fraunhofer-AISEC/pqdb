@@ -1,0 +1,10 @@
+name: Architecture-specific
+platform: x86-64 and AArch64
+type: optimized
+hardware features:
+  - AVX2
+  - AES-NI
+  - armv8-a+crypto
+dependencies:
+  - XKCP
+  - OpenSSL

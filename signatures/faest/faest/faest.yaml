@@ -1,0 +1,6 @@
+name: FAEST
+type: SIG
+security notion: EUF-CMA
+security notion comment: >-
+  The specification proves existential unforgeability under chosen message
+  attacks and only conjectures strong unforgeability.
