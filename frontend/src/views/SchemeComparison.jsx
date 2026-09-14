@@ -26,7 +26,6 @@ import {
   Checkbox,
   Chip,
   Container,
-  Divider,
   FormControlLabel,
   Grid,
   Link,
@@ -34,12 +33,11 @@ import {
   Popover,
   Slider,
   Stack,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
 import {
-  Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState,
+  useContext, useEffect, useMemo, useState,
 } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
@@ -57,13 +55,14 @@ const defaultState = {
   // not shown: 'storage', 'security_levels', 'status', 'memory_req', 'code_size'
   showColumns: ['benchmarks', 'nist_category'],
   schemeType: 'sig',
-  platformFilter: '',
-  securityLevel: 0,
-  securityQuantum: 0,
-  showRef: false,
-  nistRound: 6,
-  showNonNistSchemes: false,
-  showDeprecatedFlavors: false,
+  securityLevel: [0, 256],
+  securityQuantum: [0, 256],
+  nistCategory: [0, 5],
+  nistPqcOn: true,
+  nistPqcRound: 6,
+  additionalSigsOn: true,
+  additionalSigsRound: 3,
+  showNonNistSchemes: true,
   order: 'asc',
   orderBy: null,
   checkedSchemes: null,
@@ -79,25 +78,35 @@ const STAGE_RANK_SQL = `CASE stage
   WHEN '4' THEN 5 WHEN 'selected' THEN 6 WHEN 'standardized' THEN 7
 END`;
 
-function schemesListQueryDB(db, type, minRank, nonNist) {
+// NIST standardization tracks. Each is independently toggleable and filtered by
+// its own round threshold; the two together make up the "NIST" scope, while
+// non-NIST processes are governed by showNonNistSchemes.
+const NIST_PROCESSES_SQL = `('nist-pqc', 'nist-additional-sigs')`;
+
+function schemesListQueryDB(db, type, {
+  nistPqcOn, nistPqcRound, additionalSigsOn, additionalSigsRound, nonNist,
+}) {
+  const conditions = [];
+  if (nistPqcOn) {
+    conditions.push(`id IN (SELECT scheme_id FROM scheme_status WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?)`);
+  }
+  if (additionalSigsOn) {
+    conditions.push(`id IN (SELECT scheme_id FROM scheme_status WHERE process = 'nist-additional-sigs' AND ${STAGE_RANK_SQL} >= ?)`);
+  }
+  if (nonNist) {
+    conditions.push(`(id IN (SELECT scheme_id FROM scheme_status WHERE process NOT IN ${NIST_PROCESSES_SQL}) OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = scheme.id))`);
+  }
   const schemesListQuery = `
     SELECT id_text FROM scheme
-    WHERE
-      type = ?
-      AND (
-        id IN (
-          SELECT scheme_id FROM scheme_status
-          WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?
-        )
-        ${(nonNist) ? `
-        OR id IN (SELECT scheme_id FROM scheme_status WHERE process != 'nist-pqc')
-        OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = scheme.id)
-        ` : ''}
-      )
+    WHERE type = ? AND (${conditions.length ? conditions.join(' OR ') : '0'})
   `;
-  // Bind the stage rank as a number: SQLite compares the CASE (integer) result
-  // against a text-bound param coercively and yields no rows, so coerce here.
-  const schemesList = queryAll(db, schemesListQuery, [type, Number(minRank)]);
+  // Bind the stage ranks as numbers: SQLite compares the CASE (integer)
+  // results against text-bound params coercively and yields no rows, so coerce
+  // here.
+  const params = [type];
+  if (nistPqcOn) params.push(Number(nistPqcRound));
+  if (additionalSigsOn) params.push(Number(additionalSigsRound));
+  const schemesList = queryAll(db, schemesListQuery, params);
   return schemesList.map((row) => row.id_text);
 }
 
@@ -106,16 +115,43 @@ const secLevelMarks = [
   { label: '192', value: 192 }, { label: '256+', value: 256 },
 ];
 
-const nistRoundMarks = [
+const nistCategoryMarks = [
+  { label: '0', value: 0 }, { label: '1', value: 1 }, { label: '2', value: 2 }, { label: '3', value: 3 },
+  { label: '4', value: 4 }, { label: '5', value: 5 },
+];
+
+const nistPqcRoundMarks = [
   { label: '2', value: 2 }, { label: '3a', value: 3 }, { label: '3f', value: 4 },
   { label: '4', value: 5 }, { label: 'pending', value: 6 }, { label: 'standard', value: 7 },
 ];
 
+// Only open round of the Additional Signatures track so far.
+const additionalSigsRoundMarks = [
+  { label: '3', value: 3 },
+];
+
+// Shared layout for the per-track round sliders so they fit within the narrow
+// popover without the end mark labels being clipped.
+const nistRoundSliderSx = {
+  width: 'calc(100% - 48px)',
+  mx: 3,
+  '& .MuiSlider-markLabel': { fontSize: '0.7rem' },
+  '&.Mui-disabled': {
+    cursor: 'not-allowed',
+    opacity: 0.45,
+  },
+};
+
 // Clearer label for the slider handle popup. The on-track marks use compact
-// text (see nistRoundMarks) so they don't overlap, so the popup resolves the
+// text (see nistPqcRoundMarks) so they don't overlap, so the popup resolves the
 // full STAGES text instead of reusing the mark labels.
-function getNistRoundLabel(v) {
+function getNistPqcRoundLabel(v) {
   const stageKey = { 2: '2', 3: '3a', 4: '3f', 5: '4', 6: 'selected', 7: 'standardized' }[v];
+  return stageKey ? STAGES[stageKey].long : v;
+}
+
+function getAdditionalSigsRoundLabel(v) {
+  const stageKey = { 1: '1', 2: '2', 3: '3', 6: 'selected' }[v];
   return stageKey ? STAGES[stageKey].long : v;
 }
 
@@ -123,17 +159,13 @@ function getNistRoundLabel(v) {
 // under a section heading in the order listed below; `requires` expresses a
 // dependency on another column being shown (the implementation-level columns
 // only make sense once `benchmarks` is active) and is used to gate the toggle.
-const columnGroups = ['General', 'Sizes', 'Benchmarks'];
 
 const columnOptions = [
   { value: 'security_levels', label: 'Security Levels', group: 'General', title: 'Security level in bits (classical/quantum)' },
-  { value: 'nist_category', label: 'NIST Category', group: 'General', title: 'NIST security level (1-5)' },
+  { value: 'nist_category', label: 'NIST Security Level', group: 'General', title: 'NIST security level (1-5)' },
   { value: 'status', label: 'Status', group: 'General', title: 'Standardization status/stage (round, selected, standardized)' },
   { value: 'storage', label: 'Sizes', group: 'Sizes', title: 'Size of keys and ciphertext/signature' },
   { value: 'benchmarks', label: 'Benchmarks', group: 'Benchmarks', title: 'Timings for cryptographic operations' },
-  { value: 'hw_features', label: 'Hardware Features', group: 'Benchmarks', title: 'Hardware features required by the implementation', requires: 'benchmarks' },
-  { value: 'code_size', label: 'Code Size', group: 'Benchmarks', title: 'Code size required by the implementation', requires: 'benchmarks' },
-  { value: 'memory_req', label: 'Memory Requirements', group: 'Benchmarks', title: 'Memory used by the functions at runtime', requires: 'benchmarks' },
 ];
 
 // Tooltip for a display-column chip. When the chip is disabled because its
@@ -172,6 +204,20 @@ function modeTileSx(active) {
 }
 
 function buildQuery(state) {
+  // Per-track NIST scope conditions, each with its own round threshold. `0` is
+  // used when every track is turned off (and no non-NIST schemes are requested)
+  // so the SQL stays valid and matches nothing.
+  const scopeConditions = [];
+  if (state.nistPqcOn) {
+    scopeConditions.push(`s.id IN (SELECT scheme_id FROM scheme_status WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?)`);
+  }
+  if (state.additionalSigsOn) {
+    scopeConditions.push(`s.id IN (SELECT scheme_id FROM scheme_status WHERE process = 'nist-additional-sigs' AND ${STAGE_RANK_SQL} >= ?)`);
+  }
+  if (state.showNonNistSchemes) {
+    scopeConditions.push(`(s.id IN (SELECT scheme_id FROM scheme_status WHERE process NOT IN ${NIST_PROCESSES_SQL}) OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = s.id))`);
+  }
+  const scopeClause = scopeConditions.length ? scopeConditions.join(' OR ') : '0';
   return `SELECT
   f.id_text AS 'flavor_id',
   s.id_text as 'ID',
@@ -184,35 +230,18 @@ function buildQuery(state) {
    (SELECT ss.stage FROM scheme_status ss WHERE ss.scheme_id = s.id ORDER BY ${STAGE_RANK_SQL} DESC LIMIT 1) AS 'Status'` : ''
 }${(state.showColumns.includes('security_levels')) ? ',\n    p.security_level_classical AS \'Security Level (classical)\'' : ''
 }${(state.showColumns.includes('security_levels')) ? ',\n    p.security_level_quantum AS \'Security Level (quantum)\'' : ''
-}${(state.showColumns.includes('nist_category')) ? ',\n    p.security_level_nist_category AS \'NIST Category\'' : ''
+}${(state.showColumns.includes('nist_category')) ? ',\n    p.security_level_nist_category AS \'NIST Security Level\'' : ''
 }${(state.showColumns.includes('storage')) ? `,
   p.sizes_sk AS 'Secret Key Size',
   p.sizes_pk AS 'Public Key Size',
   p.sizes_ct_sig AS '${SCHEME_TYPES[state.schemeType].ct_sig} Size',
   (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : ''}${(state.showColumns.includes('benchmarks')) ? `,
-  i.name AS 'Name'${(state.showColumns.includes('hw_features')) ? `,
-  (
-      SELECT
-          GROUP_CONCAT(hf.feature, ", ")
-      FROM
-          implementation_hardware_feature hf
-      WHERE
-          hf.implementation_id = i.id
-  ) AS 'Hardware Features'` : ''},
-  ${(state.showColumns.includes('code_size')) ? `
-  i.code_size_overall AS 'Overall Code Size',
-  i.code_size_gen AS 'KeyGen Code Size',
-  i.code_size_enc_sign AS '${SCHEME_TYPES[state.schemeType].enc_sign} Code Size',
-  i.code_size_dec_vrfy AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} Code Size',` : ''}
+  i.name AS 'Name',
   b.platform AS 'Platform',
   round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
   round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
   round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
   round((timings_gen + b.timings_enc_sign + b.timings_dec_vrfy) / 1000) AS 'Total (kCycles)'
-  ${(state.showColumns.includes('memory_req')) ? `,
-  b.memory_requirements_gen AS 'KeyGen Memory Req.',
-  b.memory_requirements_enc_sign AS '${SCHEME_TYPES[state.schemeType].enc_sign} Memory Req.',
-  b.memory_requirements_dec_vrfy AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} Memory Req.' ` : ''}
 ` : ''}
 FROM
   scheme s
@@ -223,23 +252,18 @@ FROM
 WHERE
   s.type = ?
   AND s.id_text IN (${JSON.stringify(state.checkedSchemes ?? []).slice(1, -1)})
-  AND (
-      s.id IN (
-          SELECT scheme_id FROM scheme_status
-          WHERE process = 'nist-pqc' AND ${STAGE_RANK_SQL} >= ?
-      )${
-  (state.showNonNistSchemes)
-    ? `
-      OR s.id IN (SELECT scheme_id FROM scheme_status WHERE process != 'nist-pqc')
-      OR NOT EXISTS (SELECT 1 FROM scheme_status WHERE scheme_status.scheme_id = s.id)`
-    : ''}
-  )
-  ${(!state.showDeprecatedFlavors) ? "\n    AND (f.deprecated IS NULL OR f.deprecated = 0)" : ''}
+  AND (${scopeClause})
+  AND (f.deprecated IS NULL OR f.deprecated = 0)
   AND p.security_level_classical >= ?
-  AND p.security_level_quantum >= ?${
+  AND p.security_level_classical <= ?
+  AND p.security_level_quantum >= ?
+  AND p.security_level_quantum <= ?
+  AND (
+    p.security_level_nist_category IS NULL
+    OR (p.security_level_nist_category >= ? AND p.security_level_nist_category <= ?)
+  )${
   (state.showColumns.includes('benchmarks'))
-    ? ((!state.showRef) ? '\n    AND i.type = \'optimized\'' : '')
-        + ((state.platformFilter !== '') ? '\n    AND b.platform LIKE \'%\' || ? || \'%\'' : '')
+    ? '\n    AND i.type = \'optimized\''
     : ''}`;
   // Note: The (very fragile) `expandQuery` method below makes quite
   // some assumptions on the structure of this query (for example, no
@@ -262,11 +286,8 @@ function createHeaderSections(state) {
   if (state.showColumns.includes('benchmarks')) {
     headers.push('Implementation');
     headerSpans.push(1);
-    if (state.showColumns.includes('hw_features')) { headerSpans[headerSpans.length - 1] += 1; }
-    if (state.showColumns.includes('code_size')) { headerSpans[headerSpans.length - 1] += 4; }
     headers.push('Benchmark');
     headerSpans.push(5);
-    if (state.showColumns.includes('memory_req')) { headerSpans[headerSpans.length - 1] += 3; }
   }
   return { headers, headerSpans };
 }
@@ -275,10 +296,14 @@ function prepareParams(state) {
   // Coerce the stage rank to a number: SQLite compares the CASE (integer)
   // result against a text-bound param coercively and yields no rows (see
   // schemesListQueryDB).
-  const params = [state.schemeType, Number(state.nistRound), state.securityLevel, state.securityQuantum];
-  if (state.showColumns.includes('benchmarks') && state.platformFilter !== '') {
-    params.push(state.platformFilter);
-  }
+  const params = [state.schemeType];
+  if (state.nistPqcOn) params.push(Number(state.nistPqcRound));
+  if (state.additionalSigsOn) params.push(Number(state.additionalSigsRound));
+  params.push(
+    state.securityLevel[0], state.securityLevel[1],
+    state.securityQuantum[0], state.securityQuantum[1],
+    state.nistCategory[0], state.nistCategory[1],
+  );
   return params;
 }
 
@@ -325,40 +350,13 @@ function SchemeComparison() {
   const { db } = useContext(DatabaseContext);
 
   const fullSchemeLists = useMemo(() => ({
-    enc: schemesListQueryDB(db, 'enc', '0', true),
-    sig: schemesListQueryDB(db, 'sig', '0', true),
+    enc: schemesListQueryDB(db, 'enc', {
+      nistPqcOn: true, nistPqcRound: 0, additionalSigsOn: true, additionalSigsRound: 0, nonNist: true,
+    }),
+    sig: schemesListQueryDB(db, 'sig', {
+      nistPqcOn: true, nistPqcRound: 0, additionalSigsOn: true, additionalSigsRound: 0, nonNist: true,
+    }),
   }), [db]);
-
-  // Detect which column-selection group starts a wrapped line so its leading
-  // divider can be hidden (a divider at the left edge of a new line looks
-  // wrong) and the gap it would introduce can be removed.
-  const columnBoxRef = useRef(null);
-  const groupRefs = useRef([]);
-  const [wrappedGroups, setWrappedGroups] = useState(() => ({}));
-
-  const measureColumnWrap = useCallback(() => {
-    const box = columnBoxRef.current;
-    if (!box) return;
-    const groups = groupRefs.current;
-    const firstTop = groups[0]?.offsetTop;
-    const next = {};
-    groups.forEach((el, i) => {
-      // A group whose top edge is below the first group's edge has wrapped to
-      // a new line; its leading divider (present for i > 0) is then the first
-      // item on that line and should be hidden.
-      if (el && firstTop !== undefined && el.offsetTop !== firstTop) next[i] = true;
-    });
-    setWrappedGroups(next);
-  }, []);
-
-  useEffect(() => {
-    const box = columnBoxRef.current;
-    if (!box) return undefined;
-    measureColumnWrap();
-    const ro = new ResizeObserver(measureColumnWrap);
-    ro.observe(box);
-    return () => ro.disconnect();
-  }, [measureColumnWrap]);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -386,23 +384,27 @@ function SchemeComparison() {
   const query = useMemo(() => buildQuery(filterState), [
     filterState.schemeType,
     filterState.showColumns,
-    filterState.nistRound,
+    filterState.nistPqcOn,
+    filterState.nistPqcRound,
+    filterState.additionalSigsOn,
+    filterState.additionalSigsRound,
     filterState.securityLevel,
     filterState.securityQuantum,
-    filterState.platformFilter,
-    filterState.showRef,
+    filterState.nistCategory,
     filterState.showNonNistSchemes,
-    filterState.showDeprecatedFlavors,
     filterState.checkedSchemes,
   ]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params = useMemo(() => prepareParams(filterState), [
     filterState.schemeType,
-    filterState.nistRound,
+    filterState.nistPqcOn,
+    filterState.nistPqcRound,
+    filterState.additionalSigsOn,
+    filterState.additionalSigsRound,
     filterState.securityLevel,
     filterState.securityQuantum,
+    filterState.nistCategory,
     filterState.showColumns,
-    filterState.platformFilter,
   ]);
 
   const { data, processing: queryProcessing, error } = useDbQuery(
@@ -419,10 +421,23 @@ function SchemeComparison() {
     () => schemesListQueryDB(
       db,
       filterState.schemeType,
-      filterState.nistRound,
-      filterState.showNonNistSchemes,
+      {
+        nistPqcOn: filterState.nistPqcOn,
+        nistPqcRound: filterState.nistPqcRound,
+        additionalSigsOn: filterState.additionalSigsOn,
+        additionalSigsRound: filterState.additionalSigsRound,
+        nonNist: filterState.showNonNistSchemes,
+      },
     ),
-    [db, filterState.schemeType, filterState.nistRound, filterState.showNonNistSchemes],
+    [
+      db,
+      filterState.schemeType,
+      filterState.nistPqcOn,
+      filterState.nistPqcRound,
+      filterState.additionalSigsOn,
+      filterState.additionalSigsRound,
+      filterState.showNonNistSchemes,
+    ],
   );
 
   // Only the selected display columns drive the header grouping.
@@ -492,9 +507,9 @@ function SchemeComparison() {
   };
   const expandedQuery = expandQuery();
   const {
-    checkedSchemes, nistRound, order, orderBy, platformFilter, securityLevel,
-    securityQuantum, schemeType, showColumns, showDeprecatedFlavors,
-    showNonNistSchemes, showRef,
+    checkedSchemes, nistPqcOn, nistPqcRound, additionalSigsOn, additionalSigsRound, order,
+    orderBy, securityLevel, securityQuantum, nistCategory, schemeType,
+    showColumns, showNonNistSchemes,
   } = filterState;
 
   // Local slider positions so the thumb tracks the drag while the committed
@@ -504,15 +519,19 @@ function SchemeComparison() {
   const [sliderDraft, setSliderDraft] = useState({
     securityLevel,
     securityQuantum,
-    nistRound,
+    nistCategory,
+    nistPqcRound,
+    additionalSigsRound,
   });
   useEffect(() => {
     setSliderDraft({
       securityLevel,
       securityQuantum,
-      nistRound,
+      nistCategory,
+      nistPqcRound,
+      additionalSigsRound,
     });
-  }, [securityLevel, securityQuantum, nistRound]);
+  }, [securityLevel, securityQuantum, nistCategory, nistPqcRound, additionalSigsRound]);
 
   // Active popover for the category filter buttons. `kind` selects which
   // filter group (security / scope / schemes) is open; `anchor` is the button
@@ -583,9 +602,8 @@ function SchemeComparison() {
 
               {/* Row 2: column selection + filter buttons */}
               <Stack spacing={1.5} sx={{ mt: 2.5 }}>
-                {/* Column category selects, side-by-side with dividers, wrapping on overflow */}
+                {/* Column chips, wrapping on overflow */}
                 <Box
-                  ref={columnBoxRef}
                   sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
@@ -594,60 +612,31 @@ function SchemeComparison() {
                     rowGap: 1.5,
                   }}
                 >
-                  {columnGroups.map((group, gi) => (
-                    <Fragment key={group}>
-                      {gi > 0 && !wrappedGroups[gi] && (
-                        <Divider
-                          orientation="vertical"
-                          flexItem
-                          sx={{ alignSelf: 'stretch' }}
-                        />
-                      )}
-                      <Stack
-                        ref={(el) => { groupRefs.current[gi] = el; }}
-                        spacing={1}
-                        sx={{ flexGrow: 1, minWidth: group === 'Sizes' ? 'auto' : 150 }}
-                      >
-                        <Typography
-                          variant="overline"
-                          sx={{
-                            color: 'text.secondary',
-                            fontSize: '0.7rem',
-                            letterSpacing: '0.08em',
-                            lineHeight: 1,
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          {group}
-                        </Typography>
-                        <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
-                          {columnOptions.filter((opt) => opt.group === group).map((opt) => {
-                            const active = showColumns.includes(opt.value);
-                            const blockedBy = opt.requires && !showColumns.includes(opt.requires);
-                            return (
-                              <Tooltip key={opt.value} title={columnChipTitle(opt, showColumns)}>
-                                <span>
-                                  <Chip
-                                    size="small"
-                                    label={opt.label}
-                                    variant={active ? 'filled' : 'outlined'}
-                                    color={active ? 'primary' : 'default'}
-                                    disabled={queryProcessing || blockedBy}
-                                    onClick={() => setFilter({
-                                      showColumns: active
-                                        ? showColumns.filter((c) => c !== opt.value)
-                                        : [...showColumns, opt.value],
-                                    })}
-                                    sx={{ fontWeight: 600 }}
-                                  />
-                                </span>
-                              </Tooltip>
-                            );
-                          })}
-                        </Stack>
-                      </Stack>
-                    </Fragment>
-                  ))}
+                  <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 0.75 }}>
+                    {columnOptions.map((opt) => {
+                      const active = showColumns.includes(opt.value);
+                      const blockedBy = opt.requires && !showColumns.includes(opt.requires);
+                      return (
+                        <Tooltip key={opt.value} title={columnChipTitle(opt, showColumns)}>
+                          <span>
+                            <Chip
+                              size="small"
+                              label={opt.label}
+                              variant={active ? 'filled' : 'outlined'}
+                              color={active ? 'primary' : 'default'}
+                              disabled={queryProcessing || blockedBy}
+                              onClick={() => setFilter({
+                                showColumns: active
+                                  ? showColumns.filter((c) => c !== opt.value)
+                                  : [...showColumns, opt.value],
+                              })}
+                              sx={{ fontWeight: 600 }}
+                            />
+                          </span>
+                        </Tooltip>
+                      );
+                    })}
+                  </Stack>
                 </Box>
 
                 {/* Filter buttons (bottom left) + SQL link (right) on one row */}
@@ -708,13 +697,18 @@ function SchemeComparison() {
                 anchorEl={filterMenu?.anchor}
                 onClose={() => setFilterMenu(null)}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                slotProps={{ paper: { sx: { width: 480, maxWidth: '92vw', p: 3 } } }}
+                slotProps={{ paper: { sx: { width: 360, maxWidth: '90vw', p: 2 } } }}
               >
                 <Typography variant="overline" color="text.secondary">Security</Typography>
-                <Stack spacing={2} sx={{ mt: 1, px: 2 }}>
+                <Stack spacing={2} sx={{ mt: 1, px: 1 }}>
                   <Box>
                     <Typography variant="body2">Classical Security</Typography>
                     <Slider
+                      sx={{
+                        width: 'calc(100% - 48px)',
+                        mx: 3,
+                        '& .MuiSlider-markLabel': { fontSize: '0.7rem' },
+                      }}
                       disabled={queryProcessing}
                       color="secondary"
                       value={sliderDraft.securityLevel}
@@ -722,7 +716,6 @@ function SchemeComparison() {
                       min={0}
                       max={256}
                       marks={secLevelMarks}
-                      track="inverted"
                       valueLabelDisplay="auto"
                       onChange={(_e, v) => setSliderDraft((d) => ({ ...d, securityLevel: v }))}
                       onChangeCommitted={(_e, v) => setFilter({ securityLevel: v })}
@@ -731,6 +724,11 @@ function SchemeComparison() {
                   <Box>
                     <Typography variant="body2">Quantum Security</Typography>
                     <Slider
+                      sx={{
+                        width: 'calc(100% - 48px)',
+                        mx: 3,
+                        '& .MuiSlider-markLabel': { fontSize: '0.7rem' },
+                      }}
                       disabled={queryProcessing}
                       color="secondary"
                       value={sliderDraft.securityQuantum}
@@ -738,27 +736,29 @@ function SchemeComparison() {
                       min={0}
                       max={256}
                       marks={secLevelMarks}
-                      track="inverted"
                       valueLabelDisplay="auto"
                       onChange={(_e, v) => setSliderDraft((d) => ({ ...d, securityQuantum: v }))}
                       onChangeCommitted={(_e, v) => setFilter({ securityQuantum: v })}
                     />
                   </Box>
                   <Box>
-                    <Typography variant="body2">NIST Round</Typography>
+                    <Typography variant="body2">NIST Security Level</Typography>
                     <Slider
+                      sx={{
+                        width: 'calc(100% - 48px)',
+                        mx: 3,
+                        '& .MuiSlider-markLabel': { fontSize: '0.7rem' },
+                      }}
                       disabled={queryProcessing}
                       color="secondary"
-                      value={sliderDraft.nistRound}
-                      step={null}
-                      min={2}
-                      max={7}
-                      marks={nistRoundMarks}
-                      track="inverted"
-                      valueLabelFormat={getNistRoundLabel}
+                      value={sliderDraft.nistCategory}
+                      step={1}
+                      min={0}
+                      max={5}
+                      marks={nistCategoryMarks}
                       valueLabelDisplay="auto"
-                      onChange={(_e, v) => setSliderDraft((d) => ({ ...d, nistRound: v }))}
-                      onChangeCommitted={(_e, v) => setFilter({ nistRound: v })}
+                      onChange={(_e, v) => setSliderDraft((d) => ({ ...d, nistCategory: v }))}
+                      onChangeCommitted={(_e, v) => setFilter({ nistCategory: v })}
                     />
                   </Box>
                 </Stack>
@@ -772,7 +772,69 @@ function SchemeComparison() {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 slotProps={{ paper: { sx: { width: 360, maxWidth: '90vw', p: 2 } } }}
               >
-                <Typography variant="overline" color="text.secondary">Scope / Implementations</Typography>
+                <Typography variant="overline" color="text.secondary">Scope</Typography>
+                <Box sx={{ mt: 1 }}>
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        size="small"
+                        disabled={queryProcessing}
+                        checked={nistPqcOn}
+                        onChange={() => setFilter({ nistPqcOn: !nistPqcOn })}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                      />
+                    )}
+                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
+                    label={(
+                      <Typography variant="body2">NIST PQC Standardization</Typography>
+                    )}
+                  />
+                  <Slider
+                    sx={nistRoundSliderSx}
+                    disabled={queryProcessing || !nistPqcOn}
+                    color="secondary"
+                    value={sliderDraft.nistPqcRound}
+                    step={null}
+                    min={2}
+                    max={7}
+                    marks={nistPqcRoundMarks}
+                    track="inverted"
+                    valueLabelFormat={getNistPqcRoundLabel}
+                    valueLabelDisplay="auto"
+                    onChange={(_e, v) => setSliderDraft((d) => ({ ...d, nistPqcRound: v }))}
+                    onChangeCommitted={(_e, v) => setFilter({ nistPqcRound: v })}
+                  />
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        size="small"
+                        disabled={queryProcessing}
+                        checked={additionalSigsOn}
+                        onChange={() => setFilter({ additionalSigsOn: !additionalSigsOn })}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                      />
+                    )}
+                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 }, mt: 1 }}
+                    label={(
+                      <Typography variant="body2">NIST Additional Signatures</Typography>
+                    )}
+                  />
+                  <Slider
+                    sx={nistRoundSliderSx}
+                    disabled={queryProcessing || !additionalSigsOn}
+                    color="secondary"
+                    value={sliderDraft.additionalSigsRound}
+                    step={null}
+                    min={2}
+                    max={4}
+                    marks={additionalSigsRoundMarks}
+                    track="inverted"
+                    valueLabelFormat={getAdditionalSigsRoundLabel}
+                    valueLabelDisplay="auto"
+                    onChange={(_e, v) => setSliderDraft((d) => ({ ...d, additionalSigsRound: v }))}
+                    onChangeCommitted={(_e, v) => setFilter({ additionalSigsRound: v })}
+                  />
+                </Box>
                 <Stack spacing={0.5} sx={{ mt: 1 }}>
                   <FormControlLabel
                     control={(
@@ -786,47 +848,8 @@ function SchemeComparison() {
                     )}
                     sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
                     label={(
-                      <Typography variant="body2">Include schemes outside the NIST PQC process</Typography>
+                      <Typography variant="body2">Other Schemes</Typography>
                     )}
-                  />
-                  <FormControlLabel
-                    control={(
-                      <Checkbox
-                        size="small"
-                        disabled={queryProcessing}
-                        checked={showDeprecatedFlavors}
-                        onChange={() => setFilter({ showDeprecatedFlavors: !showDeprecatedFlavors })}
-                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                      />
-                    )}
-                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
-                    label={(
-                      <Typography variant="body2">Include deprecated flavors</Typography>
-                    )}
-                  />
-                  <FormControlLabel
-                    control={(
-                      <Checkbox
-                        size="small"
-                        disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                        checked={showRef}
-                        onChange={() => setFilter({ showRef: !showRef })}
-                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                      />
-                    )}
-                    sx={{ mx: 0, '& .MuiButtonBase-root': { p: 0.5 } }}
-                    label={(
-                      <Typography variant="body2">{`Include 'ref' Implementations`}</Typography>
-                    )}
-                  />
-                  <TextField
-                    disabled={queryProcessing || !showColumns.includes('benchmarks')}
-                    value={platformFilter}
-                    color="secondary"
-                    label="Platform"
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => setFilter({ platformFilter: e.target.value })}
                   />
                 </Stack>
               </Popover>
