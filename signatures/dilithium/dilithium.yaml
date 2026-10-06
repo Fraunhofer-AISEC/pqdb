@@ -40,4 +40,5 @@ sources:
   - >-
     NIST Standardization Zip File
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Dilithium-Round3.zip)
+  - FIPS 204 (https://csrc.nist.gov/pubs/fips/204/final)
 last_updated: '2022-10-06'

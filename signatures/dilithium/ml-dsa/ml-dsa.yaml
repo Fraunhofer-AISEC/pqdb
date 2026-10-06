@@ -3,5 +3,3 @@ description: >-
   The FIPS 204 standardized signature scheme.
 type: SIG
 security notion: SUF-CMA
-links:
-  - FIPS 204 (https://csrc.nist.gov/pubs/fips/204/final)
