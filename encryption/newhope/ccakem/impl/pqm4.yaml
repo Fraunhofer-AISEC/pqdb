@@ -1,6 +1,7 @@
 name: PQM4
-platform: assembly
+platform: desktop
 type: optimized
 side channel guarding:
   branching: false
 hardware features: []
+platform comment: assembly

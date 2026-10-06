@@ -1,9 +1,7 @@
 name: sage
-platform: sage
+platform: other
 type: reference
-comment: >-
-  Simple textbook implementation written exclusively in Sage, provided to
-  understand the scheme and to test the known answer test values.
+comment: Simple textbook implementation written exclusively in Sage, provided to understand the scheme and to test the known answer test values.
 side channel guarding:
   branching: false
   timing: false
@@ -11,3 +9,4 @@ side channel guarding:
   timing comment: The implementation is not protected against side channel attacks.
 links:
   - https://github.com/PQCMayo/MAYO-sage
+platform comment: sage

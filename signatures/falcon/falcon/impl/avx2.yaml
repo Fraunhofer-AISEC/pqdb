@@ -1,5 +1,5 @@
 name: avx2
-platform: c
+platform: desktop
 type: optimized
 side channel guarding:
   timing: true
@@ -8,3 +8,4 @@ hardware features:
   - native FP hardware (SSE2 unit)
   - AVX2
   - FMA instrinsics
+platform comment: c

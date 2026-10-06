@@ -4,4 +4,5 @@ timings:
   dec|vrfy: 310773
   unit: cycles
   comment: average
-platform: 'Intel Xeon E3-1220 v3, 3.50GHz'
+platform: desktop
+platform comment: Intel Xeon E3-1220 v3, 3.50GHz

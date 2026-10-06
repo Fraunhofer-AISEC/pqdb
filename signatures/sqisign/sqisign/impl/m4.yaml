@@ -1,11 +1,9 @@
 name: m4
-platform: m4
+platform: arm-m4
 type: reference
-comment: >-
-  Full-scheme reference implementation for 32-bit embedded systems (ARM
-  Cortex-M4), evaluated via the pqm4 project. Code size (pqm4 speed preset):
-  NIST-I ~170 KB, NIST-III ~180 KB, NIST-V ~191 KB (Table 17).
+comment: 'Full-scheme reference implementation for 32-bit embedded systems (ARM Cortex-M4), evaluated via the pqm4 project. Code size (pqm4 speed preset): NIST-I ~170 KB, NIST-III ~180 KB, NIST-V ~191 KB (Table 17).'
 side channel guarding:
   timing: false
 links:
   - https://github.com/SQISign/the-sqisign-pqm4
+platform comment: m4

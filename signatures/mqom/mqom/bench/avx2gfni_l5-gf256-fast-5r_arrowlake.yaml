@@ -1,8 +1,7 @@
-platform: >-
-  Intel Core Ultra 7 265U (Arrow Lake) x86-64 with AVX2 and GFNI, gcc 15.2.0
-  -O3 -march=native -mtune=native, turbo boost disabled.
+platform: desktop
 timings:
   unit: cycles
   gen: 1570000
   enc|sign: 15140000
   dec|vrfy: 14480000
+platform comment: Intel Core Ultra 7 265U (Arrow Lake) x86-64 with AVX2 and GFNI, gcc 15.2.0 -O3 -march=native -mtune=native, turbo boost disabled.

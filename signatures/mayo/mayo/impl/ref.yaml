@@ -1,9 +1,7 @@
 name: ref
-platform: c
+platform: desktop
 type: reference
-comment: >-
-  Generic portable C99 code that supports all parameter sets at run time in a
-  single library. Built with the CMake option for the reference build type.
+comment: Generic portable C99 code that supports all parameter sets at run time in a single library. Built with the CMake option for the reference build type.
 side channel guarding:
   branching: true
   timing: true
@@ -11,3 +9,4 @@ side channel guarding:
   timing comment: The implementation avoids secret dependent data indexing.
 links:
   - https://github.com/PQCMayo/MAYO-C
+platform comment: c

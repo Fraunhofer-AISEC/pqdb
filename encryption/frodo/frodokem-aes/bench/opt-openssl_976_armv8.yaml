@@ -1,6 +1,7 @@
-platform: ARM Cortex-A72 (1.992GHz 64-bit)
+platform: arm-application
 timings:
   unit: cycles
   gen: 7219000
   enc|sign: 8530000
   dec|vrfy: 8014000
+platform comment: ARM Cortex-A72 (1.992GHz 64-bit)

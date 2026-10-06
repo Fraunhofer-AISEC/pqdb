@@ -1,10 +1,11 @@
 name: Optimized implementation using x64 assembly for p610
 type: optimized
-platform: c, x64assembly
+platform: desktop
 side channel guarding:
   branching: true
   timing: true
   timing comment: Also guarded against cache attacks.
 code size:
   overall: 68494
-  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"
+  comment: size of a speed optimized version (`-Os`), not the version timings were taken with
+platform comment: c, x64assembly

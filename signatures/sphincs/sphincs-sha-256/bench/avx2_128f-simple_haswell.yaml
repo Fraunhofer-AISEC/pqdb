@@ -1,6 +1,7 @@
-platform: 'Intel Xeon E3-1220 (Haswell)  3.1 GHz, OS: Ubuntu 18.04, gcc -03'
+platform: desktop
 timings:
   unit: cycles
   gen: 1334220
   enc|sign: 33651546
   dec|vrfy: 2150290
+platform comment: 'Intel Xeon E3-1220 (Haswell)  3.1 GHz, OS: Ubuntu 18.04, gcc -03'

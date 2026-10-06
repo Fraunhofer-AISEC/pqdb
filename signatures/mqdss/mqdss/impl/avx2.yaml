@@ -1,5 +1,6 @@
 name: Optimized
 type: optimized
-platform: c
+platform: desktop
 hardware features:
-- avx2
+  - avx2
+platform comment: c

@@ -1,9 +1,7 @@
-platform: >-
-  AMD EPYC 9654P. Measured with supercop-20221122 on Ubuntu 22.04.5 with Linux
-  5.15.0, gcc 11.4.0 and OpenSSL 3.0.2. The base clock is 2.4 GHz and the boost
-  clock reaches 3.7 GHz.
+platform: desktop
 timings:
   unit: cycles
   gen: 17402000
   enc|sign: 2233000
   dec|vrfy: 1695000
+platform comment: AMD EPYC 9654P. Measured with supercop-20221122 on Ubuntu 22.04.5 with Linux 5.15.0, gcc 11.4.0 and OpenSSL 3.0.2. The base clock is 2.4 GHz and the boost clock reaches 3.7 GHz.

@@ -1,6 +1,7 @@
-platform: Intel Core i7-4770K (Haswell) 3.5GHz
+platform: desktop
 timings:
   unit: cycles
   gen: 2670612
   enc|sign: 116772480
   dec|vrfy: 84685222
+platform comment: Intel Core i7-4770K (Haswell) 3.5GHz

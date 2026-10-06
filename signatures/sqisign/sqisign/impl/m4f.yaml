@@ -1,11 +1,9 @@
 name: m4f
-platform: m4
+platform: arm-m4
 type: optimized
-comment: >-
-  Cortex-M4 implementation with assembly-optimized finite-field arithmetic,
-  evaluated via the pqm4 project (build type m4f). Code size (pqm4 speed preset):
-  NIST-I ~173 KB, NIST-III ~185 KB, NIST-V ~194 KB (Table 17).
+comment: 'Cortex-M4 implementation with assembly-optimized finite-field arithmetic, evaluated via the pqm4 project (build type m4f). Code size (pqm4 speed preset): NIST-I ~173 KB, NIST-III ~185 KB, NIST-V ~194 KB (Table 17).'
 side channel guarding:
   timing: false
 links:
   - https://github.com/SQISign/the-sqisign-pqm4
+platform comment: m4

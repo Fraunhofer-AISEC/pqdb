@@ -1,5 +1,6 @@
 name: Reference
-platform: c
+platform: desktop
 dependencies: []
 hardware features: []
 type: reference
+platform comment: c

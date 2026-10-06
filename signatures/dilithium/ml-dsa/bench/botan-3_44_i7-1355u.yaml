@@ -1,11 +1,9 @@
-# measured with `botan speed` (median-of-N RDTSC cycles), x86_64 Linux
-# platform: Intel Core i7-1355U
-# Botan param: ML-DSA-4x4; keygen = one-shot, sign/verify via PK_Signer/PK_Verifier
 links:
   - https://botan.randombit.net/releases.html
-platform: Intel Core i7-1355U
+platform: desktop
 timings:
   unit: cycles
   gen: 156072
   enc|sign: 396410
   dec|vrfy: 47568
+platform comment: Intel Core i7-1355U

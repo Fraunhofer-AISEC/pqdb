@@ -4,4 +4,5 @@ timings:
   dec|vrfy: 72633
   unit: cycles
   comment: 'median, sign in average: 251144 '
-platform: 'Intel Core i7-6600U CPU Skylake 2600 Mhz, gcc 7.3.0'
+platform: desktop
+platform comment: Intel Core i7-6600U CPU Skylake 2600 Mhz, gcc 7.3.0

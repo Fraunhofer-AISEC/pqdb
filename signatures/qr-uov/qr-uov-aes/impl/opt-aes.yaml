@@ -1,9 +1,7 @@
 name: opt-aes
-platform: x86-64
+platform: desktop
 type: optimized
-comment: >-
-  Optimized C implementation with the AES counter mode option for the
-  pseudorandom generator. It uses neither inline assembly nor intrinsics and it
-  ignores 32 bit environments.
+comment: Optimized C implementation with the AES counter mode option for the pseudorandom generator. It uses neither inline assembly nor intrinsics and it ignores 32 bit environments.
 dependencies:
   - OpenSSL
+platform comment: x86-64

@@ -7,6 +7,5 @@ memory requirements:
   gen: 12872
   enc|sign: 13288
   dec|vrfy: 5064
-platform: >-
-  Intel NUC6i5SYH with Core i3-6100U “Skylake” 64-bit CPU (2.3GHz) with clang-8
-  as compiler
+platform: desktop
+platform comment: Intel NUC6i5SYH with Core i3-6100U “Skylake” 64-bit CPU (2.3GHz) with clang-8 as compiler

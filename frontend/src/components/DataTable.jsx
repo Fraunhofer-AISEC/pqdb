@@ -35,6 +35,7 @@ const propTypes = {
     values: PropTypes.arrayOf(PropTypes.array.isRequired).isRequired,
     ids: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
     flavorIds: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
+    platformComments: PropTypes.arrayOf(PropTypes.string),
   }),
   headerGroups: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -42,6 +43,7 @@ const propTypes = {
   })),
   formatFunctions: PropTypes.arrayOf(PropTypes.func),
   cellRenderers: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object])),
+  suppressTooltipColumns: PropTypes.arrayOf(PropTypes.string),
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   onChangeOrder: PropTypes.func,
@@ -136,6 +138,7 @@ function DataTable(props) {
     orderBy,
     onChangeOrder,
     onColumnStateChange: onColumnStateChangeProp,
+    suppressTooltipColumns,
   } = props;
   const theme = useTheme();
   const dark = theme.palette.mode === 'dark';
@@ -176,6 +179,7 @@ function DataTable(props) {
     });
     if (queryResult.ids) obj.__id = queryResult.ids[rowIdx];
     if (queryResult.flavorIds) obj.__flavorId = queryResult.flavorIds[rowIdx];
+    if (queryResult.platformComments) obj.__platformComment = queryResult.platformComments[rowIdx];
     return obj;
   }) ?? [], [queryResult, uniqueFields]);
 
@@ -211,9 +215,14 @@ function DataTable(props) {
       // no value), and the grid's `tooltipShowMode: 'whenTruncated'` limits it
       // to values truncated with an ellipsis; `tooltipComponent`/`headerTooltip`
       // apply to the cell and header (plain columns and group headers) alike.
-      tooltipValueGetter: (params) => params.valueFormatted ?? cellValue(params),
-      tooltipComponent: DataTableTooltip,
-      headerTooltip: col,
+      // `suppressTooltipColumns` disable the grid tooltip entirely for columns
+      // whose custom cell renderer provides its own (e.g. the Platform info
+      // icon), to avoid a second redundant tooltip on hover.
+      tooltipValueGetter: suppressTooltipColumns?.includes(col)
+        ? () => null
+        : (params) => params.valueFormatted ?? cellValue(params),
+      tooltipComponent: suppressTooltipColumns?.includes(col) ? undefined : DataTableTooltip,
+      headerTooltip: suppressTooltipColumns?.includes(col) ? undefined : col,
     }));
 
     if (headerGroups && headerGroups.length) {
@@ -231,7 +240,7 @@ function DataTable(props) {
       return grouped;
     }
     return plainDefs;
-  }, [queryResult, uniqueFields, formatFunctions, cellRenderers, heatmapRanges, headerGroups, heatmapColors]);
+  }, [queryResult, uniqueFields, formatFunctions, cellRenderers, heatmapRanges, headerGroups, heatmapColors, suppressTooltipColumns]);
 
   const defaultColDef = useMemo(() => ({
     sortable: true,

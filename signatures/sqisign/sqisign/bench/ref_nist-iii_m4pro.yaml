@@ -1,9 +1,8 @@
-platform: >-
-  Apple M4 Pro (performance core) @ 4.5 GHz, macOS 26, Apple clang 17, CMake Release (-O2).
+platform: arm-m4
 timings:
   unit: cycles
   gen: 96100000
   enc|sign: 294400000
   dec|vrfy: 31700000
-  comment: >-
-    Median of 1,000 runs (Table 14).
+  comment: Median of 1,000 runs (Table 14).
+platform comment: Apple M4 Pro (performance core) @ 4.5 GHz, macOS 26, Apple clang 17, CMake Release (-O2).

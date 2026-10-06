@@ -1,8 +1,9 @@
-platform: Cortex M4
+platform: arm-m4
 timings:
   gen: 23178000
   enc|sign: 15647000
   dec|vrfy: 17315000
   unit: cycles
 sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.22'
+  - https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.22
+platform comment: Cortex M4

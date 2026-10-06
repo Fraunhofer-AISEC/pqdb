@@ -1,4 +1,4 @@
-platform: Quad Core 1.2GHz Broadcom BCM2837 64-bit CPU, ARM Cortex A53 (ARMv8)
+platform: arm-application
 timings:
   unit: cycles
   gen: 87774
@@ -7,3 +7,4 @@ timings:
 memory requirements:
   enc|sign: 427747
   dec|vrfy: 269498
+platform comment: Quad Core 1.2GHz Broadcom BCM2837 64-bit CPU, ARM Cortex A53 (ARMv8)

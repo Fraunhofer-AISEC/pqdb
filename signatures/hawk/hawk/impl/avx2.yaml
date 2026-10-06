@@ -1,20 +1,14 @@
 name: avx2
-platform: c
+platform: desktop
 type: optimized
-comment: >-
-  Optimised C implementation using x86 AVX2 intrinsics (e.g. four parallel
-  SHAKE256 instances in SHAKE256x4). Isochronous and free of floating-point
-  arithmetic. Used for the x86 "Coffee Lake" benchmarks.
+comment: Optimised C implementation using x86 AVX2 intrinsics (e.g. four parallel SHAKE256 instances in SHAKE256x4). Isochronous and free of floating-point arithmetic. Used for the x86 "Coffee Lake" benchmarks.
 hardware features:
   - AVX2
 side channel guarding:
   timing: true
   branching: true
-  timing comment: >-
-    Isochronous: running time of secret-dependent functions is independent of
-    the secret data.
-  branching comment: >-
-    Constant-time design; see [GR24] for power-analysis considerations on the
-    Gaussian sampler.
+  timing comment: 'Isochronous: running time of secret-dependent functions is independent of the secret data.'
+  branching comment: Constant-time design; see [GR24] for power-analysis considerations on the Gaussian sampler.
 links:
   - https://github.com/hawk-sign/
+platform comment: c

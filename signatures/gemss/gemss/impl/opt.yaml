@@ -1,3 +1,4 @@
 name: Optimized
 type: optimized
-platform: c
+platform: desktop
+platform comment: c

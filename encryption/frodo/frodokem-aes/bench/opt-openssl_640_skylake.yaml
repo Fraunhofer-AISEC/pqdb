@@ -1,6 +1,4 @@
-platform: >-
-  Intel Core i7-6700 (Skylake) 3.4GHZ, GCC version 7.2.0 using flags-O3
-  -march=native
+platform: desktop
 timings:
   unit: cycles
   gen: 1385000
@@ -11,3 +9,4 @@ memory requirements:
   gen: 72448
   enc|sign: 102944
   dec|vrfy: 123968
+platform comment: Intel Core i7-6700 (Skylake) 3.4GHZ, GCC version 7.2.0 using flags-O3 -march=native

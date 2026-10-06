@@ -1,9 +1,8 @@
-platform: >-
-  Raspberry Pi 5, ARM Cortex-A76 cores @ 2.4 GHz, clang 18, CMake Release (-O2).
+platform: desktop
 timings:
   unit: cycles
   gen: 811500000
   enc|sign: 2431400000
   dec|vrfy: 337500000
-  comment: >-
-    Median of 100 runs (Table 15, assembly-optimized implementation for AArch64).
+  comment: Median of 100 runs (Table 15, assembly-optimized implementation for AArch64).
+platform comment: Raspberry Pi 5, ARM Cortex-A76 cores @ 2.4 GHz, clang 18, CMake Release (-O2).

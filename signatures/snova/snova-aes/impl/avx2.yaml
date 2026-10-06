@@ -1,13 +1,9 @@
 name: avx2
-comment: >-
-  This implementation uses AVX2 and AES128 for expanding the secret and public
-  key seeds. It supports both seed type (compressed) and expanded secret keys
-  during signing.
-platform: x86-64
+comment: This implementation uses AVX2 and AES128 for expanding the secret and public key seeds. It supports both seed type (compressed) and expanded secret keys during signing.
+platform: desktop
 type: optimized
 hardware features:
   - AVX2
 sources:
-  - >-
-    Official implementation
-    (https://github.com/PQCLAB-SNOVA/SNOVA)
+  - Official implementation (https://github.com/PQCLAB-SNOVA/SNOVA)
+platform comment: x86-64

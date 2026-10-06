@@ -1,6 +1,7 @@
-platform: Intel Core i7-6700 (Skylake) 3.4GHZ
+platform: desktop
 timings:
   unit: cycles
   gen: 30301000
   enc|sign: 32611000
   dec|vrfy: 32387000
+platform comment: Intel Core i7-6700 (Skylake) 3.4GHZ

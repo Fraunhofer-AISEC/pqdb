@@ -3,4 +3,5 @@ timings:
   enc|sign: 153832
   dec|vrfy: 155700
   unit: cycles
-platform: 'Intel Xeon E3-1220  v3 Haswell, 3100  MHz'
+platform: desktop
+platform comment: Intel Xeon E3-1220  v3 Haswell, 3100  MHz

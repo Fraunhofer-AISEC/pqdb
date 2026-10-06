@@ -4,4 +4,5 @@ timings:
   enc|sign: 37585
   dec|vrfy: 127668
   comment: average
-platform: 'Intel Xeon E3-1220 v3, 3.50GHz'
+platform: desktop
+platform comment: Intel Xeon E3-1220 v3, 3.50GHz

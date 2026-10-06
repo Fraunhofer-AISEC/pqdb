@@ -143,4 +143,34 @@ const STATUS_DISPLAY_ORDER = ['standardized', 'selected', '4', '3f', '3a', '3', 
 // appended after these in object-key order.
 const PROCESS_DISPLAY_ORDER = ['nist-pqc', 'nist-additional-sigs'];
 
-export { derivePrimaryStatus, PROCESS_DISPLAY_ORDER, PROCESS_META, PROCESSES, SCHEME_TYPES, SEC_NOTIONS, stageDescription, STAGES, STATUS_DISPLAY_ORDER, statusTitle };
+// Normalized platform families shared by implementations and benchmarks. The
+// enum key is stored in `platform`; human-readable detail (exact CPU,
+// frequency, compiler, OS) lives in the free-text `platform comment`.
+const PLATFORMS = {
+  desktop: { label: 'Desktop / x86-64', short: 'Desktop' },
+  'arm-m4': { label: 'ARM Cortex-M4', short: 'Cortex-M4' },
+  'arm-application': { label: 'ARM Application (Cortex-A/AArch64)', short: 'ARM App' },
+  fpga: { label: 'FPGA', short: 'FPGA' },
+  other: { label: 'Other', short: 'Other' },
+};
+
+// Default platform for comparisons ("each scheme has a desktop baseline").
+const PLATFORM_DEFAULT = 'desktop';
+
+const PLATFORM_ORDER = Object.keys(PLATFORMS);
+
+export {
+  derivePrimaryStatus,
+  PLATFORM_DEFAULT,
+  PLATFORM_ORDER,
+  PLATFORMS,
+  PROCESS_DISPLAY_ORDER,
+  PROCESS_META,
+  PROCESSES,
+  SCHEME_TYPES,
+  SEC_NOTIONS,
+  stageDescription,
+  STAGES,
+  STATUS_DISPLAY_ORDER,
+  statusTitle,
+};

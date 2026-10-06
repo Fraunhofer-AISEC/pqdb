@@ -1,6 +1,7 @@
 name: opt-keccak
 comment: Generic optimized implementation using Keccak as PRNG
-platform: C
+platform: desktop
 type: optimized
 links:
   - https://github.com/WardBeullens/LUOV/tree/master/Optimized_Implementation
+platform comment: C

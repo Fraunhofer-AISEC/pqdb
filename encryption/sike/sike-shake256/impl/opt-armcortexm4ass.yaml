@@ -1,9 +1,10 @@
 name: Optimized implementation for ARM-Cortex-M4 platform using ARMv7 assembly
 links:
-  - "Paper of the implementation: https://eprint.iacr.org/2020/410"
+  - 'Paper of the implementation: https://eprint.iacr.org/2020/410'
 type: optimized
-platform: ARM-Cortex-M4
+platform: arm-m4
 side channel guarding:
   branching: true
   timing: true
   timing comment: Also guarded against cache attacks.
+platform comment: ARM-Cortex-M4

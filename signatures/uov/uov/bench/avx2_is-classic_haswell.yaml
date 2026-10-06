@@ -1,8 +1,7 @@
-platform: >-
-  Intel Xeon E3-1230L v3 (Haswell) x86-64 at 1.80 GHz, Ubuntu, Clang 18.1.3,
-  Turbo Boost and Hyper Threading disabled.
+platform: desktop
 timings:
   unit: cycles
   gen: 5917200
   enc|sign: 141528
   dec|vrfy: 67104
+platform comment: Intel Xeon E3-1230L v3 (Haswell) x86-64 at 1.80 GHz, Ubuntu, Clang 18.1.3, Turbo Boost and Hyper Threading disabled.

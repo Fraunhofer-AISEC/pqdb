@@ -1,8 +1,7 @@
-platform: >-
-  Intel Core i7-6600U (Skylake) 2.6 GHz (Turboboost off), 32GB RAM, Ubuntu
-  16.04.5 LTS, gcc -O4 -mavx2 -mpclmul -mpopcnt -funroll-loops
+platform: desktop
 timings:
   unit: cycles
   gen: 221000000
   enc|sign: 12000000
   dec|vrfy: 514000
+platform comment: Intel Core i7-6600U (Skylake) 2.6 GHz (Turboboost off), 32GB RAM, Ubuntu 16.04.5 LTS, gcc -O4 -mavx2 -mpclmul -mpopcnt -funroll-loops

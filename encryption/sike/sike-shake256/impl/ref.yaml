@@ -1,6 +1,6 @@
 name: Reference implementation
 type: reference
-platform: c
+platform: desktop
 dependencies:
   - GMP library
 side channel guarding:
@@ -8,3 +8,4 @@ side channel guarding:
   timing: false
 code size:
   overall: 81860
+platform comment: c

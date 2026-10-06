@@ -1,8 +1,8 @@
 name: optimized
-platform: c
+platform: desktop
 type: optimized
 links:
-    - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
 side channel guarding:
   branching: false
   timing comment: ToDo
@@ -11,3 +11,4 @@ hardware features:
   - aes-ni
 dependencies:
   - openssl
+platform comment: c

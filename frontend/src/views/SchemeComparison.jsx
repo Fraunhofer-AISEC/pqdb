@@ -16,6 +16,8 @@
 
 import {
   Checklist as ChecklistIcon,
+  DevicesOther as DevicesOtherIcon,
+  InfoOutlined as InfoIcon,
   Security as SecurityIcon,
   Tune as TuneIcon,
 } from '@mui/icons-material';
@@ -26,11 +28,14 @@ import {
   Checkbox,
   Chip,
   Container,
+  FormControl,
   FormControlLabel,
   Grid,
   Link,
+  MenuItem,
   Paper,
   Popover,
+  Select,
   Slider,
   Stack,
   Tooltip,
@@ -44,7 +49,13 @@ import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { DatabaseContext } from '../components/DatabaseProvider';
 import DataTable from '../components/DataTable';
 import SchemeCheckboxList from '../components/SchemeCheckboxList';
-import { SCHEME_TYPES, STAGES } from '../constants';
+import {
+  PLATFORM_DEFAULT,
+  PLATFORM_ORDER,
+  PLATFORMS,
+  SCHEME_TYPES,
+  STAGES,
+} from '../constants';
 import detailLink from '../utils/detailLink';
 import humanReadableSize from '../utils/humanReadableSize';
 import not from '../utils/not';
@@ -63,6 +74,8 @@ const defaultState = {
   additionalSigsOn: true,
   additionalSigsRound: 3,
   showNonNistSchemes: true,
+  platforms: [PLATFORM_DEFAULT],
+  implType: 'optimized',
   order: 'asc',
   orderBy: null,
   checkedSchemes: null,
@@ -238,6 +251,7 @@ function buildQuery(state) {
   (p.sizes_pk + p.sizes_ct_sig) AS 'Communication Size'` : ''}${(state.showColumns.includes('benchmarks')) ? `,
   i.name AS 'Name',
   b.platform AS 'Platform',
+  b.platform_comment AS 'Platform Comment',
   round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
   round(b.timings_enc_sign / 1000) AS '${SCHEME_TYPES[state.schemeType].enc_sign} (kCycles)',
   round(b.timings_dec_vrfy / 1000) AS '${SCHEME_TYPES[state.schemeType].dec_vrfy} (kCycles)',
@@ -263,7 +277,7 @@ WHERE
     OR (p.security_level_nist_category >= ? AND p.security_level_nist_category <= ?)
   )${
   (state.showColumns.includes('benchmarks'))
-    ? '\n    AND i.type = \'optimized\''
+    ? `\n    AND b.platform IN (${state.platforms.map(() => '?').join(', ')})\n${state.implType === 'all' ? '' : '    AND i.type = ?\n'}`
     : ''}`;
   // Note: The (very fragile) `expandQuery` method below makes quite
   // some assumptions on the structure of this query (for example, no
@@ -304,6 +318,12 @@ function prepareParams(state) {
     state.securityQuantum[0], state.securityQuantum[1],
     state.nistCategory[0], state.nistCategory[1],
   );
+  // Platform families and implementation-type filter only exist in the
+  // benchmark branch of the SQL; bind them only when that branch is present.
+  if (state.showColumns.includes('benchmarks')) {
+    params.push(...state.platforms);
+    if (state.implType !== 'all') params.push(state.implType);
+  }
   return params;
 }
 
@@ -333,17 +353,43 @@ function NameLinkRenderer(params) {
   );
 }
 
+// Renders the normalized platform label plus an info icon revealing the exact
+// hardware (`platform comment`) in a tooltip on hover.
+function PlatformCellRenderer(params) {
+  const comment = params.data?.__platformComment;
+  return (
+    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+      {PLATFORMS[params.value]?.label ?? params.value}
+      {comment && (
+        <Tooltip title={comment} arrow>
+          <InfoIcon fontSize="small" sx={{ cursor: 'help', color: 'text.secondary' }} />
+        </Tooltip>
+      )}
+    </Box>
+  );
+}
+
 // Pure reshape of the raw queryAllAsArray result: drop the leading 'flavor_id'
 // and 'ID' columns (display only) while preserving the ids for the name-link
 // renderer.
 function reshapeResult(rawResults) {
   if (rawResults === undefined) return undefined;
   if (rawResults === null) return null;
-  const columns = rawResults.columns.slice(2);
+  const commentIdx = rawResults.columns.indexOf('Platform Comment');
   const ids = rawResults.values.map((res) => res[1]);
   const flavorIds = rawResults.values.map((res) => res[0]);
-  const values = rawResults.values.map((res) => res.slice(2));
-  return { columns, values, ids, flavorIds };
+  // `Platform Comment` is a hidden lookup column (feeds the Platform cell
+  // tooltip), not a display column: capture it per row and strip it out.
+  const platformComments = commentIdx === -1
+    ? undefined
+    : rawResults.values.map((res) => res[commentIdx]);
+  const drop = new Set([0, 1]);
+  if (commentIdx !== -1) drop.add(commentIdx);
+  const columns = rawResults.columns.filter((_, i) => !drop.has(i));
+  const values = rawResults.values.map((res) => res.filter((_, i) => !drop.has(i)));
+  const result = { columns, values, ids, flavorIds };
+  if (platformComments) result.platformComments = platformComments;
+  return result;
 }
 
 function SchemeComparison() {
@@ -393,6 +439,8 @@ function SchemeComparison() {
     filterState.nistCategory,
     filterState.showNonNistSchemes,
     filterState.checkedSchemes,
+    filterState.platforms,
+    filterState.implType,
   ]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params = useMemo(() => prepareParams(filterState), [
@@ -405,6 +453,8 @@ function SchemeComparison() {
     filterState.securityQuantum,
     filterState.nistCategory,
     filterState.showColumns,
+    filterState.platforms,
+    filterState.implType,
   ]);
 
   const { data, processing: queryProcessing, error } = useDbQuery(
@@ -445,6 +495,18 @@ function SchemeComparison() {
     const { headers, headerSpans } = createHeaderSections({ showColumns: filterState.showColumns });
     return headers.map((name, idx) => ({ name, span: headerSpans[idx] }));
   }, [filterState.showColumns]);
+
+  // Custom cell renderers, aligned to the (reshaped) display columns: the
+  // paramset Name links to the detail page, and Platform shows an info icon
+  // with the `platform comment` tooltip.
+  const cellRenderers = useMemo(() => {
+    if (!queryResult) return undefined;
+    return queryResult.columns.map((col, idx) => {
+      if (idx === 0) return NameLinkRenderer;
+      if (col === 'Platform') return PlatformCellRenderer;
+      return undefined;
+    });
+  }, [queryResult]);
 
   function updateSearchParams(replace, newFilterState) {
     const searchParam = {};
@@ -509,7 +571,7 @@ function SchemeComparison() {
   const {
     checkedSchemes, nistPqcOn, nistPqcRound, additionalSigsOn, additionalSigsRound, order,
     orderBy, securityLevel, securityQuantum, nistCategory, schemeType,
-    showColumns, showNonNistSchemes,
+    showColumns, showNonNistSchemes, platforms, implType,
   } = filterState;
 
   // Local slider positions so the thumb tracks the drag while the committed
@@ -680,6 +742,16 @@ function SchemeComparison() {
                     >
                       Schemes
                     </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      startIcon={<DevicesOtherIcon />}
+                      aria-haspopup="true"
+                      onClick={(e) => setFilterMenu({ anchor: e.currentTarget, kind: 'platform' })}
+                    >
+                      Platform
+                    </Button>
                   </Stack>
                   <Link
                     component={RouterLink}
@@ -690,6 +762,42 @@ function SchemeComparison() {
                   </Link>
                 </Box>
               </Stack>
+
+              {/* Platform / implementation filters */}
+              <Popover
+                open={filterMenu?.kind === 'platform'}
+                anchorEl={filterMenu?.anchor}
+                onClose={() => setFilterMenu(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                slotProps={{ paper: { sx: { width: 360, maxWidth: '90vw', p: 2 } } }}
+              >
+                <Typography variant="overline" color="text.secondary">Platform</Typography>
+                <FormControl fullWidth size="small" sx={{ mt: 0.5 }}>
+                  <Select
+                    value={platforms[0] ?? PLATFORM_DEFAULT}
+                    disabled={queryProcessing}
+                    onChange={(e) => setFilter({ platforms: [e.target.value] })}
+                  >
+                    {PLATFORM_ORDER.map((key) => (
+                      <MenuItem key={key} value={key}>{PLATFORMS[key].label}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Typography variant="overline" color="text.secondary" sx={{ display: 'block', mt: 2 }}>
+                  Implementation
+                </Typography>
+                <FormControl fullWidth size="small" sx={{ mt: 0.5 }}>
+                  <Select
+                    value={implType}
+                    disabled={queryProcessing}
+                    onChange={(e) => setFilter({ implType: e.target.value })}
+                  >
+                    <MenuItem value="optimized">Optimized only</MenuItem>
+                    <MenuItem value="reference">Reference only</MenuItem>
+                    <MenuItem value="all">All implementations</MenuItem>
+                  </Select>
+                </FormControl>
+              </Popover>
 
               {/* Security filters */}
               <Popover
@@ -889,7 +997,8 @@ function SchemeComparison() {
                   queryResult={queryResult}
                   formatFunctions={getFormatFunctions(queryResult)}
                   headerGroups={headerGroups}
-                  cellRenderers={[NameLinkRenderer]}
+                  cellRenderers={cellRenderers}
+                  suppressTooltipColumns={['Platform']}
                 />
               )}
             </Box>

@@ -1,4 +1,4 @@
-platform: Intel Xeon CPU E31230 3.20GHz
+platform: desktop
 timings:
   unit: cycles
   gen: 1012476
@@ -7,3 +7,4 @@ timings:
 memory requirements:
   enc|sign: 984696
   dec|vrfy: 733426
+platform comment: Intel Xeon CPU E31230 3.20GHz

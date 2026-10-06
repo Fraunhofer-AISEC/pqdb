@@ -1,5 +1,6 @@
 name: Optimized, using plain C SHAKE
 type: optimized
-platform: c
+platform: desktop
 side channel guarding:
   branching: true
+platform comment: c

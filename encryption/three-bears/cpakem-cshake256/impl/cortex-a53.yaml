@@ -1,5 +1,5 @@
 name: Cortex-A53
-platform: c
+platform: desktop
 type: optimized
 code size:
   overall: 6328
@@ -7,4 +7,5 @@ code size:
 dependencies:
   - Keccak library. Code size does not include the size of a Keccak library.
 sources:
-  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
+  - Implementation code (https://sourceforge.net/projects/threebears/)
+platform comment: c

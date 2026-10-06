@@ -1,6 +1,6 @@
 name: Optimized plus AVX2, using AES from OpenSSL
 type: optimized
-platform: c
+platform: desktop
 dependencies:
   - OpenSSL
 side channel guarding:
@@ -8,3 +8,4 @@ side channel guarding:
 hardware features:
   - aes-ni
   - avx2
+platform comment: c

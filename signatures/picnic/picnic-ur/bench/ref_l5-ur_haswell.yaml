@@ -1,4 +1,4 @@
-platform: Intel Core i7-4790 3.60GHZ
+platform: desktop
 timings:
   unit: cycles
   gen: 752867
@@ -7,3 +7,4 @@ timings:
 memory requirements:
   enc|sign: 984696
   dec|vrfy: 733426
+platform comment: Intel Core i7-4790 3.60GHZ

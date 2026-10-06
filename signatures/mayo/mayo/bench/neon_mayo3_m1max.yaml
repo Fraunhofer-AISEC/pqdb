@@ -1,8 +1,8 @@
-platform: 'Apple M1 Max, Apple clang toolchain 1600.0.26.3'
+platform: desktop
 timings:
   unit: cycles
   gen: 380032
   enc|sign: 1073705
   dec|vrfy: 467230
-  comment: >-
-    Average of 1000 runs.
+  comment: Average of 1000 runs.
+platform comment: Apple M1 Max, Apple clang toolchain 1600.0.26.3

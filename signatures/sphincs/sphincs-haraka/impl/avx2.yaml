@@ -1,5 +1,5 @@
 name: AVX2
-platform: c
+platform: desktop
 type: optimized
 side channel guarding:
   branching: true
@@ -8,4 +8,5 @@ hardware features:
   - avx2
   - AES-NI
 sources:
-  - 'https://sphincs.org/data/sphincs+-round3-specification.pdf#section.10'
+  - https://sphincs.org/data/sphincs+-round3-specification.pdf#section.10
+platform comment: c

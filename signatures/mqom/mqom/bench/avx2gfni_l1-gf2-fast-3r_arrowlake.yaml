@@ -1,10 +1,8 @@
-platform: >-
-  Intel Core Ultra 7 265U (Arrow Lake) x86-64 with AVX2 and GFNI, gcc 15.2.0
-  -O3 -march=native -mtune=native, turbo boost disabled.
+platform: desktop
 timings:
   unit: cycles
   gen: 990000
   enc|sign: 3440000
   dec|vrfy: 3140000
-  comment: >-
-    Cycle counts were measured with hardware performance counters and are reported to 0.01M precision.
+  comment: Cycle counts were measured with hardware performance counters and are reported to 0.01M precision.
+platform comment: Intel Core Ultra 7 265U (Arrow Lake) x86-64 with AVX2 and GFNI, gcc 15.2.0 -O3 -march=native -mtune=native, turbo boost disabled.

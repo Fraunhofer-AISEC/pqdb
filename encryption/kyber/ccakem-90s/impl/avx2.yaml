@@ -1,5 +1,5 @@
 name: AVX2
-platform: c
+platform: desktop
 type: optimized
 side channel guarding:
   branching: true
@@ -7,3 +7,4 @@ side channel guarding:
 hardware features:
   - avx2
   - aes-ni
+platform comment: c

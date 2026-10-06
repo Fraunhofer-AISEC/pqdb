@@ -1,5 +1,6 @@
 name: opt
 type: optimized
-platform: x86-64
+platform: desktop
 links:
   - https://github.com/sdith
+platform comment: x86-64

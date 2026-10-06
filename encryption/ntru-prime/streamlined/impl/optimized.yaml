@@ -1,7 +1,7 @@
 name: optimized
 links:
   - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
-platform: x64
+platform: desktop
 side channel guarding:
   timing comment: ToDo
   branching comment: ToDo
@@ -10,3 +10,4 @@ hardware features:
   - aes-ni
 dependencies:
   - openssl
+platform comment: x64

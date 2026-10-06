@@ -1,6 +1,4 @@
-platform: >-
-  Intel Core i5-8259U(" Coffee Lake") 2.3 GHZ ,Clang version 10.0 flags: -O3
-  -march=skylake
+platform: desktop
 timings:
   unit: cycles
   gen: 19872000
@@ -10,3 +8,4 @@ timings:
 memory requirements:
   gen: 14336
   comment: Expanded keys are used.
+platform comment: 'Intel Core i5-8259U(" Coffee Lake") 2.3 GHZ ,Clang version 10.0 flags: -O3 -march=skylake'

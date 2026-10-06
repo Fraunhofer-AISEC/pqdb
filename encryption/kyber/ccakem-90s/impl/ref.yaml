@@ -1,8 +1,9 @@
 name: Reference
-platform: c
+platform: desktop
 type: reference
 side channel guarding:
   branching: true
   timing comment: Assumed, but not verified
 hardware features:
   - aes-ni
+platform comment: c

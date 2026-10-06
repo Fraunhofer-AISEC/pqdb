@@ -1,3 +1,4 @@
 name: Skylake
 type: optimized
-platform: c
+platform: desktop
+platform comment: c

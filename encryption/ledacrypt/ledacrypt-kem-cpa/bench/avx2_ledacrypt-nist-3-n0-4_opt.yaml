@@ -1,6 +1,7 @@
 timings:
-  gen: 0.614
-  enc|sign: 0.068
-  dec|vrfy: 0.976
-  unit: ms
-platform: Intel Core i5-6600 clocked at 3.2 GHz
+  gen: 1964800
+  enc|sign: 217600
+  dec|vrfy: 3123200
+  unit: cycles
+platform: desktop
+platform comment: 'Intel Core i5-6600 clocked at 3.2 GHz / conversion: originally measured in ms at 3.2 GHz, converted to cycles'

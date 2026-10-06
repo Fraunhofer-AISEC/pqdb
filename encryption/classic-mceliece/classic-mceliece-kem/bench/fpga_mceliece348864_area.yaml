@@ -3,4 +3,5 @@ timings:
   enc|sign: 2720
   dec|vrfy: 15638
   unit: cycles
-platform: Artix-7
+platform: fpga
+platform comment: Artix-7

@@ -1,5 +1,5 @@
 name: Skylake
-platform: 'c, assembly'
+platform: desktop
 type: optimized
 code size:
   overall: 7740
@@ -7,4 +7,5 @@ code size:
 dependencies:
   - Keccak library. Code size does not include the size of a Keccak library.
 sources:
-  - 'Implementation code (https://sourceforge.net/projects/threebears/)'
+  - Implementation code (https://sourceforge.net/projects/threebears/)
+platform comment: c, assembly

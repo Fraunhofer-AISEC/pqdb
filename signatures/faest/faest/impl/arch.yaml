@@ -1,5 +1,5 @@
 name: Architecture-specific
-platform: x86-64 and AArch64
+platform: desktop
 type: optimized
 hardware features:
   - AVX2
@@ -8,3 +8,4 @@ hardware features:
 dependencies:
   - XKCP
   - OpenSSL
+platform comment: x86-64 and AArch64

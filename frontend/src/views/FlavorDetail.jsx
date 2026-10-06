@@ -20,6 +20,7 @@ import {
   Category as CategoryIcon,
   Code as CodeIcon,
   Fort as FortIcon,
+  InfoOutlined as InfoIcon,
   Link as LinkIcon,
   Memory as ChipIcon,
   MenuBook as MenuBookIcon,
@@ -52,6 +53,7 @@ import PropItem from '../components/PropItem';
 import StatusBadge from '../components/StatusBadge';
 import {
   derivePrimaryStatus,
+  PLATFORMS,
   SCHEME_TYPES,
   SEC_NOTIONS,
   STAGES,
@@ -83,6 +85,7 @@ function benchmarkSql(flavorId, schemeType, withMemory = true) {
   p.name AS 'Parameter Set',
   i.name AS 'Implementation',
   b.platform AS 'Platform',
+  b.platform_comment AS 'Platform Comment',
   round(b.timings_gen / 1000) AS 'KeyGen (kCycles)',
   round(b.timings_enc_sign / 1000) AS '${enc_sign} (kCycles)',
   round(b.timings_dec_vrfy / 1000) AS '${dec_vrfy} (kCycles)'
@@ -151,6 +154,34 @@ function getBenchmarkFormatFunctions(schemeType, withMemory = true) {
   });
 }
 
+// The `Platform Comment` column is a hidden lookup column (feeds the Platform
+// cell tooltip), not a display column: capture it per row and strip it out.
+function reshapeBenchmarkResult(rawResults) {
+  if (rawResults === undefined || rawResults === null) return rawResults;
+  const commentIdx = rawResults.columns.indexOf('Platform Comment');
+  if (commentIdx === -1) return rawResults;
+  const columns = rawResults.columns.filter((_, i) => i !== commentIdx);
+  const values = rawResults.values.map((res) => res.filter((_, i) => i !== commentIdx));
+  const platformComments = rawResults.values.map((res) => res[commentIdx]);
+  return { columns, values, platformComments };
+}
+
+// Renders the normalized platform label plus an info icon revealing the exact
+// hardware (`platform comment`) in a tooltip on hover.
+function BenchmarkPlatformRenderer(params) {
+  const comment = params.data?.__platformComment;
+  return (
+    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+      {PLATFORMS[params.value]?.label ?? params.value}
+      {comment && (
+        <Tooltip title={comment} arrow>
+          <InfoIcon fontSize="small" sx={{ cursor: 'help', color: 'text.secondary' }} />
+        </Tooltip>
+      )}
+    </Box>
+  );
+}
+
 function FlavorDetail() {
   const { schemeId, flavorId } = useParams();
   const { db } = useContext(DatabaseContext);
@@ -199,7 +230,7 @@ function FlavorDetail() {
             OR b.memory_requirements_enc_sign IS NOT NULL
             OR b.memory_requirements_dec_vrfy IS NOT NULL)`, [queriedFlavor.id])[0].c > 0;
       setHasMemoryData(hasMem);
-      setBenchmarksQuery(queryAllAsArray(db, benchmarkSql(queriedFlavor.id, queriedScheme.type, hasMem)));
+      setBenchmarksQuery(reshapeBenchmarkResult(queryAllAsArray(db, benchmarkSql(queriedFlavor.id, queriedScheme.type, hasMem))));
       setBenchmarkOrder('asc');
       setBenchmarkOrderBy(null);
     }
@@ -319,7 +350,7 @@ function FlavorDetail() {
 
       {links.length > 0
         && (
-        <DetailCard title="Links" Icon={LinkIcon}>
+        <DetailCard title="Links" Icon={LinkIcon} sx={{ mb: 2 }}>
           <PropItem key="links" title="Links" Icon={LinkIcon}>
             {links.map((l) => <div key={l.url}>{linkify(l.url)}</div>)}
           </PropItem>
@@ -369,7 +400,10 @@ function FlavorDetail() {
               >
 
                 <PropItem key={`i-${i.id}-platform`} title="Platform" Icon={LanguageIcon}>
-                  {i.platform}
+                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                    {PLATFORMS[i.platform]?.label ?? i.platform}
+                    {i.platform_comment && <Comment title={i.platform_comment} />}
+                  </Box>
                 </PropItem>
 
                 <PropItem key={`i-${i.id}-type`} title="Type" Icon={CategoryIcon}>
@@ -450,6 +484,8 @@ function FlavorDetail() {
               <DataTable
                 queryResult={benchmarksQuery}
                 formatFunctions={getBenchmarkFormatFunctions(scheme.type, hasMemoryData)}
+                cellRenderers={benchmarksQuery?.columns.map((col) => (col === 'Platform' ? BenchmarkPlatformRenderer : undefined))}
+                suppressTooltipColumns={['Platform']}
                 order={benchmarkOrder}
                 orderBy={benchmarkOrderBy}
                 onChangeOrder={(newOrder, newOrderBy) => {

@@ -1,9 +1,7 @@
 name: avx2
-platform: x86-64
+platform: desktop
 type: optimized
-comment: >-
-  Implementation targeting Intel Haswell and later, using compiler intrinsics
-  and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices.
+comment: Implementation targeting Intel Haswell and later, using compiler intrinsics and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices.
 side channel guarding:
   branching: true
   timing: true
@@ -17,3 +15,4 @@ hardware features:
   - aes-ni
 links:
   - https://github.com/PQCMayo/MAYO-C
+platform comment: x86-64

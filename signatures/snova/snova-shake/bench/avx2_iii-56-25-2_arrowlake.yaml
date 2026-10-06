@@ -1,8 +1,7 @@
-platform: >-
-  Intel Core Ultra 7 265K, Linux Mint 22, GCC 14.2.0 with Turbo Boost
-  disabled.
+platform: desktop
 timings:
   unit: cycles
   gen: 3829031
   enc|sign: 651370
   dec|vrfy: 1079757
+platform comment: Intel Core Ultra 7 265K, Linux Mint 22, GCC 14.2.0 with Turbo Boost disabled.
