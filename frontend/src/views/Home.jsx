@@ -55,7 +55,7 @@ const PROCESS_SCHEME_COUNT = `SELECT COUNT(DISTINCT s.id) AS c
 // which would not fit a tile). Falls back to the full process name.
 const PROCESS_TILE_LABELS = {
   'nist-pqc': 'NIST PQC',
-  'nist-additional-sigs': 'NIST Add\'l Sigs',
+  'nist-additional-sigs': 'NIST Add. Sigs',
   'nist-sp': 'NIST SP',
   rfc: 'IETF RFC',
   iso: 'ISO',
@@ -192,29 +192,60 @@ function Home() {
     <Container maxWidth="lg">
       {/* Hero */}
       <Paper
-        sx={{
-          mb: 3,
-          p: { xs: 3, md: 5 },
-          textAlign: 'center',
-          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.14)}, ${alpha(theme.palette.primary.main, 0.05)})`,
-        }}
+      elevation={0}
+      sx={{
+        mb: 3,
+        px: { xs: 3, md: 5 },
+        py: { xs: 3, md: 4 },
+        textAlign: 'center',
+        borderRadius: 3,
+        border: `1px solid ${alpha(theme.palette.primary.main, 0.16)}`,
+        background: `linear-gradient(
+          135deg,
+          ${alpha(theme.palette.primary.main, 0.08)},
+          ${alpha(theme.palette.primary.main, 0.02)}
+        )`,
+      }}
       >
         <Box
           component="img"
           src={logo}
           alt="pqdb"
-          sx={{ height: 72, width: 'auto', mb: 2 }}
+          sx={{
+            display: 'block',
+            height: { xs: 80, md: 96 },
+            width: 'auto',
+            mx: 'auto',
+            mb: 2,
+          }}
         />
-        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-          The Post-Quantum Cryptography Database
-        </Typography>
+
         <Typography
-          variant="h6"
-          color="text.secondary"
-          sx={{ maxWidth: 640, mx: 'auto', mb: 3, fontWeight: 400 }}
+          component="h1"
+          sx={{
+            fontSize: { xs: '1.75rem', md: '2.125rem' },
+            fontWeight: 700,
+            lineHeight: 1.2,
+            letterSpacing: '-0.025em',
+            textWrap: 'balance',
+            mb: 1.5,
+          }}
         >
-          Browse schemes, flavors, parameter sets, and benchmarks, and see
-          where each one stands in NIST standardization.
+          Post-Quantum Cryptography Database
+        </Typography>
+
+        <Typography
+          color="text.secondary"
+          sx={{
+            maxWidth: 600,
+            mx: 'auto',
+            fontSize: { xs: '1rem', md: '1.125rem' },
+            lineHeight: 1.6,
+            textWrap: 'pretty',
+          }}
+        >
+          Explore post-quantum schemes, compare parameter sets and
+          benchmarks, and track NIST standardization status.
         </Typography>
       </Paper>
 
@@ -268,7 +299,7 @@ function Home() {
       {/* Highlight cards */}
       <Paper sx={{ p: 3 }}>
         <Typography variant="h6" component="h2" gutterBottom>
-          Standardized Schemes
+          Standardization Overview
         </Typography>
         {highlights.length > 0 ? (
           <Grid container spacing={2}>

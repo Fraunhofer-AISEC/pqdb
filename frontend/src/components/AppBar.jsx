@@ -69,7 +69,7 @@ function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onTog
             component="img"
             src={logo}
             alt="pqdb"
-            sx={{ height: 34, width: 'auto' }}
+            sx={{ height: 40, width: 'auto' }}
           />
         </Link>
 
