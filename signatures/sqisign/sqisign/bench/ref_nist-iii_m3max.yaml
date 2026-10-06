@@ -1,9 +1,0 @@
-platform: "Apple M3 Max (performance core) @ 4.05 GHz, macOS 15.2, Apple clang 16, GMP 6.3.0"
-timings:
-  unit: cycles
-  gen: 138700000
-  enc|sign: 316400000
-  dec|vrfy: 22600000
-  comment: >-
-    Median of 1,000 runs (Table 6, reference implementation, default GMP).
-    With GMP --disable-assembly: gen 163.6M, sign 396.4M, vrfy 22.6M cycles.

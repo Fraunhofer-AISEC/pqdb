@@ -5,15 +5,16 @@ security level:
   nist category: 1
   comment: >-
     Classical target λ = 128 bits (best known attack on the endomorphism ring
-    problem Õ(2^λ)); quantum ≈ λ/2 = 64 bits (Õ(2^(λ/2)), Grover). p_I = 5·2^248 − 1.
-failure probability: -65
+    problem Õ(2^λ)); quantum ≈ λ/2 = 64 bits (Õ(2^(λ/2)), Grover). Prime
+    p324.3 = 3·2^324 − 1.
+failure probability: -151
 number of operations: inf
 sizes:
-  sk: 353
-  pk: 65
-  ct|sig: 148
+  sk: 270
+  pk: 83
+  ct|sig: 200
 comment: >-
-  failure probability given as log2 of the estimated SuitableIdeals failure
-  probability, min F(C) = 2^-65 (Table 8); sub-algorithm failure probabilities
-  are designed to be < 2^-64 (Section 4.2.2). No signing limit stated (stateless),
-  hence number of operations = inf.
+  failure probability = log2 of the IdealToIsogenyNormEquation failure
+  probability, 2^-151 (Table 18); the other sub-algorithm failure probabilities
+  are each < 2^-λ (Chapter 9). No signing limit stated (stateless), hence number
+  of operations = inf.

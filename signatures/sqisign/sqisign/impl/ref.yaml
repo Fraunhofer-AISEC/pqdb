@@ -3,16 +3,15 @@ platform: c
 type: reference
 comment: >-
   Portable C11 reference implementation; the "optimized" implementation is
-  identical to the reference implementation (Section 7.3). The 64-bit ARM build
-  reuses the same plain-C field arithmetic and accelerates the AES256-CTR-DRBG
-  via ARM Cryptographic Extensions.
+  identical to the reference implementation (Section 7.3). The library is
+  self-contained with no external dependencies: arbitrary-precision integer
+  arithmetic is implemented from scratch in the mp module, and floating-point
+  arithmetic is no longer used.
 side channel guarding:
   timing: false
   timing comment: >-
-    Implementations do not run in constant-time. However, a significant portion
-    of the finite-field, elliptic-curve, pairing and isogeny arithmetic is
-    implemented in constant-time; Pornin's inversion and Legendre-symbol
-    algorithms are constant-time.
-dependencies:
-  - GMP (arbitrary-precision integers, quaternion module)
-  - DPE (floating-point arithmetic, quaternion module)
+    Implementations do not run in constant-time overall. However, a significant
+    portion of the finite-field, elliptic-curve, pairing and isogeny arithmetic
+    is implemented in constant-time, and the integer arithmetic and lattice
+    reduction were redesigned (fixed-precision, inert representation) as a major
+    step toward a fully constant-time implementation (Sections 4.3, 8.5).

@@ -1,7 +1,9 @@
-platform: "Intel Core i7-13700K (Raptor Lake) x86-64 @ 3.4 GHz, Ubuntu Linux 24.04 LTS, clang 18, -march=native -O3, GMP 6.3.0; Turbo Boost and HyperThreading disabled"
+platform: >-
+  Intel Core i7-13700K (Raptor Lake) x86-64 @ 3.4 GHz, Ubuntu Linux 26.04 LTS, clang 21, CMake Release (-O2); Turbo Boost disabled, benchmark pinned to a single performance core.
 timings:
   unit: cycles
-  gen: 43300000
-  enc|sign: 101600000
-  dec|vrfy: 5100000
-  comment: Median of 1,000 runs (Table 5, assembly-optimized Broadwell-or-later implementation).
+  gen: 32200000
+  enc|sign: 93900000
+  dec|vrfy: 12100000
+  comment: >-
+    Median of 1,000 runs (Table 13, assembly-optimized implementation for Intel Broadwell or later).

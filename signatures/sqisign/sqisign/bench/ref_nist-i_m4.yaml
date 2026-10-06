@@ -1,0 +1,9 @@
+platform: >-
+  32-bit ARM Cortex-M4 (STM32L4R5ZI on NUCLEO-L4R5ZI), gcc 13.2, pqm4 speed preset, single run.
+timings:
+  unit: cycles
+  gen: 564400000
+  enc|sign: 1854100000
+  dec|vrfy: 229500000
+  comment: >-
+    Single run of the benchmark (Table 16, ref implementation).

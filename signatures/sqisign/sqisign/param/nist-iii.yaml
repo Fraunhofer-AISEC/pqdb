@@ -4,13 +4,15 @@ security level:
   quantum: 96
   nist category: 3
   comment: >-
-    Classical target λ = 192 bits; quantum ≈ λ/2 = 96 bits. p_III = 65·2^376 − 1.
-failure probability: -61
+    Classical target λ = 192 bits; quantum ≈ λ/2 = 96 bits. Prime p500.27 =
+    27·2^500 − 1.
+failure probability: -236
 number of operations: inf
 sizes:
-  sk: 529
-  pk: 97
-  ct|sig: 224
+  sk: 417
+  pk: 129
+  ct|sig: 306
 comment: >-
-  failure probability = log2 of the estimated SuitableIdeals failure probability,
-  min F(C) = 2^-61 (Table 8). Stateless, so number of operations = inf.
+  failure probability = log2 of the IdealToIsogenyNormEquation failure
+  probability, 2^-236 (Table 18); the other sub-algorithm failure probabilities
+  are each < 2^-λ (Chapter 9). Stateless, so number of operations = inf.

@@ -1,0 +1,9 @@
+platform: >-
+  Apple M4 Pro (performance core) @ 4.5 GHz, macOS 26, Apple clang 17, CMake Release (-O2).
+timings:
+  unit: cycles
+  gen: 130300000
+  enc|sign: 425800000
+  dec|vrfy: 41900000
+  comment: >-
+    Median of 1,000 runs (Table 14, assembly-optimized implementation for AArch64).
