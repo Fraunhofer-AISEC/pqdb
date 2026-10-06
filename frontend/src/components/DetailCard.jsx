@@ -33,17 +33,19 @@ import PropTypes from 'prop-types';
 const propTypes = {
   title: PropTypes.node.isRequired,
   Icon: PropTypes.elementType,
+  sx: PropTypes.object,
   children: PropTypes.node,
 };
 
 const defaultProps = {
   Icon: undefined,
+  sx: undefined,
   children: null,
 };
 
-function DetailCard({ title, Icon, children }) {
+function DetailCard({ title, Icon, sx, children }) {
   return (
-    <Paper variant="outlined">
+    <Paper variant="outlined" sx={sx}>
       <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
         <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
           {Icon && <Icon color="primary" fontSize="inherit" />}
