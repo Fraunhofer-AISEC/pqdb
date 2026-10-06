@@ -12,6 +12,7 @@
 import {
   alpha,
   Box,
+  Chip,
   Container,
   Grid,
   Link,
@@ -20,15 +21,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useContext, useEffect } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
 import SchemeCard from '../components/SchemeCard';
-import StatusBadge from '../components/StatusBadge';
 import { PROCESS_DISPLAY_ORDER, PROCESSES } from '../constants';
 import logo from '../pqdb.svg';
-import { CATEGORY_LABELS } from '../theme';
+import { CATEGORY_LABELS, STATUS_COLORS } from '../theme';
 import overviewLink from '../utils/overviewLink';
 import queryAll from '../utils/queryAll';
 import { fetchAkaMap, fetchStatusMap } from '../utils/schemeStatus';
@@ -55,7 +55,7 @@ const PROCESS_SCHEME_COUNT = `SELECT COUNT(DISTINCT s.id) AS c
 // which would not fit a tile). Falls back to the full process name.
 const PROCESS_TILE_LABELS = {
   'nist-pqc': 'NIST PQC',
-  'nist-additional-sigs': 'NIST Add. Sigs',
+  'nist-additional-sigs': 'NIST Additional Signatures',
   'nist-sp': 'NIST SP',
   rfc: 'IETF RFC',
   iso: 'ISO',
@@ -122,30 +122,39 @@ function Home() {
     (attacksByScheme[a.scheme_id] = attacksByScheme[a.scheme_id] || []).push(a.url);
   }
 
-  const statTiles = [
-    // Every figure links into the filtered overview.
+  // Coverage summary: the whole catalogue split by scheme type. The total is
+  // the strongest element; the type split reads as quieter detail on one row.
+  const coverage = [
     {
-      label: 'Schemes',
       value: stats.total,
+      singular: 'scheme',
+      plural: 'schemes',
       to: overviewLink({ track: 'all' }),
+      primary: true,
     },
     {
-      label: 'Key Exchange',
       value: stats.enc,
+      singular: 'key exchange',
+      plural: 'key exchange',
       to: overviewLink({ track: 'all', type: 'enc' }),
     },
     {
-      label: 'Signatures',
       value: stats.sig,
+      singular: 'signature',
+      plural: 'signatures',
       to: overviewLink({ track: 'all', type: 'sig' }),
     },
+  ];
+
+  // Standardization figures, shown in the Standardization Overview section
+  // where their meaning has context: the combined standardized/selected count
+  // plus one entry per process (distinct schemes).
+  const standardization = [
     {
       label: 'Standardized',
       value: stats.standardized,
       to: overviewLink({ track: 'standardized' }),
     },
-    // One tile per standardization process in the data, each linking to its
-    // grouped round view on the Overview. Counts are distinct schemes.
     ...processStats.map(({ process, value }) => ({
       label: PROCESS_TILE_LABELS[process] ?? PROCESSES[process] ?? process,
       value,
@@ -153,40 +162,65 @@ function Home() {
     })),
   ];
 
-  // Whether a stat tile should render as a link (scheme-level figures only).
-  const isStatLink = (tile) => Boolean(tile.to);
-
-  const statContent = (tile) => (
-    <Box
-      sx={{
-        p: 2,
-        borderRadius: 2,
-        border: 1,
-        borderColor: 'divider',
-        textAlign: 'center',
-        height: '100%',
-        ...(isStatLink(tile)
-          ? {
-              color: 'inherit',
-              textDecoration: 'none',
-              display: 'block',
-              transition: 'background-color 0.15s, border-color 0.15s',
-              '&:hover': {
-                borderColor: 'primary.main',
-                bgcolor: alpha(theme.palette.primary.main, 0.06),
-              },
-            }
-          : {}),
-      }}
-    >
-      <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
-        {tile.value}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {tile.label}
-      </Typography>
-    </Box>
-  );
+  // Subdued "browse by category" chip: a tinted background + faint border
+  // instead of a solid block, a small colour dot to keep the badge mapping,
+  // and the count rendered quieter than the category name. Stronger on hover.
+  const categoryChip = (row) => {
+    const color =
+      STATUS_COLORS.categories[row.category]
+      ?? STATUS_COLORS.categories.other
+      ?? '#64748b';
+    const name = CATEGORY_LABELS[row.category] ?? row.category;
+    return (
+      <Link
+        key={row.category}
+        component={RouterLink}
+        to={overviewLink({ track: 'all', category: row.category })}
+        underline="none"
+        sx={{ display: 'inline-block' }}
+      >
+        <Chip
+          label={
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.7 }}>
+              <Box
+                sx={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  bgcolor: color,
+                  flexShrink: 0,
+                }}
+              />
+              <Typography
+                component="span"
+                sx={{ fontWeight: 500, color: 'text.primary' }}
+              >
+                {name}
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: 'text.secondary', fontSize: '0.78rem' }}
+              >
+                · {row.c}
+              </Typography>
+            </Box>
+          }
+          sx={{
+            height: 30,
+            bgcolor: alpha(color, 0.10),
+            border: '1px solid',
+            borderColor: alpha(color, 0.25),
+            transition: 'background-color 0.15s, border-color 0.15s',
+            '& .MuiChip-label': { px: 1.5 },
+            '&:hover': {
+              bgcolor: alpha(color, 0.18),
+              borderColor: alpha(color, 0.5),
+            },
+          }}
+        />
+      </Link>
+    );
+  };
 
   return (
     <Container maxWidth="lg">
@@ -249,51 +283,62 @@ function Home() {
         </Typography>
       </Paper>
 
-      {/* Live stats */}
+      {/* Explore the database: coverage summary + browse by category */}
       <Paper sx={{ mb: 3, p: 3 }}>
         <Typography variant="h6" component="h2" gutterBottom>
-          Key Figures
+          Explore the database
         </Typography>
-        <Grid container spacing={2}>
-          {statTiles.map((t) => (
-            <Grid key={t.label} size={{ xs: 6, sm: 4, md: 2 }}>
-              {isStatLink(t) ? (
-                <Link component={RouterLink} to={t.to} underline="none" sx={{ display: 'block', height: '100%' }}>
-                  {statContent(t)}
-                </Link>
-              ) : (
-                statContent(t)
-              )}
-            </Grid>
-          ))}
-        </Grid>
 
-        <Stack
-          direction="column"
-          spacing={1}
-          sx={{ mt: 2 }}
-        >
-          <Typography sx={{ fontWeight: 500, color: 'text.secondary' }}>
-            Categories
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {categories.map((row) => (
+        {/* Coverage summary on one compact row, no individual card
+            backgrounds. The total is the strongest element; the type split is
+            quieter detail, with a separator between figures. Rendered in
+            normal inline flow (not flex) so all figures share a single text
+            baseline regardless of font size. */}
+        <Box sx={{ mb: 3 }}>
+          {coverage.map((c, i) => (
+            <Fragment key={c.label}>
+              {i > 0 && (
+                <>
+                  {' '}
+                  <Typography component="span" color="text.secondary" aria-hidden>
+                    ·
+                  </Typography>
+                  {' '}
+                </>
+              )}
               <Link
-                key={row.category}
                 component={RouterLink}
-                to={overviewLink({ track: 'all', category: row.category })}
-                underline="none"
-                sx={{ display: 'inline-block' }}
+                to={c.to}
+                underline="hover"
+                color={c.primary ? 'text.primary' : 'text.secondary'}
+                sx={{ whiteSpace: 'nowrap' }}
               >
-                <StatusBadge
-                  kind="categories"
-                  value={row.category}
-                  label={`${CATEGORY_LABELS[row.category] ?? row.category} · ${row.c}`}
-                />
+                <Typography
+                  component="span"
+                  sx={{
+                    lineHeight: 1.2,
+                    ...(c.primary
+                      ? { fontSize: { xs: '1.5rem', md: '1.9rem' }, fontWeight: 800 }
+                      : { fontSize: '1rem', fontWeight: 600 }),
+                  }}
+                >
+                  {c.value}
+                </Typography>
+                {' '}
+                <Typography component="span" sx={{ lineHeight: 1.2 }}>
+                  {c.value === 1 ? c.singular : c.plural}
+                </Typography>
               </Link>
-            ))}
-          </Box>
-        </Stack>
+            </Fragment>
+          ))}
+        </Box>
+
+        <Typography sx={{ fontWeight: 500, color: 'text.secondary', mb: 1 }}>
+          Browse by category
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {categories.map(categoryChip)}
+        </Box>
       </Paper>
 
       {/* Highlight cards */}
@@ -301,6 +346,35 @@ function Home() {
         <Typography variant="h6" component="h2" gutterBottom>
           Standardization Overview
         </Typography>
+
+        {/* Standardization figures live here, where their meaning has
+            context. Each links to the matching filtered Overview view. */}
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          useFlexGap
+          spacing={2.5}
+          sx={{ mb: 2 }}
+        >
+          {standardization.map((s) => (
+            <Link
+              key={s.label}
+              component={RouterLink}
+              to={s.to}
+              underline="hover"
+              color="text.secondary"
+            >
+              <Typography
+                component="span"
+                sx={{ fontWeight: 700, color: 'text.primary' }}
+              >
+                {s.value}
+              </Typography>
+              {' '}
+              <Typography component="span">{s.label}</Typography>
+            </Link>
+          ))}
+        </Stack>
         {highlights.length > 0 ? (
           <Grid container spacing={2}>
             {highlights.map((scheme) => (
