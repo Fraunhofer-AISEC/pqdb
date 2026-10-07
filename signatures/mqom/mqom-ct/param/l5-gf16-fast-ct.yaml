@@ -1,0 +1,11 @@
+name: MQOM3-L5-gf16-fast-ct
+security level:
+  classical: 280
+  quantum: 128
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 192
+  pk: 128
+  ct|sig: 13540

@@ -1,0 +1,11 @@
+platform: arm-m4
+timings:
+  unit: cycles
+  gen: 89760000
+  enc|sign: 5624810000
+  dec|vrfy: 3248460000
+memory requirements:
+  gen: 2273
+  enc|sign: 34304
+  dec|vrfy: 33997
+platform comment: STM32L4R5ZI Cortex-M4 on a Nucleo-L4R5ZI board at the zero wait-state benchmark clock, arm-none-eabi-gcc 14.2.1 -O3 -march=armv7e-m -mtune=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16. Memory (bytes) is peak stack plus global tables usage.

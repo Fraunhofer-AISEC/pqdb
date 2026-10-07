@@ -1,0 +1,7 @@
+platform: arm-application
+timings:
+  unit: cycles
+  gen: 442000
+  enc|sign: 30056000
+  dec|vrfy: 27438000
+platform comment: Apple Silicon M2 (AArch64) at 3.4 GHz with 16 GB RAM running macOS, Apple clang 17.0.0 -O3 -march=armv8-a+crypto+sha3. Cycle counts are converted from the millisecond timings in the specification using the 3.4 GHz clock.

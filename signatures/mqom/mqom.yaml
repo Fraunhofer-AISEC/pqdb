@@ -1,34 +1,50 @@
 name: MQOM
 description: >-
-  "MQ on my Mind." A Fiat-Shamir signature scheme built from an MPC-in-the-Head
-  proof for random multivariate quadratic systems, using Shamir secret sharing
-  over GGM seed trees.
+  "MQ on my Mind." A Fiat-Shamir signature scheme derived from a
+  Threshold-Computation-in-the-Head (TCitH) proof of knowledge for random
+  multivariate quadratic systems. It uses threshold (Shamir) secret sharing
+  and GGM-tree-based line commitments.
 category: mpc-in-the-head
 year:
   candidate: 2023
-  comment: >-
-    This document specifies MQOM v2.1 dated 2025-09-22. The first version was
-    submitted in 2023.
 authors:
   - Ryad Benadjila
   - Charles Bouillaguet
   - Thibauld Feneuil
   - Matthieu Rivain
 problems:
-  - assumption: Random multivariate quadratic (MQ) problem over F2, F16 and F256
+  - assumption: Random multivariate quadratic (MQ) problem over F2 or F16
+    comment: >-
+      Hardness of recovering a solution to a uniformly random multivariate
+      quadratic system. This assumption underlies the EUF-CMA security of the
+      one-tree variant.
+  - assumption: Partial guessing one-wayness of multivariate quadratic maps (PGOW-MQ)
+    comment: >-
+      Hardness of recovering a prefix of the MQ solution when given access to
+      an oracle that validates candidate solution prefixes. This assumption is
+      used for the correlated-tree variant and is argued in the specification
+      to be essentially as hard as the standard MQ problem for the proposed
+      parameters.
+problems comment: >-
+  The one-tree variant reduces to the standard MQ problem, whereas the
+  correlated-tree variant relies on PGOW-MQ. The security analysis is given in
+  the random oracle and ideal cipher models.
 stateful: false
 status:
   - process: nist-additional-sigs
     stage: '3'
     year: 2026
-    comment: >-
-      MQOM advanced to Round 3 of the NIST additional digital signature
-      standardization process on 2026-05-14.
 trust comment: >-
-  The scheme relies on a fully random MQ instance with no trapdoor structure,
-  which is considered a conservative assumption. A formal EUF-CMA proof in the
-  ROM and ICM is announced for a future version.
+  MQOM uses random MQ instances without trapdoor structure. The specification
+  characterizes this as a conservative hardness foundation. Its security
+  analysis establishes EUF-CMA security in the random oracle and ideal cipher
+  models, based on MQ hardness for the one-tree variant or PGOW-MQ hardness for
+  the correlated-tree variant.
 website: https://mqom.org
 sources:
-  - Specification, version 2.1 (https://mqom.org/docs/mqom-v2.1.pdf)
-last_updated: '2025-09-22'
+  - Specification, version 3.0 (https://mqom.org/docs/mqom-v3.0.pdf)
+  - NIST round-3 submission package (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/mqom3_submission_package.zip)
+last_updated: '2026-08-31'
+last_updated comment: >-
+  Publication date of the MQOM v3.0 specification from which this entry is
+  derived.

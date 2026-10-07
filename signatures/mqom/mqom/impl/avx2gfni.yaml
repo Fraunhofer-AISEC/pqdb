@@ -1,8 +1,0 @@
-name: avx2gfni
-platform: desktop
-type: optimized
-hardware features:
-  - AVX2
-  - GFNI
-comment: GFNI provides native F256 multiplication in the Rijndael field and gives a speedup of up to 50 percent on some instances.
-platform comment: x86-64

@@ -1,0 +1,6 @@
+name: MQOM (Correlated-tree)
+description: >-
+  Correlated-tree (ct) variant of MQOM, using one correlated GGM tree per
+  parallel repetition, each opened with a sibling path.
+type: SIG
+security notion: EUF-CMA

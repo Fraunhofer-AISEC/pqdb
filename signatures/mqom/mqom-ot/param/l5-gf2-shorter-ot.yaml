@@ -1,0 +1,11 @@
+name: MQOM3-L5-gf2-shorter-ot
+security level:
+  classical: 280
+  quantum: 128
+  nist category: 5
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 144
+  pk: 104
+  ct|sig: 10804

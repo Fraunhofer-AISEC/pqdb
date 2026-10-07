@@ -1,0 +1,6 @@
+name: MQOM (One-tree)
+description: >-
+  One-tree (ot) variant of MQOM, using one large GGM tree shared across all
+  parallel repetitions and opened with a combined sibling path.
+type: SIG
+security notion: EUF-CMA

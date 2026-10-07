@@ -1,7 +1,0 @@
-platform: desktop
-timings:
-  unit: cycles
-  gen: 6770000
-  enc|sign: 26950000
-  dec|vrfy: 26030000
-platform comment: Intel Core Ultra 7 265U (Arrow Lake) x86-64 with AVX2 and GFNI, gcc 15.2.0 -O3 -march=native -mtune=native, turbo boost disabled.

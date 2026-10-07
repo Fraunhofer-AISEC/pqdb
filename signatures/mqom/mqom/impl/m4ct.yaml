@@ -1,9 +1,0 @@
-name: m4ct
-platform: arm-m4
-type: optimized
-side channel guarding:
-  timing: true
-  branching: true
-  timing comment: This variant avoids any table lookup on sensitive data. Rijndael uses a fixsliced assembly implementation and F256 multiplication uses register based SIMD techniques, so the constant time property holds on any Cortex-M4 platform.
-comment: Only the NIST security level 1 instances are implemented in this variant.
-platform comment: cortex-m4
