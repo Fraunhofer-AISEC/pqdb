@@ -15,7 +15,7 @@
  */
 
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -30,12 +30,12 @@ function Comment({ title }) {
   if (title === undefined || title === null || title === '') { return null; }
 
   return (
-    <>
+    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
       {'\u2002'}
       <Tooltip title={title} placement="right" arrow>
         <InfoIcon fontSize="small" sx={{ cursor: 'help', color: 'text.secondary' }} />
       </Tooltip>
-    </>
+    </Box>
   );
 }
 Comment.propTypes = propTypes;
