@@ -24,6 +24,7 @@ import {
   Link as LinkIcon,
   Memory as ChipIcon,
   MenuBook as MenuBookIcon,
+  Security as SecurityIcon,
   SyncAlt as DiffieHellmanIcon,
   Translate as LanguageIcon,
 } from '@mui/icons-material';
@@ -247,8 +248,6 @@ function FlavorDetail() {
 
   const TypeIcon = SCHEME_TYPES[scheme.type].icon;
 
-  const typeLabel = SEC_NOTIONS[flavor.security_notion] ?? undefined;
-
   return (
     <Container maxWidth="xl">
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 1.5 }}>
@@ -305,8 +304,7 @@ function FlavorDetail() {
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>{flavor.name}</Typography>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
-              <Chip size="small" label={flavor.type} />
-              <Chip size="small" color="primary" variant="outlined" label={flavor.security_notion} title={typeLabel} />
+              <Chip size="small" icon={<SecurityIcon />} label={flavor.security_notion} title={SEC_NOTIONS[flavor.security_notion]} />
               {flavor.comment && <Comment title={flavor.comment} />}
             </Stack>
           </Stack>

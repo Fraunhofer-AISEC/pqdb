@@ -155,16 +155,6 @@ function SchemeDetail() {
             </Link>
           </Typography>
 
-          {f.type !== 'SIG' && !f.type_comment // there's just one type for signatures, not worth showing this here
-              && (
-              <Chip
-                size="small"
-                icon={<CategoryIcon />}
-                label={f.type}
-                title={f.type_comment ?? undefined}
-              />
-              )}
-
           <Chip
             size="small"
             icon={<SecurityIcon />}
