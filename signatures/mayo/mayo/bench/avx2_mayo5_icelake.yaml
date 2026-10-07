@@ -1,8 +1,8 @@
 platform: desktop
 timings:
   unit: cycles
-  gen: 766682
-  enc|sign: 2387350
-  dec|vrfy: 853920
+  gen: 571546
+  enc|sign: 721430
+  dec|vrfy: 503884
   comment: Median of 1000 runs.
 platform comment: Intel Xeon Gold 6338 (Ice Lake) at 2.0 GHz, Ubuntu, clang 18.1.8, -O3 -march=native

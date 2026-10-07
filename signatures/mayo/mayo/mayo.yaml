@@ -2,7 +2,8 @@ name: MAYO
 type: SIG
 security notion: EUF-CMA
 security notion comment: >-
-  The specification proves EUF-CMA security in the random oracle model with a
-  tight reduction from the Oil and Vinegar problem and the multi-target whipped
-  MQ problem. The reduction loses a multiplicative factor that depends on the
-  signing restart probability.
+  The specification proves EUF-CMA security in the random oracle model by
+  reduction to the Oil and Vinegar problem and the Multi-Target Whipped MQ
+  problem. The bound includes additive random-oracle terms and a multiplicative
+  factor (1 - Qs B)^-1, where B bounds the per-attempt signing restart
+  probability; the theorem requires Qs B < 1.

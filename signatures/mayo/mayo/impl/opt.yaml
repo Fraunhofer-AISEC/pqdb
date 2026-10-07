@@ -1,7 +1,7 @@
 name: opt
 platform: desktop
 type: optimized
-comment: Portable C99 code with parameters fixed at compile time and specialized batched arithmetic functions. AES-NI is used by default when available, and the specification also reports timings with AES-NI disabled.
+comment: Portable C99 code with parameters fixed at compile time and specialized batched arithmetic functions. AES-NI or the vector AES extension (VAES) is used by default when available, and the specification also reports timings with AES-NI disabled.
 side channel guarding:
   branching: true
   timing: true

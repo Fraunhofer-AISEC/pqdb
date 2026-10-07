@@ -1,28 +1,15 @@
 name: MAYO-2
-comment: 'Parameters (n, m, o, k, q) = (81, 64, 17, 4, 16) with f64(z).'
+comment: 'Parameters (n, m, o, k, q) = (86, 64, 13, 5, 16) with f64(z).'
 security level:
-  classical: 141
-  quantum: 70
+  classical: 145
+  quantum: 72
   nist category: 1
-  comment: >-
-    The specification reports bit complexity lower bounds of 211 for the Kipnis
-    Shamir attack, 167 for the reconciliation attack, 228 for the intersection
-    attack, 155 for the direct attack and 141 for claw finding. The claw finding
-    bound is slightly below the 143 gate estimate for an AES-128 key search, but
-    security level 1 is still claimed because significant attack overheads such
-    as memory access are ignored. The quantum value follows the statement that
-    known quantum attacks improve on classical attacks by at most a square root
-    factor.
 failure probability: 0
-failure probability comment: >-
-  Signing never fails. The linear system is not of full rank with probability
-  about 2 to the power minus 20, in which case signing restarts with a new
-  counter value.
 number of operations: inf
 sizes:
   sk: 24
-  pk: 4912
-  ct|sig: 186
+  pk: 2928
+  ct|sig: 239
   comment: >-
     Secret key and public key sizes are for the compact representations. The
-    expanded secret key is 99 KB and the expanded public key is 104 KB.
+    expanded secret key is 115 KB and the expanded public key is 117 KB.

@@ -1,7 +1,7 @@
 name: avx2
 platform: desktop
 type: optimized
-comment: Implementation targeting Intel Haswell and later, using compiler intrinsics and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices.
+comment: Implementation targeting Intel Haswell and later, using compiler intrinsics and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices. AES-NI is used by default when available.
 side channel guarding:
   branching: true
   timing: true

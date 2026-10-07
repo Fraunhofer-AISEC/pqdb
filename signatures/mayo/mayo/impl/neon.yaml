@@ -1,7 +1,7 @@
 name: neon
 platform: arm-application
 type: optimized
-comment: Arm NEON implementation using assembler compiler intrinsics, tested on Apple M1, M2 and M3 processors. AES acceleration is used by default when available.
+comment: Arm NEON implementation using assembler compiler intrinsics, tested on Apple M3 processors. AES acceleration is used by default when available.
 side channel guarding:
   branching: true
   timing: true

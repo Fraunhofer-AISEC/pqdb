@@ -1,8 +1,8 @@
 platform: desktop
 timings:
   unit: cycles
-  gen: 12623942
-  enc|sign: 21588512
-  dec|vrfy: 11057587
+  gen: 10833354
+  enc|sign: 7300742
+  dec|vrfy: 2024631
   comment: Median of 1000 runs.
-platform comment: Intel Xeon E3-1260L v5 (Skylake) at 2.90 GHz, Ubuntu, clang 14.0.0, -O3 -march=native
+platform comment: Intel i7-6700T (Skylake) at 2.80 GHz, Debian, clang 19.1.7, -O3 -march=native

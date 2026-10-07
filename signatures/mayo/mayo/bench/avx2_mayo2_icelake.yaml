@@ -1,8 +1,8 @@
 platform: desktop
 timings:
   unit: cycles
-  gen: 96288
-  enc|sign: 286028
-  dec|vrfy: 56374
-  comment: Median of 1000 runs. Batch signing without ExpandSK takes 89 us and batch verification without ExpandPK takes 11 us on this platform.
+  gen: 72552
+  enc|sign: 90578
+  dec|vrfy: 29174
+  comment: Median of 1000 runs.
 platform comment: Intel Xeon Gold 6338 (Ice Lake) at 2.0 GHz, Ubuntu, clang 18.1.8, -O3 -march=native

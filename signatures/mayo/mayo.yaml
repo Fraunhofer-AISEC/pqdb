@@ -1,7 +1,8 @@
 name: MAYO
 description: >-
-  An Oil and Vinegar multivariate quadratic signature scheme over F16, using a
-  publicly expanded map to keep public keys small and signatures short.
+  An Oil and Vinegar-based multivariate quadratic signature scheme over F16,
+  using a public whipping construction to reduce public-key sizes while
+  retaining short signatures.
 category: multivariate
 year:
   paper: 2021
@@ -18,33 +19,25 @@ problems:
     comment: >-
       Distinguishing a multivariate quadratic map that vanishes on a secret
       subspace of dimension o from a uniformly random multivariate quadratic map.
-  - assumption: Multi-target whipped MQ problem
+  - assumption: Multi-Target Whipped MQ problem
     comment: >-
-      Multi target preimage resistance of the whipped map built from a random
-      multivariate quadratic map with the public E matrices.
-problems comment: >-
-  The specification gives a tight reduction from these two problems to EUF-CMA
-  security in the random oracle model.
+      Given a random multivariate quadratic map and access to arbitrarily many
+      random target and linear-map pairs, finding a preimage under the whipped
+      quadratic map combined with the message-dependent linear map.
 trust comment: >-
   MAYO public keys have the same structure as Oil and Vinegar public keys, so the
   cryptanalysis of Oil and Vinegar since 1997 applies to key recovery. Security
-  against forgery additionally relies on the whipped multivariate quadratic
-  problem, which has received less public scrutiny. The round 2 parameters
-  satisfy n minus o at least m, which prevents the rectangular MinRank attack of
-  Furue and Ikematsu, and they keep a margin of 10, 15 and 20 bits of security
-  against system solving attacks for security levels 1, 3 and 5.
+  against forgery additionally relies on the Multi-Target Whipped MQ problem,
+  which has received less public scrutiny.
 status:
   - process: nist-additional-sigs
     stage: '3'
     year: 2026
-    comment: >-
-      MAYO advanced through round 1 (2023) and round 2 (2024) of the NIST
-      additional signature schemes process and was selected for round 3 in 2026.
-      The extracted data comes from the round 2 version of the specification.
 website: https://pqmayo.org/
 links:
   - "Initial paper (https://eprint.iacr.org/2021/1144)"
 sources:
-  - "MAYO specification, round 2 version (https://pqmayo.org/assets/specs/mayo-round2.pdf)"
-last_updated: '2026-08-27'
-last_updated comment: Entered from the MAYO round 2 specification.
+  - "MAYO specification, round 3 version (https://pqmayo.org/assets/specs/mayo-round3.pdf)"
+  - "MAYO round 3 submission zip (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/MAYO.zip)"
+last_updated: '2026-08-31'
+last_updated comment: Updated from the MAYO round 3 specification.
