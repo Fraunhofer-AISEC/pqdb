@@ -1,7 +1,0 @@
-platform: desktop
-timings:
-  unit: cycles
-  gen: 95017000
-  enc|sign: 4700000
-  dec|vrfy: 3883000
-platform comment: AMD EPYC 9654P. Measured with supercop-20221122 on Ubuntu 22.04.5 with Linux 5.15.0, gcc 11.4.0 and OpenSSL 3.0.2.

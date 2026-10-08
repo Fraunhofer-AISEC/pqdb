@@ -1,25 +1,11 @@
 name: QR-UOV I
-comment: Recommended parameter set for security level I.
 security level:
   classical: 150
   quantum: 128
   nist category: 1
-  comment: >-
-    The values are base 2 logarithms of the number of gates of the best attack,
-    which is the hybrid approach with polynomial XL applied to the direct
-    attack. This parameter set also satisfies NIST security level II.
 failure probability: 0
-failure probability comment: >-
-  Signing does not fail because a fresh salt is sampled until the linear system
-  in the oil variables has a solution. The expected number of iterations is
-  about 2.0. The rejection sampling parameters bound the probability of
-  insufficient random material by 2 to the power of minus lambda.
 number of operations: inf
 sizes:
   sk: 32
-  pk: 24255
+  pk: 24256
   ct|sig: 200
-  comment: >-
-    The private key consists of two seeds of lambda bits. The public key
-    consists of one seed of lambda bits and the m matrices of the lower right
-    block. The signature consists of a salt of lambda bits and n field elements.

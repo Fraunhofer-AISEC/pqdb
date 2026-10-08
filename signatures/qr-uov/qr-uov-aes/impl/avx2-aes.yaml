@@ -1,7 +1,9 @@
 name: avx2-aes
 platform: desktop
 type: optimized
-comment: C implementation with AVX2 intrinsics and the AES counter mode option for the pseudorandom generator.
+comment: >-
+  C implementation with AVX2 intrinsics and the AES counter mode option for the
+  pseudorandom generator.
 hardware features:
   - AVX2
 dependencies:

@@ -1,0 +1,11 @@
+name: QR-UOV I (small public key)
+security level:
+  classical: 149
+  quantum: 106
+  nist category: 1
+failure probability: 0
+number of operations: inf
+sizes:
+  sk: 32
+  pk: 11041
+  ct|sig: 541

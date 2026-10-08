@@ -1,24 +1,11 @@
 name: QR-UOV V
-comment: Recommended parameter set for security level V.
 security level:
   classical: 277
   quantum: 237
   nist category: 5
-  comment: >-
-    The values are base 2 logarithms of the number of gates of the best attack.
-    The classical estimate comes from the rectangular MinRank attack on the
-    lifted instance and the quantum estimate comes from the hybrid approach with
-    Wiedemann XL.
 failure probability: 0
-failure probability comment: >-
-  Signing does not fail because a fresh salt is sampled until the linear system
-  in the oil variables has a solution. The expected number of iterations is
-  about 2.0.
 number of operations: inf
 sizes:
-  sk: 64
-  pk: 173676
+  sk: 32
+  pk: 173660
   ct|sig: 392
-  comment: >-
-    The private key consists of two seeds of lambda bits and lambda equals 256
-    at this security level.
