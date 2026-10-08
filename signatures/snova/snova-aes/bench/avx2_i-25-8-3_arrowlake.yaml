@@ -1,7 +1,0 @@
-platform: desktop
-timings:
-  unit: cycles
-  gen: 246298
-  enc|sign: 340740
-  dec|vrfy: 176153
-platform comment: Intel Core Ultra 7 265K, Linux Mint 22, GCC 14.2.0 with Turbo Boost disabled.

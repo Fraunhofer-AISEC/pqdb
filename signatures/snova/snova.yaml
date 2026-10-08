@@ -1,7 +1,8 @@
 name: SNOVA
 description: >-
   A multivariate signature scheme derived from Unbalanced Oil and
-  Vinegar over noncommutative matrix rings with randomness alignment.
+  Vinegar over noncommutative matrix rings with randomness alignment. It
+  supports rectangular signatures and base fields of odd characteristic.
 category: multivariate
 year:
   paper: 2022
@@ -10,9 +11,11 @@ authors:
   - Lih-Chung Wang
   - Chun-Yen Chou
   - Jintai Ding
+  - Hao Guo
   - Yen-Liang Kuan
   - Jan Adriaan Leegwater
   - Ming-Siou Li
+  - Peigen Li
   - Bo-Shu Tseng
   - Po-En Tseng
   - Chia-Chun Wang
@@ -27,19 +30,23 @@ problems:
       Security is assessed through forgery and key recovery attacks against the
       UOV structure induced by the SNOVA public map.
 trust comment: >-
-  The Round 2 public map was modified in response to attacks on the Round 1
-  construction. The specification states that SNOVA has no provable security.
-  Some estimates for the parameter sets with matrix dimension five are
-  heuristic.
+  The public map was reformulated in Round 3 in response to cryptanalysis of
+  the Round 1 and Round 2 submissions. The specification states that the
+  security of SNOVA is supported by cryptanalytic evidence rather than by a
+  formal reduction for the noncommutative cases. The recommended parameter sets
+  were selected conservatively with substantial security margins.
 website: https://snova.pqclab.org
 sources:
   - >-
-    Specification, version 2.0
-    (https://snova.pqclab.org/files/SNOVA_Round2.pdf)
+    Specification, version 3.0
+    (https://snova.pqclab.org/files/SNOVA_Round3.pdf)
+  - >-
+    NIST round-3 submission package
+    (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/SNOVA_Round3.zip)
 links:
   - >-
     Initial paper
     (https://eprint.iacr.org/2022/1742.pdf)
-last_updated: '2025-01-25'
+last_updated: '2026-08-31'
 last_updated comment: >-
-  This is the date of specification version 2.0.
+  This is the date of specification version 3.0.

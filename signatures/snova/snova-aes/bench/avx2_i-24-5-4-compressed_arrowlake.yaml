@@ -1,8 +1,0 @@
-platform: desktop
-timings:
-  unit: cycles
-  gen: 222876
-  enc|sign: 530409
-  dec|vrfy: 205829
-  comment: The key generation value is the reported expanded secret key measurement.
-platform comment: Intel Core Ultra 7 265K, Linux Mint 22, GCC 14.2.0 with Turbo Boost disabled.

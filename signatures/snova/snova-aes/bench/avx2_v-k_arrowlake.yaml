@@ -1,0 +1,9 @@
+platform: desktop
+timings:
+  unit: cycles
+  gen: 987835
+  enc|sign: 3229305
+  dec|vrfy: 422812
+platform comment: >-
+  Arrow Lake, Intel Core Ultra 7 265K at 3.8 GHz, compiler gcc 16.1.1, Turbo
+  Boost disabled.

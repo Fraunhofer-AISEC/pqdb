@@ -1,6 +1,11 @@
 name: SNOVA-AES
 description: >-
-  Variant of SNOVA that uses AES128 for the expansion of its secret and public
-  key seeds.
+  Variant of SNOVA that uses AES128CTR for the expansion of its public key
+  seed. The secret key seed is expanded with SHAKE256.
 type: SIG
 security notion: EUF-CMA
+comment: >-
+  For each parameter set, the classical security value is the lowest attack
+  estimate in the corresponding security table of the specification. The
+  specification gives no dedicated quantum estimate, so the quantum value
+  conservatively applies the square root speedup.
