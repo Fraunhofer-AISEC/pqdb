@@ -1,18 +1,14 @@
 name: UOV V (Compressed PK)
 security level:
-  classical: 278
-  quantum: 139
+  classical: 272
+  quantum: 136
   nist category: 5
-  comment: >-
-    The classical value is the lowest attack estimate in Table 5. The quantum
-    value conservatively applies the square root speedup described in the
-    quantum attack analysis.
 failure probability: -2048
 failure probability comment: >-
   This approximates failure in all 256 signing attempts using the stated
   singularity probability of approximately 1 over 256 per attempt.
 number of operations: inf
 sizes:
-  sk: 2436704
+  sk: 2801024
   pk: 446992
-  ct|sig: 260
+  ct|sig: 275
