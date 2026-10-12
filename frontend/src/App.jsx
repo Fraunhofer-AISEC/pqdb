@@ -129,7 +129,7 @@ function App() {
             }}
           >
             <Toolbar variant="dense" sx={{ mb: 1 }} />
-            <Box sx={{ px: 2, pb: 4, flexGrow: 1 }}>
+            <Box sx={{ px: { xs: 1, sm: 2 }, pb: 4, flexGrow: 1 }}>
               <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 {content}
               </Stack>
@@ -139,7 +139,7 @@ function App() {
                 component="footer"
                 sx={{
                   py: 2,
-                  px: 2,
+                  px: { xs: 1, sm: 2 },
                   display: 'flex',
                   justifyContent: 'center',
                   gap: 4,

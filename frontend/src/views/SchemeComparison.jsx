@@ -603,7 +603,7 @@ function SchemeComparison() {
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       <div>
-        <Container maxWidth="lg">
+        <Container maxWidth={false} disableGutters>
           <Paper>
             <Box sx={{ p: 2 }}>
               {/* Row 1: primary comparison mode (Signature vs Key Exchange) */}

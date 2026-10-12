@@ -172,6 +172,14 @@ function getTheme(mode) {
           },
         },
       },
+      // Horizontal page padding is owned by the app shell (App.jsx) so the
+      // container gutters would only double the inset and misalign adjacent
+      // papers. Keep containers as pure max-width wrappers.
+      MuiContainer: {
+        defaultProps: {
+          disableGutters: true,
+        },
+      },
     },
   });
 }
