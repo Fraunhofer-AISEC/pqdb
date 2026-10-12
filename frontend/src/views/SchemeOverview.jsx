@@ -731,7 +731,18 @@ function SchemeOverview() {
                   const stages = visibleStagesIn(group.sections);
                   const multiple = safeTrack === ALL_TRACKS;
                   return (
-                    <Box key={group.id}>
+                    // The track's rounds are wrapped in a subtle border so the
+                    // rounds belonging to one standardization track read as a
+                    // single group; the bands themselves only mark the rounds.
+                    <Box
+                      key={group.id}
+                      sx={{
+                        border: 1,
+                        borderColor: 'divider',
+                        borderRadius: 2,
+                        p: { xs: 1.5, sm: 2 },
+                      }}
+                    >
                       {/* The combined Standardized group is already labelled by
                           its Standardized/selected band headings, so it gets no
                           redundant group heading; process groups keep theirs. */}
@@ -740,7 +751,7 @@ function SchemeOverview() {
                           {group.title}
                         </Typography>
                       )}
-                      <Stack spacing={4}>
+                      <Stack spacing={2}>
                         {stages.map((stage, i) => (
                           <SchemeBand
                             key={`${group.id}-${stage}-${selectionKey}`}
