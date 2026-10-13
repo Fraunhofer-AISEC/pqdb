@@ -26,7 +26,7 @@ import detailLink from '../utils/detailLink';
 import AttackedMarker from './AttackedMarker';
 import StatusBadge from './StatusBadge';
 
-function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [], to }) {
+function SchemeCard({ scheme, statusRows = [], aka = [], attacked, to }) {
   const type = SCHEME_TYPES[scheme.type];
 
   // The primary (headline) status drives the badge; `standardized` wins over
@@ -61,7 +61,7 @@ function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [],
                 </Box>
               )}
             </Typography>
-            {attacked && <AttackedMarker label wrapLabel size="small" attacks={attacks} />}
+            {attacked && <AttackedMarker label wrapLabel size="small" />}
             {type && (
               <type.icon color="action" sx={{ fontSize: 22 }} titleAccess={type.name} />
             )}
@@ -131,7 +131,6 @@ SchemeCard.propTypes = {
   statusRows: PropTypes.arrayOf(PropTypes.object),
   aka: PropTypes.arrayOf(PropTypes.string),
   attacked: PropTypes.bool,
-  attacks: PropTypes.arrayOf(PropTypes.string),
   to: PropTypes.string,
 };
 

@@ -113,14 +113,10 @@ function Home() {
   const statusByScheme = fetchStatusMap(db);
   const akaByScheme = fetchAkaMap(db);
 
-  // Schemes that have known attacks (for explicit marking on their cards);
-  // map scheme id -> attack descriptions so cards can surface them on hover.
-  const attacksByScheme = {};
-  const attackedIds = new Set();
-  for (const a of queryAll(db, 'SELECT scheme_id, url FROM scheme_attack;')) {
-    attackedIds.add(a.scheme_id);
-    (attacksByScheme[a.scheme_id] = attacksByScheme[a.scheme_id] || []).push(a.url);
-  }
+  // Schemes that have known attacks (for explicit marking on their cards).
+  const attackedIds = new Set(
+    queryAll(db, 'SELECT DISTINCT scheme_id FROM scheme_attack;').map((a) => a.scheme_id),
+  );
 
   // Coverage summary: the whole catalogue split by scheme type. The total is
   // the strongest element; the type split reads as quieter detail on one row.
@@ -384,7 +380,6 @@ function Home() {
                   statusRows={statusByScheme.get(scheme.id) ?? []}
                   aka={akaByScheme.get(scheme.id) ?? []}
                   attacked={attackedIds.has(scheme.id)}
-                  attacks={attacksByScheme[scheme.id] ?? []}
                 />
               </Grid>
             ))}

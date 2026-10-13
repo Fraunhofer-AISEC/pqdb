@@ -207,7 +207,7 @@ function SchemeDetail() {
               <Tooltip title={SCHEME_TYPES[scheme.type].name} arrow>
                 <TypeIcon fontSize="large" aria-hidden={false} role="img" aria-label={SCHEME_TYPES[scheme.type].name} aria-describedby={null} />
               </Tooltip>
-              {attacks.length > 0 && <AttackedMarker label attacks={attacks.map((a) => a.url)} />}
+              {attacks.length > 0 && <AttackedMarker label />}
             </Typography>
             {scheme.description && (
               <Box sx={{ mt: 1 }}>

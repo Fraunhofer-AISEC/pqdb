@@ -293,7 +293,6 @@ function FlavorDetail() {
         {attacks && attacks.length > 0 && (
           <AttackedMarker
             label
-            attacks={attacks.map((a) => a.url)}
             sx={{ height: 20 }}
           />
         )}

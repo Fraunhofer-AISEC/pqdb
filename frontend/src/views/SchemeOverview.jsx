@@ -161,7 +161,6 @@ function SchemeBand({
   statusByScheme,
   akaByScheme,
   attackedIds,
-  attacksByScheme,
   onCardLink,
   defaultExpanded = false,
 }) {
@@ -237,7 +236,6 @@ function SchemeBand({
                       statusRows={statusByScheme.get(scheme.id) ?? []}
                       aka={akaByScheme.get(scheme.id) ?? []}
                       attacked={attackedIds.has(scheme.id)}
-                      attacks={attacksByScheme[scheme.id] ?? []}
                       to={onCardLink(scheme.id_text)}
                     />
                   ))}
@@ -258,7 +256,6 @@ SchemeBand.propTypes = {
   statusByScheme: PropTypes.object,
   akaByScheme: PropTypes.object,
   attackedIds: PropTypes.object,
-  attacksByScheme: PropTypes.object,
   onCardLink: PropTypes.func.isRequired,
   defaultExpanded: PropTypes.bool,
 };
@@ -359,14 +356,10 @@ function SchemeOverview() {
     return buckets;
   })();
 
-  // Schemes that have known attacks (for explicit marking on their cards);
-  // map scheme id -> attack descriptions so cards can surface them on hover.
-  const attacksByScheme = {};
-  const attackedIds = new Set();
-  for (const a of queryAll(db, 'SELECT scheme_id, url FROM scheme_attack;')) {
-    attackedIds.add(a.scheme_id);
-    (attacksByScheme[a.scheme_id] = attacksByScheme[a.scheme_id] || []).push(a.url);
-  }
+  // Schemes that have known attacks (for explicit marking on their cards).
+  const attackedIds = new Set(
+    queryAll(db, 'SELECT DISTINCT scheme_id FROM scheme_attack;').map((a) => a.scheme_id),
+  );
 
   // Processes that still have schemes, in display order; processes not in
   // PROCESS_DISPLAY_ORDER are appended after.
@@ -761,7 +754,6 @@ function SchemeOverview() {
                             statusByScheme={statusByScheme}
                             akaByScheme={akaByScheme}
                             attackedIds={attackedIds}
-                            attacksByScheme={attacksByScheme}
                             onCardLink={cardLink}
                             defaultExpanded={i === 0}
                           />

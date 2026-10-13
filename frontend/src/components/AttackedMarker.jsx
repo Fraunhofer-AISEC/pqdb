@@ -1,27 +1,23 @@
 /*
  * AttackedMarker — a shared, compact warning indicator for schemes that have
- * known attacks. Renders a red warning icon (optionally with an "attacked"
- * label) whose tooltip surfaces the attack description(s). Used across the
- * scheme overview cards, scheme detail, and flavor views so the "has been
- * attacked" signal looks consistent everywhere.
+ * known attacks. Renders a red warning icon (optionally with a "known attacks"
+ * label). The attack descriptions themselves remain on the scheme detail page.
+ * Used across the scheme overview cards, scheme detail, and flavor views so
+ * the "has been attacked" signal looks consistent everywhere.
  */
 
 import { Report as ReportIcon } from '@mui/icons-material';
-import { Box, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
-function AttackedMarker({ attacks = [], label = false, size = 'small', wrapLabel = false, sx }) {
+function AttackedMarker({ label = false, size = 'small', wrapLabel = false, sx }) {
   const theme = useTheme();
-  const title = attacks.length > 0
-    ? attacks.join(' ')
-    : 'This scheme has known attacks';
 
   const iconSize = size === 'small' ? 18 : 22;
 
   return (
-    <Tooltip title={title} arrow>
-      <Box
+    <Box
         component="span"
         sx={{
           display: 'inline-flex',
@@ -59,12 +55,10 @@ function AttackedMarker({ attacks = [], label = false, size = 'small', wrapLabel
           </Typography>
         )}
       </Box>
-    </Tooltip>
   );
 }
 
 AttackedMarker.propTypes = {
-  attacks: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
   wrapLabel: PropTypes.bool,
