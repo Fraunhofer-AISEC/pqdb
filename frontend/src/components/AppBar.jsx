@@ -27,6 +27,7 @@ import {
   useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useLayoutEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { DRAWER_MINI_WIDTH, DRAWER_WIDTH } from '../nav';
@@ -37,6 +38,26 @@ function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onTog
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up('lg'));
   const dw = mini ? DRAWER_MINI_WIDTH : DRAWER_WIDTH;
+  const toolbarRef = useRef(null);
+
+  // Publish the bar's real height as a CSS variable so the layout spacer
+  // (`App.jsx`) always matches. A ResizeObserver keeps it in sync with font
+  // loading and responsive reflows; writing the variable directly avoids a
+  // React re-render on every resize tick.
+  useLayoutEffect(() => {
+    const toolbar = toolbarRef.current;
+    if (!toolbar) return undefined;
+    const publish = () => {
+      // `getBoundingClientRect` is fractional; round up so the spacer can never
+      // be a sub-pixel short of the bar.
+      const h = Math.ceil(toolbar.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--appbar-h', `${h}px`);
+    };
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(toolbar);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <MuiAppBar
@@ -47,9 +68,13 @@ function AppBar({ onOpenDrawer, mini, onToggleMini, onOpenSearch, themeId, onTog
         color: 'text.primary',
         ml: { lg: dw },
         width: { lg: `calc(100% - ${dw}px)` },
+        // Never let the toolbar push the page wider than the viewport. The
+        // breadcrumb already clips itself, so content is ellipsised rather
+        // than clipped mid-glyph.
+        overflowX: 'hidden',
       }}
     >
-      <Toolbar variant="dense" sx={{ gap: 1 }}>
+      <Toolbar ref={toolbarRef} variant="dense" sx={{ gap: 1 }}>
         {isLarge ? (
           <Tooltip title={mini ? 'Expand navigation' : 'Collapse navigation'}>
             <IconButton onClick={onToggleMini} edge="start" size="small">

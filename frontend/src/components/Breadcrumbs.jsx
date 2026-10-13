@@ -5,6 +5,11 @@
  * labels; the dynamic `/detail/:schemeId[/:flavorId]` segments are resolved to
  * their human-readable scheme/flavor names from the in-browser database (with a
  * graceful fallback to the raw id when a segment is unknown).
+ *
+ * The trail is hidden below `sm`: on phones the side drawer already carries the
+ * whole navigation tree (NAV_ITEMS has three entries), the detail pages render
+ * their own back link, and a four-crumb trail cannot coexist with the logo, the
+ * nav toggle and the two action buttons without overflowing the toolbar.
  */
 
 import {
@@ -81,7 +86,26 @@ function Breadcrumbs({ db, sx }) {
     <MuiBreadcrumbs
       maxItems={4}
       aria-label="breadcrumb"
-      sx={{ px: 1, pb: 1, ...sx }}
+      sx={{
+        px: 1,
+        pb: 1,
+        // Keep the trail on a single line when it is shown. MUI's own `ol`
+        // wraps (`flexWrap: wrap`), which used to grow the AppBar to four
+        // lines on narrow viewports; instead the middle crumbs shrink and
+        // ellipsise while the last one stays readable.
+        display: { xs: 'none', sm: 'flex' },
+        minWidth: 0,
+        overflow: 'hidden',
+        '& .MuiBreadcrumbs-ol': { flexWrap: 'nowrap', minWidth: 0 },
+        '& .MuiBreadcrumbs-li': { minWidth: 0 },
+        '& .MuiBreadcrumbs-li > *': {
+          display: 'block',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        },
+        ...sx,
+      }}
     >
       {crumbs.map((crumb, idx) => {
         const isLast = idx === crumbs.length - 1;

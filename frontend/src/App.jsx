@@ -128,7 +128,7 @@ function App() {
               minWidth: 0,
             }}
           >
-            <Toolbar variant="dense" sx={{ mb: 1 }} />
+            <Toolbar variant="dense" sx={{ mb: 1, minHeight: 'var(--appbar-h, 48px)' }} />
             <Box sx={{ px: { xs: 1, sm: 2 }, pb: 4, flexGrow: 1 }}>
               <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 {content}

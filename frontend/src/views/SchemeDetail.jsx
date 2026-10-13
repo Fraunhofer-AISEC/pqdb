@@ -177,7 +177,15 @@ function SchemeDetail() {
             <Link
               component={RouterLink}
               to={detailLink(scheme.id_text, f.id_text)}
-              sx={{ ml: 'auto', color: 'text.secondary', fontSize: 13, whiteSpace: 'nowrap' }}
+              sx={{
+                // On small screens the counts drop onto their own full-width
+                // line and wrap, instead of being pushed right and cut off.
+                ml: { xs: 0, sm: 'auto' },
+                width: { xs: '100%', sm: 'auto' },
+                color: 'text.secondary',
+                fontSize: 13,
+                whiteSpace: { xs: 'normal', sm: 'nowrap' },
+              }}
             >
               {[
                 pCount > 0 && `${pCount} parameter set${pCount !== 1 ? 's' : ''}`,

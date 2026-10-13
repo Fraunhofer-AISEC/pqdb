@@ -54,8 +54,28 @@ function PropItem({ children, Icon, title }) {
           <Icon role="img" aria-hidden={false} aria-label={title} aria-describedby={null} fontSize="small" />
         </Tooltip>
       </Box>
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start', flexGrow: 1, minWidth: 0 }}>
-        <Typography sx={{ fontWeight: 500, color: 'text.secondary', flexShrink: 0, width: 190, whiteSpace: 'nowrap' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          // Below the `sm` breakpoint the label sits above its value so narrow
+          // screens use the full width instead of clipping the value to the
+          // right of a fixed-width label column.
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 0.25, sm: 1 },
+          alignItems: 'flex-start',
+          flexGrow: 1,
+          minWidth: 0,
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 500,
+            color: 'text.secondary',
+            flexShrink: 0,
+            width: { xs: '100%', sm: 190 },
+            whiteSpace: { xs: 'normal', sm: 'nowrap' },
+          }}
+        >
           {title}
         </Typography>
         <Stack spacing={0.5} sx={{ flexGrow: 1, minWidth: 0, alignItems: 'flex-start' }}>
