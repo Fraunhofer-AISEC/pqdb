@@ -1,16 +1,16 @@
-name: m4ct
+name: M4
+comment: >-
+  Constant-time, low-memory (Memory) profile of the embedded implementation,
+  with the memory footprint minimized (e.g. only 2 leaves batched in the BLC).
+  Only the gf16 short/fast instances are benchmarked here.
 platform: arm-m4
+platform comment: cortex-m4
 type: optimized
 side channel guarding:
-  timing: true
   branching: true
+  timing: true
   timing comment: >-
     Constant-time "Memory" profile: SWAR F256 multiplication and a
     fixsliced (bitslice) AES/Rijndael block cipher avoid secret-dependent
     table lookups, so the constant-time property holds on any Cortex-M4
     platform.
-comment: >-
-  Constant-time, low-memory (Memory) profile of the embedded implementation,
-  with the memory footprint minimized (e.g. only 2 leaves batched in the BLC).
-  Only the gf16 short/fast instances are benchmarked here.
-platform comment: cortex-m4

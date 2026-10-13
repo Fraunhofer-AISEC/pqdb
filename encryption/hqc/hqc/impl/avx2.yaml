@@ -1,6 +1,6 @@
 name: AVX2
-type: optimized
 platform: desktop
-hardware features:
-  - avx2
 platform comment: C
+type: optimized
+hardware features:
+  - AVX2

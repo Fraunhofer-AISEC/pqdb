@@ -3,9 +3,13 @@ description: >-
   Based rather closely on the original NTRU from 1998, but with perfect
   correctness.
 category: lattice
+stateful: false
 status:
   - process: nist-pqc
-    stage: 3f
+    stage: '3f'
+year:
+  paper: 1998
+  candidate: 2017
 authors:
   - Cong Chen
   - Oussama Danba
@@ -16,12 +20,8 @@ authors:
   - Peter Schwabe
   - William Whyte
   - Zhenfei Zhang
-year:
-  candidate: 2017
-  paper: 1998
 problems:
   - assumption: SVP
-stateful: false
 website: https://ntru.org/
 sources:
   - >-

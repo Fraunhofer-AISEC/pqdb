@@ -1,14 +1,13 @@
-name: optimized
+name: Optimized
 platform: desktop
+platform comment: c
 type: optimized
-links:
-  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html
 side channel guarding:
   branching: false
-  timing comment: ToDo
 hardware features:
-  - avx
-  - aes-ni
+  - AVX
+  - AES-NI
 dependencies:
-  - openssl
-platform comment: c
+  - OpenSSL
+links:
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Optimized_Implementation.html

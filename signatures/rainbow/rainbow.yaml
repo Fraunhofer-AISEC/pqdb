@@ -1,18 +1,15 @@
 name: Rainbow
+description: >-
+  Rainbow is a multivariate-based public key signature scheme which can be seen
+  as a multi-layer variant of the Oil-Vinegar signature scheme.
 category: multivariate
-year:
-  paper: 2005
-  candidate: 2017
-problems:
-  - assumption: MQ
-    comment: Multivariate Quadratic
-  - assumption: IP
-    comment: Isomorphism of Polynomials
-  - assumption: Min-Rank
 stateful: false
 status:
   - process: nist-pqc
-    stage: 3f
+    stage: '3f'
+year:
+  paper: 2005
+  candidate: 2017
 authors:
   - Jintai Ding
   - Ming-Shing Chen
@@ -21,14 +18,17 @@ authors:
   - Bo-Yin Yang
   - Matthias J. Kannwischer
   - Jacques Patarin
+problems:
+  - assumption: MQ
+    comment: Multivariate Quadratic
+  - assumption: IP
+    comment: Isomorphism of Polynomials
+  - assumption: Min-Rank
 website: https://www.pqcrainbow.org/
 sources:
   - >-
     NIST Submission Round3
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Rainbow-Round3.zip)
-description: >-
-  Rainbow is a multivariate-based public key signature scheme which can be seen
-  as a multi-layer variant of the Oil-Vinegar signature scheme.
 attacks:
   - 'Breaking Rainbow Takes a Weekend on a Laptop (https://eprint.iacr.org/2022/214.pdf)'
 last_updated: '2022-10-06'

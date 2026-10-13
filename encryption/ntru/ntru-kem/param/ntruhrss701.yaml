@@ -7,12 +7,11 @@ security level:
     Assuming a non-local model of computation. Classical security is derived
     from the corresponding NIST category. (With a local model: 185 bits quantum
     security, 192 bits classical security, category 3)
+failure probability: -797
+failure probability comment: Only nonzero when using the 'improper-key variant'
 sizes:
   sk: 1452
   pk: 1138
   msg: 32
   ct|sig: 1138
-failure probability: -797
 number of operations: inf
-sources: []
-failure probability comment: Only nonzero when using the 'improper-key variant'

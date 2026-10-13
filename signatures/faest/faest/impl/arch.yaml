@@ -1,11 +1,11 @@
 name: Architecture-specific
 platform: desktop
+platform comment: x86-64 and AArch64
 type: optimized
 hardware features:
   - AVX2
   - AES-NI
-  - armv8-a+crypto
+  - AES
 dependencies:
   - XKCP
   - OpenSSL
-platform comment: x86-64 and AArch64

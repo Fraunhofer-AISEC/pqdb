@@ -1,7 +1,8 @@
-name: neon
-platform: arm-application
-type: optimized
+name: NEON
 comment: Arm NEON implementation using assembler compiler intrinsics, tested on Apple M3 processors. AES acceleration is used by default when available.
+platform: arm-application
+platform comment: armv8
+type: optimized
 side channel guarding:
   branching: true
   timing: true
@@ -9,7 +10,6 @@ side channel guarding:
   timing comment: The implementation avoids secret dependent data indexing.
 hardware features:
   - NEON
-  - Armv8 AES instructions
+  - AES
 links:
   - https://github.com/PQCMayo/MAYO-C
-platform comment: armv8

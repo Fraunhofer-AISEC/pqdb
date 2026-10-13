@@ -1,12 +1,12 @@
-name: avx2
+name: AVX2
 comment: >-
   AVX2 optimized implementation. It is derived from the optimized
   implementation and uses SHAKE128 for expanding the public key seed. The secret
   key is a seeded secret key.
 platform: desktop
+platform comment: x86-64
 type: optimized
 hardware features:
   - AVX2
 sources:
   - Official implementation (https://github.com/PQCLAB-SNOVA/SNOVA)
-platform comment: x86-64

@@ -4,11 +4,10 @@ security level:
   quantum: 128
   nist category: 5
 failure probability: 0
-number of operations: inf
 sizes:
   sk: 128
   pk: 64
   ct|sig: 49856
-  msg: 256
+number of operations: inf
 sources:
   - FIPS 205 (https://csrc.nist.gov/pubs/fips/205/final)

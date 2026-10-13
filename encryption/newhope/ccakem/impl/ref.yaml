@@ -1,7 +1,6 @@
 name: Reference
 platform: desktop
+platform comment: c
 type: reference
 side channel guarding:
   branching: false
-hardware features: []
-platform comment: c

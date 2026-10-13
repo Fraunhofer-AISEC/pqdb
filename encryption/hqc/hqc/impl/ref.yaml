@@ -1,5 +1,4 @@
-name: Reference Implementation
-type: reference
+name: Reference
 platform: desktop
-hardware features: []
 platform comment: C
+type: reference

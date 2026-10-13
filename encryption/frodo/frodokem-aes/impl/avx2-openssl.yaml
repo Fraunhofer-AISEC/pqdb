@@ -1,11 +1,11 @@
-name: Optimized plus AVX2, using AES from OpenSSL
-type: optimized
+name: AVX2
 platform: desktop
-dependencies:
-  - OpenSSL
+platform comment: c
+type: optimized
 side channel guarding:
   branching: true
 hardware features:
-  - aes-ni
-  - avx2
-platform comment: c
+  - AES-NI
+  - AVX2
+dependencies:
+  - OpenSSL

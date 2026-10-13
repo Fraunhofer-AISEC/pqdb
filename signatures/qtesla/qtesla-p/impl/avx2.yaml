@@ -1,8 +1,8 @@
 name: AVX2
 platform: desktop
+platform comment: c
 type: optimized
 side channel guarding:
   branching: true
 hardware features:
-  - avx2
-platform comment: c
+  - AVX2

@@ -1,11 +1,11 @@
-name: Optimized, using AES from OpenSSL
-type: optimized
+name: Optimized
 platform: desktop
-dependencies:
-  - OpenSSL
+platform comment: c
+type: optimized
 side channel guarding:
   branching: true
 hardware features:
-  - aes-ni
-  - neon
-platform comment: c
+  - AES-NI
+  - NEON
+dependencies:
+  - OpenSSL

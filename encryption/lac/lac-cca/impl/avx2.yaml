@@ -1,6 +1,6 @@
-name: avx2
+name: AVX2
 platform: desktop
+platform comment: C
 type: optimized
 hardware features:
-  - avx2
-platform comment: C
+  - AVX2

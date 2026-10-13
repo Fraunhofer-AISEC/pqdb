@@ -1,12 +1,11 @@
 name: Reference
 platform: desktop
+platform comment: c
 type: reference
-links:
-  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html
 side channel guarding:
   branching: false
-  timing comment: ToDo
 hardware features:
-  - aes-ni
-  - avx
-platform comment: c
+  - AES-NI
+  - AVX
+links:
+  - https://ntruprime.cr.yp.to/nist/ntruprime-20190330/Reference_Implementation.html

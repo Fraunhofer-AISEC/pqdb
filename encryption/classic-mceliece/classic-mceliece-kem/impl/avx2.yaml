@@ -1,11 +1,11 @@
-type: optimized
-comment: Intel/AMD 256-bit vector instructions
 name: AVX2
+comment: Intel/AMD 256-bit vector instructions
 platform: desktop
-hardware features:
-  - avx2
+platform comment: C
+type: optimized
 side channel guarding:
+  branching: true
   timing: true
   timing comment: '"designed to avoid all data flow from secrets to timing"'
-  branching: true
-platform comment: C
+hardware features:
+  - AVX2

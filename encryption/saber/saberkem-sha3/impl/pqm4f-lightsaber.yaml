@@ -1,11 +1,11 @@
-name: m4f for lightsaber from pqm4
-links:
-  - https://github.com/mupq/pqm4/tree/master/crypto_kem/lightsaber/m4f
+name: PQM4 M4F
 platform: arm-m4
+platform comment: m4
 type: optimized
 hardware features:
   - FPU
 code size:
   overall: 9660
   comment: The code-size measurements only include the code that is provided by the scheme implementation, i.e., exclude common code like hashing or C standard library functions.
-platform comment: m4
+links:
+  - https://github.com/mupq/pqm4/tree/master/crypto_kem/lightsaber/m4f

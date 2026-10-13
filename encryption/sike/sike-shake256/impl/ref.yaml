@@ -1,11 +1,11 @@
-name: Reference implementation
-type: reference
+name: Reference
 platform: desktop
-dependencies:
-  - GMP library
+platform comment: c
+type: reference
 side channel guarding:
   branching: false
   timing: false
+dependencies:
+  - GMP
 code size:
   overall: 81860
-platform comment: c

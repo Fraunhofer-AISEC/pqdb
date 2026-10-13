@@ -1,9 +1,9 @@
-name: avx2-shake
-platform: desktop
-type: optimized
+name: AVX2
 comment: >-
   C implementation with AVX2 intrinsics and the SHAKE option for the
   pseudorandom generator.
+platform: desktop
+platform comment: x86-64
+type: optimized
 hardware features:
   - AVX2
-platform comment: x86-64

@@ -1,13 +1,13 @@
-name: gfni
+name: GFNI
 comment: >-
   AVX2 implementation built with support for the Galois Field New Instructions,
   which makes it the fastest of the provided implementations. It uses AES128CTR
   for expanding the public key seed. The secret key is a seeded secret key.
 platform: desktop
+platform comment: x86-64
 type: optimized
 hardware features:
   - AVX2
   - GFNI
 sources:
   - Official implementation (https://github.com/PQCLAB-SNOVA/SNOVA)
-platform comment: x86-64

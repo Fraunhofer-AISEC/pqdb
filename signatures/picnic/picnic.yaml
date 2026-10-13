@@ -1,10 +1,14 @@
 name: Picnic
 description: Based on non-interactive zero knowledge proofs.
+category: mpc-in-the-head
+category comment: based on the MPC-in-the-Head paradigm
+stateful: false
+status:
+  - process: nist-pqc
+    stage: '3a'
 year:
     paper: 2017
     candidate: 2017
-category: mpc-in-the-head
-category comment: based on the MPC-in-the-Head paradigm
 authors:
   - Greg Zaverucha
   - Melissa Chase
@@ -20,13 +24,8 @@ authors:
   - Daniel Kales
 problems:
     - assumption: Onewayness of LowMC, a symmetric cipher
-stateful: false
-status:
-  - process: nist-pqc
-    stage: '3a'
-sources:
-  - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"
 website: https://microsoft.github.io/Picnic/
 links:
   - Original Paper (https://eprint.iacr.org/2017/279)
-  - Round 3 Specification (https://microsoft.github.io/Picnic/)
+sources:
+  - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"

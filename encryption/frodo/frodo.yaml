@@ -1,15 +1,13 @@
 name: Frodo
 description: 'Based on plain LWE, using the Lindner-Peikert approach.'
 category: lattice
-year:
-  paper: 2016
-  candidate: 2017
-problems:
-  - assumption: LWE
 stateful: false
 status:
   - process: nist-pqc
-    stage: 3a
+    stage: '3a'
+year:
+  paper: 2016
+  candidate: 2017
 authors:
   - Erdem Alkim
   - Joppe W. Bos
@@ -21,6 +19,8 @@ authors:
   - Chris Peikert
   - Ananth Raghunathan
   - Douglas Stebila
+problems:
+  - assumption: LWE
 website: https://frodokem.org/
 sources:
   - >-

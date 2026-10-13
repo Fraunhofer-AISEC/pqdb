@@ -1,9 +1,9 @@
-name: Optimized plus AVX2
-type: optimized
+name: AVX2
 platform: desktop
+platform comment: c
+type: optimized
 side channel guarding:
   branching: true
 hardware features:
-  - aes-ni
-  - avx2
-platform comment: c
+  - AES-NI
+  - AVX2

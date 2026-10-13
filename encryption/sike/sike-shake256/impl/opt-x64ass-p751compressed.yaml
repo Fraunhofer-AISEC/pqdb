@@ -1,10 +1,10 @@
-name: Optimized implementation using x64 assembly for p751 with compressed keys
-type: optimized
+name: Optimized x64 p751 compressed
 platform: desktop
+platform comment: c, x64assembly
+type: optimized
 side channel guarding:
   branching: true
   timing: true
   timing comment: Also guarded against cache attacks.
 code size:
   overall: 2711194
-platform comment: c, x64assembly

@@ -1,14 +1,15 @@
 name: GeMSS
+description: >-
+  Based on the Hidden Field Equations cryptosystem using minus and vinegar
+  modifiers.
 category: multivariate
-year:
-  paper: 2017
-  candidate: 2017
-problems:
-  - assumption: HFE
 stateful: false
 status:
   - process: nist-pqc
-    stage: 3a
+    stage: '3a'
+year:
+  paper: 2017
+  candidate: 2017
 authors:
   - Antoine Casanova
   - Jean-Charles Faugère
@@ -16,15 +17,11 @@ authors:
   - Jacques Patarin
   - Ludovic Perret
   - Jocelyn Ryckeghem
+problems:
+  - assumption: HFE
 website: https://www-polsys.lip6.fr/Links/NIST/GeMSS.html
 sources:
   - >-
     NIST Submission Paper 3
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/GeMSS-Round3.zip)
-  - >-
-    Changes for 3nd round
-    (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/GeMSS-Round3.zip)
-description: >-
-  Based on the Hidden Field Equations cryptosystem using minus and vinegar
-  modifiers.
 last_updated: '2020-12-01'

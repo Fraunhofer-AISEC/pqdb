@@ -1,7 +1,8 @@
-name: avx2
-platform: desktop
-type: optimized
+name: AVX2
 comment: Implementation targeting Intel Haswell and later, using compiler intrinsics and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices. AES-NI is used by default when available.
+platform: desktop
+platform comment: x86-64
+type: optimized
 side channel guarding:
   branching: true
   timing: true
@@ -12,7 +13,6 @@ hardware features:
   - SSSE3
   - AVX
   - AVX2
-  - aes-ni
+  - AES-NI
 links:
   - https://github.com/PQCMayo/MAYO-C
-platform comment: x86-64

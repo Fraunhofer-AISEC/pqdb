@@ -4,6 +4,11 @@ description: >-
   isomorphism problem, using NTRU key generation and floating-point-free
   discrete Gaussian sampling.
 category: lattice
+stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2022
   candidate: 2023
@@ -18,7 +23,6 @@ authors:
   - Thomas Prest
   - Ludo N. Pulles
   - Wessel van Woerden
-stateful: false
 problems:
   - assumption: omSVP (one more approximate shortest vector problem)
     comment: >-
@@ -46,9 +50,10 @@ trust comment: >-
   construction, but enlarging HAWK to compensate makes the scheme uncompetitive.
   The attack does not affect Falcon, ML-DSA or other lattice based schemes.
 website: https://hawk-sign.info
-status:
-  - process: nist-additional-sigs
-    stage: '3'
+links:
+  - "Initial paper (https://eprint.iacr.org/2022/1155)"
+sources:
+  - "Specification, version 1.1 (https://hawk-sign.info/hawk-spec.pdf)"
 attacks:
   - >-
     Straznickas and Weis of Anthropic announced an improved key recovery attack
@@ -65,10 +70,6 @@ attacks:
     The authors report that it does not affect Falcon, ML-DSA or other lattice
     based schemes. The announcement and the linked paper are available on the
     pqc-forum (https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2r2u6SbHun4/m/S-ZUsHNICQAJ).
-links:
-  - "Initial paper (https://eprint.iacr.org/2022/1155)"
-sources:
-  - "Specification, version 1.1 (https://hawk-sign.info/hawk-spec.pdf)"
 last_updated: '2026-08-27'
 last_updated comment: >-
   Updated to record the 2026 key recovery attack by Straznickas and Weis, the

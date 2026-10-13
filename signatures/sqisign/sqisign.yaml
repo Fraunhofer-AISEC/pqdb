@@ -3,6 +3,12 @@ description: >-
   An isogeny-based Fiat-Shamir signature scheme proving knowledge of a supersingular
   elliptic-curve endomorphism, with security based on the endomorphism ring problem.
 category: isogeny
+stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+    comment: Round-3 submission (SQIsign specification v3.0, 2026-09-01).
 year:
   paper: 2020
   candidate: 2023
@@ -44,25 +50,19 @@ authors:
   - Alexandre Wallet
   - Benjamin Wesolowski
   - Wessel van Woerden
-stateful: false
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
-    comment: Round-3 submission (SQIsign specification v3.0, 2026-09-01).
 problems:
   - assumption: Endomorphism ring problem for supersingular elliptic curves
     comment: >-
       Equivalent to the supersingular isogeny path problem under polynomial-time
-      reductions [EHL+18; Wes22]. EUF-CMA security is proven under a "hint"
+      reductions [EHL+18, Wes22]. EUF-CMA security is proven under a "hint"
       variant of the endomorphism ring problem (q-sim-hint-OneEndp,
       q-unif-hint-OneEndp, q-unif-hint-EndRingp).
 trust comment: >-
-  Not affected by the polynomial-time SIDH attacks [CD23; MMP+23; Rob23], which
+  Not affected by the polynomial-time SIDH attacks [CD23, MMP+23, Rob23], which
   targeted an easier variant of the isogeny problem. The round-3 submission
   redesigns quaternion arithmetic using an inert representation and
   fixed-precision integers, removes the GMP/DPE dependencies, and adopts a new
-  ideal-to-isogeny algorithm [BCE+25; DLS26]. These changes accelerate key
+  ideal-to-isogeny algorithm [BCE+25, DLS26]. These changes accelerate key
   generation and signing, but the response to the attack [Wes26] required larger
   parameters, resulting in 1.5-2x slower verification and larger keys and
   signatures. Primes are chosen "nothing up my sleeve", with no known security

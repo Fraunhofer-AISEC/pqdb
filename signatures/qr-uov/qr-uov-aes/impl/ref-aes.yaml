@@ -1,10 +1,10 @@
-name: ref-aes
-platform: desktop
-type: reference
+name: Reference
 comment: Reference C implementation with the AES counter mode option for the pseudorandom generator. It uses neither inline assembly nor intrinsics for special processor instructions.
+platform: desktop
+platform comment: c
+type: reference
 side channel guarding:
   timing: false
   timing comment: The reference implementation does not use a constant time algorithm for solving the linear system during signing. The specification recommends such an algorithm for critical applications.
 dependencies:
   - OpenSSL
-platform comment: c

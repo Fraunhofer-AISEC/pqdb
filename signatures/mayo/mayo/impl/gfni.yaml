@@ -1,6 +1,4 @@
-name: gfni
-platform: desktop
-type: optimized
+name: GFNI
 comment: >-
   Intel AVX-512 and GFNI optimized implementation using compiler intrinsics for
   the AVX-512F and AVX-512BW instruction sets together with the Galois Field New
@@ -10,6 +8,9 @@ comment: >-
   (VAES) with 512 bit registers, processing 16 AES blocks per iteration. It
   requires AVX-512F, AVX-512BW and GFNI, which are available on Intel server
   architectures since Ice Lake and on AMD architectures since Zen 4.
+platform: desktop
+platform comment: x86-64
+type: optimized
 side channel guarding:
   branching: true
   timing: true
@@ -22,4 +23,3 @@ hardware features:
   - VAES
 links:
   - https://github.com/PQCMayo/MAYO-C
-platform comment: x86-64

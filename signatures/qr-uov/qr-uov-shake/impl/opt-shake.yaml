@@ -1,5 +1,5 @@
-name: opt-shake
-platform: desktop
-type: optimized
+name: Optimized
 comment: Optimized C implementation with the SHAKE option for the pseudorandom generator. It uses neither inline assembly nor intrinsics and it ignores 32 bit environments.
+platform: desktop
 platform comment: x86-64
+type: optimized

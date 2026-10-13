@@ -1,6 +1,6 @@
-name: AVX2, vectorized SHAKE
+name: AVX2
 platform: desktop
+platform comment: c
 type: optimized
 hardware features:
-  - avx2
-platform comment: c
+  - AVX2
