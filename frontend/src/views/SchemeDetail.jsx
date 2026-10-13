@@ -295,7 +295,7 @@ function SchemeDetail() {
                       && (
                       <>
                         <div><strong>Trust </strong></div>
-                        <Box sx={{ marginBottom: '.6em' }}>{scheme.trust_comment}</Box>
+                        <Box sx={{ marginBottom: '.6em', overflowWrap: 'anywhere' }}>{scheme.trust_comment}</Box>
                       </>
                       )}
                   {(problems.length > 0 || scheme.problems_comment)

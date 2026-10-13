@@ -60,7 +60,7 @@ function PrivacyPolicy() {
             <br />
             E-Mail:
             {' '}
-            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
+            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline', overflowWrap: 'anywhere' }}>
               info(at)zv.fraunhofer.de
             </Box>
           </Typography>
@@ -83,7 +83,7 @@ function PrivacyPolicy() {
             The corporate data protection officer at Fraunhofer can be reached at the
             above-mentioned address, c/o Data Protection Officer or at
             {' '}
-            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
+            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline', overflowWrap: 'anywhere' }}>
               datenschutz(at)zv.fraunhofer.de
             </Box>
             . Please feel free to contact the data protection officer directly at any time if
@@ -198,7 +198,7 @@ function PrivacyPolicy() {
           <Typography sx={{ marginBottom: '16px' }}>
             If you would like to assert your right to object, simply send an email to
             {' '}
-            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
+            <Box component="span" sx={{ color: 'primary.main', textDecoration: 'underline', overflowWrap: 'anywhere' }}>
               datenschutzkoordination(at)zv.fraunhofer.de
             </Box>
             .

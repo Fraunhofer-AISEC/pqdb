@@ -21,7 +21,11 @@ const URL_REGEX = /(https?:\/\/[^\s()]+)/g;
 export default function linkify(s) {
   return s.split(URL_REGEX).map((part, i) =>
     /^https?:\/\//.test(part)
-      ? <Link key={`${part}-${i}`} href={part} target="_blank" rel="noreferrer">{part}</Link>
+      ? (
+        <Link key={`${part}-${i}`} href={part} target="_blank" rel="noreferrer" sx={{ overflowWrap: 'anywhere' }}>
+          {part}
+        </Link>
+      )
       : part,
   );
 }
