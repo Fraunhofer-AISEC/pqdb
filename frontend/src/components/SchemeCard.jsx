@@ -61,7 +61,7 @@ function SchemeCard({ scheme, statusRows = [], aka = [], attacked, attacks = [],
                 </Box>
               )}
             </Typography>
-            {attacked && <AttackedMarker label size="small" attacks={attacks} />}
+            {attacked && <AttackedMarker label wrapLabel size="small" attacks={attacks} />}
             {type && (
               <type.icon color="action" sx={{ fontSize: 22 }} titleAccess={type.name} />
             )}

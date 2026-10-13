@@ -11,7 +11,7 @@ import { Box, Tooltip, Typography, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
-function AttackedMarker({ attacks = [], label = false, size = 'small', sx }) {
+function AttackedMarker({ attacks = [], label = false, size = 'small', wrapLabel = false, sx }) {
   const theme = useTheme();
   const title = attacks.length > 0
     ? attacks.join(' ')
@@ -37,9 +37,24 @@ function AttackedMarker({ attacks = [], label = false, size = 'small', sx }) {
           ...sx,
         }}
       >
-        <ReportIcon sx={{ fontSize: iconSize }} />
+        <ReportIcon sx={{ fontSize: iconSize, flexShrink: 0 }} />
         {label && (
-          <Typography component="span" sx={{ fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+          <Typography
+            component="span"
+            sx={{
+              fontWeight: 700,
+              fontSize: '0.72rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.02em',
+              // On xs viewports the label wraps over two lines ("known" /
+              // "attacks") so the badge stays narrow next to a scheme name.
+              ...(wrapLabel && {
+                width: { xs: 'min-content', sm: 'auto' },
+                whiteSpace: { xs: 'normal', sm: 'inherit' },
+                lineHeight: { xs: 1.15, sm: 1 },
+              }),
+            }}
+          >
             known attacks
           </Typography>
         )}
@@ -52,6 +67,7 @@ AttackedMarker.propTypes = {
   attacks: PropTypes.arrayOf(PropTypes.string),
   label: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
+  wrapLabel: PropTypes.bool,
   sx: PropTypes.object,
 };
 
