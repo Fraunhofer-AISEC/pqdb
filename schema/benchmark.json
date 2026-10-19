@@ -30,7 +30,17 @@
         },
         "platform": {
             "type": "string",
-            "$comment": "Please store as much data as provided by the source (exact processor name, frequency, OS, compiler, compilation options, ...) #TODO make this reference to platform object"
+            "enum": [
+                "desktop",
+                "arm-m4",
+                "arm-application",
+                "fpga",
+                "other"
+            ],
+            "$comment": "Normalized platform family. Detail (exact processor name, frequency, OS, compiler, compilation options, ...) belongs in the free-text `platform comment`."
+        },
+        "platform comment": {
+            "type": "string"
         },
         "timings": {
             "type":"object",
@@ -47,9 +57,9 @@
                 "unit": {
                     "type": "string",
                     "enum": [
-                        "cycles",
-                        "ms"
-                    ]
+                        "cycles"
+                    ],
+                    "$comment": "All timings are cycle counts."
                 },
                 "comment": {
                     "type": "string"

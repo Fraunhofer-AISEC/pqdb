@@ -1,7 +1,7 @@
 name: AVX2
-platform: c
+platform: desktop
 type: reference
 side channel guarding:
   branching: false
 hardware features:
-  - avx2
+  - AVX2

@@ -1,0 +1,61 @@
+name: SDitH
+description: >-
+  "SD-in-the-Head." A Fiat-Shamir signature scheme built from a VOLE-in-the-Head
+   proof for binary syndrome decoding, using tensor-product representations to keep
+   low-weight witnesses small.
+comment: >-
+  The specification also outlines three optional variants that are not formal
+  instances, namely a variant over the field F256, a variant based on the
+  Threshold-Computation-in-the-Head framework and a simple variant without the
+  one-tree optimization and without grinding.
+category: mpc-in-the-head
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+year:
+  paper: 2022
+  candidate: 2023
+authors:
+  - Carlos Aguilar Melchor
+  - Slim Bettaieb
+  - Loïc Bidoux
+  - Thibauld Feneuil
+  - Philippe Gaborit
+  - Nicolas Gama
+  - Shay Gueron
+  - James Howe
+  - Andreas Hülsing
+  - David Joseph
+  - Antoine Joux
+  - Mukul Kulkarni
+  - Edoardo Persichetti
+  - Tovohery H. Randrianarisoa
+  - Matthieu Rivain
+  - Dongze Yue
+problems:
+  - assumption: Syndrome decoding for random binary linear codes
+    comment: >-
+      The specification presents this problem as the presumably hardest problem of
+      code based cryptography and as NP-hard.
+  - assumption: Regular syndrome decoding
+    comment: >-
+      The used instances admit a proven reduction from unstructured syndrome
+      decoding, and the parameters compensate the loss of that reduction.
+problems comment: >-
+  Security statements are given in the random oracle model for the hash function
+  and in the ideal cipher model for the block cipher.
+trust comment: >-
+  The specification argues for a conservative choice by relying on unstructured
+  binary syndrome decoding, whose cryptanalysis has been stable for decades.
+  Security estimates use the Syndrome Decoding Estimator with a logarithmic memory
+  access cost and a bounded memory size. A formal proof of EUF-CMA security is
+  announced for a future version of the document. A preprint claiming shorter
+  signatures through a different modeling of syndrome decoding appeared shortly
+  before the submission deadline and has not yet been evaluated by the team.
+website: https://sdith.org/
+links:
+  - https://eprint.iacr.org/2022/1645
+sources:
+  - "Specification, version 3.0 (https://sdith.org/docs/sdith-v3.0.pdf)"
+last_updated: '2026-08-31'

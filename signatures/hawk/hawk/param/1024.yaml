@@ -1,0 +1,19 @@
+name: HAWK-1024
+security level:
+  classical: 182
+  quantum: 136
+  nist category: 2
+  comment: >-
+    HAWK-1024 originally targeted NIST category 5 with a claimed classical
+    security of around 2^288 gates in the AGPS20 model. The 2026 attack reduces
+    the classical key recovery cost to about 2^182 gates, which lies between
+    NIST category 2 and category 3, so the effective category is now 2. The
+    quantum figure of 136 bits is derived from the quantum core SVP estimate at
+    the attack oracle dimension of 513. The original values are retained in this
+    comment as historical context.
+failure probability: -315
+sizes:
+  sk: 360
+  pk: 2440
+  ct|sig: 1221
+number of operations: 2^64

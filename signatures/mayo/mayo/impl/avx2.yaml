@@ -1,0 +1,18 @@
+name: AVX2
+comment: Implementation targeting Intel Haswell and later, using compiler intrinsics and AVX2 shuffle instructions for F16 arithmetic on nibble sliced matrices. AES-NI is used by default when available.
+platform: desktop
+platform comment: x86-64
+type: optimized
+side channel guarding:
+  branching: true
+  timing: true
+  branching comment: The implementation avoids secret dependent control flow.
+  timing comment: The implementation avoids secret dependent data indexing.
+hardware features:
+  - SSE2
+  - SSSE3
+  - AVX
+  - AVX2
+  - AES-NI
+links:
+  - https://github.com/PQCMayo/MAYO-C

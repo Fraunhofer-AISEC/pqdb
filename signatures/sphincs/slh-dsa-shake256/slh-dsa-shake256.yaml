@@ -1,0 +1,8 @@
+name: SLH-DSA-SHAKE
+description: >-
+  The FIPS 205 standardized SLH-DSA signature scheme instantiated with the
+  SHAKE256 hash function.
+type: SIG
+security notion: EUF-CMA
+sources:
+  - FIPS 205 (https://csrc.nist.gov/pubs/fips/205/final)

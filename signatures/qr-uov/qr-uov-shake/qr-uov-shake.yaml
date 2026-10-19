@@ -1,0 +1,6 @@
+name: QR-UOV-SHAKE
+description: >-
+  QR-UOV flavor using SHAKE128 for public-key seed expansion and SHAKE256 for
+  private-key seed expansion. It is not interoperable with QR-UOV-AES.
+type: SIG
+security notion: EUF-CMA

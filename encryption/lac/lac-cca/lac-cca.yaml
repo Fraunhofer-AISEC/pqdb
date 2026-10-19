@@ -1,4 +1,4 @@
 name: LAC.CCA
-description: CCA-secure KEM
+description: The CCA-secure KEM variant of LAC.
 type: KEM
 security notion: IND-CCA

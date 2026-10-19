@@ -1,0 +1,13 @@
+name: ML-KEM-1024
+security level:
+    classical: 254
+    quantum: 230
+    nist category: 5
+failure probability: -174
+sizes:
+    sk: 3168
+    pk: 1568
+    msg: 32
+    ct|sig: 1568
+    comment: The secret key can be expanded from a 32 byte seed.
+number of operations: inf

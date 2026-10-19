@@ -1,0 +1,8 @@
+name: Broadwell
+comment: Assembly-optimized implementation targeting Intel Broadwell (and later). The assembly optimizations are applied to the finite-field arithmetic in the gf module. The rest of the code base is reused from the reference implementation (build type broadwell). Uses SHAKE256 for hashing and PRNG (FIPS 202), with no external libraries.
+platform: desktop
+platform comment: x86-64
+type: optimized
+side channel guarding:
+  timing: false
+  timing comment: Not constant-time overall. The finite-field arithmetic is implemented in constant-time (Section 8.5).

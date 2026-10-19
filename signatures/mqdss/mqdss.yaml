@@ -1,21 +1,21 @@
 name: MQDSS
-comment: Version 2.1
+description: Based on the hardness of the multivariate quadratic problem.
+comment: Version 2.1.
 category: multivariate
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
     paper: 2016
     candidate: 2017
-problems:
-    - assumption: MQ
-stateful: false
-nist round: '2'
 authors:
   - Ming-Shing Chen
   - Andreas Hülsing
   - Joost Rijneveld
   - Simona Samardjiska
   - Peter Schwabe
+problems:
+    - assumption: MQ
 website: http://mqdss.org/
 sources:
   - NIST Submission Paper (http://mqdss.org/files/mqdssVer2point1.pdf)
-  - http://mqdss.org/
-description: Based on the hardness of the multivariate quadratic problem.

@@ -1,7 +1,11 @@
-stateful: false
 name: Classic McEliece
+description: >-
+  Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
+  binary Goppa codes.
 category: code
-nist round: '4'
+status:
+  - process: nist-pqc
+    stage: '4'
 year:
   paper: 1978
   candidate: 2017
@@ -25,13 +29,36 @@ authors:
   - Kenneth G. Paterson
   - Cen Jung Tjhai
   - Martin Tomlinson
-sources:
-  - 'https://classic.mceliece.org/mceliece-spec-20221023.pdf'
-  - 'https://classic.mceliece.org/nist.html'
-website: https://classic.mceliece.org/
 problems:
   - assumption: Computational Syndrome Decoding
-description: >-
-  Built conservatively from Niederreiter’s dual version of McEliece’s PKE using
-  binary Goppa codes.
-last_updated: '2022-10-26'
+website: https://classic.mceliece.org/
+sources:
+  - Classic McEliece specification (https://classic.mceliece.org/mceliece-spec-20221023.pdf)
+  - Classic McEliece NIST submission page (https://classic.mceliece.org/nist.html)
+attacks:
+  - >-
+    In August 2026, Ghoshal, Ishai, Jain and Sun
+    (https://eprint.iacr.org/2026/1630) announced a new structural attack
+    on Classic McEliece that distinguishes binary Goppa code public keys
+    from random and can be extended heuristically to key recovery. Subsequent
+    improvements and analyses reduced the estimated key recovery cost for the
+    submitted Classic McEliece parameter sets to roughly 2^94 to 2^102 bit
+    operations, which is far below their claimed security levels. Experiments
+    have also validated key recovery on smaller instances, although the
+    extrapolation to the full parameter sets remains heuristic. The
+    interpretation of these estimates is controversial. Several researchers
+    consider the submitted parameter sets cryptographically broken because their
+    estimated security falls far below the advertised levels. Bernstein argues
+    that the cost models substantially underestimate memory, communication and
+    parallelization costs and that revised parameters can restore a large
+    security margin. The attacks therefore do not constitute a practical break
+    of McEliece or of binary Goppa codes in general, but they have significantly
+    weakened confidence in the existing Classic McEliece parameter sets.
+    Following these developments, the German BSI withdrew its previous positive
+    recommendation and now advises against using Classic McEliece for new
+    deployments
+    (https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Crypto/Notes_Classic_McEliece.pdf).
+    The attack, subsequent analyses and discussion are available on the pqc
+    forum
+    (https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2kfyUnLObWQ).
+last_updated: '2026-10-07'

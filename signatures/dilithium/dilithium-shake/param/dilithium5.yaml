@@ -3,7 +3,7 @@ security level:
   classical: 252
   quantum: 229
   nist category: 5
-  comment: security level for SUF-CMA
+  comment: The security level refers to SUF-CMA security.
 failure probability: 0
 sizes:
   sk: 4880

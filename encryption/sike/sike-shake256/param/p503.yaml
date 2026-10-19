@@ -5,9 +5,9 @@ security level:
     nist category: 0
     comment: Classical security is estimated using the expected number of calls of the Castryck-Decru attack from https://github.com/jack4818/Castryck-Decru-SageMath. Quantum security uses a depth of 132 and width of 25.
 failure probability: 0
-number of operations: inf
 sizes:
     sk: 434
     pk: 378
-    ct|sig: 402
     msg: 24
+    ct|sig: 402
+number of operations: inf

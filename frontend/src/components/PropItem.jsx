@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,19 @@
  */
 
 import {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  Box,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
+
+/*
+ * PropItem — a single key-value row used inside a `DetailCard`. It shows a
+ * labelled icon on the left (with an accessible tooltip) and its content on the
+ * right. Styling is theme-token based via `sx`, so it renders correctly in both
+ * light and dark modes.
+ */
 
 const defaultProps = {
   children: null,
@@ -36,19 +41,48 @@ const propTypes = {
 
 function PropItem({ children, Icon, title }) {
   return (
-    <ListItem alignItems="flex-start">
-      <ListItemIcon>
-        <Typography component="h2" variant="inherit">
-          <Tooltip title={title} arrow>
-            {/* overwrite some properties <Tooltip> sets */}
-            <Icon role="img" aria-hidden={false} aria-label={title} aria-describedby={null} />
-          </Tooltip>
+    <Box sx={{
+      display: 'flex',
+      gap: 1.5,
+      alignItems: 'flex-start',
+      py: 1,
+    }}
+    >
+      <Box sx={{ mt: 0.4, color: 'text.secondary', display: 'flex' }}>
+        <Tooltip title={title} arrow>
+          {/* overwrite some properties <Tooltip> sets */}
+          <Icon role="img" aria-hidden={false} aria-label={title} aria-describedby={null} fontSize="small" />
+        </Tooltip>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          // Below the `sm` breakpoint the label sits above its value so narrow
+          // screens use the full width instead of clipping the value to the
+          // right of a fixed-width label column.
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 0.25, sm: 1 },
+          alignItems: 'flex-start',
+          flexGrow: 1,
+          minWidth: 0,
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 500,
+            color: 'text.secondary',
+            flexShrink: 0,
+            width: { xs: '100%', sm: 190 },
+            whiteSpace: { xs: 'normal', sm: 'nowrap' },
+          }}
+        >
+          {title}
         </Typography>
-      </ListItemIcon>
-      <ListItemText>
-        {children}
-      </ListItemText>
-    </ListItem>
+        <Stack spacing={0.5} sx={{ flexGrow: 1, minWidth: 0, alignItems: 'flex-start' }}>
+          {children}
+        </Stack>
+      </Box>
+    </Box>
   );
 }
 

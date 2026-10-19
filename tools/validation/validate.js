@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,9 +42,9 @@ const BASIC_TYPES = ["boolean", "integer", "number", "string"];
 
 const ARRAY_COLUMN_NAMES = {
     "authors": "name", "links": "url", "sources": "url", "attacks": "url", "hardware features": "feature",
-    "dependencies": "dependency", "patents sources": "url"
+    "dependencies": "dependency", "patents sources": "url", "aka": "name"
 };
-const SINGULAR = { "dependencies": "dependency" };
+const SINGULAR = { "dependencies": "dependency", "aka": "aka", "status": "status" };
 
 function singular(word) {
     if (word in SINGULAR)
@@ -353,7 +353,7 @@ var argv = process.argv.slice(2);
 var dbFile = ":memory:";
 if (argv.length > 0 && argv.length < 3) dbFile = argv[0];
 var dbSchemaSvg = (argv.length == 2) ? dbSchemaSvg = argv[1] : null;
-var db = new Database(dbFile);
+var db = new Database(":memory:");
 
 createTableForSchema("scheme", schemaForScheme, []);
 createTableForSchema("flavor", schemaForFlavor, ["scheme"]);
@@ -366,6 +366,12 @@ delete schemaForBenchReduced.required;
 createTableForSchema("benchmark", schemaForBenchReduced, ["paramset", "implementation"]);
 
 if (!validate()) process.exit(1);
+
+// Validation succeeded. For a file target, write the in-memory database to it.
+if (dbFile != ":memory:") {
+    if (exists(dbFile)) fs.rmSync(dbFile);
+    db.exec(`VACUUM INTO '${dbFile.replace(/'/g, "''")}'`);
+}
 
 if (dbSchemaSvg != null) {
     const nomnoml = require('nomnoml');

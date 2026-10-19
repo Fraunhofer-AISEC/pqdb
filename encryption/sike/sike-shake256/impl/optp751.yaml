@@ -1,10 +1,10 @@
-name: Optimized implementation for p751
+name: Optimized p751
+platform: desktop
 type: optimized
-platform: c
 side channel guarding:
   branching: true
   timing: true
   timing comment: Also guarded against cache attacks.
 code size:
   overall: 60162
-  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"
+  comment: Size of a speed-optimized version (`-Os`), not the version the timings were taken with.

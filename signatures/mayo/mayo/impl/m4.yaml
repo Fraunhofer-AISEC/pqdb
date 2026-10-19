@@ -1,0 +1,16 @@
+name: M4
+comment: Arm Cortex-M4 implementation in C99 and assembly, delivered as a separate code package covering MAYO1, MAYO2 and MAYO3.
+platform: arm-m4
+platform comment: cortex-m4
+type: optimized
+side channel guarding:
+  branching: true
+  timing: true
+  branching comment: The implementation avoids secret dependent control flow.
+  timing comment: A T-table AES is used, which is acceptable because AES only expands public values.
+dependencies:
+  - pqm4
+  - XKCP
+  - AES T-table
+links:
+  - https://github.com/PQCMayo/MAYO-M4

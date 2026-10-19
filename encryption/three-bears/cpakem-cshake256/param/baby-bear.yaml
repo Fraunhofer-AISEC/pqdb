@@ -4,10 +4,10 @@ security level:
   quantum: 153
   nist category: 2
 failure probability: -58
-failure probability comment: 'Failure Probability is approx. 2^{-58}'
-number of operations: inf
+failure probability comment: The failure probability is approximately 2^{-58}.
 sizes:
   sk: 40
   pk: 804
-  ct|sig: 917
   msg: 32
+  ct|sig: 917
+number of operations: inf

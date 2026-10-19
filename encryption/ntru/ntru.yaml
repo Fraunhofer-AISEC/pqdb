@@ -3,23 +3,24 @@ description: >-
   Based rather closely on the original NTRU from 1998, but with perfect
   correctness.
 category: lattice
-nist round: 3f
+status:
+  - process: nist-pqc
+    stage: '3f'
+year:
+  paper: 1998
+  candidate: 2017
 authors:
   - Cong Chen
   - Oussama Danba
-  - Jerey Hostein
+  - Jeffrey Hoffstein
   - Andreas Hülsing
   - Joost Rijneveld
   - John M. Schanck
   - Peter Schwabe
   - William Whyte
   - Zhenfei Zhang
-year:
-  candidate: 2017
-  paper: 1998
 problems:
   - assumption: SVP
-stateful: false
 website: https://ntru.org/
 sources:
   - >-

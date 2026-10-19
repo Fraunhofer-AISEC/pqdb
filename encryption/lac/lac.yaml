@@ -1,6 +1,9 @@
 name: LAC
 description: Based on Ring-LWE, using error correction.
 category: lattice
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
   paper: 2019
   candidate: 2017
@@ -15,10 +18,9 @@ authors:
   - Kunpeng Wang
   - Zhe Liu
   - Hao Yang
-stateful: false
-sources:
-  - >-
-    https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip
-nist round: '2'
 problems:
 - assumption: Ring-LWE
+sources:
+  - >-
+    NIST Round 2 submission
+    (https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/LAC-Round2.zip)

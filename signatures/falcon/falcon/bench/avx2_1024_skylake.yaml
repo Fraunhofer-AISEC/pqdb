@@ -1,6 +1,5 @@
-platform: >-
-  Intel Core i5-8259U(" Coffee Lake") 2.3 GHZ ,Clang version 10.0 flags: -O3
-  -march=skylake
+platform: desktop
+platform comment: 'Intel Core i5-8259U (Coffee Lake) at 2.3 GHz, clang 10.0 flags: -O3 -march=skylake'
 timings:
   unit: cycles
   gen: 63135000

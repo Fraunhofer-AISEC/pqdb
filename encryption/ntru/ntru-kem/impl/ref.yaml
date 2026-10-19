@@ -1,5 +1,3 @@
 name: Reference
-platform: c
-dependencies: []
-hardware features: []
+platform: desktop
 type: reference

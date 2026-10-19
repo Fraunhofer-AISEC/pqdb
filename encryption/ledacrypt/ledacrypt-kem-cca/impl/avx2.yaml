@@ -1,3 +1,4 @@
 name: AVX2
-platform: C11
+platform: desktop
+platform comment: C11
 type: optimized

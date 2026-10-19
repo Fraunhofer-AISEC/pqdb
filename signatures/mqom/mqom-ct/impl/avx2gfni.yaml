@@ -1,0 +1,9 @@
+name: AVX2 GFNI
+comment: AVX2 with VAES and GFNI. VAES processes two AES blocks per AES-NI call across the full 256-bit ymm register. GFNI provides native F256 multiplication and inversion in the Rijndael field, giving a speedup of up to 50 percent on some instances.
+platform: desktop
+platform comment: x86-64
+type: optimized
+hardware features:
+  - AVX2
+  - VAES
+  - GFNI

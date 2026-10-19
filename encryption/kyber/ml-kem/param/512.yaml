@@ -1,0 +1,13 @@
+name: ML-KEM-512
+security level:
+    classical: 111
+    quantum: 100
+    nist category: 1
+failure probability: -178
+sizes:
+    sk: 1632
+    pk: 800
+    msg: 32
+    ct|sig: 768
+    comment: The secret key can be expanded from a 32 byte seed.
+number of operations: inf

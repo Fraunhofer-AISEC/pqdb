@@ -1,0 +1,7 @@
+platform: desktop
+platform comment: Intel Xeon E3-1230L v3 (Haswell) x86-64 at 1.8 GHz, Ubuntu 24.04 LTS, gcc 15.2.0, Turbo Boost and Hyper-Threading disabled.
+timings:
+  unit: cycles
+  gen: 3587232
+  enc|sign: 120984
+  dec|vrfy: 83724

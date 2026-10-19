@@ -1,5 +1,5 @@
 name: Reference
-platform: c
+platform: desktop
 type: reference
 side channel guarding:
   branching: false

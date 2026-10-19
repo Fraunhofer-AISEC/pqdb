@@ -1,4 +1,5 @@
-platform: ARM Cortex-A72 (1.992GHz 64-bit)
+platform: arm-application
+platform comment: ARM Cortex-A72 64-bit at 1.992 GHz
 timings:
   unit: cycles
   gen: 24844000

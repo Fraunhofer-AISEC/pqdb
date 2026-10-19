@@ -1,15 +1,16 @@
 name: HQC-192
 security level:
+  classical: 192
   quantum: 96
   nist category: 3
-  classical: 192
 failure probability: -192
 sizes:
-  pk: 4522
   sk: 40
-  ct|sig: 9026
-  comment: ''
+  pk: 4522
   msg: 64
-number of operations: todo
+  ct|sig: 9026
+number of operations: inf
 sources:
-  - 'https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1'
+  - >-
+    HQC specification, section 2.7.1
+    (https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1)

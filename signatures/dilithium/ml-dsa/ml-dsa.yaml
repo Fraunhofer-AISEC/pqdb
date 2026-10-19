@@ -1,0 +1,5 @@
+name: ML-DSA
+description: >-
+  The FIPS 204 standardized signature scheme.
+type: SIG
+security notion: SUF-CMA

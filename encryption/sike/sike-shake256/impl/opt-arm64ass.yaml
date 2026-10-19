@@ -1,6 +1,7 @@
-name: Optimized implementation for ARM64 platform using ARMv8 assembly
+name: Optimized AArch64
+platform: arm-application
+platform comment: ARM64
 type: optimized
-platform: ARM64
 side channel guarding:
   branching: true
   timing: true

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
   AccordionDetails,
@@ -23,24 +24,28 @@ import {
   Container,
   Grid,
   Paper,
+  Stack,
   TextField,
 } from '@mui/material';
-import React, {
-  useCallback, useContext, useEffect, useState,
+import {
+  useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { GlassMagnifier } from 'react-image-magnifiers';
 import { useSearchParams } from 'react-router-dom';
 
 import { DatabaseContext } from '../components/DatabaseProvider';
-import QueryTable from '../components/QueryTable';
+import DataTable from '../components/DataTable';
 import diagramImage from '../tables.svg';
+import useDbQuery from '../utils/useDbQuery';
+
+// Custom SQL runs without bound parameters; a stable reference avoids
+// retriggering useDbQuery on every render.
+const NO_PARAMS = [];
 
 // As suggested in https://github.com/mui-org/material-ui/issues/1594#issuecomment-272547735
 function AutoFocusTextField(props) {
-  const inputRef = React.useRef();
+  const inputRef = useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timeout = setTimeout(() => {
       inputRef.current.focus();
     }, 100);
@@ -53,27 +58,88 @@ function AutoFocusTextField(props) {
   return <TextField inputRef={inputRef} {...props} />;
 }
 
+// Glass-style magnifier over the database diagram. The SVG is shown at full
+// width, and a square lens follows the cursor, displaying the image zoomed via
+// an absolutely-positioned background. (The previous react-image-magnifiers
+// dependency is incompatible with React 19, so this self-contained version
+// replaces it.)
+const ZOOM = 2.5;
+const LENS_SIZE = 220;
+
 function DatabaseDiagram() {
-  return (
-    <GlassMagnifier
-      imageSrc={diagramImage}
-      square
-      magnifierSize="25%"
-      allowOverflow
+  const containerRef = useRef(null);
+  const [cursor, setCursor] = useState(null);
+
+  function onMouseMove(e) {
+    const rect = containerRef.current.getBoundingClientRect();
+    if (rect.width === 0) return;
+    setCursor({
+      // Fractional position within the image.
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+      // Position of the lens within the (position: relative) container.
+      left: e.clientX - rect.left,
+      top: e.clientY - rect.top,
+      width: rect.width,
+      height: rect.height,
+    });
+  }
+
+  function onMouseLeave() {
+    setCursor(null);
+  }
+
+  const lens = cursor && (
+    <div
+      style={{
+        position: 'absolute',
+        width: LENS_SIZE,
+        height: LENS_SIZE,
+        pointerEvents: 'none',
+        left: cursor.left - LENS_SIZE / 2,
+        top: cursor.top - LENS_SIZE / 2,
+        border: '2px solid rgba(255,255,255,0.8)',
+        boxShadow: '0 0 12px rgba(0,0,0,0.5)',
+        borderRadius: 4,
+        overflow: 'hidden',
+        backgroundImage: `url(${diagramImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: `${cursor.width * ZOOM}px ${cursor.height * ZOOM}px`,
+        backgroundPosition: `${-(cursor.x * cursor.width * ZOOM - LENS_SIZE / 2)}px ${-(cursor.y * cursor.height * ZOOM - LENS_SIZE / 2)}px`,
+      }}
     />
+  );
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ position: 'relative', width: '100%', cursor: 'zoom-in' }}
+    >
+      <img
+        src={diagramImage}
+        alt="Database diagram"
+        style={{ display: 'block', width: '100%', height: 'auto', maxWidth: '100%' }}
+      />
+      {lens}
+    </div>
   );
 }
 
 function CustomSQLQuery() {
   const { db } = useContext(DatabaseContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchSqlInput = searchParams.has('query') ? searchParams.get('query') : '';
+  const searchSqlInput = searchParams.get('query') ?? '';
   const [sqlInput, setSqlInput] = useState(searchSqlInput);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
-  const [queryResult, setQueryResult] = useState(null);
-  const [error, setError] = useState(null);
-  const [queryProcessing, setQueryProcessing] = useState(false);
+
+  const { data: queryResult, processing: queryProcessing, error } = useDbQuery(
+    db,
+    searchParams.has('query') ? searchParams.get('query') : '',
+    NO_PARAMS,
+  );
 
   function executeSQLQuery() {
     setSearchParams({ query: sqlInput });
@@ -84,28 +150,10 @@ function CustomSQLQuery() {
   }, []);
 
   useEffect(() => {
-    if (sqlInput === '') return;
-
-    const query = searchParams.get('query');
-    setSqlInput(query);
-
-    setQueryProcessing(true);
-    setTimeout(
-      () => {
-        try {
-          const results = db.exec(query)[0];
-          setQueryResult(results);
-          setError(null);
-        } catch (e) {
-          setQueryResult(null);
-          setError(e);
-        }
-        setQueryProcessing(false);
-        setOrder('asc');
-        setOrderBy(null);
-      },
-      0,
-    );
+    if (!searchParams.has('query')) return;
+    setSqlInput(searchParams.get('query'));
+    setOrder('asc');
+    setOrderBy(null);
   }, [searchParams]);
 
   const onChangeOrder = useCallback((newOrder, newOrderBy) => {
@@ -114,43 +162,39 @@ function CustomSQLQuery() {
   }, []);
 
   return (
-    <Grid container direction="column" spacing={2}>
-      <Grid item>
+    <Stack spacing={2}>
+      <div>
         <Paper>
-          <Box p={2}>
-            <Grid container direction="column" spacing={3}>
-              <Grid item>
-                <AutoFocusTextField
-                  label="SQL Query"
-                  multiline
-                  fullWidth
-                  margin="normal"
-                  minRows={6}
-                  maxRows={100}
-                  variant="outlined"
-                  error={error != null}
-                  helperText={error ? error.toString() : ''}
-                  value={sqlInput}
-                  onChange={(e) => setSqlInput(e.target.value)}
-                />
-              </Grid>
-              <Grid item>
-                <Box display="flex" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={queryProcessing}
-                    onClick={() => executeSQLQuery()}
-                  >
-                    {(queryProcessing) ? 'Computing...' : 'Run Query'}
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
+          <Box sx={{ p: 2 }}>
+            <Stack spacing={3}>
+              <AutoFocusTextField
+                label="SQL Query"
+                multiline
+                fullWidth
+                margin="normal"
+                minRows={6}
+                maxRows={100}
+                variant="outlined"
+                error={error != null}
+                helperText={error ? error.toString() : ''}
+                value={sqlInput}
+                onChange={(e) => setSqlInput(e.target.value)}
+              />
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={queryProcessing}
+                  onClick={() => executeSQLQuery()}
+                >
+                  {(queryProcessing) ? 'Computing...' : 'Run Query'}
+                </Button>
+              </Box>
+            </Stack>
           </Box>
         </Paper>
-      </Grid>
-      <Grid container item>
+      </div>
+      <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -162,21 +206,23 @@ function CustomSQLQuery() {
           </Accordion>
         </Container>
       </Grid>
-      <Grid container item>
+      <Grid container size="grow">
         <Container maxWidth={false} disableGutters>
           <Paper>
-            <Box p={2} display="flex" justifyContent="center">
-              <QueryTable
-                queryResult={queryResult}
-                order={order}
-                orderBy={orderBy}
-                onChangeOrder={onChangeOrder}
-              />
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
+              {error ? null : (
+                <DataTable
+                  queryResult={queryResult}
+                  order={order}
+                  orderBy={orderBy}
+                  onChangeOrder={onChangeOrder}
+                />
+              )}
             </Box>
           </Paper>
         </Container>
       </Grid>
-    </Grid>
+    </Stack>
   );
 }
 

@@ -1,0 +1,4 @@
+name: XMSS-SHA2-192
+description: An XMSS variant using SHA-256/192 as the hash function.
+type: SIG
+security notion: EUF-CMA

@@ -1,3 +1,5 @@
 name: SPHINCS-SHAKE256
+deprecated: true
+deprecated comment: Superseded by the SLH-DSA-SHAKE flavor in FIPS 205.
 type: SIG
 security notion: PQ-EU-CMA

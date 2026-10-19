@@ -1,0 +1,76 @@
+name: HAWK
+description: >-
+  Withdrawn. A fast, compact hash-and-sign lattice scheme based on the module lattice
+  isomorphism problem, using NTRU key generation and floating-point-free
+  discrete Gaussian sampling.
+category: lattice
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+year:
+  paper: 2022
+  candidate: 2023
+authors:
+  - Joppe W. Bos
+  - Olivier Bronchain
+  - Léo Ducas
+  - Serge Fehr
+  - Yu-Hsuan Huang
+  - Thomas Pornin
+  - Eamonn W. Postlethwaite
+  - Thomas Prest
+  - Ludo N. Pulles
+  - Wessel van Woerden
+problems:
+  - assumption: omSVP (one more approximate shortest vector problem)
+    comment: >-
+      SUF-CMA security reduces to omSVP in the quantum random oracle model with
+      an explicit and unidirectional loss.
+  - assumption: smLIP (search module lattice isomorphism problem)
+    comment: >-
+      Direct secret key recovery from the public key is an instance of rank 2
+      smLIP over a power of two cyclotomic field, distributed as in HAWK key
+      generation. The 2026 attack targets exactly this recovery problem. See the
+      attacks field.
+problems comment: >-
+  Key generation additionally solves the NTRU equation over the ring
+  Z[X]/(X^n + 1).
+trust comment: >-
+  HAWK has been withdrawn following the 2026 key recovery cryptanalysis (see the
+  attacks field for the full details and revised security levels). As context,
+  omSVP and smLIP are relatively young assumptions. Rank 2 smLIP was already
+  known to be efficiently solvable over totally real fields and over any field
+  with a real embedding, while the complex cyclotomic fields used by HAWK had
+  been thought to resist these approaches. The new attack instead uses the
+  Galois involution that maps zeta to minus zeta, whose fixed field is a complex
+  cyclotomic subfield, and this yields a public lattice of rank n rather than
+  2n. Conductors of the form p^k or 2 p^k for an odd prime p evade the
+  construction, but enlarging HAWK to compensate makes the scheme uncompetitive.
+  The attack does not affect Falcon, ML-DSA or other lattice based schemes.
+website: https://hawk-sign.info
+links:
+  - https://eprint.iacr.org/2022/1155
+sources:
+  - "Specification, version 1.1 (https://hawk-sign.info/hawk-spec.pdf)"
+attacks:
+  - >-
+    Straznickas and Weis of Anthropic announced an improved key recovery attack
+    on the pqc-forum mailing list on 28 July 2026, and the HAWK team confirmed
+    it on 29 July 2026. The attack gives an unconditional deterministic
+    polynomial time reduction from HAWK-n key recovery to a polynomial number of
+    calls to an exact SVP oracle in dimension n/2 + 1, which roughly halves the
+    required lattice reduction dimension. In the AGPS20 gate count model it
+    lowers the key recovery cost of HAWK-512 from 2^150 to about 2^108 and of
+    HAWK-1024 from 2^288 to about 2^182, well below the claimed security levels.
+    The authors demonstrated the result with a practical implementation that
+    recovered a HAWK-256 secret key in a few hours on a single server. This
+    attack caused the withdrawal of HAWK from the NIST process on 29 July 2026.
+    The authors report that it does not affect Falcon, ML-DSA or other lattice
+    based schemes. The announcement and the linked paper are available on the
+    pqc-forum (https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2r2u6SbHun4/m/S-ZUsHNICQAJ).
+last_updated: '2026-08-27'
+last_updated comment: >-
+  Updated to record the 2026 key recovery attack by Straznickas and Weis, the
+  reduced security levels of all parameter sets, and the withdrawal of HAWK from
+  the NIST Additional Signatures process on 29 July 2026.

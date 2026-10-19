@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import makeSvgIcon from '../utils/makeSvgIcon';
 
 const Seal = makeSvgIcon(

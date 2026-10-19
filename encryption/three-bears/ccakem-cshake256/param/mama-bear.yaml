@@ -4,7 +4,7 @@ security level:
   quantum: 213
   nist category: 4
 failure probability: -206
-failure probability comment: 'Failure Probability is less than 2^{-206}'
+failure probability comment: The failure probability is less than 2^{-206}.
 sizes:
   sk: 40
   pk: 1194

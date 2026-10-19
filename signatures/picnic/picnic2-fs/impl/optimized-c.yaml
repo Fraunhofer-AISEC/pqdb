@@ -1,6 +1,5 @@
-name: Optimized-C
-platform: c
+name: Optimized C
+platform: desktop
 type: optimized
 side channel guarding:
   branching: true
-hardware features: []

@@ -1,9 +1,7 @@
-name: Field Programmable Gate Array
-platform: Artix-7 /Virtex-7 FPGA
-hardware features: []
-comment: >-
-  Implementation of the core mathematical functions (not including, e.g.,
-  hashing)
+name: FPGA
+comment: Implements the core mathematical functions and does not implement hashing.
+platform: fpga
+platform comment: Artix-7 /Virtex-7 FPGA
 sources:
-  - 'https://classic.mceliece.org/hardware.html'
-  - 'https://classic.mceliece.org/nist/mceliece-20190331.pdf , page 21'
+  - Classic McEliece hardware page (https://classic.mceliece.org/hardware.html)
+  - Classic McEliece specification, page 21 (https://classic.mceliece.org/nist/mceliece-20190331.pdf)

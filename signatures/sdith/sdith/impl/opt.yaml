@@ -1,0 +1,6 @@
+name: Optimized
+platform: desktop
+platform comment: x86-64
+type: optimized
+links:
+  - https://github.com/sdith

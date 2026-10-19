@@ -1,0 +1,11 @@
+name: SNOVA_III_K
+security level:
+  classical: 266
+  quantum: 133
+  nist category: 3
+failure probability: 0
+sizes:
+  sk: 96
+  pk: 912
+  ct|sig: 688
+number of operations: inf

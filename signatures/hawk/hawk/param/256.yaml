@@ -1,0 +1,16 @@
+name: HAWK-256
+security level:
+  classical: 1
+  quantum: 1
+  nist category: 0
+  comment: >-
+    This was the challenge parameter set with an originally claimed classical
+    bit security of about 64. It is now considered broken in practice. The 2026
+    attack recovered a HAWK-256 secret key end to end in a few hours on a single
+    server. The original estimate is retained here only as historical context.
+failure probability: -40
+sizes:
+  sk: 96
+  pk: 450
+  ct|sig: 249
+number of operations: 2^32

@@ -30,6 +30,7 @@
                 "multivariate",
                 "isogeny",
                 "hash",
+                "mpc-in-the-head",
                 "other"
             ]
         },
@@ -37,23 +38,70 @@
             "type": "string"
         },
         "stateful": {
-            "type": "boolean"
+            "type": "boolean",
+            "$comment": "Only present (as true) for stateful schemes. Stateless schemes omit the field."
         },
         "stateful comment": {
             "type": "string"
         },
-        "nist round": {
-            "type": "string",
-            "enum": [
-                "none",
-                "1",
-                "2",
-                "3a",
-                "3f",
-                "4",
-                "S"
-            ],
-            "$comment": "`3a`/`3f` for round 3 alternate candidates and finalists, respectively. `none` for schemes that were not submitted to the NIST PQC Standardization Process."
+        "aka": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "$comment": "Former or alternative names (e.g. a scheme that was renamed after standardization)."
+        },
+        "status": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "process": {
+                        "type": "string",
+                        "enum": [
+                            "nist-pqc",
+                            "nist-additional-sigs",
+                            "rfc",
+                            "nist-sp",
+                            "iso",
+                            "other"
+                        ],
+                        "$comment": "Which standardization track/authority the scheme participates in."
+                    },
+                    "stage": {
+                        "type": "string",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "3a",
+                            "3f",
+                            "4",
+                            "selected",
+                            "standardized"
+                        ],
+                        "$comment": "`3a`/`3f` for round 3 alternate candidates and finalists, respectively. `selected` means chosen for standardization but no final standard published yet; `standardized` means a final standard exists."
+                    },
+                    "standard": {
+                        "type": "string",
+                        "$comment": "The published standard/artifact (e.g. FIPS 203, RFC 8554). Expected when stage is `standardized`."
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "integer"
+                    },
+                    "comment": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "process",
+                    "stage"
+                ]
+            }
         },
         "year": {
             "type": "object",
@@ -65,6 +113,9 @@
                     "type": "integer"
                 },
                 "standardization": {
+                    "type": "integer"
+                },
+                "selection": {
                     "type": "integer"
                 },
                 "comment": {
@@ -154,7 +205,6 @@
         "name",
         "category",
         "year",
-        "authors",
-        "stateful"
+        "authors"
     ]
 }

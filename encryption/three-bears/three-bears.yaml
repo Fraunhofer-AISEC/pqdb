@@ -4,22 +4,23 @@ description: >-
   polynomial ring underlying the MLWE module is replaced by integers modulo
   a generalized Mersenne number.
 category: lattice
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
   paper: 2017
   candidate: 2017
 authors:
   - Mike Hamburg
+problems:
+  - assumption: I-MLWE
+    comment: The integer module learning with errors problem.
+problems comment: >-
+  Replacing the polynomial ring from M-LWE with integers modulo a generalized
+  Mersenne number.
 website: https://www.shiftleft.org/papers/threebears/
 sources:
   - >-
     NIST Round 2 revised submission
     (https://www.shiftleft.org/papers/threebears/threebears-july2019.pdf)
 last_updated: '2019-07-25'
-stateful: false
-problems:
-  - assumption: I-MLWE
-    comment: Integer module learning with errors
-problems comment: >-
-  Replacing the polynomial ring from M-LWE with integers modulo a generalized
-  Mersenne number.

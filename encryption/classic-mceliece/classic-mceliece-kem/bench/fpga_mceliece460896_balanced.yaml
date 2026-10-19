@@ -1,6 +1,7 @@
-platform: Artix-7
+platform: fpga
+platform comment: Artix-7
 timings:
+  unit: cycles
   gen: 1383104
   enc|sign: 3360
   dec|vrfy: 18771
-  unit: cycles

@@ -1,0 +1,8 @@
+platform: desktop
+platform comment: Intel Core i5-8259U (Coffee Lake) at 2.3 GHz, Ubuntu 22.04 (x86_64), clang 14.0.0 -O2, AVX2 enabled, Turbo Boost disabled, single core
+timings:
+  unit: cycles
+  gen: 1877122
+  enc|sign: 54361
+  dec|vrfy: 73260
+  comment: Averages in clock cycles (Table 6). "Fast" variants (alternative RNG / pre-decoded private key) run signing in 25979 and verification in 61125 cycles. x86 RAM usage is larger than the embedded estimates and not quantified in the PDF.

@@ -1,4 +1,4 @@
 name: LUOV-chacha8
+comment: Uses ChaCha8 as the PRNG.
 type: SIG
 security notion: EUF-CMA
-comment: Chacha8 as PRNG

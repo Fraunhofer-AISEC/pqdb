@@ -1,0 +1,7 @@
+platform: desktop
+platform comment: AMD Ryzen Threadripper PRO 9995WX. Measured with supercop-20260627 on Ubuntu 26.04 LTS under WSL2 with Linux 6.6.87.2, gcc 15.2.0 and OpenSSL 3.5.5. The base clock is 2.5 GHz and the boost clock reaches 5.4 GHz. Cycle counts are the averages of the StQ2 values reported by SUPERCOP for zero-length messages.
+timings:
+  unit: cycles
+  gen: 37936000
+  enc|sign: 27755000
+  dec|vrfy: 23215000

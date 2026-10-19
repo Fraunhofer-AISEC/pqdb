@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,12 @@ import {
   Checkbox,
   Divider,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 
 import intersection from '../utils/intersection';
 import not from '../utils/not';
@@ -36,18 +35,6 @@ const propTypes = {
   checkedList: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   onChange: PropTypes.func.isRequired,
 };
-
-const useStyles = makeStyles(() => ({
-  root: {
-    minWidth: 240,
-    maxWidth: 300,
-    overflow: 'auto',
-    maxHeight: 200,
-  },
-  listItem: {
-    padding: 1,
-  },
-}));
 
 function SchemeCheckboxList(props) {
   const { list, checkedList, onChange } = props;
@@ -76,44 +63,71 @@ function SchemeCheckboxList(props) {
     onChange(newChecked);
   };
 
-  const classes = useStyles();
+  const itemSx = {
+    py: 0.25,
+    px: 1,
+    borderRadius: 1,
+    '&:hover': {
+      bgcolor: 'action.hover',
+    },
+  };
+  const checkboxSx = {
+    p: 0.25,
+    '& .MuiSvgIcon-root': {
+      fontSize: 18,
+    },
+  };
 
   return (
-    <Card>
-      <List>
-        <ListItem dense className={classes.listItem} button onClick={handleToggleAll(list)}>
-          <ListItemIcon>
+    <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+      <List disablePadding sx={{ pt: 0.5 }}>
+        <ListItemButton dense sx={itemSx} onClick={handleToggleAll(list)}>
+          <ListItemIcon sx={{ minWidth: 32 }}>
             <Checkbox
+              size="small"
+              sx={checkboxSx}
               checked={numberOfChecked(list) === list.length && list.length !== 0}
               indeterminate={numberOfChecked(list) !== list.length && numberOfChecked(list) !== 0}
               tabIndex={-1}
               disableRipple
             />
           </ListItemIcon>
-          <ListItemText primary="Schemes" />
-        </ListItem>
+          <ListItemText
+            primary={<Typography variant="body2" sx={{ fontWeight: 600 }}>Schemes</Typography>}
+          />
+        </ListItemButton>
       </List>
-      <Divider />
-      <List className={classes.root}>
+      <Divider sx={{ my: 0 }} />
+      <List
+        disablePadding
+        sx={{
+          minWidth: 240,
+          maxWidth: 300,
+          overflow: 'auto',
+          maxHeight: 200,
+          py: 0.5,
+        }}
+      >
         {list.map((value) => (
-          <ListItem
+          <ListItemButton
             dense
-            className={classes.listItem}
+            sx={itemSx}
             key={value}
-            button
             onClick={
             handleSchemeToggle(value)
             }
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ minWidth: 32 }}>
               <Checkbox
+                size="small"
+                sx={checkboxSx}
                 checked={checked.indexOf(value) !== -1}
                 tabIndex={-1}
                 disableRipple
               />
             </ListItemIcon>
-            <ListItemText primary={value} />
-          </ListItem>
+            <ListItemText primary={<Typography variant="body2">{value}</Typography>} />
+          </ListItemButton>
         ))}
       </List>
     </Card>

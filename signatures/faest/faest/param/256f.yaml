@@ -1,0 +1,14 @@
+name: FAEST-256f
+security level:
+  classical: 254
+  quantum: 128
+  nist category: 5
+  comment: >-
+    The specification estimates public key inversion at between 2^254 and 2^255
+    AES evaluations. Generic quantum key search has exponent 128.
+failure probability: 0
+sizes:
+  sk: 48
+  pk: 48
+  ct|sig: 20856
+number of operations: inf

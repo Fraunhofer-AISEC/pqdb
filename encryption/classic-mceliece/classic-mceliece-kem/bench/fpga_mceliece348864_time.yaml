@@ -1,8 +1,9 @@
-sources:
-  - 'https://classic.mceliece.org/hardware.html'
-platform: Artix-7
+platform: fpga
+platform comment: Artix-7
 timings:
+  unit: cycles
   gen: 202787
   enc|sign: 2720
   dec|vrfy: 10023
-  unit: cycles
+sources:
+  - Classic McEliece hardware page (https://classic.mceliece.org/hardware.html)

@@ -1,0 +1,11 @@
+name: QR-UOV V
+security level:
+  classical: 277
+  quantum: 237
+  nist category: 5
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 173660
+  ct|sig: 392
+number of operations: inf

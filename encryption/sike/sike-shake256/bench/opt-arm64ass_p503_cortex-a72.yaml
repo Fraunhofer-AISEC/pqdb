@@ -1,7 +1,8 @@
-platform: ARM Cortex-A72 64-bit 1.992GHz
-comment: OS is Ubuntu 16.04.2 LTS. Compiler is GNU GCC 5.4.0.
+platform: arm-application
+platform comment: ARM Cortex-A72 64-bit at 1.992 GHz
 timings:
   unit: cycles
   gen: 24046000
   enc|sign: 39501000
   dec|vrfy: 42121000
+comment: OS is Ubuntu 16.04.2 LTS. Compiler is GNU GCC 5.4.0.

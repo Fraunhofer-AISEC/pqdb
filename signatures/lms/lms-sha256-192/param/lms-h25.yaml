@@ -1,0 +1,11 @@
+name: LMS_SHA256_M24_H25
+security level:
+  classical: 192
+  quantum: 96
+failure probability: 0
+sizes:
+  sk: 52
+  pk: 48
+  ct|sig: 1260
+  comment: 'The private key stores only the SEED, the key pair identifier I and the leaf index q together with the typecodes, totaling 52 bytes. The signature size assumes the W=8 LM-OTS parameter set (LMOTS_SHA256_N24_W8) and reflects a single LMS tree with L=1 without the 4-byte HSS level prefix.'
+number of operations: 2^25

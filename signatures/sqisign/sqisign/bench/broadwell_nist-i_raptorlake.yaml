@@ -1,0 +1,8 @@
+platform: desktop
+platform comment: Intel Core i7-13700K (Raptor Lake) x86-64 at 3.4 GHz, Ubuntu Linux 26.04 LTS, clang 21, CMake Release (-O2). Turbo Boost disabled, benchmark pinned to a single performance core.
+timings:
+  unit: cycles
+  gen: 32200000
+  enc|sign: 93900000
+  dec|vrfy: 12100000
+  comment: Median of 1,000 runs (Table 13, assembly-optimized implementation for Intel Broadwell or later).

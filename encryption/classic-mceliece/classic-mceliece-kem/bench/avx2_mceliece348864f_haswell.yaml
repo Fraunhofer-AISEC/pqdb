@@ -1,7 +1,7 @@
-platform: 'Intel Xeon E3-1220 v3, 3.50GHz'
+platform: desktop
+platform comment: Intel Xeon E3-1220 v3 at 3.5 GHz
 timings:
+  unit: cycles
   gen: 35978769
   enc|sign: 37585
   dec|vrfy: 127668
-  unit: cycles
-  comment: average

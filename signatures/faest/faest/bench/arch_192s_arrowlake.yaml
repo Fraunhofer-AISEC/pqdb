@@ -1,0 +1,7 @@
+platform: desktop
+platform comment: Intel Core Ultra 9 285H (Arrow Lake) performance core up to 5.4 GHz, Linux 7.1.9, gcc 16.2.1
+timings:
+  unit: cycles
+  gen: 695
+  enc|sign: 53900000
+  dec|vrfy: 42600000

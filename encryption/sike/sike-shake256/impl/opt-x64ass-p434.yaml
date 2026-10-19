@@ -1,10 +1,11 @@
-name: Optimized implementation using x64 assembly for p434
+name: Optimized x64 p434
+platform: desktop
+platform comment: c, x64assembly
 type: optimized
-platform: c, x64assembly
 side channel guarding:
   branching: true
   timing: true
   timing comment: Also guarded against cache attacks.
 code size:
   overall: 56672
-  comment: "size of a speed optimized version (`-Os`), not the version timings were taken with"
+  comment: Size of a speed-optimized version (`-Os`), not the version the timings were taken with.

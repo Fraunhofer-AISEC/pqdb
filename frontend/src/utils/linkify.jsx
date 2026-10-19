@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,17 @@
  */
 
 import { Link } from '@mui/material';
-import React from 'react';
+
+const URL_REGEX = /(https?:\/\/[^\s()]+)/g;
 
 export default function linkify(s) {
-  const url = s.match(/https?:\/\/[^\s]*[^-.,;()]/g);
-  return url ? <Link href={url}>{s}</Link> : s;
+  return s.split(URL_REGEX).map((part, i) =>
+    /^https?:\/\//.test(part)
+      ? (
+        <Link key={`${part}-${i}`} href={part} target="_blank" rel="noreferrer" sx={{ overflowWrap: 'anywhere' }}>
+          {part}
+        </Link>
+      )
+      : part,
+  );
 }

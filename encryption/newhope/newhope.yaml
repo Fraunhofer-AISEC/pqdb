@@ -1,12 +1,15 @@
 name: NewHope
 description: Based on Ring-LWE, using the Lindner-Peikert approach.
+category: lattice
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
     candidate: 2017
-category: lattice
 authors:
-  - Erdem Talkim
+  - Erdem Alkim
   - Roberto Avanzi
-  - Joppe Bos
+  - Joppe W. Bos
   - Léo Ducas
   - Antonio de la Piedra
   - Thomas Pöppelmann
@@ -14,9 +17,7 @@ authors:
   - Douglas Stebila
 problems:
     - assumption: R-LWE
-stateful: false
-nist round: '2'
 website: https://newhopecrypto.org/
 sources:
   - NIST Submission Paper (2020-04-10) (https://newhopecrypto.org/data/NewHope_2020_04_10.pdf)
-last_updated: "2020-04-15"
+last_updated: '2020-04-15'

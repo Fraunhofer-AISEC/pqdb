@@ -1,0 +1,8 @@
+name: SQIsign
+type: SIG
+security notion: EUF-CMA
+security notion comment: >-
+  Proven EUF-CMA secure under a hint variant of the endomorphism ring problem.
+  Does NOT target strong unforgeability: given a valid signature, a second
+  distinct valid signature on the same message can be produced by manipulating
+  the auxiliary isogeny.

@@ -1,4 +1,4 @@
 name: XMSS-SHA2
-description: using SHA2 as hash function
+description: An XMSS variant using SHA-256 as the hash function.
 type: SIG
 security notion: EUF-CMA

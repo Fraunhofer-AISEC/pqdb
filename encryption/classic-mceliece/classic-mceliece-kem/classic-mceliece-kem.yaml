@@ -2,4 +2,6 @@ name: Classic McEliece KEM
 type: KEM
 security notion: IND-CCA
 sources:
-  - 'https://classic.mceliece.org/mceliece-spec-20221023.pdf#section.7'
+  - >-
+    Classic McEliece specification, section 7
+    (https://classic.mceliece.org/mceliece-spec-20221023.pdf#section.7)

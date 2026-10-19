@@ -2,9 +2,14 @@ name: FALCON
 description: >-
   Hash-and-sign scheme over NTRU-lattice that relies on trapdoor sampler (Fast
   Fourier sampler).
+category: lattice
+status:
+  - process: nist-pqc
+    stage: selected
+    comment: Selected for standardization. Final standard (FN-DSA) not yet released.
 year:
   candidate: 2017
-category: lattice
+  selection: 2022
 authors:
   - Pierre-Alain Fouque
   - Jeffrey Hoffstein
@@ -18,8 +23,7 @@ authors:
   - Zhenfei Zhang
 problems:
   - assumption: SIS over NTRU lattices
-stateful: false
-nist round: S
+website: https://falcon-sign.info/
 sources:
   - >-
     NIST Submission Paper, Round 3, Version 1.2
@@ -28,4 +32,3 @@ sources:
     NIST Standardization Zip File
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Falcon-Round3.zip)
 last_updated: '2022-10-06'
-website: https://falcon-sign.info/

@@ -1,14 +1,16 @@
 name: HQC-256
 security level:
+  classical: 256
   quantum: 128
   nist category: 5
-  classical: 256
 failure probability: -256
 sizes:
   sk: 40
   pk: 7245
-  ct|sig: 14469
   msg: 64
+  ct|sig: 14469
 number of operations: inf
 sources:
-  - 'https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1'
+  - >-
+    HQC specification, section 2.7.1
+    (https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1)

@@ -9,8 +9,9 @@ sizes:
   pk: 992
   msg: 32
   ct|sig: 1088
-  comment: 'Compressed sk size: 1344'
+  comment: The compressed secret key is 1344 bytes.
 number of operations: inf
 sources:
   - >-
-    https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf#subsection.3.2
+    SABER specification, section 3.2
+    (https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf#subsection.3.2)

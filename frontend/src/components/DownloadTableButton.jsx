@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,16 @@ import {
   Paper,
   Popper,
 } from '@mui/material';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { stringify } from 'csv-stringify';
+import { useRef, useState } from 'react';
 
 const propTypes = {
+  onExportCsv: PropTypes.func.isRequired,
   queryResult: PropTypes.shape({
     columns: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     values: PropTypes.arrayOf(PropTypes.array.isRequired).isRequired,
   }).isRequired,
 };
-
-const options = ['.csv', '.json'];
 
 function startDownload(content, filename) {
   const element = document.createElement('a');
@@ -48,9 +46,10 @@ function startDownload(content, filename) {
 }
 
 function stringifyCells(queryResult) {
-  return queryResult.map(
+  return queryResult.values.map(
     (row) => row.map((val) => {
-      if (val?.props?.children) return val.props.children; // If Link is used in QueryTable
+      // JSON export uses raw values (rendered links are produced by a cell
+      // renderer in DataTable, not by values in the data itself).
       return val;
     }),
   );
@@ -58,7 +57,7 @@ function stringifyCells(queryResult) {
 
 function DownloadTableButton(props) {
   const [open, setOpen] = useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = useRef(null);
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -72,40 +71,38 @@ function DownloadTableButton(props) {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    const { queryResult } = props;
+  const handleMenuItemClick = (index) => {
+    const { queryResult, onExportCsv } = props;
     if (index === 0) {
-      stringify([queryResult.columns, ...stringifyCells(queryResult.values)], (err, output) => {
-        startDownload(output, 'data.csv');
-      });
-    } else if (index === 1) {
-      startDownload(JSON.stringify(stringifyCells(queryResult.values), null, 2), 'data.json');
+      onExportCsv();
+    } else {
+      startDownload(JSON.stringify(stringifyCells(queryResult), null, 2), 'data.json');
     }
     setOpen(false);
   };
 
   return (
     <Box>
-      <Button variant="outlined" ref={anchorRef} onClick={handleToggle}>Download as ...</Button>
+      <Button variant="outlined" ref={anchorRef} onClick={handleToggle}>
+        Download as ...
+      </Button>
       <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
-            style={{
+            sx={{
               transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
             }}
           >
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
-                  {options.map((option, index) => (
-                    <MenuItem
-                      key={option}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                      {option}
-                    </MenuItem>
-                  ))}
+                  <MenuItem onClick={() => handleMenuItemClick(0)}>
+                    .csv
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick(1)}>
+                    .json
+                  </MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

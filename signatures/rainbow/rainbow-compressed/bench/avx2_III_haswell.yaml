@@ -1,11 +1,10 @@
-platform: >-
-  Intel Xeon CPU E7-8860 v3 Haswell 2.20GHz, Linux 4.15.0-39, GCC compiler
-  version 9.3, gcc -O3 -std=c99 -Wall -Wextra (-mavx2)
+platform: desktop
+platform comment: Intel Xeon E7-8860 v3 (Haswell) at 2.2 GHz, Linux 4.15.0-39, gcc 9.3, gcc -O3 -std=c99 -Wall -Wextra (-mavx2)
 timings:
+  unit: cycles
   gen: 56000000
   enc|sign: 38000000
   dec|vrfy: 20000000
-  unit: cycles
 memory requirements:
   gen: 14460000
   enc|sign: 13620000

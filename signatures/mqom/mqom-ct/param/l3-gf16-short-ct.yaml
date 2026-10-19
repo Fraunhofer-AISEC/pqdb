@@ -1,0 +1,11 @@
+name: MQOM3-L3-gf16-short-ct
+security level:
+  classical: 209
+  quantum: 96
+  nist category: 3
+failure probability: 0
+sizes:
+  sk: 144
+  pk: 96
+  ct|sig: 6556
+number of operations: inf

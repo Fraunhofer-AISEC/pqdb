@@ -14,10 +14,10 @@ jobs:
       helper-dir: tools/enter-data-helper
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: 16
+        node-version: 24
         cache: 'yarn'
         cache-dependency-path: 'tools/enter-data-helper/yarn.lock'
     - name: Install dependencies, build, and package
@@ -28,12 +28,14 @@ jobs:
         yarn package-linux
         yarn package-mac
     - name: Upload Linux package
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: linux-package
         path: ${{ env.helper-dir }}/dist/enter-data-helper-linux.AppImage
+        if-no-files-found: error
     - name: Upload MacOS package
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: mac-package
         path: ${{ env.helper-dir }}/dist/enter-data-helper-mac.tar.gz
+        if-no-files-found: error

@@ -1,0 +1,42 @@
+name: MAYO
+description: >-
+  An Oil and Vinegar-based multivariate quadratic signature scheme over F16,
+  using a public whipping construction to reduce public-key sizes while
+  retaining short signatures.
+category: multivariate
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+year:
+  paper: 2021
+  candidate: 2023
+authors:
+  - Ward Beullens
+  - Fabio Campos
+  - Sofía Celi
+  - Basil Hess
+  - Matthias J. Kannwischer
+problems:
+  - assumption: Oil and Vinegar problem
+    comment: >-
+      Distinguishing a multivariate quadratic map that vanishes on a secret
+      subspace of dimension o from a uniformly random multivariate quadratic map.
+  - assumption: Multi-Target Whipped MQ problem
+    comment: >-
+      Given a random multivariate quadratic map and access to arbitrarily many
+      random target and linear-map pairs, finding a preimage under the whipped
+      quadratic map combined with the message-dependent linear map.
+trust comment: >-
+  MAYO public keys have the same structure as Oil and Vinegar public keys, so the
+  cryptanalysis of Oil and Vinegar since 1997 applies to key recovery. Security
+  against forgery additionally relies on the Multi-Target Whipped MQ problem,
+  which has received less public scrutiny.
+website: https://pqmayo.org/
+links:
+  - https://eprint.iacr.org/2021/1144
+sources:
+  - "MAYO specification, round 3 version (https://pqmayo.org/assets/specs/mayo-round3.pdf)"
+  - "MAYO round 3 submission zip (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/MAYO.zip)"
+last_updated: '2026-08-31'
+last_updated comment: Updated from the MAYO round 3 specification.

@@ -1,7 +1,6 @@
 name: Reference
-platform: c
+platform: desktop
 type: reference
 side channel guarding:
   branching: true
-  timing comment: Assumed, but not verified
-hardware features: []
+  timing comment: Timing side-channel resistance is assumed but not verified.

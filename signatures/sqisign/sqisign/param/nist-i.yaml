@@ -1,0 +1,20 @@
+name: SQIsign NIST-I
+comment: >-
+  failure probability = log2 of the IdealToIsogenyNormEquation failure
+  probability, 2^-151 (Table 18). The other sub-algorithm failure probabilities
+  are each < 2^-λ (Chapter 9). No signing limit stated (stateless), hence number
+  of operations = inf.
+security level:
+  classical: 128
+  quantum: 64
+  nist category: 1
+  comment: >-
+    Classical target λ = 128 bits (best known attack on the endomorphism ring
+    problem Õ(2^λ)). Quantum ≈ λ/2 = 64 bits (Õ(2^(λ/2)), Grover). Prime
+    p324.3 = 3·2^324 − 1.
+failure probability: -151
+sizes:
+  sk: 270
+  pk: 83
+  ct|sig: 200
+number of operations: inf

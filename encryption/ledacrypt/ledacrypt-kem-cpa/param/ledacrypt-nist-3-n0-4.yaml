@@ -5,8 +5,8 @@ security level:
   nist category: 3
 failure probability: -29
 sizes:
-  msg: 48
   sk: 3968
   pk: 4920
+  msg: 48
   ct|sig: 1672
 number of operations: inf

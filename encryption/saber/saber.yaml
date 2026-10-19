@@ -1,7 +1,9 @@
-stateful: false
 name: SABER
 description: Based on Mod-LWR (Module Learning With Rounding).
 category: lattice
+status:
+  - process: nist-pqc
+    stage: '3f'
 year:
   candidate: 2017
 authors:
@@ -14,13 +16,11 @@ authors:
   - Michiel Van Beirendonck
 problems:
   - assumption: Mod-LWR
+website: 'https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
 sources:
   - >-
     Round 3 Specification
     (https://www.esat.kuleuven.be/cosic/pqcrypto/saber/files/saberspecround3.pdf)
-website: 'https://www.esat.kuleuven.be/cosic/pqcrypto/saber/index.html'
-nist round: 3f
-last_updated: '2020-11-14'
 patents: >-
   Patent US9094189: The patent holder claims that the patent applies to "one or
   more proposals" that were submitted to the NIST PQC standardization process
@@ -37,3 +37,4 @@ patents sources:
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2Xv0mrF9IVo/m/e0oKQhllBwAJ
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ
+last_updated: '2020-11-14'

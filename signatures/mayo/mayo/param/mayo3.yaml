@@ -1,0 +1,15 @@
+name: MAYO-3
+comment: 'Parameters (n, m, o, k, q) = (118, 108, 10, 11, 16) with f108(z).'
+security level:
+  classical: 222
+  quantum: 111
+  nist category: 3
+failure probability: 0
+sizes:
+  sk: 32
+  pk: 2986
+  ct|sig: 681
+  comment: >-
+    Secret key and public key sizes are for the compact representations. The
+    expanded secret key is 368 KB and the expanded public key is 371 KB.
+number of operations: inf

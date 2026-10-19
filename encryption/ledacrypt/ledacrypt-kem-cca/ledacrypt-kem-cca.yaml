@@ -2,5 +2,5 @@ name: LEDAcrypt KEM-CCA
 type: KEM
 security notion: IND-CCA
 sources:
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=120'
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
+  - LEDAcrypt specification, page 120 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=120)
+  - LEDAcrypt specification, page 79 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79)

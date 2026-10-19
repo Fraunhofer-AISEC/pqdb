@@ -1,0 +1,4 @@
+name: LMS-SHA256-192
+description: An LMS variant using SHA-256/192 as the hash function, as defined in NIST SP 800-208.
+type: SIG
+security notion: EUF-CMA

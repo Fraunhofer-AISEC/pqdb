@@ -1,0 +1,8 @@
+name: AArch64
+comment: Assembly-optimized implementation targeting 64-bit ARM (AArch64) cores, using only baseline armv8-a instructions (build type arm64). The assembly optimizations are applied to the finite-field arithmetic in the gf module. The rest of the code base is reused from the reference implementation.
+platform: arm-application
+platform comment: arm64
+type: optimized
+side channel guarding:
+  timing: false
+  timing comment: Not constant-time overall. The finite-field arithmetic is implemented in constant-time (Section 8.5).

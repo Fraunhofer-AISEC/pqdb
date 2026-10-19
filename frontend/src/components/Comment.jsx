@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,8 @@
  */
 
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
+import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
-import { Tooltip } from '@mui/material';
 
 const propTypes = {
   title: PropTypes.string,
@@ -31,12 +30,12 @@ function Comment({ title }) {
   if (title === undefined || title === null || title === '') { return null; }
 
   return (
-    <>
+    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
       {'\u2002'}
-      <Tooltip interactive title={title} placement="right" arrow>
-        <InfoIcon fontSize="inherit" style={{ cursor: 'help' }} />
+      <Tooltip title={title} placement="right" arrow>
+        <InfoIcon fontSize="small" sx={{ cursor: 'help', color: 'text.secondary' }} />
       </Tooltip>
-    </>
+    </Box>
   );
 }
 Comment.propTypes = propTypes;

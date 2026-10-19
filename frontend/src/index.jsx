@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Fraunhofer AISEC.
+ * Copyright (c) 2023-2026, Fraunhofer AISEC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,64 +14,73 @@
  * limitations under the License.
  */
 
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
+// Self-hosted Inter font faces are loaded here so no font is fetched from an
+// external CDN on page load. See src/fonts/fonts.css for the @font-face rules.
+import './fonts/fonts.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 
 import App from './App';
-import CustomSQLQuery from './views/CustomSQLQuery';
+import RouteError, { SafeErrorBoundary } from './components/AppErrorFallback';
 import DatabaseProvider from './components/DatabaseProvider';
-import FlavorDetail from './views/FlavorDetail';
-import PrivacyPolicy from './views/PrivacyPolicy';
-import SchemeComparison from './views/SchemeComparison';
-import SchemeDetail from './views/SchemeDetail';
-import SchemeOverview from './views/SchemeOverview';
-import Welcome from './views/Welcome';
+
+// Lazy-load every route view so that a single blocked module (e.g. a browser
+// add-on blocking a request) can never take down the whole app. Each view is
+// only fetched when its route is actually visited, and any failure is contained
+// to that route via the errorElement below. This also code-splits the bundle.
+const lazyView = (importFn) => async () => {
+  const module = await importFn();
+  return { Component: module.default };
+};
 
 // Add new views for routing here
 const router = createBrowserRouter([{
   path: '/',
   Component: App,
+  errorElement: <RouteError />,
   children: [
     {
       path: '',
-      Component: Welcome,
+      lazy: lazyView(() => import('./views/Home')),
     },
     {
       path: 'raw_sql',
-      Component: CustomSQLQuery,
+      lazy: lazyView(() => import('./views/CustomSQLQuery')),
     },
     {
       path: 'comparison',
-      Component: SchemeComparison,
+      lazy: lazyView(() => import('./views/SchemeComparison')),
     },
     {
       path: 'detail',
-      Component: SchemeOverview,
+      lazy: lazyView(() => import('./views/SchemeOverview')),
     },
     {
       path: 'detail/:schemeId',
-      Component: SchemeDetail,
+      lazy: lazyView(() => import('./views/SchemeDetail')),
     },
     {
       path: 'detail/:schemeId/:flavorId',
-      Component: FlavorDetail,
+      lazy: lazyView(() => import('./views/FlavorDetail')),
     },
     {
       path: 'privacy_policy',
-      Component: PrivacyPolicy,
+      lazy: lazyView(() => import('./views/PrivacyPolicy')),
     },
   ],
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <DatabaseProvider>
-      <RouterProvider router={router} />
-    </DatabaseProvider>
+    <SafeErrorBoundary>
+      <DatabaseProvider>
+        <RouterProvider router={router} />
+      </DatabaseProvider>
+    </SafeErrorBoundary>
   </React.StrictMode>,
 );

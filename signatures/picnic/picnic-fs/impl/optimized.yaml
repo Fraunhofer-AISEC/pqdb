@@ -1,7 +1,9 @@
 name: Optimized
-platform: c
+platform: desktop
 type: optimized
 side channel guarding:
   branching: true
 hardware features:
-  - AVX2 and SSE2 on Intelx86-64 and NEON on ARM v8
+  - AVX2
+  - SSE2
+  - NEON

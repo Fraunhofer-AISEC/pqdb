@@ -1,7 +1,9 @@
 name: Dilithium-SHAKE
-description: using SHAKE for seed expansion. Main submission
-type: SIG
-security notion: SUF-CMA
+description: The main Dilithium variant, using SHAKE for seed expansion.
 comment: >-
   Note that Dilithium can be used as a deterministic or randomized signature
   scheme. We describe the deterministic variant here.
+deprecated: true
+deprecated comment: Superseded by ML-DSA in FIPS 204.
+type: SIG
+security notion: SUF-CMA

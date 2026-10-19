@@ -1,0 +1,25 @@
+name: GFNI
+comment: >-
+  Intel AVX-512 and GFNI optimized implementation using compiler intrinsics for
+  the AVX-512F and AVX-512BW instruction sets together with the Galois Field New
+  Instructions. The vgf2p8affineqb instruction applies an affine map to 64 bytes
+  at once, which implements multiplication of a batch of F16 elements by a field
+  element in a single instruction. Key expansion uses the vector AES extension
+  (VAES) with 512 bit registers, processing 16 AES blocks per iteration. It
+  requires AVX-512F, AVX-512BW and GFNI, which are available on Intel server
+  architectures since Ice Lake and on AMD architectures since Zen 4.
+platform: desktop
+platform comment: x86-64
+type: optimized
+side channel guarding:
+  branching: true
+  timing: true
+  branching comment: The implementation avoids secret dependent control flow.
+  timing comment: The implementation avoids secret dependent data indexing.
+hardware features:
+  - AVX-512F
+  - AVX-512BW
+  - GFNI
+  - VAES
+links:
+  - https://github.com/PQCMayo/MAYO-C

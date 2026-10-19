@@ -25,6 +25,17 @@
             "$comment": "Source of the data specified here. Use only if it differs from the overall data source."
         },
         "platform": {
+            "type": "string",
+            "enum": [
+                "desktop",
+                "arm-m4",
+                "arm-application",
+                "fpga",
+                "other"
+            ],
+            "$comment": "Normalized platform family. Detail (exact CPU/frequency/compiler/OS) belongs in the free-text `platform comment`."
+        },
+        "platform comment": {
             "type": "string"
         },
         "type": {

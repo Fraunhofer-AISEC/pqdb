@@ -1,0 +1,13 @@
+name: ML-DSA-44
+security level:
+  classical: 121
+  quantum: 110
+  nist category: 2
+  comment: The security level refers to SUF-CMA security.
+failure probability: 0
+sizes:
+  sk: 2560
+  pk: 1312
+  ct|sig: 2420
+  comment: The secret key can be expanded from a 32 byte seed.
+number of operations: inf

@@ -1,0 +1,9 @@
+name: AArch64
+comment: AArch64-optimized implementation for NEON armv8-a+crypto+sha3, using carryless-multiplication-based field arithmetic together with the AES and SHA3 instructions.
+platform: arm-application
+platform comment: armv8-a
+type: optimized
+hardware features:
+  - NEON
+  - AES
+  - SHA

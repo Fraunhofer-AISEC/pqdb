@@ -1,0 +1,14 @@
+name: UOV III (Compressed PK+SK)
+security level:
+  classical: 213
+  quantum: 106
+  nist category: 3
+failure probability: -2048
+failure probability comment: >-
+  This approximates failure in all 256 signing attempts using the stated
+  singularity probability of approximately 1 over 256 per attempt.
+sizes:
+  sk: 32
+  pk: 189232
+  ct|sig: 209
+number of operations: inf

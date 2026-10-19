@@ -1,0 +1,45 @@
+name: UOV
+description: >-
+  A multivariate hash and sign scheme built from a trapdoored
+  Unbalanced Oil and Vinegar quadratic map. It supports expanded and compressed
+  key representations.
+category: multivariate
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
+year:
+  paper: 1999
+  candidate: 2023
+authors:
+  - Ward Beullens
+  - Ming-Shing Chen
+  - Jintai Ding
+  - Boru Gong
+  - Matthias J. Kannwischer
+  - Jacques Patarin
+  - Bo-Yuan Peng
+  - Dieter Schmidt
+  - Cheng-Jhih Shih
+  - Chengdong Tao
+  - Bo-Yin Yang
+problems:
+  - assumption: UOV problem
+    comment: >-
+      Security relies on the difficulty of inverting a trapdoored multivariate
+      quadratic UOV map without knowledge of its oil space.
+trust comment: >-
+  UOV has received more than twenty years of cryptanalysis. The specification
+  evaluates collision, direct, Kipnis Shamir, intersection, MinRank, and wedge
+  attacks. It does not provide a reduction from a standard problem for the
+  recommended construction.
+website: https://www.uovsig.org/
+sources:
+  - >-
+    Specification, version 3.0
+    (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/UOV_Specification_R3.pdf)
+  - >-
+    NIST round-3 submission package
+    (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/UOV-R3.zip)
+last_updated: '2026-08-30'
+last_updated comment: This is the date of specification version 3.0.

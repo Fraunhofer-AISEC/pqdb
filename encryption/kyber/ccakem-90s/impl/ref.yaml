@@ -1,8 +1,8 @@
 name: Reference
-platform: c
+platform: desktop
 type: reference
 side channel guarding:
   branching: true
-  timing comment: Assumed, but not verified
+  timing comment: Timing side-channel resistance is assumed but not verified.
 hardware features:
-  - aes-ni
+  - AES-NI

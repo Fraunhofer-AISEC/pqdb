@@ -1,6 +1,6 @@
-name: AVX2, using AES from OpenSSL
-platform: c
+name: AVX2
+platform: desktop
 type: optimized
 hardware features:
-  - avx2
-  - aes-ni
+  - AVX2
+  - AES-NI

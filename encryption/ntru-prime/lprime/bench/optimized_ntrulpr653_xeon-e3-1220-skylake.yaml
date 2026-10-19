@@ -1,9 +1,9 @@
-platform: xeon-e3-1220-skylake
-sources:
-  - 'https://bench.cr.yp.to/results-kem.html'
+platform: desktop
+platform comment: Intel Xeon E3-1220 (Skylake)
 timings:
   unit: cycles
-  comment: median
   gen: 38361
   enc|sign: 63575
   dec|vrfy: 77099
+sources:
+  - eBACS benchmark results (https://bench.cr.yp.to/results-kem.html)

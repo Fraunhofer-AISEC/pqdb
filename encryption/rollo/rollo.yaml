@@ -1,7 +1,11 @@
-stateful: false
 name: ROLLO
+description: >-
+  Based on rank metric codes and uses LRPC Code for decryption.
+  Merger of Rank-Ouroboros, LAKE & LOCKER.
 category: code
-nist round: '2'
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
   paper: 2017
   candidate: 2017
@@ -19,11 +23,8 @@ authors:
   - Olivier Ruatta
   - Jean-Pierre Tillich
   - Gilles Zémor
-website: https://pqc-rollo.org/
-sources:
-  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf'
 problems:
   - assumption: Rank Syndrome Decoding problem
-description: >-
-  Based on rank metric codes and uses LRPC Code for decryption.
-  Merger of Rank-Ouroboros, LAKE & LOCKER.
+website: https://pqc-rollo.org/
+sources:
+  - ROLLO specification (https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf)

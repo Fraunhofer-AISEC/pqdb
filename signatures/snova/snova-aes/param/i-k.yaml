@@ -1,0 +1,11 @@
+name: SNOVA_I_K
+security level:
+  classical: 196
+  quantum: 98
+  nist category: 1
+failure probability: 0
+sizes:
+  sk: 96
+  pk: 376
+  ct|sig: 528
+number of operations: inf

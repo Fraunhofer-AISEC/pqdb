@@ -1,0 +1,13 @@
+name: XMSSMT-SHA2_40/8_192
+security level:
+  classical: 192
+  quantum: 96
+failure probability: 0
+sizes:
+  sk: 720
+  pk: 52
+  ct|sig: 2212
+  comment: 'Secret key size vastly depends on the implementation, and can be balanced
+    against signing time. The given value is when using `treehash` from BDS08, estimated.
+    Source: https://crypto.stackexchange.com/a/77292 . Absolute minimum is 101 bytes.'
+number of operations: 2^40
