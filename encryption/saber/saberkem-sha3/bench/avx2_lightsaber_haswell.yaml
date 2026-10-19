@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: Intel Xeon E3-1220 v3 (Haswell) at 3.1 GHz
 timings:
+  unit: cycles
   gen: 45232
   enc|sign: 62236
   dec|vrfy: 62624
-  unit: cycles
-platform comment: Intel Xeon E3-1220  v3 Haswell, 3100  MHz

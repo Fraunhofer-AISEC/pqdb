@@ -1,7 +1,7 @@
+platform: desktop
+platform comment: 'Intel Core i7-7820X CPU at 3.6 GHz, gcc 10.1.0 flags: -O3 -std=c99 -funroll-all-loops -flto -mavx -mavx2 -mbmi -mpclmul -pedantic -Wall -Wextra'
 timings:
+  unit: cycles
   gen: 83000
   enc|sign: 197000
   dec|vrfy: 349000
-  unit: cycles
-platform: desktop
-platform comment: 'Intel Core i7-7820XCPU 3.6GHz, gcc(version10.1.0) flags: -O3 -std=c99 -funroll-all-loops -flto -mavx -mavx2 -mbmi -mpclmul -pedantic -Wall -Wextra'

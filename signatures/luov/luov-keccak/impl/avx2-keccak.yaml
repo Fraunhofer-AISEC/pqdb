@@ -1,7 +1,6 @@
 name: AVX2
-comment: AVX2 optimized implementation using Keccak as PRNG
+comment: Optimized AVX2 implementation using Keccak as the PRNG.
 platform: desktop
-platform comment: C
 type: optimized
 links:
   - https://github.com/WardBeullens/LUOV/tree/master/AVX2_Optimized_Implementation

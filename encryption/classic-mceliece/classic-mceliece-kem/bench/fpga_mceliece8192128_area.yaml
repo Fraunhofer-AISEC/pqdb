@@ -1,7 +1,7 @@
 platform: fpga
+platform comment: Virtex-7
 timings:
+  unit: cycles
   gen: 15185314
   enc|sign: 6528
   dec|vrfy: 48802
-  unit: cycles
-platform comment: Virtex-7

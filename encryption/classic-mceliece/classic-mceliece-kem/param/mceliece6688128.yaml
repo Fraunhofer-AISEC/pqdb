@@ -1,12 +1,12 @@
 name: McEliece 6688128
 security level:
   classical: 296
-  nist category: 5
   quantum: 165
+  nist category: 5
 failure probability: 0
-number of operations: inf
 sizes:
+  sk: 13892
+  pk: 1044992
   msg: 32
   ct|sig: 208
-  pk: 1044992
-  sk: 13892
+number of operations: inf

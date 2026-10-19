@@ -1,6 +1,5 @@
 name: Cortex-A8
 platform: desktop
-platform comment: c
 type: optimized
 dependencies:
   - Keccak

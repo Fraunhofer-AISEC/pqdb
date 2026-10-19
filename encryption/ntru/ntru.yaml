@@ -3,7 +3,6 @@ description: >-
   Based rather closely on the original NTRU from 1998, but with perfect
   correctness.
 category: lattice
-stateful: false
 status:
   - process: nist-pqc
     stage: '3f'

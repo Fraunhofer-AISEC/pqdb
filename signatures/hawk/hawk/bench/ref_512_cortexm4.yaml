@@ -1,4 +1,5 @@
 platform: arm-m4
+platform comment: STMicroelectronics STM32F407VG-DISC1 (STM32F4 Discovery), ARM Cortex-M4 at 24 MHz, no flash/RAM wait states, gcc 10.3.1 -O2 -mthumb -mcpu=cortex-m4, Keccak-f in assembly
 timings:
   unit: cycles
   gen: 52316870
@@ -10,4 +11,3 @@ memory requirements:
   enc|sign: 4096
   dec|vrfy: 6144
   comment: RAM usage estimate for embedded systems (bytes). "Fast" variants use 5272 (sign) and 8768 (verify) bytes.
-platform comment: STMicroelectronics STM32F407VG-DISC1 (STM32F4 Discovery), ARM Cortex-M4 @ 24 MHz, no flash/RAM wait states, GCC-10.3.1 -O2 -mthumb -mcpu=cortex-m4, Keccak-f in assembly

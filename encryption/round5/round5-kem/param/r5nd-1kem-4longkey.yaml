@@ -1,15 +1,19 @@
 name: R5ND.1KEM.4longkey
+security level:
+  classical: 128
+  quantum: 118
+  nist category: 1
+failure probability: -71
 sizes:
-  pk: 453
   sk: 24
+  pk: 453
   msg: 24
   ct|sig: 563
 number of operations: inf
-failure probability: -71
-security level:
-  quantum: 118
-  classical: 128
-  nist category: 1
 sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.6'
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.10'
+  - >-
+    Round5 specification, table 6
+    (https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.6)
+  - >-
+    Round5 specification, table 10
+    (https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.10)

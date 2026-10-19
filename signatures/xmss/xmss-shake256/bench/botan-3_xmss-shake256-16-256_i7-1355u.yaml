@@ -1,9 +1,9 @@
-links:
-  - https://botan.randombit.net/releases.html
 platform: desktop
+platform comment: Intel Core i7-1355U
 timings:
   unit: cycles
   gen: 149517024326
   enc|sign: 146699988636
   dec|vrfy: 1926809
-platform comment: Intel Core i7-1355U
+links:
+  - https://botan.randombit.net/releases.html

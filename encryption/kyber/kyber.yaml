@@ -2,11 +2,17 @@ name: ML-KEM
 aka:
   - Kyber
 description: 'Based on Module LWE, using the Lindner-Peikert approach.'
+category: lattice
+status:
+  - process: nist-pqc
+    stage: standardized
+    standard: FIPS 203
+    url: https://csrc.nist.gov/pubs/fips/203/final
+    year: 2024
 year:
   candidate: 2017
-  selection: 2022
   standardization: 2024
-category: lattice
+  selection: 2022
 authors:
   - Roberto Avanzi
   - Joppe W. Bos
@@ -20,25 +26,16 @@ authors:
   - Damien Stehlé
 problems:
   - assumption: M-LWE
-    comment: 'tight ROM reduction, no-tight QROM reduction'
-stateful: false
-status:
-  - process: nist-pqc
-    stage: standardized
-    standard: FIPS 203
-    url: https://csrc.nist.gov/pubs/fips/203/final
-    year: 2024
+    comment: >-
+      The security proof is tight in the random oracle model and non-tight in the quantum random oracle
+      model.
 website: https://pq-crystals.org/kyber/
-links:
-  - >-
-    Specification, version 3.01
-    (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
 sources:
+  - Specification, version 3.01 (https://pq-crystals.org/kyber/data/kyber-specification-round3-20210131.pdf)
   - >-
     NIST Standardization Zip File
     (https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
   - FIPS 203 (https://csrc.nist.gov/pubs/fips/203/final)
-last_updated: '2022-10-06'
 patents: >-
   Patent US9094189: The patent holder claims that the patent applies to "one or
   more proposals" that were submitted to the NIST PQC standardization process
@@ -60,3 +57,4 @@ patents sources:
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Fm4cDfsx65s/m/aj31YoWWBAAJ
   - https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/6Psr4bFHHgk/m/3rDADGcMAQAJ
   - https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/selected-algos-2022/nist-pqc-license-summary-and-excerpts.pdf
+last_updated: '2022-10-06'

@@ -4,8 +4,8 @@ security level:
   quantum: 217
   nist category: 5
 failure probability: 0
-number of operations: inf
 sizes:
   sk: 32
   pk: 63541
   ct|sig: 1039
+number of operations: inf

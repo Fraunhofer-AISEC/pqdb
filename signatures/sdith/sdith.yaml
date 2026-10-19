@@ -9,7 +9,10 @@ comment: >-
   Threshold-Computation-in-the-Head framework and a simple variant without the
   one-tree optimization and without grinding.
 category: mpc-in-the-head
-stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2022
   candidate: 2023
@@ -50,13 +53,9 @@ trust comment: >-
   announced for a future version of the document. A preprint claiming shorter
   signatures through a different modeling of syndrome decoding appeared shortly
   before the submission deadline and has not yet been evaluated by the team.
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 website: https://sdith.org/
 links:
-  - "Initial paper (https://eprint.iacr.org/2022/1645)"
+  - https://eprint.iacr.org/2022/1645
 sources:
   - "Specification, version 3.0 (https://sdith.org/docs/sdith-v3.0.pdf)"
 last_updated: '2026-08-31'

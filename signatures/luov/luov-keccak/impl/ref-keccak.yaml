@@ -1,7 +1,6 @@
 name: Reference
-comment: Reference implementation using Keccak as PRNG
+comment: Reference implementation using Keccak as the PRNG.
 platform: desktop
-platform comment: C
 type: reference
 links:
   - https://github.com/WardBeullens/LUOV/tree/master/Reference_Implementation

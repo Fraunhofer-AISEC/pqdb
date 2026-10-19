@@ -1,5 +1,5 @@
 name: Kyber.CCAKEM
-description: Main variant using Keccak
+description: The main Kyber variant, using Keccak for seed expansion.
 deprecated: true
 deprecated comment: Superseded by ML-KEM in FIPS 203.
 type: KEM

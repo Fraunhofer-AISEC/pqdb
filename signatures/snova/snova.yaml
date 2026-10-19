@@ -4,6 +4,10 @@ description: >-
   Vinegar over noncommutative matrix rings with randomness alignment. It
   supports rectangular signatures and base fields of odd characteristic.
 category: multivariate
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2022
   candidate: 2023
@@ -19,11 +23,6 @@ authors:
   - Bo-Shu Tseng
   - Po-En Tseng
   - Chia-Chun Wang
-stateful: false
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 problems:
   - assumption: Multivariate quadratic problem
     comment: >-
@@ -36,6 +35,8 @@ trust comment: >-
   formal reduction for the noncommutative cases. The recommended parameter sets
   were selected conservatively with substantial security margins.
 website: https://snova.pqclab.org
+links:
+  - https://eprint.iacr.org/2022/1742.pdf
 sources:
   - >-
     Specification, version 3.0
@@ -43,10 +44,6 @@ sources:
   - >-
     NIST round-3 submission package
     (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/SNOVA_Round3.zip)
-links:
-  - >-
-    Initial paper
-    (https://eprint.iacr.org/2022/1742.pdf)
 last_updated: '2026-08-31'
 last_updated comment: >-
   This is the date of specification version 3.0.

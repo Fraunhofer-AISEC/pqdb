@@ -4,6 +4,10 @@ description: >-
   using a public whipping construction to reduce public-key sizes while
   retaining short signatures.
 category: multivariate
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2021
   candidate: 2023
@@ -13,7 +17,6 @@ authors:
   - Sofía Celi
   - Basil Hess
   - Matthias J. Kannwischer
-stateful: false
 problems:
   - assumption: Oil and Vinegar problem
     comment: >-
@@ -29,13 +32,9 @@ trust comment: >-
   cryptanalysis of Oil and Vinegar since 1997 applies to key recovery. Security
   against forgery additionally relies on the Multi-Target Whipped MQ problem,
   which has received less public scrutiny.
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 website: https://pqmayo.org/
 links:
-  - "Initial paper (https://eprint.iacr.org/2021/1144)"
+  - https://eprint.iacr.org/2021/1144
 sources:
   - "MAYO specification, round 3 version (https://pqmayo.org/assets/specs/mayo-round3.pdf)"
   - "MAYO round 3 submission zip (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/MAYO.zip)"

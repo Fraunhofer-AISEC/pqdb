@@ -1,8 +1,8 @@
 platform: arm-m4
+platform comment: STM32L4R5ZI ARM Cortex-M4 on ST NUCLEO-L4R5ZI, arm-none-eabi-gcc 13.2.1, -O3
 timings:
   unit: cycles
   gen: 27169341
   enc|sign: 17535468
   dec|vrfy: 10397669
   comment: Average of 1000 runs (pqm4 framework).
-platform comment: STM32L4R5ZI Arm Cortex-M4 on ST NUCLEO-L4R5ZI, arm-none-eabi-gcc 13.2.1, -O3

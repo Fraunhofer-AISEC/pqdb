@@ -7,8 +7,8 @@ security level:
     The specification estimates public key inversion at between 2^190 and 2^191
     AES evaluations. Generic quantum key search has exponent 96.
 failure probability: 0
-number of operations: inf
 sizes:
   sk: 40
   pk: 48
   ct|sig: 9410
+number of operations: inf

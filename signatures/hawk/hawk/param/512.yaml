@@ -12,8 +12,8 @@ security level:
     dimension of 257. The original values are retained in this comment as
     historical context.
 failure probability: -105
-number of operations: 2^64
 sizes:
   sk: 184
   pk: 1024
   ct|sig: 555
+number of operations: 2^64

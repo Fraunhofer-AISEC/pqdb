@@ -12,8 +12,8 @@ security level:
     the attack oracle dimension of 513. The original values are retained in this
     comment as historical context.
 failure probability: -315
-number of operations: 2^64
 sizes:
   sk: 360
   pk: 2440
   ct|sig: 1221
+number of operations: 2^64

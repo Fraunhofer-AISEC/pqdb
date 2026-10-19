@@ -3,7 +3,6 @@ description: >-
   An isogeny-based Fiat-Shamir signature scheme proving knowledge of a supersingular
   elliptic-curve endomorphism, with security based on the endomorphism ring problem.
 category: isogeny
-stateful: false
 status:
   - process: nist-additional-sigs
     stage: '3'
@@ -71,7 +70,7 @@ trust comment: >-
   worst-case-to-average-case reduction of the endomorphism ring problem.
 website: https://sqisign.org
 links:
-  - Initial paper (https://eprint.iacr.org/2020/1240)
+  - https://eprint.iacr.org/2020/1240
 sources:
   - Specification, version 3.0 (https://sqisign.org/spec/sqisign-20260901.pdf)
 last_updated: '2026-09-01'

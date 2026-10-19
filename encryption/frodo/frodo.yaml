@@ -1,7 +1,6 @@
 name: Frodo
 description: 'Based on plain LWE, using the Lindner-Peikert approach.'
 category: lattice
-stateful: false
 status:
   - process: nist-pqc
     stage: '3a'

@@ -7,6 +7,6 @@ failure probability: -29
 sizes:
   sk: 1920
   pk: 2064
-  ct|sig: 1056
   msg: 32
+  ct|sig: 1056
 number of operations: inf

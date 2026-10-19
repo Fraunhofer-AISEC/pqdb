@@ -9,8 +9,8 @@ security level:
     attack recovered a HAWK-256 secret key end to end in a few hours on a single
     server. The original estimate is retained here only as historical context.
 failure probability: -40
-number of operations: 2^32
 sizes:
   sk: 96
   pk: 450
   ct|sig: 249
+number of operations: 2^32

@@ -1,6 +1,6 @@
 name: ROLLO-I
+description: The ROLLO-I code-based KEM, submitted to NIST as LAKE.
 type: KEM
 security notion: IND-CPA
 sources:
-  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf'
-description: LAKE became ROLLO-I
+  - ROLLO specification (https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf)

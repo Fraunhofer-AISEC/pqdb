@@ -1,6 +1,7 @@
 name: Optimized
 platform: desktop
-platform comment: C
 type: optimized
 sources:
-  - https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.15
+  - >-
+    Round5 specification, table 15
+    (https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.15)

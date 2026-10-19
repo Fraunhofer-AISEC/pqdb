@@ -1,6 +1,5 @@
 name: Cortex-A53
 platform: desktop
-platform comment: c
 type: optimized
 dependencies:
   - Keccak

@@ -5,6 +5,10 @@ description: >-
   multivariate quadratic systems. It uses threshold (Shamir) secret sharing
   and GGM-tree-based line commitments.
 category: mpc-in-the-head
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   candidate: 2023
 authors:
@@ -29,11 +33,6 @@ problems comment: >-
   The one-tree variant reduces to the standard MQ problem, whereas the
   correlated-tree variant relies on PGOW-MQ. The security analysis is given in
   the random oracle and ideal cipher models.
-stateful: false
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 trust comment: >-
   MQOM uses random MQ instances without trapdoor structure. The specification
   characterizes this as a conservative hardness foundation. Its security

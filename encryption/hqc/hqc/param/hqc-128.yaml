@@ -11,4 +11,6 @@ sizes:
   ct|sig: 4481
 number of operations: inf
 sources:
-  - 'https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1'
+  - >-
+    HQC specification, section 2.7.1
+    (https://pqc-hqc.org/doc/hqc-specification_2021-06-06.pdf#subsubsection.2.7.1)

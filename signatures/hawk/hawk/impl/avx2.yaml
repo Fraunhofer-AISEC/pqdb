@@ -1,7 +1,6 @@
 name: AVX2
 comment: Optimised C implementation using x86 AVX2 intrinsics (e.g. four parallel SHAKE256 instances in SHAKE256x4). Isochronous and free of floating-point arithmetic. Used for the x86 "Coffee Lake" benchmarks.
 platform: desktop
-platform comment: c
 type: optimized
 side channel guarding:
   branching: true

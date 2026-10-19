@@ -7,4 +7,4 @@ side channel guarding:
   timing: true
   timing comment: Also guarded against cache attacks.
 links:
-  - 'Paper of the implementation: https://eprint.iacr.org/2020/410'
+  - https://eprint.iacr.org/2020/410

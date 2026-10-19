@@ -1,5 +1,5 @@
 platform: desktop
-comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0. Implementation is linked against GMP 6.1.1
+platform comment: Intel Core i7-6700 (Skylake) at 3.4 GHz
 timings:
   unit: cycles
   gen: 4743861000
@@ -10,4 +10,4 @@ memory requirements:
   enc|sign: 768
   dec|vrfy: 768
   comment: Numbers are referring to peak memory usage.
-platform comment: Intel Core i7-6700 (Skylake) 3.4GHz
+comment: OS is Ubuntu 16.04.3 LTS. Compiler is clang 3.8.0. Implementation is linked against GMP 6.1.1.

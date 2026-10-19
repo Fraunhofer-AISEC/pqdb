@@ -1,9 +1,12 @@
 name: NTRU Prime
 description: Version of NTRU that reduces the attack surface by using a prime-degree number field.
-year:
-    candidate: 2017
-    paper: 2016
 category: lattice
+status:
+  - process: nist-pqc
+    stage: '3a'
+year:
+    paper: 2016
+    candidate: 2017
 authors:
   - Daniel J. Bernstein
   - Chitchanok Chuengsatiansu
@@ -11,10 +14,6 @@ authors:
   - Christine van Vredendaal
 problems:
     - assumption: NTRU prime
-stateful: false
-status:
-  - process: nist-pqc
-    stage: '3a'
 website: https://ntruprime.cr.yp.to/
 sources:
   - NIST Submission Paper (https://ntruprime.cr.yp.to/nist/ntruprime-20190330.pdf)

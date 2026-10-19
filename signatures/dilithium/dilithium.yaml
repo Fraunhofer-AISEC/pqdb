@@ -2,7 +2,6 @@ name: ML-DSA
 aka:
   - Dilithium
 description: 'Based on Module-LWE and Module-SIS, constructed using Fiat-Shamir with aborts.'
-stateful: false
 category: lattice
 status:
   - process: nist-pqc
@@ -13,8 +12,8 @@ status:
 year:
   paper: 2018
   candidate: 2017
-  selection: 2022
   standardization: 2024
+  selection: 2022
 authors:
   - Léo Ducas
   - Eike Kiltz
@@ -32,7 +31,7 @@ problems:
       combination of MSIS and the hash function H.
 website: https://pq-crystals.org/dilithium/
 links:
-  - Initial paper (https://eprint.iacr.org/2017/633)
+  - https://eprint.iacr.org/2017/633
 sources:
   - >-
     NIST Round 3 Specification

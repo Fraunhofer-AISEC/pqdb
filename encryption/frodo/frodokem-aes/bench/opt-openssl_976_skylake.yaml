@@ -1,4 +1,5 @@
 platform: desktop
+platform comment: Intel Core i7-6700 (Skylake) at 3.4 GHz
 timings:
   unit: cycles
   gen: 2836000
@@ -8,5 +9,4 @@ memory requirements:
   gen: 111424
   enc|sign: 158944
   dec|vrfy: 189080
-  comment: Peak usage of stack memory
-platform comment: Intel Core i7-6700 (Skylake) 3.4GHZ
+  comment: Numbers refer to peak stack memory usage.

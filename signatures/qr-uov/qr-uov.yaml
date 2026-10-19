@@ -3,7 +3,10 @@ description: >-
   An unbalanced Oil and Vinegar multivariate signature scheme using quotient-ring
   block matrices to reduce public key size compared with plain UOV.
 category: multivariate
-stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2021
   candidate: 2023
@@ -33,10 +36,6 @@ problems comment: >-
   The authors report experiments in which the degree of regularity of a QR-UOV
   public key system equals the degree of regularity of a random system, which
   indicates equal difficulty.
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 trust comment: >-
   The EUF-CMA security is proven in the quantum random oracle model under the
   UOV and QR-MQ assumptions, following the analysis of Kosuge and Xagawa. The
@@ -48,10 +47,10 @@ trust comment: >-
   multiplication of the public key by the polynomial matrix of x, and conclude
   that none of these approaches weakens QR-UOV. A timing side-channel analysis
   of the signing procedure is provided.
-sources:
-  - "Round 3 specification, version 3.0 (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/qruov_specifications.pdf)"
 website: https://info.isl.ntt.co.jp/crypt/qruov/
 links:
-  - "Initial paper (https://eprint.iacr.org/2020/1243)"
+  - https://eprint.iacr.org/2020/1243
+sources:
+  - "Round 3 specification, version 3.0 (https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/qruov_specifications.pdf)"
 last_updated: '2026-08-31'
 last_updated comment: Date of the Round 3 specification, which the scheme website currently hosts only as the earlier Round 2 version 2.0.

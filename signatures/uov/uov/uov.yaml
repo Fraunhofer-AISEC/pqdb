@@ -1,7 +1,7 @@
 name: UOV
-type: SIG
-security notion: EUF-CMA
 comment: >-
   For each parameter set, the classical security value is the lowest attack
   estimate in the specification. The quantum value conservatively applies the
   square root speedup described in the quantum attack analysis.
+type: SIG
+security notion: EUF-CMA

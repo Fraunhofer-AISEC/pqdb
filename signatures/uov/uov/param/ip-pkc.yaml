@@ -7,8 +7,8 @@ failure probability: -2048
 failure probability comment: >-
   This approximates failure in all 256 signing attempts using the stated
   singularity probability of approximately 1 over 256 per attempt.
-number of operations: inf
 sizes:
   sk: 278087
   pk: 46591
   ct|sig: 135
+number of operations: inf

@@ -1,4 +1,4 @@
 name: FrodoKEM-SHAKE
-description: using SHAKE for seed expansion
+description: A FrodoKEM variant using SHAKE for seed expansion.
 type: KEM
 security notion: IND-CCA

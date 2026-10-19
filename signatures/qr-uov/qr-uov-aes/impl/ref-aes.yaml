@@ -1,7 +1,6 @@
 name: Reference
 comment: Reference C implementation with the AES counter mode option for the pseudorandom generator. It uses neither inline assembly nor intrinsics for special processor instructions.
 platform: desktop
-platform comment: c
 type: reference
 side channel guarding:
   timing: false

@@ -1,11 +1,10 @@
 name: AVX-512
-comment: Optimized for AVX2 and AVX512 instruction sets
+comment: Optimized for the AVX2 and AVX-512 instruction sets.
 platform: desktop
-platform comment: c
 type: optimized
 side channel guarding:
   branching: true
   timing: true
-  branching comment: No branch depends on a secret piece of information and all the memory patterns are independent of secret information
+  branching comment: No branch depends on secret data, and all memory access patterns are independent of secret data.
 hardware features:
   - AVX-512BW

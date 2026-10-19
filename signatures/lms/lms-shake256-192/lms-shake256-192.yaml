@@ -1,4 +1,4 @@
 name: LMS-SHAKE256-192
-description: using SHAKE256/192 as hash function, as defined in NIST SP 800-208
+description: An LMS variant using SHAKE256/192 as the hash function, as defined in NIST SP 800-208.
 type: SIG
 security notion: EUF-CMA

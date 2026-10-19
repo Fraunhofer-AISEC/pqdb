@@ -1,6 +1,5 @@
 name: AVX2
 platform: desktop
-platform comment: c
 type: optimized
 side channel guarding:
   timing: true

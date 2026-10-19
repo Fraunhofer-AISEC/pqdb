@@ -4,7 +4,10 @@ description: >-
   Unbalanced Oil and Vinegar quadratic map. It supports expanded and compressed
   key representations.
 category: multivariate
-stateful: false
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 1999
   candidate: 2023
@@ -30,10 +33,6 @@ trust comment: >-
   evaluates collision, direct, Kipnis Shamir, intersection, MinRank, and wedge
   attacks. It does not provide a reduction from a standard problem for the
   recommended construction.
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 website: https://www.uovsig.org/
 sources:
   - >-

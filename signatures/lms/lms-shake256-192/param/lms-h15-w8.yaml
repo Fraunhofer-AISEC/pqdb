@@ -2,12 +2,12 @@ name: LMS_SHAKE_M24_H15_W8
 security level:
   classical: 192
   quantum: 96
-number of operations: 2^15
 failure probability: 0
 sizes:
   sk: 52
   pk: 48
   ct|sig: 1020
   comment: The private key stores only the SEED, the key pair identifier I and the leaf index q together with the typecodes. The signature size assumes the W=8 LM-OTS parameter set (LMOTS_SHAKE_N24_W8) and reflects a single LMS tree with L=1 without the 4-byte HSS level prefix.
+number of operations: 2^15
 links:
 - https://botan.randombit.net/releases.html

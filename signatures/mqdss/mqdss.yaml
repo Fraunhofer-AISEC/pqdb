@@ -1,8 +1,7 @@
 name: MQDSS
 description: Based on the hardness of the multivariate quadratic problem.
-comment: Version 2.1
+comment: Version 2.1.
 category: multivariate
-stateful: false
 status:
   - process: nist-pqc
     stage: '2'

@@ -8,5 +8,7 @@ sizes:
     sk: 2305
     pk: 1793
     ct|sig: 1273
-    comment: "signature size varies, size noted here is the average. Compressed max is 1462. Expanded keys are used"
+    comment: >-
+      The signature size varies, and the size given here is the average. The maximum compressed size is
+      1462 bytes.
 number of operations: inf

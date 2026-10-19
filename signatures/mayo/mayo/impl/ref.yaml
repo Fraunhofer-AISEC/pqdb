@@ -1,7 +1,6 @@
 name: Reference
 comment: Generic portable C99 code that supports all parameter sets at run time in a single library. Built with the CMake option for the reference build type.
 platform: desktop
-platform comment: c
 type: reference
 side channel guarding:
   branching: true

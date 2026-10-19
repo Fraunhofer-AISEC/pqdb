@@ -1,7 +1,6 @@
 name: AVX2
-comment: AVX2 optimized implementation using Chacha8 as PRNG
+comment: Optimized AVX2 implementation using ChaCha8 as the PRNG.
 platform: desktop
-platform comment: C
 type: optimized
 links:
   - https://github.com/WardBeullens/LUOV/tree/master/AVX2_Optimized_Implementation

@@ -1,7 +1,6 @@
 name: Optimized
-comment: Generic optimized implementation using Keccak as PRNG
+comment: Optimized generic implementation using Keccak as the PRNG.
 platform: desktop
-platform comment: C
 type: optimized
 links:
   - https://github.com/WardBeullens/LUOV/tree/master/Optimized_Implementation

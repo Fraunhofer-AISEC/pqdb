@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: Intel Xeon Platinum 8259CL
 timings:
   unit: cycles
   gen: 148000
   enc|sign: 12210000
   dec|vrfy: 11330000
-platform comment: Intel Xeon Platinum 8259CL

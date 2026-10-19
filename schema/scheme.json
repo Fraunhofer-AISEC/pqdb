@@ -38,7 +38,8 @@
             "type": "string"
         },
         "stateful": {
-            "type": "boolean"
+            "type": "boolean",
+            "$comment": "Only present (as true) for stateful schemes. Stateless schemes omit the field."
         },
         "stateful comment": {
             "type": "string"
@@ -204,7 +205,6 @@
         "name",
         "category",
         "year",
-        "authors",
-        "stateful"
+        "authors"
     ]
 }

@@ -1,9 +1,12 @@
-stateful: false
 name: Round5
-description: >-
-  Relies on the General Learning with Rounding (GLWR) problem to unify the
-  well-studied Learning with Rounding (LWR) and Ring Learning with Rounding
-  (RLWR) lattice-problems
+description: A lattice-based key encapsulation mechanism.
+category: lattice
+status:
+  - process: nist-pqc
+    stage: '2'
+year:
+  paper: 2017
+  candidate: 2017
 authors:
   - Hayo Baan
   - Sauvik Bhattacharya
@@ -19,16 +22,9 @@ authors:
   - Ludo Tolhuizen
   - Jose Luis Torre Arce
   - Zhenfei Zhang
-year:
-  paper: 2017
-  candidate: 2017
-category: lattice
 problems:
   - assumption: General Learning with Rounding problem
-sources:
-  - 'https://round5.org/#spec'
-  - 'https://eprint.iacr.org/2019/090.pdf'
 website: https://round5.org
-status:
-  - process: nist-pqc
-    stage: '2'
+sources:
+  - Round5 specification (https://round5.org/#spec)
+  - Paper (https://eprint.iacr.org/2019/090.pdf)

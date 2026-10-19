@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: Intel Core i7-4770K (Haswell) at 3.5 GHz, 32 GB RAM (1333 MHz), Linux 4.90-4, Debian 9, gcc 6.3.0-18 (-O3 -march=native)
 timings:
+  unit: cycles
   gen: 340823
   enc|sign: 50441
   dec|vrfy: 62267
-  unit: cycles
-platform comment: Intel Core i7-4770K (Haswell, 3.5 GHz), 32GB RAM (1333MHz), Linux 4.90-4, Debian 9, GCC 6.3.0-18 (-O3 -march=native))

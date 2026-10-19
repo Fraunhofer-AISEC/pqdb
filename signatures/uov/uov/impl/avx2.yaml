@@ -1,11 +1,11 @@
 name: AVX2
 platform: desktop
+platform comment: x86-64
 type: optimized
+side channel guarding:
+  timing: true
+  timing comment: Signing uses constant time Gaussian elimination. Revealing that a sampled matrix is singular is stated not to expose secret information.
 hardware features:
   - AVX2
 dependencies:
   - OpenSSL
-side channel guarding:
-  timing: true
-  timing comment: Signing uses constant time Gaussian elimination. Revealing that a sampled matrix is singular is stated not to expose secret information.
-platform comment: x86-64

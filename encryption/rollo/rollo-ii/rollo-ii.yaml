@@ -1,6 +1,8 @@
 name: ROLLO-II
+description: The ROLLO-II code-based KEM, submitted to NIST as LOCKER.
 type: KTM
 security notion: IND-CCA
 sources:
-  - 'https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#section.1'
-description: LOCKER became ROLLO-II
+  - >-
+    ROLLO specification, section 1
+    (https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#section.1)

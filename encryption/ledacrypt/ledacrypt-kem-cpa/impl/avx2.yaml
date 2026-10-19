@@ -1,4 +1,4 @@
 name: AVX2
 platform: desktop
-type: optimized
 platform comment: C11
+type: optimized

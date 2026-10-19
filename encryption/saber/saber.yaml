@@ -1,7 +1,6 @@
 name: SABER
 description: Based on Mod-LWR (Module Learning With Rounding).
 category: lattice
-stateful: false
 status:
   - process: nist-pqc
     stage: '3f'

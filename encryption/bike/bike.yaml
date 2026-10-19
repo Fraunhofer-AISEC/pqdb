@@ -1,12 +1,13 @@
-stateful: false
 name: BIKE
+description: >-
+  Based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, decoding uses bit flipping.
 category: code
 status:
   - process: nist-pqc
     stage: '4'
 year:
-  candidate: 2017
   paper: 2017
+  candidate: 2017
 authors:
   - Nicolas Aragon
   - Paulo S. L. M. Barreto
@@ -26,14 +27,10 @@ authors:
   - Gilles Zémor
 problems:
   - assumption: QCSD
-    comment: Quasi-cyclic Codes Syndrome Decoding
+    comment: The quasi-cyclic code syndrome decoding problem.
   - assumption: QCCF
-    comment: Quasi-cyclic Codes Codeword Finding
+    comment: The quasi-cyclic code codeword finding problem.
 website: https://bikesuite.org/
 sources:
-  - >-
-    NIST submission paper, round 4
-    https://bikesuite.org/files/v5.0/BIKE_Spec.2022.10.04.1.pdf
-description: >-
-  Based on Quasi-Cyclic Moderate Density Parity-Check (QC-MDPC) codes, decoding uses bit flipping.
+  - NIST submission paper, round 4 (https://bikesuite.org/files/v5.0/BIKE_Spec.2022.10.04.1.pdf)
 last_updated: '2022-10-05'

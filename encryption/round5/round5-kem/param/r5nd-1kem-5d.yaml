@@ -1,15 +1,19 @@
 name: R5ND.1KEM.5d
-failure probability: -88
 security level:
   classical: 128
   quantum: 118
   nist category: 1
+failure probability: -88
 sizes:
-  pk: 445
-  ct|sig: 549
   sk: 16
+  pk: 445
   msg: 16
-sources:
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.4'
-  - 'https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.8'
+  ct|sig: 549
 number of operations: inf
+sources:
+  - >-
+    Round5 specification, table 4
+    (https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.4)
+  - >-
+    Round5 specification, table 8
+    (https://round5.org/Supporting_Documentation/Round5_Submission.pdf#table.8)

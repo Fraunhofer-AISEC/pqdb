@@ -8,8 +8,8 @@ security level:
     evaluations. Its ideal permutation analysis gives quantum query complexity
     with exponent 96.
 failure probability: 0
-number of operations: inf
 sizes:
   sk: 48
   pk: 48
   ct|sig: 9818
+number of operations: inf

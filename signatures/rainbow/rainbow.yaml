@@ -3,7 +3,6 @@ description: >-
   Rainbow is a multivariate-based public key signature scheme which can be seen
   as a multi-layer variant of the Oil-Vinegar signature scheme.
 category: multivariate
-stateful: false
 status:
   - process: nist-pqc
     stage: '3f'
@@ -20,9 +19,9 @@ authors:
   - Jacques Patarin
 problems:
   - assumption: MQ
-    comment: Multivariate Quadratic
+    comment: The multivariate quadratic problem.
   - assumption: IP
-    comment: Isomorphism of Polynomials
+    comment: The isomorphism of polynomials problem.
   - assumption: Min-Rank
 website: https://www.pqcrainbow.org/
 sources:

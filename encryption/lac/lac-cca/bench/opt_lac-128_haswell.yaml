@@ -1,8 +1,8 @@
 platform: desktop
+platform comment: Intel Core i7-4770S (Haswell) at 3.1 GHz, 7.6 GB RAM
 timings:
+  unit: cycles
   gen: 122691
   enc|sign: 209201
   dec|vrfy: 280125
-  unit: cycles
-  comment: 'Decapsulation(Const-BCH): 323221 cycles'
-platform comment: Intel Core-i7-4770S (Haswell), 3.10GHz, 7.6GB RAM
+  comment: Constant-time BCH decapsulation takes 323221 cycles.

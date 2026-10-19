@@ -1,8 +1,8 @@
 platform: desktop
+platform comment: Intel Core i7-6700T (Skylake) at 2.8 GHz, Debian, clang 19.1.7, -O3 -march=native
 timings:
   unit: cycles
   gen: 6595713
   enc|sign: 8026295
   dec|vrfy: 1177566
   comment: Median of 1000 runs.
-platform comment: Intel i7-6700T (Skylake) at 2.80 GHz, Debian, clang 19.1.7, -O3 -march=native

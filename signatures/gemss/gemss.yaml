@@ -3,7 +3,6 @@ description: >-
   Based on the Hidden Field Equations cryptosystem using minus and vinegar
   modifiers.
 category: multivariate
-stateful: false
 status:
   - process: nist-pqc
     stage: '3a'

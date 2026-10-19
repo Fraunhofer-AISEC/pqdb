@@ -1,8 +1,8 @@
 platform: arm-m4
+platform comment: 32-bit ARM Cortex-M4 (STM32L4R5ZI on NUCLEO-L4R5ZI), gcc 13.2, pqm4 speed preset, single run.
 timings:
   unit: cycles
   gen: 2422300000
   enc|sign: 10023400000
   dec|vrfy: 881800000
   comment: Single run of the benchmark (Table 16, optimized Cortex-M4 field arithmetic m4f implementation).
-platform comment: 32-bit ARM Cortex-M4 (STM32L4R5ZI on NUCLEO-L4R5ZI), gcc 13.2, pqm4 speed preset, single run.

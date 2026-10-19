@@ -1,8 +1,8 @@
 platform: desktop
+platform comment: Intel Core i5-8259U (Coffee Lake) at 2.3 GHz, Ubuntu 22.04 (x86_64), clang 14.0.0 -O2, AVX2 enabled, Turbo Boost disabled, single core
 timings:
   unit: cycles
   gen: 43660958
   enc|sign: 180816
   dec|vrfy: 302861
   comment: Averages in clock cycles (Table 6). "Fast" variants run signing in 85381 and verification in 255312 cycles.
-platform comment: Intel Core i5-8259U (Coffee Lake) @ 2.3 GHz, Ubuntu 22.04 (x86_64), Clang-14.0.0 -O2, AVX2 enabled, TurboBoost disabled, single core

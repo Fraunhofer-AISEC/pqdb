@@ -1,8 +1,7 @@
 name: Picnic
 description: Based on non-interactive zero knowledge proofs.
 category: mpc-in-the-head
-category comment: based on the MPC-in-the-Head paradigm
-stateful: false
+category comment: Based on the MPC-in-the-Head paradigm.
 status:
   - process: nist-pqc
     stage: '3a'
@@ -26,6 +25,6 @@ problems:
     - assumption: Onewayness of LowMC, a symmetric cipher
 website: https://microsoft.github.io/Picnic/
 links:
-  - Original Paper (https://eprint.iacr.org/2017/279)
+  - https://eprint.iacr.org/2017/279
 sources:
   - "NIST Submission Paper, Round 2, Version 2.2 (https://github.com/microsoft/Picnic/blob/master/spec/design-v2.2.pdf)"

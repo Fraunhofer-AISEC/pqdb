@@ -3,7 +3,7 @@ security level:
   classical: 256
   quantum: 128
   nist category: 5
-  comment: bit values deduced from category
+  comment: The bit security values are deduced from the NIST category.
 failure probability: -136
 sizes:
   sk: 40

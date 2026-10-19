@@ -5,7 +5,6 @@ security level:
   quantum: 148
   nist category: 5
 failure probability: 0
-number of operations: inf
 sizes:
   sk: 40
   pk: 5554
@@ -13,3 +12,4 @@ sizes:
   comment: >-
     Secret key and public key sizes are for the compact representations. The
     expanded secret key is 823 KB and the expanded public key is 828 KB.
+number of operations: inf

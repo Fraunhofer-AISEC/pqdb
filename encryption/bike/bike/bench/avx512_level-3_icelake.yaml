@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: Intel Xeon Platinum 8175M CPU at 2.5 GHz, 16 GB RAM, Linux OS (Ubuntu 20.04), clang 10.0.0 in 64-bit mode
 timings:
+  unit: cycles
   gen: 1823000
   enc|sign: 223000
   dec|vrfy: 3887000
-  unit: cycles
-platform comment: Intel Xeon Platinum 8175M CPU @ 2.50GHz, 16 GB RAM, Linux OS (Ubuntu 20.04), clang (version 10.0.0) in 64-bit mode

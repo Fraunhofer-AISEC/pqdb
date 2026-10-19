@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: Intel Xeon E3-1275 v5 (Skylake) x86-64 at 3.6 GHz, Ubuntu 24.04 LTS, gcc 15.2.0, Turbo Boost and Hyper-Threading disabled.
 timings:
   unit: cycles
   gen: 18851832
   enc|sign: 1628832
   dec|vrfy: 967100
-platform comment: Intel Xeon E3-1275 v5 (Skylake) x86-64 at 3.60 GHz, Ubuntu 24.04 LTS, gcc 15.2.0, Turbo Boost and Hyper Threading disabled.

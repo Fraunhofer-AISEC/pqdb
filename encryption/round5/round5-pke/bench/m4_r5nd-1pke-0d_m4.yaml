@@ -1,7 +1,7 @@
 platform: arm-m4
+platform comment: Cortex-M4
 timings:
+  unit: cycles
   gen: 487000
   enc|sign: 758000
   dec|vrfy: 923000
-  unit: cycles
-platform comment: Cortex M4

@@ -1,8 +1,11 @@
 name: qTESLA
 description: Based on Ring-LWE, constructed using Fiat-Shamir with aborts.
+category: lattice
+status:
+  - process: nist-pqc
+    stage: '2'
 year:
     candidate: 2017
-category: lattice
 authors:
   - Nina Bindel
   - Sedat Akleylek
@@ -18,10 +21,6 @@ authors:
   - Gustavo Zanon
 problems:
     - assumption: R-LWE
-stateful: false
-status:
-  - process: nist-pqc
-    stage: '2'
 website: https://qtesla.org/
 sources:
   - NIST Submission Paper (https://qtesla.org/wp-content/uploads/2020/04/qTESLA_round2_14.04.2020.pdf)

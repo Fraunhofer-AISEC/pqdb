@@ -1,6 +1,5 @@
 name: Optimized
 platform: desktop
-platform comment: c
 type: optimized
 side channel guarding:
   branching: false

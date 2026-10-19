@@ -1,8 +1,9 @@
 name: AVX2
 platform: desktop
-platform comment: C
 type: optimized
 hardware features:
   - AVX2
 sources:
-  - https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#table.8
+  - >-
+    ROLLO specification, table 8
+    (https://pqc-rollo.org/doc/rollo-specification_2020-04-21.pdf#table.8)

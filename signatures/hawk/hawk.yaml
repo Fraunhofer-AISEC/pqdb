@@ -4,7 +4,6 @@ description: >-
   isomorphism problem, using NTRU key generation and floating-point-free
   discrete Gaussian sampling.
 category: lattice
-stateful: false
 status:
   - process: nist-additional-sigs
     stage: '3'
@@ -51,7 +50,7 @@ trust comment: >-
   The attack does not affect Falcon, ML-DSA or other lattice based schemes.
 website: https://hawk-sign.info
 links:
-  - "Initial paper (https://eprint.iacr.org/2022/1155)"
+  - https://eprint.iacr.org/2022/1155
 sources:
   - "Specification, version 1.1 (https://hawk-sign.info/hawk-spec.pdf)"
 attacks:

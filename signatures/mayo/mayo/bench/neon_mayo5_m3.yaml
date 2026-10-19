@@ -1,8 +1,8 @@
 platform: desktop
+platform comment: Apple M3, Apple clang 1700.4.4.1
 timings:
   unit: cycles
   gen: 795090
   enc|sign: 954674
   dec|vrfy: 692657
   comment: Average of 1000 runs.
-platform comment: Apple M3, Apple clang toolchain 1700.4.4.1

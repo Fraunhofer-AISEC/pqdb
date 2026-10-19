@@ -1,15 +1,15 @@
 name: LEDAkem1464
+security level:
+  classical: 145
+  quantum: 94
+  nist category: 1
+failure probability: -64
 sizes:
   sk: 50
   pk: 5040
-  ct|sig: 1704
   msg: 32
+  ct|sig: 1704
 number of operations: inf
-security level:
-  quantum: 94
-  classical: 145
-  nist category: 1
-failure probability: -64
 sources:
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'
+  - LEDAcrypt specification, page 79 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79)
+  - LEDAcrypt specification, page 113 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113)

@@ -1,15 +1,15 @@
 name: LEDAkem33sl
+security level:
+  classical: 208
+  quantum: 127
+  nist category: 3
+failure probability: -192
 sizes:
   sk: 66
   pk: 9168
-  ct|sig: 4616
   msg: 48
+  ct|sig: 4616
 number of operations: inf
-security level:
-  quantum: 127
-  classical: 208
-  nist category: 3
-failure probability: -192
 sources:
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79'
-  - 'https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113'
+  - LEDAcrypt specification, page 79 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=79)
+  - LEDAcrypt specification, page 113 (https://www.ledacrypt.org/documents/LEDAcrypt_v3.pdf#page=113)

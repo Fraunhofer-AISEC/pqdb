@@ -3,11 +3,11 @@ security level:
   classical: 252
   quantum: 229
   nist category: 5
-  comment: security level for SUF-CMA
+  comment: The security level refers to SUF-CMA security.
 failure probability: 0
 sizes:
   sk: 4896
   pk: 2592
   ct|sig: 4627
-  comment: "`sk` can be expanded from 32 byte seed"
+  comment: The secret key can be expanded from a 32 byte seed.
 number of operations: inf

@@ -2,12 +2,12 @@ name: LMS_SHA256_M32_H15_W8
 security level:
   classical: 256
   quantum: 128
-number of operations: 2^15
 failure probability: 0
 sizes:
   sk: 60
   pk: 56
   ct|sig: 1612
   comment: The private key stores only the SEED, the key pair identifier I and the leaf index q together with the typecodes. The signature size assumes the W=8 LM-OTS parameter set (LMOTS_SHA256_N32_W8) and reflects a single LMS tree with L=1 without the 4-byte HSS level prefix.
+number of operations: 2^15
 links:
 - https://botan.randombit.net/releases.html

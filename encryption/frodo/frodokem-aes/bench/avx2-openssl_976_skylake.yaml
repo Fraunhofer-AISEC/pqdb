@@ -1,7 +1,7 @@
 platform: desktop
+platform comment: 'Intel Core i7-6700 (Skylake) at 3.4 GHz, gcc 7.2.0 using flags: -O3 -march=native'
 timings:
   unit: cycles
   gen: 2896000
   enc|sign: 3563000
   dec|vrfy: 3399000
-platform comment: Intel Core i7-6700 (Skylake) 3.4GHZ,GCC version 7.2.0 using flags-O3 -march=native

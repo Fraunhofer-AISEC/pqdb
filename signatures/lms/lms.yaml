@@ -23,5 +23,5 @@ authors:
 problems comment: "Only properties of the cryptographic hash function are assumed, which is implicitly true for all hash-based schemes and hence not listed explicitly."
 trust comment: "Very high because of minimal assumptions: security relies only on second preimage resistance of the hash function. The scheme is stateful. If a private key state is used twice, no cryptographic security guarantees remain."
 sources:
-  - https://www.rfc-editor.org/rfc/rfc8554
-  - https://doi.org/10.6028/NIST.SP.800-208
+  - RFC 8554 (https://www.rfc-editor.org/rfc/rfc8554)
+  - NIST SP 800-208 (https://doi.org/10.6028/NIST.SP.800-208)

@@ -6,6 +6,10 @@ description: >-
 category: other
 category comment: >-
   The construction uses VOLE in the Head rather than MPC in the Head.
+status:
+  - process: nist-additional-sigs
+    stage: '3'
+    year: 2026
 year:
   paper: 2023
   candidate: 2023
@@ -47,17 +51,12 @@ trust comment: >-
   of the IV based tweakable PRG and ideal permutation security of its Even
   Mansour construction. The specification reports no full round shortcut key
   recovery attacks that improve substantially on exhaustive search.
-stateful: false
 website: https://faest.info
 links:
-  - "Initial paper (https://eprint.iacr.org/2023/996.pdf)"
-  - "Follow-up paper (https://eprint.iacr.org/2026/164.pdf)"
+  - https://eprint.iacr.org/2023/996.pdf
+  - https://eprint.iacr.org/2026/164.pdf
 sources:
   - "Specification, version 3.0 (https://faest.info/faest-spec-v3.0.pdf)"
-status:
-  - process: nist-additional-sigs
-    stage: '3'
-    year: 2026
 last_updated: '2026-09-01'
 last_updated comment: >-
   This is the date of the version 3.0 specification.
