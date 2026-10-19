@@ -1,1 +1,123 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="minimum-scale=1,initial-scale=1,width=device-width"/><meta name="google-site-verification" content="u2QbFqJftr6oMNt8RySGH00h7bUhKa0pWLRbpiX8N9Q"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/><title>pqdb</title><meta name="description" content="A comprehensive list of post-quantum crypto schemes and their properties."/><script type="text/javascript">!function(n){if("/"===n.search[1]){var a=n.search.slice(1).split("&").map((function(n){return n.replace(/~and~/g,"&")})).join("?");window.history.replaceState(null,null,n.pathname.slice(0,-1)+a+n.hash)}}(window.location)</script><script defer="defer" src="/static/js/main.b9a9f1ff.js"></script></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="./favicon.ico" />
+  <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+  <meta name="google-site-verification" content="u2QbFqJftr6oMNt8RySGH00h7bUhKa0pWLRbpiX8N9Q" />
+  <title>pqdb</title>
+  <meta name="description" content="A comprehensive list of post-quantum crypto schemes and their properties." />
+
+  <style>
+    /* Static fallback rendered from the served HTML so it works even when
+       scripts are blocked (e.g. via a CSP-based blocker that also suppresses
+       <noscript> content). React replaces the fallback below on mount. */
+    .pqdb-fallback {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px;
+      box-sizing: border-box;
+      text-align: center;
+      background: #fbfdfe;
+      color: #0c3b43;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+    }
+    .pqdb-fallback h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .pqdb-fallback p {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: #12626d;
+    }
+    .pqdb-fallback .pqdb-links {
+      margin-top: 8px;
+      display: flex;
+      gap: 32px;
+      font-size: 0.9rem;
+    }
+    .pqdb-fallback .pqdb-links a {
+      color: #167885;
+      text-decoration: none;
+    }
+    .pqdb-fallback .pqdb-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <!-- Start Single Page Apps for GitHub Pages -->
+  <script type="text/javascript">
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script checks to see if a redirect is present in the query string,
+    // converts it back into the correct url and adds it to the
+    // browser's history using window.history.replaceState(...),
+    // which won't cause the browser to attempt to load the new url.
+    // When the single page app is loaded further down in this file,
+    // the correct url will be waiting in the browser's history for
+    // the single page app to route accordingly.
+    (function (l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
+  <!-- End Single Page Apps for GitHub Pages -->
+  <script type="module" crossorigin src="./assets/index-CAPHNGl3.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-CbXtAM7H.js">
+  <link rel="modulepreload" crossorigin href="./assets/Box-_5kLVkAt.js">
+  <link rel="modulepreload" crossorigin href="./assets/DatabaseProvider-B4d7hUmz.js">
+  <link rel="modulepreload" crossorigin href="./assets/Grow-oiGYsRZ_.js">
+  <link rel="modulepreload" crossorigin href="./assets/MenuList-DLzHwiGw.js">
+  <link rel="modulepreload" crossorigin href="./assets/Select-BTs9Aqjg.js">
+  <link rel="modulepreload" crossorigin href="./assets/detailLink-CvmrZUfp.js">
+  <link rel="modulepreload" crossorigin href="./assets/Divider-gzKg5qHg.js">
+  <link rel="modulepreload" crossorigin href="./assets/Link-Cg8ITzFd.js">
+  <link rel="modulepreload" crossorigin href="./assets/Tooltip-BfA4aZKZ.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-BE0voCwM.css">
+</head>
+
+<body>
+  <div id="root">
+    <div class="pqdb-fallback">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 394 140" width="250" height="89" role="img" aria-label="PQDB logo" style="display:block">
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m1152.8 803.15v245.67c0 88.154 72.477 160.63 160.63 160.63 88.154 0 160.63-72.477 160.63-160.63 0-88.154-72.475-160.63-160.63-160.63-23.524 0-45.931 5.1635-66.143 14.406v-99.445zm160.63 179.53c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#2195a6"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m1011 803.15v99.445c-20.212-9.2428-42.616-14.406-66.141-14.406-88.154 0-160.63 72.475-160.63 160.63 0 88.154 72.477 160.63 160.63 160.63 88.154 0 160.63-72.477 160.63-160.63v-245.67zm-66.141 179.53c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#4f6ef7"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m576.38 888.19c-88.154 0-160.63 72.475-160.63 160.63 0 88.154 72.477 160.63 160.63 160.63 23.524 0 45.929-5.1654 66.141-14.408v99.447h94.488v-245.67c0-88.154-72.475-160.63-160.63-160.63zm0 94.488c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#8b5cf6"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m207.87 888.19c-88.154 0-160.63 72.475-160.63 160.63v245.67h94.488v-99.447c20.212 9.2428 42.616 14.408 66.141 14.408 88.154 0 160.63-72.477 160.63-160.63 0-88.154-72.477-160.63-160.63-160.63zm0 94.488c37.089 0 66.143 29.052 66.143 66.141 0 37.089-29.054 66.142-66.143 66.142s-66.141-29.054-66.141-66.142c0-37.089 29.052-66.141 66.141-66.141z" fill="#0ea5e9"/>
+      </svg>
+      <p>This site requires JavaScript to be enabled.<br/>Please enable JavaScript in your browser to view the post-quantum cryptography database.</p>
+      <div class="pqdb-links">
+        <a href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</a>
+        <a href="/privacy_policy.html">Privacy</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Remove the static no-JS fallback as soon as scripting runs so JavaScript
+    // users never see it. When scripts are blocked/disabled this does not run,
+    // leaving the fallback (above) visible.
+    var rootEl = document.getElementById('root');
+    if (rootEl) rootEl.replaceChildren();
+  </script>
+</body>
+
+</html>

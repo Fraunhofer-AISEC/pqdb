@@ -1,0 +1,1 @@
+function e(e,t){if(!Number.isFinite(e))return``;let n=e===0?0:Math.floor(Math.log(e)/Math.log(1e3));return`${(e/1e3**n).toFixed(2)*1} ${[``,`k`,`M`,`G`,`T`][n]}${t}`}export{e as t};

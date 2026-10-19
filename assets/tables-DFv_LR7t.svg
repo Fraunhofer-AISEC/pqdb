@@ -1,0 +1,665 @@
+<svg version="1.1" baseProfile="full" width="3067.0" height="1671.0" viewBox="0 0 3067 1671" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" xmlnsEv="http://www.w3.org/2001/xml-events">
+	<title >PQDB Database Diagram</title>
+	<desc >#title: PQDB Database Diagram
+	[scheme|id: INTEGER  🔑;id_text: TEXT ;type: TEXT ;name: TEXT ;description: TEXT ;comment: TEXT ;category: TEXT ;category_comment: TEXT ;stateful: INTEGER ;stateful_comment: TEXT ;year_paper: INTEGER ;year_candidate: INTEGER ;year_standardization: INTEGER ;year_selection: INTEGER ;year_comment: TEXT ;problems_comment: TEXT ;trust_comment: TEXT ;website: TEXT ;patents: TEXT ;last_updated: TEXT ;last_updated_comment: TEXT ]
+	[scheme_aka|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;scheme_id: INTEGER ]
+	[scheme_status|id: INTEGER  🔑;id_text: TEXT ;process: TEXT ;stage: TEXT ;standard: TEXT ;url: TEXT ;year: INTEGER ;comment: TEXT ;scheme_id: INTEGER ]
+	[scheme_author|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;scheme_id: INTEGER ]
+	[scheme_problem|id: INTEGER  🔑;id_text: TEXT ;assumption: TEXT ;comment: TEXT ;scheme_id: INTEGER ]
+	[scheme_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+	[scheme_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+	[scheme_patents_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+	[scheme_attack|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;scheme_id: INTEGER ]
+	[flavor|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;description: TEXT ;comment: TEXT ;deprecated: INTEGER ;deprecated_comment: TEXT ;type: TEXT ;type_comment: TEXT ;security_notion: TEXT ;security_notion_comment: TEXT ;dh_ness: TEXT ;scheme_id: INTEGER ]
+	[flavor_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;flavor_id: INTEGER ]
+	[flavor_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;flavor_id: INTEGER ]
+	[paramset|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;comment: TEXT ;security_level_classical: INTEGER ;security_level_quantum: INTEGER ;security_level_nist_category: INTEGER ;security_level_comment: TEXT ;failure_probability: REAL ;failure_probability_comment: TEXT ;sizes_sk: INTEGER ;sizes_pk: INTEGER ;sizes_msg: INTEGER ;sizes_ct_sig: INTEGER ;sizes_comment: TEXT ;number_of_operations: TEXT ;flavor_id: INTEGER ]
+	[paramset_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;paramset_id: INTEGER ]
+	[paramset_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;paramset_id: INTEGER ]
+	[implementation|id: INTEGER  🔑;id_text: TEXT ;name: TEXT ;comment: TEXT ;platform: TEXT ;platform_comment: TEXT ;type: TEXT ;side_channel_guarding_branching: INTEGER ;side_channel_guarding_timing: INTEGER ;side_channel_guarding_branching_comment: TEXT ;side_channel_guarding_timing_comment: TEXT ;code_size_overall: REAL ;code_size_gen: REAL ;code_size_enc_sign: REAL ;code_size_dec_vrfy: REAL ;code_size_comment: TEXT ;randomness_required_gen: REAL ;randomness_required_enc_sign: REAL ;randomness_required_dec_vrfy: REAL ;randomness_required_comment: TEXT ;flavor_id: INTEGER ]
+	[implementation_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;implementation_id: INTEGER ]
+	[implementation_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;implementation_id: INTEGER ]
+	[implementation_hardware_feature|id: INTEGER  🔑;id_text: TEXT ;feature: TEXT ;implementation_id: INTEGER ]
+	[implementation_dependency|id: INTEGER  🔑;id_text: TEXT ;dependency: TEXT ;implementation_id: INTEGER ]
+	[benchmark|id: INTEGER  🔑;id_text: TEXT ;comment: TEXT ;platform: TEXT ;platform_comment: TEXT ;timings_gen: REAL ;timings_enc_sign: REAL ;timings_dec_vrfy: REAL ;timings_unit: TEXT ;timings_comment: TEXT ;memory_requirements_gen: INTEGER ;memory_requirements_enc_sign: INTEGER ;memory_requirements_dec_vrfy: INTEGER ;memory_requirements_comment: TEXT ;paramset_id: INTEGER ;implementation_id: INTEGER ]
+	[benchmark_link|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;benchmark_id: INTEGER ]
+	[benchmark_source|id: INTEGER  🔑;id_text: TEXT ;url: TEXT ;benchmark_id: INTEGER ]
+	[scheme_aka] -&gt; [scheme]
+	[scheme_status] -&gt; [scheme]
+	[scheme_author] -&gt; [scheme]
+	[scheme_problem] -&gt; [scheme]
+	[scheme_link] -&gt; [scheme]
+	[scheme_source] -&gt; [scheme]
+	[scheme_patents_source] -&gt; [scheme]
+	[scheme_attack] -&gt; [scheme]
+	[flavor] -&gt; [scheme]
+	[flavor_link] -&gt; [flavor]
+	[flavor_source] -&gt; [flavor]
+	[paramset] -&gt; [flavor]
+	[paramset_link] -&gt; [paramset]
+	[paramset_source] -&gt; [paramset]
+	[implementation] -&gt; [flavor]
+	[implementation_link] -&gt; [implementation]
+	[implementation_source] -&gt; [implementation]
+	[implementation_hardware_feature] -&gt; [implementation]
+	[implementation_dependency] -&gt; [implementation]
+	[benchmark] -&gt; [implementation]
+	[benchmark] -&gt; [paramset]
+	[benchmark_link] -&gt; [benchmark]
+	[benchmark_source] -&gt; [benchmark]</desc>
+  <rect width="100%" height="100%" fill="white"/>
+	<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+		<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+			<g stroke="transparent" fill="transparent">
+				<rect x="0.0" y="0.0" height="1671.0" width="3067.0" stroke="none"></rect>
+			</g>
+			<g transform="translate(8, 8)" fill="#33322E">
+				<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+					<path d="M93.0 1114.0 L93 1207 L405.47453830518714 1354.941484949801 L405.5 1354.9 " fill="none"></path>
+					<path d="M397.2 1356.9 L405.5 1354.9 L401.7 1347.3 L411.5 1357.8 Z"></path>
+					<path d="M319.0 1154.5 L319 1207 L406.6591898894215 1290.0047196298062 L406.7 1290.0 " fill="none"></path>
+					<path d="M398.2 1289.3 L406.7 1290.0 L405.5 1281.5 L411.5 1294.6 Z"></path>
+					<path d="M545.0 1114.0 L545 1207 L545 1220.3333333333333 L545.0 1220.3 " fill="none"></path>
+					<path d="M539.7 1213.7 L545.0 1220.3 L550.3 1213.7 L545.0 1227.0 Z"></path>
+					<path d="M771.0 1122.0 L771 1207 L683.3408101105784 1290.0047196298062 L683.3 1290.0 " fill="none"></path>
+					<path d="M684.5 1281.5 L683.3 1290.0 L691.8 1289.3 L678.5 1294.6 Z"></path>
+					<path d="M997.0 1114.0 L997 1207 L684.5254616948129 1354.941484949801 L684.5 1354.9 " fill="none"></path>
+					<path d="M688.3 1347.3 L684.5 1354.9 L692.8 1356.9 L678.5 1357.8 Z"></path>
+					<path d="M1223.0 1114.0 L1223 1207 L684.8575011352959 1376.8561869572961 L684.9 1376.9 " fill="none"></path>
+					<path d="M689.6 1369.8 L684.9 1376.9 L692.8 1379.9 L678.5 1378.9 Z"></path>
+					<path d="M1461.5 1114.0 L1461.5 1207 L684.9920395315419 1388.3122788218768 L685.0 1388.3 " fill="none"></path>
+					<path d="M690.3 1381.6 L685.0 1388.3 L692.7 1392.0 L678.5 1389.8 Z"></path>
+					<path d="M1700.0 1114.0 L1700 1207 L685.0551004321428 1395.0503969762092 L685.1 1395.1 " fill="none"></path>
+					<path d="M690.6 1388.6 L685.1 1395.1 L692.6 1399.1 L678.5 1396.3 Z"></path>
+					<path d="M1968.5 1187.0 L1968.5 1207 L685.0925859525454 1399.939365371377 L685.1 1399.9 " fill="none"></path>
+					<path d="M690.9 1393.7 L685.1 1399.9 L692.5 1404.2 L678.5 1400.9 Z"></path>
+					<path d="M1263.3 750.5 L1263.25 908 L1826.4782543570009 1027.3940078360463 L1826.5 1027.4 " fill="none"></path>
+					<path d="M1818.9 1031.2 L1826.5 1027.4 L1821.1 1020.8 L1833.0 1028.8 Z"></path>
+					<path d="M1471.3 750.5 L1471.25 908 L1826.6156410519711 1014.8419574404619 L1826.6 1014.8 " fill="none"></path>
+					<path d="M1818.7 1018.0 L1826.6 1014.8 L1821.8 1007.8 L1833.0 1016.8 Z"></path>
+					<path d="M1758.3 855.5 L1758.25 908 L1827.5668288999 957.2883040215698 L1827.6 957.3 " fill="none"></path>
+					<path d="M1819.0 957.8 L1827.6 957.3 L1825.2 949.1 L1833.0 961.2 Z"></path>
+					<path d="M1097.0 363.0 L1097 480 L1588.9072224770077 639.1956833422755 L1588.9 639.2 " fill="none"></path>
+					<path d="M1580.9 642.2 L1588.9 639.2 L1584.2 632.1 L1595.3 641.2 Z"></path>
+					<path d="M1335.0 363.0 L1335 480 L1589.3005655929242 608.577249939482 L1589.3 608.6 " fill="none"></path>
+					<path d="M1580.9 610.3 L1589.3 608.6 L1585.8 600.8 L1595.3 611.6 Z"></path>
+					<path d="M2465.5 888.0 L2465.5 908 L2110.3840926715084 1014.820579769838 L2110.4 1014.8 " fill="none"></path>
+					<path d="M2115.2 1007.8 L2110.4 1014.8 L2118.3 1018.0 L2104.0 1016.7 Z"></path>
+					<path d="M1718.0 346.0 L2131.75 480 L2247.3879132026705 554.146856705233 L2247.4 554.1 " fill="none"></path>
+					<path d="M2238.9 555.0 L2247.4 554.1 L2244.7 546.1 L2253.0 557.7 Z"></path>
+					<path d="M2002.0 357.7 L2293.75 480 L2305.6286253912936 494.80073265640067 L2305.6 494.8 " fill="none"></path>
+					<path d="M2297.3 492.9 L2305.6 494.8 L2305.6 486.3 L2309.8 500.0 Z"></path>
+					<path d="M2577.5 363.0 L2564 480 L2557.5818312336723 493.94404178674245 L2557.6 493.9 " fill="none"></path>
+					<path d="M2555.5 485.7 L2557.6 493.9 L2565.2 490.1 L2554.8 500.0 Z"></path>
+					<path d="M2839.9 363.0 L2738.25 480 L2683.2449569724413 523.1570273433458 L2683.2 523.2 " fill="none"></path>
+					<path d="M2685.2 514.8 L2683.2 523.2 L2691.8 523.2 L2678.0 527.3 Z"></path>
+					<path d="M2401.0 362.4 L2778.25 480 L2683.5019405297676 544.8316058405427 L2683.5 544.8 " fill="none"></path>
+					<path d="M2686.0 536.7 L2683.5 544.8 L2692.0 545.5 L2678.0 548.6 Z"></path>
+					<path d="M2106.7 460.0 L2091.75 480 L1926.8608610378217 585.8059242515926 L1926.9 585.8 " fill="none"></path>
+					<path d="M1929.6 577.7 L1926.9 585.8 L1935.4 586.7 L1921.3 589.4 Z"></path>
+					<path d="M2095.5 113.0 L2095.5 133 L2106.1070492376875 147.60573843443484 L2106.1 147.6 " fill="none"></path>
+					<path d="M2097.9 145.3 L2106.1 147.6 L2106.5 139.1 L2110.0 153.0 Z"></path>
+					<path d="M2347.5 113.0 L2347.5 133 L2336.8929507623125 147.60573843443484 L2336.9 147.6 " fill="none"></path>
+					<path d="M2336.5 139.1 L2336.9 147.6 L2345.1 145.3 L2333.0 153.0 Z"></path>
+					<g data-name="scheme">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme">
+							<rect x="411.5" y="1227.0" height="388.0" width="267.0" data-name="scheme"></rect>
+							<path d="M411.5 1259.0 L678.5 1259.0" fill="none" data-name="scheme"></path>
+						</g>
+						<g transform="translate(411.5, 1227)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme" data-compartment="0">
+								<text x="125.5" y="14.1" stroke="none" text-anchor="middle" data-name="scheme" data-compartment="0">scheme</text>
+								
+							</g>
+						</g>
+						<g transform="translate(411.5, 1259)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme" data-compartment="1">type: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="scheme" data-compartment="1">description: TEXT</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="scheme" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="scheme" data-compartment="1">category: TEXT</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="scheme" data-compartment="1">category_comment: TEXT</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="scheme" data-compartment="1">stateful: INTEGER</text>
+								<text x="0.0" y="159.9" stroke="none" data-name="scheme" data-compartment="1">stateful_comment: TEXT</text>
+								<text x="0.0" y="176.1" stroke="none" data-name="scheme" data-compartment="1">year_paper: INTEGER</text>
+								<text x="0.0" y="192.3" stroke="none" data-name="scheme" data-compartment="1">year_candidate: INTEGER</text>
+								<text x="0.0" y="208.5" stroke="none" data-name="scheme" data-compartment="1">year_standardization: INTEGER</text>
+								<text x="0.0" y="224.7" stroke="none" data-name="scheme" data-compartment="1">year_selection: INTEGER</text>
+								<text x="0.0" y="240.9" stroke="none" data-name="scheme" data-compartment="1">year_comment: TEXT</text>
+								<text x="0.0" y="257.1" stroke="none" data-name="scheme" data-compartment="1">problems_comment: TEXT</text>
+								<text x="0.0" y="273.3" stroke="none" data-name="scheme" data-compartment="1">trust_comment: TEXT</text>
+								<text x="0.0" y="289.5" stroke="none" data-name="scheme" data-compartment="1">website: TEXT</text>
+								<text x="0.0" y="305.7" stroke="none" data-name="scheme" data-compartment="1">patents: TEXT</text>
+								<text x="0.0" y="321.9" stroke="none" data-name="scheme" data-compartment="1">last_updated: TEXT</text>
+								<text x="0.0" y="338.1" stroke="none" data-name="scheme" data-compartment="1">last_updated_comment: TEXT</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_aka">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_aka">
+							<rect x="0.0" y="1001.0" height="113.0" width="186.0" data-name="scheme_aka"></rect>
+							<path d="M0.0 1033.0 L186.0 1033.0" fill="none" data-name="scheme_aka"></path>
+						</g>
+						<g transform="translate(0, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_aka" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_aka" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_aka" data-compartment="0">scheme_aka</text>
+								
+							</g>
+						</g>
+						<g transform="translate(0, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_aka" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_aka" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_aka" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_aka" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_aka" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_aka" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_status">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_status">
+							<rect x="226.0" y="960.5" height="194.0" width="186.0" data-name="scheme_status"></rect>
+							<path d="M226.0 992.5 L412.0 992.5" fill="none" data-name="scheme_status"></path>
+						</g>
+						<g transform="translate(226, 960.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_status" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_status" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_status" data-compartment="0">scheme_status</text>
+								
+							</g>
+						</g>
+						<g transform="translate(226, 992.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_status" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_status" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_status" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_status" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_status" data-compartment="1">process: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_status" data-compartment="1">stage: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="scheme_status" data-compartment="1">standard: TEXT</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="scheme_status" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="scheme_status" data-compartment="1">year: INTEGER</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="scheme_status" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="scheme_status" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_author">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_author">
+							<rect x="452.0" y="1001.0" height="113.0" width="186.0" data-name="scheme_author"></rect>
+							<path d="M452.0 1033.0 L638.0 1033.0" fill="none" data-name="scheme_author"></path>
+						</g>
+						<g transform="translate(452, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_author" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_author" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_author" data-compartment="0">scheme_author</text>
+								
+							</g>
+						</g>
+						<g transform="translate(452, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_author" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_author" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_author" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_author" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_author" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_author" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_problem">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_problem">
+							<rect x="678.0" y="993.0" height="129.0" width="186.0" data-name="scheme_problem"></rect>
+							<path d="M678.0 1025.0 L864.0 1025.0" fill="none" data-name="scheme_problem"></path>
+						</g>
+						<g transform="translate(678, 993)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_problem" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_problem" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_problem" data-compartment="0">scheme_problem</text>
+								
+							</g>
+						</g>
+						<g transform="translate(678, 1025)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_problem" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_problem" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_problem" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_problem" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_problem" data-compartment="1">assumption: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_problem" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="scheme_problem" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_link">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_link">
+							<rect x="904.0" y="1001.0" height="113.0" width="186.0" data-name="scheme_link"></rect>
+							<path d="M904.0 1033.0 L1090.0 1033.0" fill="none" data-name="scheme_link"></path>
+						</g>
+						<g transform="translate(904, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_link" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_link" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_link" data-compartment="0">scheme_link</text>
+								
+							</g>
+						</g>
+						<g transform="translate(904, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_link" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_link" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_link" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_link" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_link" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_link" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_source">
+							<rect x="1130.0" y="1001.0" height="113.0" width="186.0" data-name="scheme_source"></rect>
+							<path d="M1130.0 1033.0 L1316.0 1033.0" fill="none" data-name="scheme_source"></path>
+						</g>
+						<g transform="translate(1130, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_source" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_source" data-compartment="0">scheme_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1130, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_source" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_patents_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_patents_source">
+							<rect x="1356.0" y="1001.0" height="113.0" width="211.0" data-name="scheme_patents_source"></rect>
+							<path d="M1356.0 1033.0 L1567.0 1033.0" fill="none" data-name="scheme_patents_source"></path>
+						</g>
+						<g transform="translate(1356, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_patents_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_patents_source" data-compartment="0">
+								<text x="97.5" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_patents_source" data-compartment="0">scheme_patents_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1356, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_patents_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_patents_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_patents_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_patents_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_patents_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_patents_source" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="scheme_attack">
+						<g fill="#eee8d5" stroke="#33322E" data-name="scheme_attack">
+							<rect x="1607.0" y="1001.0" height="113.0" width="186.0" data-name="scheme_attack"></rect>
+							<path d="M1607.0 1033.0 L1793.0 1033.0" fill="none" data-name="scheme_attack"></path>
+						</g>
+						<g transform="translate(1607, 1001)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="scheme_attack" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="scheme_attack" data-compartment="0">
+								<text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="scheme_attack" data-compartment="0">scheme_attack</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1607, 1033)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="scheme_attack" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="scheme_attack" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="scheme_attack" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="scheme_attack" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="scheme_attack" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="scheme_attack" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="flavor">
+						<g fill="#eee8d5" stroke="#33322E" data-name="flavor">
+							<rect x="1833.0" y="928.0" height="259.0" width="271.0" data-name="flavor"></rect>
+							<path d="M1833.0 960.0 L2104.0 960.0" fill="none" data-name="flavor"></path>
+						</g>
+						<g transform="translate(1833, 928)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="flavor" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="flavor" data-compartment="0">
+								<text x="127.5" y="14.1" stroke="none" text-anchor="middle" data-name="flavor" data-compartment="0">flavor</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1833, 960)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="flavor" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="flavor" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="flavor" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="flavor" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="flavor" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="flavor" data-compartment="1">description: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="flavor" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="flavor" data-compartment="1">deprecated: INTEGER</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="flavor" data-compartment="1">deprecated_comment: TEXT</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="flavor" data-compartment="1">type: TEXT</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="flavor" data-compartment="1">type_comment: TEXT</text>
+								<text x="0.0" y="159.9" stroke="none" data-name="flavor" data-compartment="1">security_notion: TEXT</text>
+								<text x="0.0" y="176.1" stroke="none" data-name="flavor" data-compartment="1">security_notion_comment: TEXT</text>
+								<text x="0.0" y="192.3" stroke="none" data-name="flavor" data-compartment="1">dh_ness: TEXT</text>
+								<text x="0.0" y="208.5" stroke="none" data-name="flavor" data-compartment="1">scheme_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="flavor_link">
+						<g fill="#eee8d5" stroke="#33322E" data-name="flavor_link">
+							<rect x="1179.3" y="637.5" height="113.0" width="168.0" data-name="flavor_link"></rect>
+							<path d="M1179.3 669.5 L1347.3 669.5" fill="none" data-name="flavor_link"></path>
+						</g>
+						<g transform="translate(1179.25, 637.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="flavor_link" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="flavor_link" data-compartment="0">
+								<text x="76.0" y="14.1" stroke="none" text-anchor="middle" data-name="flavor_link" data-compartment="0">flavor_link</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1179.25, 669.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="flavor_link" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="flavor_link" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="flavor_link" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="flavor_link" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="flavor_link" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="flavor_link" data-compartment="1">flavor_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="flavor_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="flavor_source">
+							<rect x="1387.3" y="637.5" height="113.0" width="168.0" data-name="flavor_source"></rect>
+							<path d="M1387.3 669.5 L1555.3 669.5" fill="none" data-name="flavor_source"></path>
+						</g>
+						<g transform="translate(1387.25, 637.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="flavor_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="flavor_source" data-compartment="0">
+								<text x="76.0" y="14.1" stroke="none" text-anchor="middle" data-name="flavor_source" data-compartment="0">flavor_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1387.25, 669.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="flavor_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="flavor_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="flavor_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="flavor_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="flavor_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="flavor_source" data-compartment="1">flavor_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="paramset">
+						<g fill="#eee8d5" stroke="#33322E" data-name="paramset">
+							<rect x="1595.3" y="532.5" height="323.0" width="326.0" data-name="paramset"></rect>
+							<path d="M1595.3 564.5 L1921.3 564.5" fill="none" data-name="paramset"></path>
+						</g>
+						<g transform="translate(1595.25, 532.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="paramset" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="paramset" data-compartment="0">
+								<text x="155.0" y="14.1" stroke="none" text-anchor="middle" data-name="paramset" data-compartment="0">paramset</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1595.25, 564.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="paramset" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="paramset" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="paramset" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="paramset" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="paramset" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="paramset" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="paramset" data-compartment="1">security_level_classical: INTEGER</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="paramset" data-compartment="1">security_level_quantum: INTEGER</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="paramset" data-compartment="1">security_level_nist_category: INTEGER</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="paramset" data-compartment="1">security_level_comment: TEXT</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="paramset" data-compartment="1">failure_probability: REAL</text>
+								<text x="0.0" y="159.9" stroke="none" data-name="paramset" data-compartment="1">failure_probability_comment: TEXT</text>
+								<text x="0.0" y="176.1" stroke="none" data-name="paramset" data-compartment="1">sizes_sk: INTEGER</text>
+								<text x="0.0" y="192.3" stroke="none" data-name="paramset" data-compartment="1">sizes_pk: INTEGER</text>
+								<text x="0.0" y="208.5" stroke="none" data-name="paramset" data-compartment="1">sizes_msg: INTEGER</text>
+								<text x="0.0" y="224.7" stroke="none" data-name="paramset" data-compartment="1">sizes_ct_sig: INTEGER</text>
+								<text x="0.0" y="240.9" stroke="none" data-name="paramset" data-compartment="1">sizes_comment: TEXT</text>
+								<text x="0.0" y="257.1" stroke="none" data-name="paramset" data-compartment="1">number_of_operations: TEXT</text>
+								<text x="0.0" y="273.3" stroke="none" data-name="paramset" data-compartment="1">flavor_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="paramset_link">
+						<g fill="#eee8d5" stroke="#33322E" data-name="paramset_link">
+							<rect x="998.0" y="250.0" height="113.0" width="198.0" data-name="paramset_link"></rect>
+							<path d="M998.0 282.0 L1196.0 282.0" fill="none" data-name="paramset_link"></path>
+						</g>
+						<g transform="translate(998, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="paramset_link" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="paramset_link" data-compartment="0">
+								<text x="91.0" y="14.1" stroke="none" text-anchor="middle" data-name="paramset_link" data-compartment="0">paramset_link</text>
+								
+							</g>
+						</g>
+						<g transform="translate(998, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="paramset_link" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="paramset_link" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="paramset_link" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="paramset_link" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="paramset_link" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="paramset_link" data-compartment="1">paramset_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="paramset_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="paramset_source">
+							<rect x="1236.0" y="250.0" height="113.0" width="198.0" data-name="paramset_source"></rect>
+							<path d="M1236.0 282.0 L1434.0 282.0" fill="none" data-name="paramset_source"></path>
+						</g>
+						<g transform="translate(1236, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="paramset_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="paramset_source" data-compartment="0">
+								<text x="91.0" y="14.1" stroke="none" text-anchor="middle" data-name="paramset_source" data-compartment="0">paramset_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1236, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="paramset_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="paramset_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="paramset_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="paramset_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="paramset_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="paramset_source" data-compartment="1">paramset_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="implementation">
+						<g fill="#eee8d5" stroke="#33322E" data-name="implementation">
+							<rect x="2253.0" y="500.0" height="388.0" width="425.0" data-name="implementation"></rect>
+							<path d="M2253.0 532.0 L2678.0 532.0" fill="none" data-name="implementation"></path>
+						</g>
+						<g transform="translate(2253, 500)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="implementation" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="implementation" data-compartment="0">
+								<text x="204.5" y="14.1" stroke="none" text-anchor="middle" data-name="implementation" data-compartment="0">implementation</text>
+								
+							</g>
+						</g>
+						<g transform="translate(2253, 532)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="implementation" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="implementation" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="implementation" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="implementation" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="implementation" data-compartment="1">name: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="implementation" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="implementation" data-compartment="1">platform: TEXT</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="implementation" data-compartment="1">platform_comment: TEXT</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="implementation" data-compartment="1">type: TEXT</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="implementation" data-compartment="1">side_channel_guarding_branching: INTEGER</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="implementation" data-compartment="1">side_channel_guarding_timing: INTEGER</text>
+								<text x="0.0" y="159.9" stroke="none" data-name="implementation" data-compartment="1">side_channel_guarding_branching_comment: TEXT</text>
+								<text x="0.0" y="176.1" stroke="none" data-name="implementation" data-compartment="1">side_channel_guarding_timing_comment: TEXT</text>
+								<text x="0.0" y="192.3" stroke="none" data-name="implementation" data-compartment="1">code_size_overall: REAL</text>
+								<text x="0.0" y="208.5" stroke="none" data-name="implementation" data-compartment="1">code_size_gen: REAL</text>
+								<text x="0.0" y="224.7" stroke="none" data-name="implementation" data-compartment="1">code_size_enc_sign: REAL</text>
+								<text x="0.0" y="240.9" stroke="none" data-name="implementation" data-compartment="1">code_size_dec_vrfy: REAL</text>
+								<text x="0.0" y="257.1" stroke="none" data-name="implementation" data-compartment="1">code_size_comment: TEXT</text>
+								<text x="0.0" y="273.3" stroke="none" data-name="implementation" data-compartment="1">randomness_required_gen: REAL</text>
+								<text x="0.0" y="289.5" stroke="none" data-name="implementation" data-compartment="1">randomness_required_enc_sign: REAL</text>
+								<text x="0.0" y="305.7" stroke="none" data-name="implementation" data-compartment="1">randomness_required_dec_vrfy: REAL</text>
+								<text x="0.0" y="321.9" stroke="none" data-name="implementation" data-compartment="1">randomness_required_comment: TEXT</text>
+								<text x="0.0" y="338.1" stroke="none" data-name="implementation" data-compartment="1">flavor_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="implementation_link">
+						<g fill="#eee8d5" stroke="#33322E" data-name="implementation_link">
+							<rect x="1474.0" y="250.0" height="113.0" width="244.0" data-name="implementation_link"></rect>
+							<path d="M1474.0 282.0 L1718.0 282.0" fill="none" data-name="implementation_link"></path>
+						</g>
+						<g transform="translate(1474, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="implementation_link" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="implementation_link" data-compartment="0">
+								<text x="114.0" y="14.1" stroke="none" text-anchor="middle" data-name="implementation_link" data-compartment="0">implementation_link</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1474, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="implementation_link" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="implementation_link" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="implementation_link" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="implementation_link" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="implementation_link" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="implementation_link" data-compartment="1">implementation_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="implementation_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="implementation_source">
+							<rect x="1758.0" y="250.0" height="113.0" width="244.0" data-name="implementation_source"></rect>
+							<path d="M1758.0 282.0 L2002.0 282.0" fill="none" data-name="implementation_source"></path>
+						</g>
+						<g transform="translate(1758, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="implementation_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="implementation_source" data-compartment="0">
+								<text x="114.0" y="14.1" stroke="none" text-anchor="middle" data-name="implementation_source" data-compartment="0">implementation_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1758, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="implementation_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="implementation_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="implementation_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="implementation_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="implementation_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="implementation_source" data-compartment="1">implementation_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="implementation_hardware_feature">
+						<g fill="#eee8d5" stroke="#33322E" data-name="implementation_hardware_feature">
+							<rect x="2441.0" y="250.0" height="113.0" width="286.0" data-name="implementation_hardware_feature"></rect>
+							<path d="M2441.0 282.0 L2727.0 282.0" fill="none" data-name="implementation_hardware_feature"></path>
+						</g>
+						<g transform="translate(2441, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="implementation_hardware_feature" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="implementation_hardware_feature" data-compartment="0">
+								<text x="135.0" y="14.1" stroke="none" text-anchor="middle" data-name="implementation_hardware_feature" data-compartment="0">implementation_hardware_feature</text>
+								
+							</g>
+						</g>
+						<g transform="translate(2441, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="implementation_hardware_feature" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="implementation_hardware_feature" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="implementation_hardware_feature" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="implementation_hardware_feature" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="implementation_hardware_feature" data-compartment="1">feature: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="implementation_hardware_feature" data-compartment="1">implementation_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="implementation_dependency">
+						<g fill="#eee8d5" stroke="#33322E" data-name="implementation_dependency">
+							<rect x="2767.0" y="250.0" height="113.0" width="244.0" data-name="implementation_dependency"></rect>
+							<path d="M2767.0 282.0 L3011.0 282.0" fill="none" data-name="implementation_dependency"></path>
+						</g>
+						<g transform="translate(2767, 250)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="implementation_dependency" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="implementation_dependency" data-compartment="0">
+								<text x="114.0" y="14.1" stroke="none" text-anchor="middle" data-name="implementation_dependency" data-compartment="0">implementation_dependency</text>
+								
+							</g>
+						</g>
+						<g transform="translate(2767, 282)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="implementation_dependency" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="implementation_dependency" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="implementation_dependency" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="implementation_dependency" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="implementation_dependency" data-compartment="1">dependency: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="implementation_dependency" data-compartment="1">implementation_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="benchmark">
+						<g fill="#eee8d5" stroke="#33322E" data-name="benchmark">
+							<rect x="2042.0" y="153.0" height="307.0" width="359.0" data-name="benchmark"></rect>
+							<path d="M2042.0 185.0 L2401.0 185.0" fill="none" data-name="benchmark"></path>
+						</g>
+						<g transform="translate(2042, 153)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="benchmark" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="benchmark" data-compartment="0">
+								<text x="171.5" y="14.1" stroke="none" text-anchor="middle" data-name="benchmark" data-compartment="0">benchmark</text>
+								
+							</g>
+						</g>
+						<g transform="translate(2042, 185)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="benchmark" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="benchmark" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="benchmark" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="benchmark" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="benchmark" data-compartment="1">comment: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="benchmark" data-compartment="1">platform: TEXT</text>
+								<text x="0.0" y="78.9" stroke="none" data-name="benchmark" data-compartment="1">platform_comment: TEXT</text>
+								<text x="0.0" y="95.1" stroke="none" data-name="benchmark" data-compartment="1">timings_gen: REAL</text>
+								<text x="0.0" y="111.3" stroke="none" data-name="benchmark" data-compartment="1">timings_enc_sign: REAL</text>
+								<text x="0.0" y="127.5" stroke="none" data-name="benchmark" data-compartment="1">timings_dec_vrfy: REAL</text>
+								<text x="0.0" y="143.7" stroke="none" data-name="benchmark" data-compartment="1">timings_unit: TEXT</text>
+								<text x="0.0" y="159.9" stroke="none" data-name="benchmark" data-compartment="1">timings_comment: TEXT</text>
+								<text x="0.0" y="176.1" stroke="none" data-name="benchmark" data-compartment="1">memory_requirements_gen: INTEGER</text>
+								<text x="0.0" y="192.3" stroke="none" data-name="benchmark" data-compartment="1">memory_requirements_enc_sign: INTEGER</text>
+								<text x="0.0" y="208.5" stroke="none" data-name="benchmark" data-compartment="1">memory_requirements_dec_vrfy: INTEGER</text>
+								<text x="0.0" y="224.7" stroke="none" data-name="benchmark" data-compartment="1">memory_requirements_comment: TEXT</text>
+								<text x="0.0" y="240.9" stroke="none" data-name="benchmark" data-compartment="1">paramset_id: INTEGER</text>
+								<text x="0.0" y="257.1" stroke="none" data-name="benchmark" data-compartment="1">implementation_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="benchmark_link">
+						<g fill="#eee8d5" stroke="#33322E" data-name="benchmark_link">
+							<rect x="1989.5" y="0.0" height="113.0" width="212.0" data-name="benchmark_link"></rect>
+							<path d="M1989.5 32.0 L2201.5 32.0" fill="none" data-name="benchmark_link"></path>
+						</g>
+						<g transform="translate(1989.5, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="benchmark_link" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="benchmark_link" data-compartment="0">
+								<text x="98.0" y="14.1" stroke="none" text-anchor="middle" data-name="benchmark_link" data-compartment="0">benchmark_link</text>
+								
+							</g>
+						</g>
+						<g transform="translate(1989.5, 32)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="benchmark_link" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="benchmark_link" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="benchmark_link" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="benchmark_link" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="benchmark_link" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="benchmark_link" data-compartment="1">benchmark_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="benchmark_source">
+						<g fill="#eee8d5" stroke="#33322E" data-name="benchmark_source">
+							<rect x="2241.5" y="0.0" height="113.0" width="212.0" data-name="benchmark_source"></rect>
+							<path d="M2241.5 32.0 L2453.5 32.0" fill="none" data-name="benchmark_source"></path>
+						</g>
+						<g transform="translate(2241.5, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="benchmark_source" data-compartment="0">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="benchmark_source" data-compartment="0">
+								<text x="98.0" y="14.1" stroke="none" text-anchor="middle" data-name="benchmark_source" data-compartment="0">benchmark_source</text>
+								
+							</g>
+						</g>
+						<g transform="translate(2241.5, 32)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="benchmark_source" data-compartment="1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="benchmark_source" data-compartment="1">
+								<text x="0.0" y="14.1" stroke="none" data-name="benchmark_source" data-compartment="1">id: INTEGER  🔑</text>
+								<text x="0.0" y="30.3" stroke="none" data-name="benchmark_source" data-compartment="1">id_text: TEXT</text>
+								<text x="0.0" y="46.5" stroke="none" data-name="benchmark_source" data-compartment="1">url: TEXT</text>
+								<text x="0.0" y="62.7" stroke="none" data-name="benchmark_source" data-compartment="1">benchmark_id: INTEGER</text>
+								
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
