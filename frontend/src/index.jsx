@@ -72,6 +72,10 @@ const router = createBrowserRouter([{
       path: 'privacy_policy',
       lazy: lazyView(() => import('./views/PrivacyPolicy')),
     },
+    {
+      path: 'imprint',
+      lazy: lazyView(() => import('./views/Imprint')),
+    },
   ],
 }]);
 

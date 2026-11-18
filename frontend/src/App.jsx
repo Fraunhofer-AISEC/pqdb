@@ -146,7 +146,7 @@ function App() {
                   color: 'text.secondary',
                 }}
               >
-                <MuiLink href="https://www.aisec.fraunhofer.de/en/imprint.html">Imprint</MuiLink>
+                <MuiLink component={Link} to="/imprint">Imprint</MuiLink>
                 <MuiLink component={Link} to="/privacy_policy">Privacy</MuiLink>
               </Box>
             )}

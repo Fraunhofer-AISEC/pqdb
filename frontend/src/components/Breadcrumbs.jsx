@@ -57,6 +57,9 @@ function useCrumbs({ db, pathname }) {
     } else if (segments[0] === 'privacy_policy') {
       crumbs.push({ label: 'Privacy Policy', to: '/privacy_policy' });
       i = 1;
+    } else if (segments[0] === 'imprint') {
+      crumbs.push({ label: 'Imprint', to: '/imprint' });
+      i = 1;
     } else {
       const item = NAV_ITEMS.find((n) => n.isActive(`/${segments[0]}`) && n.key !== 'home');
       if (item) {
