@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Imprint - pqdb</title>
+  <meta name="description" content="Imprint for the post-quantum cryptography database pqdb." />
+  <style>
+    :root {
+      --bg: #fbfdfe;
+      --paper: #ffffff;
+      --ink: #0c3b43;
+      --muted: #12626d;
+      --accent: #167885;
+      --brand: #2195a6;
+      --border: #d7e6e9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+    }
+    .page {
+      max-width: 53rem;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+    header.brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    header.brand svg { display: block; }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: clamp(20px, 4vw, 32px);
+      overflow-wrap: anywhere;
+      box-shadow: 0 1px 3px rgba(12, 59, 67, 0.08);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: 1.7rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    h2 {
+      margin: 28px 0 10px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    p { margin: 0 0 16px; }
+    ul { margin: 0 0 16px; padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    address { margin: 0 0 16px; font-style: normal; }
+    .obf { color: var(--accent); overflow-wrap: anywhere; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .links {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 16px 32px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    .links a { color: var(--accent); }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 394 140" width="180" height="64" role="img" aria-label="PQDB logo">
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m1152.8 803.15v245.67c0 88.154 72.477 160.63 160.63 160.63 88.154 0 160.63-72.477 160.63-160.63 0-88.154-72.475-160.63-160.63-160.63-23.524 0-45.931 5.1635-66.143 14.406v-99.445zm160.63 179.53c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#2195a6"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m1011 803.15v99.445c-20.212-9.2428-42.616-14.406-66.141-14.406-88.154 0-160.63 72.475-160.63 160.63 0 88.154 72.477 160.63 160.63 160.63 88.154 0 160.63-72.477 160.63-160.63v-245.67zm-66.141 179.53c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#4f6ef7"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m576.38 888.19c-88.154 0-160.63 72.475-160.63 160.63 0 88.154 72.477 160.63 160.63 160.63 23.524 0 45.929-5.1654 66.141-14.408v99.447h94.488v-245.67c0-88.154-72.475-160.63-160.63-160.63zm0 94.488c37.089 0 66.141 29.052 66.141 66.141 0 37.089-29.052 66.142-66.141 66.142-37.089 0-66.143-29.054-66.143-66.142 0-37.089 29.054-66.141 66.143-66.141z" fill="#8b5cf6"/>
+        <path transform="matrix(.26458 0 0 .26458 0 -200)" d="m207.87 888.19c-88.154 0-160.63 72.475-160.63 160.63v245.67h94.488v-99.447c20.212 9.2428 42.616 14.408 66.141 14.408 88.154 0 160.63-72.477 160.63-160.63 0-88.154-72.477-160.63-160.63-160.63zm0 94.488c37.089 0 66.143 29.052 66.143 66.141 0 37.089-29.054 66.142-66.143 66.142s-66.141-29.054-66.141-66.142c0-37.089 29.052-66.141 66.141-66.141z" fill="#0ea5e9"/>
+      </svg>
+    </header>
+
+    <main class="card">
+      <h1>Imprint</h1>
+      <h2>Website Provider</h2>
+      <p>
+        The website <a href="https://www.pqdb.info/">www.pqdb.info</a> is provided by
+        Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+      </p>
+      <address>
+        Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.<br />
+        Hansastraße 27 c<br />
+        80686 München, Germany<br />
+        Internet: <a href="https://www.fraunhofer.de/">www.fraunhofer.de</a><br />
+        E-Mail: <span class="obf">info(at)zv.fraunhofer.de</span>
+      </address>
+
+      <h2>Institute and Contact</h2>
+      <p>
+        The website is operated by the Fraunhofer Institute for Applied and Integrated
+        Security AISEC, a constituent entity of Fraunhofer-Gesellschaft with no separate
+        legal status.
+      </p>
+      <address>
+        Fraunhofer Institute for Applied and Integrated Security AISEC<br />
+        Lichtenbergstraße 11<br />
+        85748 Garching, Germany<br />
+        Phone: +49 89 322 99 86-0<br />
+        E-Mail: <span class="obf">anfragen(at)aisec.fraunhofer.de</span>
+      </address>
+
+      <h2>Responsible Editor</h2>
+      <p>
+        Prof. Dr. Georg Sigl
+        <br />
+        Managing Director
+        <br />
+        Fraunhofer Institute for Applied and Integrated Security AISEC
+        <br />
+        Lichtenbergstraße 11
+        <br />
+        85748 Garching near Munich
+        <br />
+        Phone: +49 89 3229986-159
+        <br />
+        E-Mail: <span class="obf">georg.sigl(at)aisec.fraunhofer.de</span>
+      </p>
+
+      <h2>Registration and VAT Identification Number</h2>
+      <p>
+        VAT identification number in accordance with section 27 a of the German Value-Added
+        Tax Act (Umsatzsteuergesetz, UStG): DE 129515865
+      </p>
+      <p>
+        Registered nonprofit association.<br />
+        Register court: Amtsgericht München (district court).<br />
+        Registration number: VR 4461.
+      </p>
+
+      <h2>Executive Board</h2>
+      <p>
+        Holger Hanselka
+        <br />
+        President and Chairman of the Board | Corporate Strategy and Communications
+      </p>
+      <p>
+        Constantin Häfner
+        <br />
+        Executive Board Member for Research and Transfer (executive unit VA)
+      </p>
+      <p>
+        Axel Müller-Groeling
+        <br />
+        Executive Board Member for Research Infrastructures and Digital Transformation
+        (executive unit VB)
+      </p>
+      <p>
+        Elisabeth Ewen
+        <br />
+        Executive Board Member for Human Resources, Corporate Culture and Legal Affairs
+        (executive unit VC)
+      </p>
+      <p>
+        Sandra Krey
+        <br />
+        Executive Board Member for Finances and Controlling (executive unit VD)
+      </p>
+
+      <h2>Usage Rights</h2>
+      <p>
+        © Fraunhofer-Gesellschaft e. V., Munich
+      </p>
+      <p>
+        The PQDB source code is licensed under the
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
+        You may use, modify, and distribute it, including for commercial purposes, subject
+        to the terms of that license. Third-party components remain subject to their
+        respective licenses.
+      </p>
+
+      <h2>Disclaimer</h2>
+      <p>
+        We cannot assume any liability for the content of external pages. Solely the operators
+        of those linked pages are responsible for their content.
+      </p>
+      <p>
+        We make every reasonable effort to ensure that the content of this website is kept up
+        to date and that it is accurate and complete. Nevertheless, the possibility of errors
+        cannot be entirely ruled out. We do not give any warranty in respect of the timeliness,
+        accuracy or completeness of material published on this website and disclaim all
+        liability for (material or non-material) loss or damage incurred by third parties
+        arising from the use of content obtained from the website.
+      </p>
+      <p>
+        Registered trademarks and proprietary names, and copyrighted text and images, are not
+        generally indicated as such on our webpages. But the absence of such indications in no
+        way implies that these names, images or text belong to the public domain in the
+        context of trademark or copyright law.
+      </p>
+
+      <p>
+        For more information on how we handle personal data, please see our
+        <a href="/privacy_policy.html">Privacy Policy</a>.
+      </p>
+
+      <nav class="links" aria-label="Legal navigation">
+        <a href="/">Back to pqdb</a>
+        <a href="/privacy_policy.html">Privacy</a>
+      </nav>
+    </main>
+  </div>
+</body>
+
+</html>
